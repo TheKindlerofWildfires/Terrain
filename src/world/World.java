@@ -29,8 +29,12 @@ public class World {
 		PoissonGenerator fish = new PoissonGenerator();
 		fish.generate();
 		for (int i = 0; i < fish.points.size(); i++) {
-			points.add(new Vector3f(rng.nextFloat()*2-1, rng.nextFloat()*2-1,
-					0));
+			//points.add(new Vector3f(rng.nextFloat()*2-1, rng.nextFloat()*2-1,0));
+			float fishX = fish.points.get(i)[0]/320f-1;
+			float fishY = fish.points.get(i)[1]/240f-1;
+			
+			points.add(new Vector3f(fishX, fishY,0));
+			System.out.println("x "+fishX+"y "+fishY);
 		}
 		System.out.println("points: " + points.size());
 		//float size = 2f;
