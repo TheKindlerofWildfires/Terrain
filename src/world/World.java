@@ -26,12 +26,12 @@ public class World {
 		terrain = new ArrayList<Triangle>();
 		points = new ArrayList<Vector3f>();
 		rng = new Random();
-		PoissonGenerator fish = new PoissonGenerator();
+		/*PoissonGenerator fish = new PoissonGenerator();
 		fish.generate();
 		for (int i = 0; i < fish.getPoints().size(); i++) {
 			points.add(new Vector3f(rng.nextFloat()*2-1, rng.nextFloat()*2-1,
 					0));
-		}
+		}*/
 		System.out.println("points: " + points.size());
 		//float size = 2f;
 		//for (int i = 0; i < 5; i++) {
