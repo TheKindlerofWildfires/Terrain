@@ -18,7 +18,7 @@ public class Delaunay {
 	private boolean calculated = false;
 
 	private void addPoint(Vector3f pt) {
-		System.out.println("added a pt");
+		//System.out.println("added a pt");
 		ArrayList<Triangle> badTris = new ArrayList<Triangle>();//triangles changing/going away
 		ArrayList<Triangle> goodTris = new ArrayList<Triangle>();
 		ArrayList<Edge> edges = new ArrayList<Edge>();//edges of space opened up by removed tris
@@ -29,7 +29,7 @@ public class Delaunay {
 				goodTris.add(tri);
 			}
 		}
-		System.out.println(badTris.size());
+		//System.out.println(badTris.size());
 		for (Triangle tri : badTris) { //work out edges and remove bad triangles
 			for (int i = 0; i < 3; i++) {
 				Edge edge = tri.getEdge(i);
@@ -49,7 +49,7 @@ public class Delaunay {
 		for (Edge edge : edges) {
 			goodTris.add(new Triangle(edge, pt));
 		}
-		System.out.println(triangles.size());
+		//System.out.println(triangles.size());
 		triangles = goodTris;
 	}
 
@@ -59,7 +59,7 @@ public class Delaunay {
 		for (Vector3f point : points) {
 			addPoint(point);
 		}
-		System.out.println(triangles.size());
+		//System.out.println(triangles.size());
 		for (int i = 0; i < triangles.size(); i++) {
 			Triangle tri = triangles.get(i);
 			for (int j = 0; j < 3; j++) {
@@ -69,7 +69,7 @@ public class Delaunay {
 				}
 			}
 		}
-		System.out.println(triangles.size());
+		//System.out.println(triangles.size());
 		calculated = true;
 
 	}
