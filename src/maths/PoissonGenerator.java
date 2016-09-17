@@ -8,11 +8,16 @@ public class PoissonGenerator {
 	public Random rand = new Random();
 
 	public ArrayList<int[]> points = new ArrayList<int[]>();
-	public double MIN_DISTANCE = 50;
-	public int POINTS_PER_ITER = 50;
+	public double MIN_DISTANCE = 0;//adjusting this has weird effects, 
+	//0 makes really perfect shapes, so i think we did this wrong
+	//small and many small pockets 
+	//medium and a several medium pockets 
+	//large and few--> 1 large pocket 
+	public int POINTS_PER_ITER = 40;//smaller number less clustering
+	//larger and larger clustering
 	public int width = 640;
 	public int height = 480;
-	public int remainingPoints = 999;
+	public int remainingPoints = 1000;
 
 	public PoissonGenerator() {
 		/*System.out.println("CALLED MAIN!");
@@ -34,23 +39,25 @@ public class PoissonGenerator {
 			pts.add(new int[] { x, y });
 		}
 
-		int bestPoint = -1;
-		double maxDist = 0;
-		for (int i = 0; i < pts.size(); i++) {
-			double minDist = Double.MAX_VALUE;
-			for (int[] point : points) {
-				double dist = dist(pts.get(i), point);
-				if (dist < minDist && dist > MIN_DISTANCE) {
-					minDist = dist;
+		int bestPoint = -1;//null case
+		double maxDist = 0;//largest dist recorded
+		for (int i = 0; i < pts.size(); i++) {//for all the new points
+			double minDist = Double.MAX_VALUE; //really large number for distance to nearest point
+			for (int[] point : points) { //for the given point in all the other points
+				double dist = dist(pts.get(i), point);//distance between the points
+				if (dist < minDist && dist > MIN_DISTANCE) {//100% sure this line is broke
+//if the distance between the points is less than huge number and greater then the min distance
+					minDist = dist;//adjust large number to new smaller number 
+					//sorts for closest other point
 				}
 			}
-			if (minDist > maxDist) {
-				maxDist = minDist;
-				bestPoint = i;
+			if (minDist > maxDist) {//if now small number > highest number 
+				maxDist = minDist;//update highest number
+				bestPoint = i;//this is now the biggest point
 			}
 		}
-		if (bestPoint == -1) {
-			return false;
+		if (bestPoint == -1) {//if it all went bad try again
+			return false;//exit
 		}
 		points.add(pts.get(bestPoint));
 		return true;
