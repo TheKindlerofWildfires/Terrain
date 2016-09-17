@@ -102,7 +102,7 @@ public class Window implements Runnable {
 	private void randomize() {
 		worldRandom.setSeed(1);
 		mathRandom.setSeed(1);
-		World.perlinSeed = 1;
+		World.perlinSeed = 120;
 		
 	}
 

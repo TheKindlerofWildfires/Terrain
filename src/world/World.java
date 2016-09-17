@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import noiseLibrary.module.source.Perlin;
 import graphics.VertexArrayObject;
+import graphics.Window;
 import maths.Delaunay;
 import maths.PoissonGenerator;
 import maths.Triangle;
@@ -24,9 +25,9 @@ public class World {
 		terrain = new ArrayList<Triangle>();
 		points = new ArrayList<Vector3f>();
 		Perlin noise = new Perlin();
-		noise.setFrequency(2);
+		noise.setFrequency(1);
 		noise.setLacunarity(2);
-		noise.setOctaveCount(30);
+		noise.setOctaveCount(3);
 		noise.setSeed(perlinSeed);
 		PoissonGenerator fish = new PoissonGenerator();
 		fish.generate();
@@ -36,7 +37,11 @@ public class World {
 			float fishY = fish.points.get(i)[1]/240f-1;
 			float pZ =  (float) Math.abs(noise.getValue(fishX, fishY, 0.1));
 			//System.out.println(pZ);
-			points.add(new Vector3f(fishX, fishY,pZ));
+			Vector3f thisVec = new Vector3f(fishX, fishY,0);
+			points.add(thisVec);
+			System.out.print(fish.points.get(i)[0]);
+			System.out.print(", ");
+			System.out.println(fish.points.get(i)[1]);
 			//System.out.println("x "+fishX+"y "+fishY);
 		}
 		//System.out.println("points: " + points.size());
@@ -56,16 +61,20 @@ public class World {
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
 		int c = 0;
 		for (int i = 0; i < terrain.size(); i++) {
-			
+			/*
 			float r = (terrain.get(i).getPoint(0).z + terrain.get(i).getPoint(1).z +terrain.get(i).getPoint(2).z)/10;
 			float g = (terrain.get(i).getPoint(0).z + terrain.get(i).getPoint(1).z +terrain.get(i).getPoint(2).z)/2;
 			float b = (terrain.get(i).getPoint(0).z + terrain.get(i).getPoint(1).z +terrain.get(i).getPoint(2).z)/1;
-			
-			/*
-			float r = rng.nextFloat();
-			float g = rng.nextFloat();
-			float b = rng.nextFloat();
 			*/
+			float pZ =  (float) Math.abs(noise.getValue(terrain.get(i).getCircumcenter().x, terrain.get(i).getCircumcenter().y, 0.1));
+			
+			float r = 0;
+			float g = pZ;
+			float b = 0;
+			if(pZ<.25){
+				b = (float) 0.5;
+			}
+			
 			vertices[c++] = terrain.get(i).getPoint(0).x;
 			vertices[c++] = terrain.get(i).getPoint(0).y;
 			vertices[c++] = terrain.get(i).getPoint(0).z;

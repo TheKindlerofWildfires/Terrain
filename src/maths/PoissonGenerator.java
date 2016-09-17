@@ -8,12 +8,7 @@ import java.util.ArrayList;
 public class PoissonGenerator {
 
 	public ArrayList<int[]> points = new ArrayList<int[]>();
-	public double MIN_DISTANCE = 0;//adjusting this has weird effects, 
-	//0 makes really perfect shapes, so i think we did this wrong
-	//small and many small pockets 
-	//medium and a several medium pockets 
-	//large and few--> 1 large pocket 
-	public int POINTS_PER_ITER = 40;//smaller number less clustering
+	public int POINTS_PER_ITER = 100;//smaller number less clustering
 	//larger and larger clustering
 	public int width = 640;
 	public int height = 480;
