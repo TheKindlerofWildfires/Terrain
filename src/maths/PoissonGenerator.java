@@ -30,7 +30,7 @@ public class PoissonGenerator {
 		}*/
 	}
 
-	public boolean iterate() {
+	public void iterate() {
 		//System.out.println("CALLED ITERATE!");
 		ArrayList<int[]> pts = new ArrayList<int[]>();
 		for (int i = 0; i < POINTS_PER_ITER; i++) {
@@ -38,29 +38,28 @@ public class PoissonGenerator {
 			int y = Window.mathRandom.nextInt(height);
 			pts.add(new int[] { x, y });
 		}
-
-		int bestPoint = -1;//null case
-		double maxDist = 0;//largest dist recorded
-		for (int i = 0; i < pts.size(); i++) {//for all the new points
-			double minDist = Double.MAX_VALUE; //really large number for distance to nearest point
-			for (int[] point : points) { //for the given point in all the other points
-				double dist = dist(pts.get(i), point);//distance between the points
-				if (dist < minDist && dist > MIN_DISTANCE) {//100% sure this line is broke
-//if the distance between the points is less than huge number and greater then the min distance
-					minDist = dist;//adjust large number to new smaller number 
-					//sorts for closest other point
-				}
-			}
-			if (minDist > maxDist) {//if now small number > highest number 
-				maxDist = minDist;//update highest number
-				bestPoint = i;//this is now the biggest point
+		
+		int[] bestPoint = new int[] {};
+		double maxDist = 0;
+		for (int[] point : pts) {
+			double dist = getDistFromOthers(point);
+			if (dist > maxDist) {
+				maxDist = dist;
+				bestPoint = point;
 			}
 		}
-		if (bestPoint == -1) {//if it all went bad try again
-			return false;//exit
+		points.add(bestPoint);
+	}
+	
+	public double getDistFromOthers(int[] point) {
+		double minDist = Double.MAX_VALUE;
+		for (int[] current : points) {
+			double dist = distance(point, current);
+			if (dist < minDist) {
+				minDist = dist;
+			}
 		}
-		points.add(pts.get(bestPoint));
-		return true;
+		return minDist;
 	}
 	
 	public void generate() {
@@ -68,13 +67,12 @@ public class PoissonGenerator {
 		int y = Window.mathRandom.nextInt(height);
 		points.add(new int[] {x, y});
 		while(remainingPoints > 0) {
-			if (iterate()) {
-				remainingPoints--;
-			}
+			iterate();
+			remainingPoints--;
 		}
 	}
 
-	public double dist(int[] p1, int[] p2) {
+	public double distance(int[] p1, int[] p2) {
 		int dx = p2[0] - p1[0];
 		int dy = p2[1] - p1[1];
 		return Math.sqrt(dx * dx + dy * dy);
