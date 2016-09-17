@@ -60,13 +60,17 @@ public class Delaunay {
 			addPoint(point);
 		}
 		//System.out.println(triangles.size());
+		int iter = 0;
 		for (int i = 0; i < triangles.size(); i++) {
 			Triangle tri = triangles.get(i);
 			for (int j = 0; j < 3; j++) {
+				//this function is broke
 				if (tri.getPoint(j).subtract(startingTriPt0).length() < 1
 						|| tri.getPoint(j).subtract(startingTriPt1).length() < 1
 						|| tri.getPoint(j).subtract(startingTriPt2).length() < 1) {
-					System.out.println("Fuck you in the ass ");
+					iter++;
+					System.out.println(tri.getPoint(j).subtract(startingTriPt0).length()+"swatted");
+					//System.out.println("Triangles swatted:" +iter);
 					triangles.remove(tri);
 					break;
 				}
@@ -81,7 +85,7 @@ public class Delaunay {
 		return triangles;
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		Vector3f pt = new Vector3f(0,3,0);
 
 		if (pt.subtract(startingTriPt0).length() < 1
@@ -90,5 +94,5 @@ public class Delaunay {
 			System.out.println("YO");
 
 		}
-	}
+	}*/
 }

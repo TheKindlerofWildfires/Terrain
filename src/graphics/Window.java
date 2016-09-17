@@ -11,6 +11,8 @@ import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
@@ -24,12 +26,12 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.system.MemoryUtil.NULL;
-
 import java.util.Random;
 
+import org.lwjgl.glfw.GLFWCursorPosCallback;
+import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
-import maths.Vector3f;
 import world.World;
 
 public class Window implements Runnable {
@@ -37,7 +39,8 @@ public class Window implements Runnable {
 	public boolean running = true;
 
 	private Long window;
-
+	private GLFWKeyCallback keyCallback;
+	public static GLFWCursorPosCallback cursorCallback;
 	private GraphicsManager graphicsManager;
 	private World world;
 	public static Random worldRandom = new Random();
@@ -55,6 +58,7 @@ public class Window implements Runnable {
 	}
 
 	public void init() {
+		
 		randomize();
 		//Initialize glfw
 		if (!glfwInit()) {
@@ -70,11 +74,13 @@ public class Window implements Runnable {
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 		//create window
-		window = glfwCreateWindow(1920, 1080, "SpaceGame", NULL, NULL);
+		window = glfwCreateWindow(1920, 1080, "WaterGame", NULL, NULL);
 		if (window == NULL) {
 			System.err.println("Could not create window");
 		}
-
+		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
+		glfwSetCursorPosCallback(window,
+				cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
 		//set window pos
 		glfwSetWindowPos(window, 0, 20);
 
@@ -105,6 +111,7 @@ public class Window implements Runnable {
 	}
 
 	public void update() {
+		graphicsManager.update();
 		glfwPollEvents();
 	}
 
