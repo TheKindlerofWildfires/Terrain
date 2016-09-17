@@ -11,7 +11,6 @@ import static org.lwjgl.opengl.GL20.glCreateShader;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
 import static org.lwjgl.opengl.GL20.glGetShaderi;
 import static org.lwjgl.opengl.GL20.glShaderSource;
-
 import static org.lwjgl.opengl.GL31.GL_UNIFORM_BUFFER;
 
 import java.io.BufferedReader;
@@ -24,6 +23,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 
 public class Utilities {
+
 	public static float[][][] unflatten(int[] input, int xSize, int ySize, int zSize) {
 		float[][][] output = new float[xSize][ySize][zSize];
 		for (int i = 0; i < input.length; i++) {

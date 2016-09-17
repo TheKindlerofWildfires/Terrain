@@ -1,6 +1,5 @@
 package maths;
 
-import java.nio.FloatBuffer;
 
 /**
  * This class represents a (x,y,z)-Vector. GLSL equivalent to vec3.

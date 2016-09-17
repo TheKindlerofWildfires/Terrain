@@ -24,6 +24,8 @@ import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.util.Random;
+
 import org.lwjgl.opengl.GL;
 
 import maths.Matrix4f;
@@ -38,7 +40,9 @@ public class Window implements Runnable {
 
 	private GraphicsManager graphicsManager;
 	private World world;
-
+	public static Random worldRandom = new Random();
+	public static Random mathRandom = new Random();
+	
 	public static void main(String args[]) {
 		Window game = new Window();
 		game.run();
@@ -51,6 +55,7 @@ public class Window implements Runnable {
 	}
 
 	public void init() {
+		randomize();
 		//Initialize glfw
 		if (!glfwInit()) {
 			System.err.println("GLFW init fail");
@@ -92,6 +97,13 @@ public class Window implements Runnable {
 		world = new World();
 
 		VAO = new VertexArrayObject(vertices, 1);
+	}
+
+	private void randomize() {
+		worldRandom.setSeed(1);
+		mathRandom.setSeed(1);
+		World.perlinSeed = 1;
+		
 	}
 
 	public void update() {

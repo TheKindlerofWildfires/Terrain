@@ -1,11 +1,11 @@
 package maths;
 
+import graphics.Window;
+
 import java.util.ArrayList;
-import java.util.Random;
+
 
 public class PoissonGenerator {
-
-	public Random rand = new Random();
 
 	public ArrayList<int[]> points = new ArrayList<int[]>();
 	public double MIN_DISTANCE = 0;//adjusting this has weird effects, 
@@ -34,8 +34,8 @@ public class PoissonGenerator {
 		//System.out.println("CALLED ITERATE!");
 		ArrayList<int[]> pts = new ArrayList<int[]>();
 		for (int i = 0; i < POINTS_PER_ITER; i++) {
-			int x = rand.nextInt(width);
-			int y = rand.nextInt(height);
+			int x = Window.mathRandom.nextInt(width);
+			int y = Window.mathRandom.nextInt(height);
 			pts.add(new int[] { x, y });
 		}
 
@@ -64,8 +64,8 @@ public class PoissonGenerator {
 	}
 	
 	public void generate() {
-		int x = rand.nextInt(width);
-		int y = rand.nextInt(height);
+		int x = Window.mathRandom.nextInt(width);
+		int y = Window.mathRandom.nextInt(height);
 		points.add(new int[] {x, y});
 		while(remainingPoints > 0) {
 			if (iterate()) {

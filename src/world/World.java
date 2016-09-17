@@ -13,13 +13,13 @@ import maths.Delaunay;
 import maths.PoissonGenerator;
 import maths.Triangle;
 import maths.Vector3f;
-
 public class World {
 	private ArrayList<Triangle> terrain;
 	private ArrayList<Vector3f> points;
 
 	private VertexArrayObject VAO;
 
+	public static int perlinSeed;
 	public World() {
 		terrain = new ArrayList<Triangle>();
 		points = new ArrayList<Vector3f>();
@@ -27,7 +27,7 @@ public class World {
 		noise.setFrequency(2);
 		noise.setLacunarity(2);
 		noise.setOctaveCount(30);
-		noise.setSeed(1);
+		noise.setSeed(perlinSeed);
 		PoissonGenerator fish = new PoissonGenerator();
 		fish.generate();
 		for (int i = 0; i < fish.points.size(); i++) {
@@ -35,7 +35,7 @@ public class World {
 			float fishX = fish.points.get(i)[0]/320f-1;
 			float fishY = fish.points.get(i)[1]/240f-1;
 			float pZ =  (float) Math.abs(noise.getValue(fishX, fishY, 0.1));
-			System.out.println(pZ);
+			//System.out.println(pZ);
 			points.add(new Vector3f(fishX, fishY,pZ));
 			//System.out.println("x "+fishX+"y "+fishY);
 		}
@@ -57,9 +57,9 @@ public class World {
 		int c = 0;
 		for (int i = 0; i < terrain.size(); i++) {
 			
-			float r = (terrain.get(i).getPoint(0).z + terrain.get(i).getPoint(1).z +terrain.get(i).getPoint(2).z)/9;
-			float g = (terrain.get(i).getPoint(0).z + terrain.get(i).getPoint(1).z +terrain.get(i).getPoint(2).z)/3;
-			float b = (terrain.get(i).getPoint(0).z + terrain.get(i).getPoint(1).z +terrain.get(i).getPoint(2).z)/6;
+			float r = (terrain.get(i).getPoint(0).z + terrain.get(i).getPoint(1).z +terrain.get(i).getPoint(2).z)/10;
+			float g = (terrain.get(i).getPoint(0).z + terrain.get(i).getPoint(1).z +terrain.get(i).getPoint(2).z)/2;
+			float b = (terrain.get(i).getPoint(0).z + terrain.get(i).getPoint(1).z +terrain.get(i).getPoint(2).z)/1;
 			
 			/*
 			float r = rng.nextFloat();
