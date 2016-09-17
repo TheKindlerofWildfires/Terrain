@@ -12,21 +12,21 @@ public class PoissonGenerator {
 	public int POINTS_PER_ITER = 50;
 	public int width = 640;
 	public int height = 480;
-	public int remainingPoints = 1;
+	public int remainingPoints = 100;
 
-	/*public static void main(String[] args) {
-		System.out.println("CALLED MAIN!");
+	public PoissonGenerator() {
+		/*System.out.println("CALLED MAIN!");
 		PoissonGenerator gen = new PoissonGenerator();
 		gen.generate();
 		for(int[] pt : gen.points) {
 			System.out.print(pt[0]);
 			System.out.print(", ");
 			System.out.println(pt[1]);
-		}
-	}*/
+		}*/
+	}
 
 	public boolean iterate() {
-		System.out.println("CALLED ITERATE!");
+		//System.out.println("CALLED ITERATE!");
 		ArrayList<int[]> pts = new ArrayList<int[]>();
 		for (int i = 0; i < POINTS_PER_ITER; i++) {
 			int x = rand.nextInt(width);
@@ -60,11 +60,11 @@ public class PoissonGenerator {
 		int x = rand.nextInt(width);
 		int y = rand.nextInt(height);
 		points.add(new int[] {x, y});
-		/*while(remainingPoints > 0) {
+		while(remainingPoints > 0) {
 			if (iterate()) {
 				remainingPoints--;
 			}
-		}*/
+		}
 	}
 
 	public double dist(int[] p1, int[] p2) {
