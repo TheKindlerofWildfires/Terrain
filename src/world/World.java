@@ -14,6 +14,7 @@ import maths.Delaunay;
 import maths.PoissonGenerator;
 import maths.Triangle;
 import maths.Vector3f;
+
 public class World {
 	private ArrayList<Triangle> terrain;
 	private ArrayList<Vector3f> points;
@@ -21,6 +22,7 @@ public class World {
 	private VertexArrayObject VAO;
 
 	public static int perlinSeed;
+
 	public World() {
 		terrain = new ArrayList<Triangle>();
 		points = new ArrayList<Vector3f>();
@@ -33,15 +35,12 @@ public class World {
 		fish.generate();
 		for (int i = 0; i < fish.points.size(); i++) {
 			//points.add(new Vector3f(rng.nextFloat()*2-1, rng.nextFloat()*2-1,0));
-			float fishX = fish.points.get(i)[0]/320f-1;
-			float fishY = fish.points.get(i)[1]/240f-1;
-			float pZ =  (float) Math.abs(noise.getValue(fishX, fishY, 0.1));
-			//System.out.println(pZ);
-			Vector3f thisVec = new Vector3f(fishX, fishY,0);
+			float fishX = fish.points.get(i)[0] / 320f - 1;
+			float fishY = fish.points.get(i)[1] / 240f - 1;
+
+			Vector3f thisVec = new Vector3f(fishX, fishY, 0);
 			points.add(thisVec);
-			System.out.print(fish.points.get(i)[0]);
-			System.out.print(", ");
-			System.out.println(fish.points.get(i)[1]);
+
 			//System.out.println("x "+fishX+"y "+fishY);
 		}
 		//System.out.println("points: " + points.size());
@@ -66,39 +65,28 @@ public class World {
 			float g = (terrain.get(i).getPoint(0).z + terrain.get(i).getPoint(1).z +terrain.get(i).getPoint(2).z)/2;
 			float b = (terrain.get(i).getPoint(0).z + terrain.get(i).getPoint(1).z +terrain.get(i).getPoint(2).z)/1;
 			*/
-			float pZ =  (float) Math.abs(noise.getValue(terrain.get(i).getCircumcenter().x, terrain.get(i).getCircumcenter().y, 0.1));
-			
+			//float pZ =  (float) Math.abs(noise.getValue(terrain.get(i).getCircumcenter().x, terrain.get(i).getCircumcenter().y, 0.1));
+
 			float r = 0;
-			float g = pZ;
 			float b = 0;
-			if(pZ<.25){
-				b = (float) 0.5;
+
+			for (int j = 0; j < 3; j++) {
+				float pZ = (float) Math
+						.abs(noise.getValue(terrain.get(i).getPoint(j).x, terrain.get(i).getPoint(j).y, 0.1));
+
+				float g = pZ;
+				if (pZ < .25) {
+					b = (float) 0.5;
+				}
+
+				vertices[c++] = terrain.get(i).getPoint(j).x;
+				vertices[c++] = terrain.get(i).getPoint(j).y;
+				vertices[c++] = pZ;
+
+				vertices[c++] = r;
+				vertices[c++] = g;
+				vertices[c++] = b;
 			}
-			
-			vertices[c++] = terrain.get(i).getPoint(0).x;
-			vertices[c++] = terrain.get(i).getPoint(0).y;
-			vertices[c++] = terrain.get(i).getPoint(0).z;
-
-			vertices[c++] = r;
-			vertices[c++] = g;
-			vertices[c++] = b;
-
-			vertices[c++] = terrain.get(i).getPoint(1).x;
-			vertices[c++] = terrain.get(i).getPoint(1).y;
-			vertices[c++] = terrain.get(i).getPoint(1).z;
-
-			vertices[c++] = r;
-			vertices[c++] = g;
-			vertices[c++] = b;
-
-			vertices[c++] = terrain.get(i).getPoint(2).x;
-			vertices[c++] = terrain.get(i).getPoint(2).y;
-			vertices[c++] = terrain.get(i).getPoint(2).z;
-
-			vertices[c++] = r;
-			vertices[c++] = g;
-			vertices[c++] = b;
-
 		}
 
 		VAO = new VertexArrayObject(vertices, 2);

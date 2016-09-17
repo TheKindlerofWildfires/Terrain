@@ -17,10 +17,9 @@ public class ShaderManager {
 	public static void setCamera(Camera camera) {
 		assert initialized : "Shaders must be initialized in order to work";
 	
-		Matrix4f view = Matrix4f.scale(1, 1, 1);
-
+		System.out.println("hello");
 		landShader.start();
-		landShader.setUniformMatrix4f("pv", view);
+		landShader.setUniformMatrix4f("pv", camera.pv);
 		landShader.setUniform3f("cameraPos", camera.getPos());
 		landShader.stop();
 	}
@@ -30,9 +29,5 @@ public class ShaderManager {
 		landShader.start();
 		landShader.setUniform3f("lightPos", lightPos);
 		landShader.stop();
-	}
-
-	public static void main(String[] args) {
-		setLight(new Vector3f(0, 0, 0));
 	}
 }

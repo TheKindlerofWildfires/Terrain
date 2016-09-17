@@ -4,21 +4,26 @@ import graphics.Window;
 
 import java.util.ArrayList;
 
-
 public class PoissonGenerator {
 
 	public ArrayList<int[]> points = new ArrayList<int[]>();
 	public int POINTS_PER_ITER = 100;//smaller number less clustering
 	//larger and larger clustering
+
 	public int width = 640;
 	public int height = 480;
 	public int remainingPoints = 1000;
 
 	public PoissonGenerator() {
 		/*System.out.println("CALLED MAIN!");
+		=======
+		private boolean calculated = false;
+		
+		public static void main(String[] args) {
+		>>>>>>> Stashed changes
 		PoissonGenerator gen = new PoissonGenerator();
 		gen.generate();
-		for(int[] pt : gen.points) {
+		for (int[] pt : gen.points) {
 			System.out.print(pt[0]);
 			System.out.print(", ");
 			System.out.println(pt[1]);
@@ -31,9 +36,9 @@ public class PoissonGenerator {
 		for (int i = 0; i < POINTS_PER_ITER; i++) {
 			int x = Window.mathRandom.nextInt(width);
 			int y = Window.mathRandom.nextInt(height);
-			pts.add(new int[] { x, y });
+			pts.add(new int[] { x,y });
 		}
-		
+
 		int[] bestPoint = new int[] {};
 		double maxDist = 0;
 		for (int[] point : pts) {
@@ -45,7 +50,7 @@ public class PoissonGenerator {
 		}
 		points.add(bestPoint);
 	}
-	
+
 	public double getDistFromOthers(int[] point) {
 		double minDist = Double.MAX_VALUE;
 		for (int[] current : points) {
@@ -56,12 +61,12 @@ public class PoissonGenerator {
 		}
 		return minDist;
 	}
-	
+
 	public void generate() {
 		int x = Window.mathRandom.nextInt(width);
 		int y = Window.mathRandom.nextInt(height);
-		points.add(new int[] {x, y});
-		while(remainingPoints > 0) {
+		points.add(new int[] { x,y });
+		while (remainingPoints > 0) {
 			iterate();
 			remainingPoints--;
 		}

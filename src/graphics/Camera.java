@@ -40,7 +40,7 @@ public class Camera {
 	public void move(Vector3f displacement) {
 		pos = pos.add(displacement);
 		target = target.add(displacement);
-		pv = pv.translate(displacement.x, displacement.y, displacement.z);
+		pv = pv.multiply(Matrix4f.translate(displacement.x, displacement.y, displacement.z));
 	}
 
 	public Vector3f getPos() {

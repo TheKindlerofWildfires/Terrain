@@ -16,19 +16,19 @@ import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL31.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL33.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.util.Random;
 
 import org.lwjgl.opengl.GL;
 
-import maths.Matrix4f;
 import maths.Vector3f;
 import world.World;
 
@@ -95,8 +95,6 @@ public class Window implements Runnable {
 		//Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
 		world = new World();
-
-		VAO = new VertexArrayObject(vertices, 1);
 	}
 
 	private void randomize() {
@@ -110,12 +108,6 @@ public class Window implements Runnable {
 		glfwPollEvents();
 	}
 
-	float[] vertices = { -0.5f,-0.5f,0.0f,0.5f,-0.5f,0.0f,0.0f,0.5f,0.0f };
-
-	VertexArrayObject VAO;
-
-	float angle = 0;
-
 	public void render() {
 		glfwSwapBuffers(window);
 
@@ -128,10 +120,7 @@ public class Window implements Runnable {
 		//		
 		world.render();
 
-		ShaderManager.landShader.start();
-		ShaderManager.landShader.setUniformMatrix4f("pv", Matrix4f.scale(1, 1, 1));
-
-		ShaderManager.landShader.stop();
+		//graphicsManager.moveCamera(new Vector3f(.01f,0,0));
 
 	}
 
@@ -157,7 +146,7 @@ public class Window implements Runnable {
 			frames++;
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				//System.out.println(updates + " UPS, " + frames + " FPS");
+			//	System.out.println(updates + " UPS, " + frames + " FPS");
 				frames = 0;
 				updates = 0;
 			}

@@ -63,7 +63,10 @@ public class Delaunay {
 		for (int i = 0; i < triangles.size(); i++) {
 			Triangle tri = triangles.get(i);
 			for (int j = 0; j < 3; j++) {
-				if (!tri.getPoint(j).onScreen()) {
+				if (tri.getPoint(j).subtract(startingTriPt0).length() < 1
+						|| tri.getPoint(j).subtract(startingTriPt1).length() < 1
+						|| tri.getPoint(j).subtract(startingTriPt2).length() < 1) {
+					System.out.println("Fuck you in the ass ");
 					triangles.remove(tri);
 					break;
 				}
@@ -71,11 +74,21 @@ public class Delaunay {
 		}
 		//System.out.println(triangles.size());
 		calculated = true;
-
 	}
 
 	public ArrayList<Triangle> getTriangles() {
 		assert calculated : "you need to math it before you can have any triangles!";
 		return triangles;
+	}
+
+	public static void main(String[] args) {
+		Vector3f pt = new Vector3f(0,3,0);
+
+		if (pt.subtract(startingTriPt0).length() < 1
+				|| pt.subtract(startingTriPt1).length() < 1
+				|| pt.subtract(startingTriPt2).length() < 1) {
+			System.out.println("YO");
+
+		}
 	}
 }
