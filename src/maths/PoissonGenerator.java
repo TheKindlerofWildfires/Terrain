@@ -15,13 +15,15 @@ public class PoissonGenerator {
 	public int remainingPoints = 1;
 
 	public static void main(String[] args) {
+		System.out.println("CALLED MAIN!");
+		
 		PoissonGenerator gen = new PoissonGenerator();
 		gen.generate();
-		for(int[] pt : gen.points) {
+		for(int[] pt : gen.points) {/*
 			System.out.print(pt[0]);
 			System.out.print(", ");
 			System.out.println(pt[1]);
-		}
+		*/}
 	}
 
 	public boolean iterate() {
