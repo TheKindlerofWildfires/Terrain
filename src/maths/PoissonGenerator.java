@@ -8,11 +8,11 @@ public class PoissonGenerator {
 	public Random rand = new Random();
 
 	public ArrayList<int[]> points = new ArrayList<int[]>();
-	public double MIN_DISTANCE = 30;
+	public double MIN_DISTANCE = 50;
 	public int POINTS_PER_ITER = 50;
 	public int width = 640;
 	public int height = 480;
-	public int remainingPoints = 100;
+	public int remainingPoints = 1;
 
 	public static void main(String[] args) {
 		PoissonGenerator gen = new PoissonGenerator();
@@ -25,6 +25,7 @@ public class PoissonGenerator {
 	}
 
 	public boolean iterate() {
+		System.out.println("CALLED ITERATE!");
 		ArrayList<int[]> pts = new ArrayList<int[]>();
 		for (int i = 0; i < POINTS_PER_ITER; i++) {
 			int x = rand.nextInt(width);
@@ -33,17 +34,18 @@ public class PoissonGenerator {
 		}
 
 		int bestPoint = -1;
+		double maxDist = 0;
 		for (int i = 0; i < pts.size(); i++) {
-			double maxDist = 0;
+			double minDist = Double.MAX_VALUE;
 			for (int[] point : points) {
 				double dist = dist(pts.get(i), point);
-				if (dist > maxDist) {
-					maxDist = dist;
-					bestPoint = i;
+				if (dist < minDist && dist > MIN_DISTANCE) {
+					minDist = dist;
 				}
 			}
-			if (maxDist < MIN_DISTANCE) {
-				bestPoint = -1;
+			if (minDist > maxDist) {
+				maxDist = minDist;
+				bestPoint = i;
 			}
 		}
 		if (bestPoint == -1) {
@@ -57,11 +59,11 @@ public class PoissonGenerator {
 		int x = rand.nextInt(width);
 		int y = rand.nextInt(height);
 		points.add(new int[] {x, y});
-		while(remainingPoints > 0) {
+		/*while(remainingPoints > 0) {
 			if (iterate()) {
 				remainingPoints--;
 			}
-		}
+		}*/
 	}
 
 	public double dist(int[] p1, int[] p2) {
