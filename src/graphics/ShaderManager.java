@@ -17,7 +17,6 @@ public class ShaderManager {
 	public static void setCamera(Camera camera) {
 		assert initialized : "Shaders must be initialized in order to work";
 	
-		System.out.println("hello");
 		landShader.start();
 		landShader.setUniformMatrix4f("pv", camera.pv);
 		landShader.setUniform3f("cameraPos", camera.getPos());

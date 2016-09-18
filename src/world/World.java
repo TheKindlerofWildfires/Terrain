@@ -50,14 +50,20 @@ public class World {
 		//for (int i = 0; i < 5; i++) {
 		//	points.add(new Vector3f(rng.nextFloat() * size - size / 2, rng.nextFloat() * size - size / 2, .5f));
 		//}
-		//test.add(new Vector3f(0,.5f,0));
-		//test.add(new Vector3f(.1f,.75f,0));
-		//test.add(new Vector3f(0f,.25f,0));
-		//test.add(new Vector3f(-.2f,.6f,0));
+		/*
+		test.add(new Vector3f(2f, -2f, 0));
+		test.add(new Vector3f(0, 2f, 0));
+		test.add(new Vector3f(2f, 2f, 0));
+		test.add(new Vector3f(0,.5f,0));
+		test.add(new Vector3f(.1f,.75f,0));
+		test.add(new Vector3f(0f,.25f,0));
+		test.add(new Vector3f(-.2f,.6f,0));
 		test.add(new Vector3f(-1f, -1f, 0));
 		test.add(new Vector3f(1f, -1f, 0));
 		test.add(new Vector3f(0, 1f, 0));
-		Delaunay delaunay = new Delaunay(test);
+		test.add(new Vector3f(1f, 1f, 0));
+		*/
+		Delaunay delaunay = new Delaunay(points);
 		terrain = delaunay.getTriangles();
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
 		int c = 0;
@@ -84,12 +90,9 @@ public class World {
 					r = 0;
 					b =-2*pZ +0.6f;
 				}
-				r = Window.mathRandom.nextFloat();
-				g = Window.mathRandom.nextFloat();
-				b = Window.mathRandom.nextFloat();
 				vertices[c++] = terrain.get(i).getPoint(j).x;
 				vertices[c++] = terrain.get(i).getPoint(j).y;
-				vertices[c++] = 0;//u
+				vertices[c++] = pZ;
 
 				vertices[c++] = r;
 				vertices[c++] = g;
