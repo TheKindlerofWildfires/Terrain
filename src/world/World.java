@@ -17,7 +17,8 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	private ArrayList<Triangle> terrain;
 	private ArrayList<Vector3f> points;
-	public static final float PERLINSCALER = 2;
+	public static final float PERLINSCALER = 3;
+	private static final float WATERLEVEL = 0.5f;
 
 	private VertexArrayObject VAO;
 
@@ -50,12 +51,17 @@ public class World {
 			for (int j = 0; j < 3; j++) {
 				float pZ = (float) Math
 						.abs(noise.getValue(terrain.get(i).getPoint(j).x/PERLINSCALER, terrain.get(i).getPoint(j).y/PERLINSCALER, 0.1));
-
-				float g = -0.25f*pZ*pZ +0.25f*pZ+0.15f;
+				/*float nX = (terrain.get(i).getPoint(0).x+terrain.get(i).getPoint(1).x+terrain.get(i).getPoint(2).x)/3;
+				float nY = (terrain.get(i).getPoint(0).y+terrain.get(i).getPoint(1).y+terrain.get(i).getPoint(2).y)/3;
+				float nZ = (float)Math.abs(noise.getValue(nX/PERLINSCALER, nY/PERLINSCALER, 0.1));
+				float qZ = pZ;
+				pZ = nZ;
+				*/
+				float g = -0.3f*pZ*pZ +0.25f*pZ+0.15f;
 				float r;
 				float b;
-				if (pZ>0.5){
-					r = -0.5f*pZ*pZ +0.75f*pZ-0.1f;
+				if (pZ>WATERLEVEL){
+					r = -0.5f*pZ*pZ +0.75f*pZ-0.12f;
 					b = 0;
 				}else{
 					r = 0;
@@ -63,7 +69,10 @@ public class World {
 				}
 				vertices[c++] = terrain.get(i).getPoint(j).x;
 				vertices[c++] = terrain.get(i).getPoint(j).y;
-				vertices[c++] = pZ;
+				if(pZ<WATERLEVEL){
+					pZ = WATERLEVEL;
+				}
+				vertices[c++] = pZ;//could be qZ
 
 				vertices[c++] = r;
 				vertices[c++] = g;
