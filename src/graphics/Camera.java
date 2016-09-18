@@ -97,7 +97,7 @@ public class Camera {
 		target.x = x +pos.x;
 		target.y = y +pos.y;
 
-		Matrix4f view = Matrix4f.gluLookAt(pos, target, up);
+		//Matrix4f view = Matrix4f.gluLookAt(pos, target, up);
 		pv = pv.multiply(Matrix4f.translate(x, y, 0));
 		//ShaderManager.setCamera(view, pos);
 		//frust.updateMatrix(projection.multiply(view));
