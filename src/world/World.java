@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import noiseLibrary.module.source.Perlin;
 import graphics.VertexArrayObject;
@@ -18,14 +19,15 @@ import maths.Vector3f;
 public class World {
 	private ArrayList<Triangle> terrain;
 	private ArrayList<Vector3f> points;
+	public static final float PERLINSCALER = 2;
 
 	private VertexArrayObject VAO;
 
 	public static int perlinSeed;
-
 	public World() {
 		terrain = new ArrayList<Triangle>();
 		points = new ArrayList<Vector3f>();
+		ArrayList<Vector3f>	test = new ArrayList<Vector3f>();
 		Perlin noise = new Perlin();
 		noise.setFrequency(1);
 		noise.setLacunarity(2);
@@ -48,14 +50,14 @@ public class World {
 		//for (int i = 0; i < 5; i++) {
 		//	points.add(new Vector3f(rng.nextFloat() * size - size / 2, rng.nextFloat() * size - size / 2, .5f));
 		//}
-		//points.add(new Vector3f(0,.5f,0));
-		//points.add(new Vector3f(.1f,.75f,0));
-		//points.add(new Vector3f(0f,.25f,0));
-		//points.add(new Vector3f(-.2f,.6f,0));
-		//points.add(new Vector3f(-.2f,.2f,0));
-
-		//points.add(new Vector3f(.2f,-.5f,0));
-		Delaunay delaunay = new Delaunay(points);
+		//test.add(new Vector3f(0,.5f,0));
+		//test.add(new Vector3f(.1f,.75f,0));
+		//test.add(new Vector3f(0f,.25f,0));
+		//test.add(new Vector3f(-.2f,.6f,0));
+		test.add(new Vector3f(-1f, -1f, 0));
+		test.add(new Vector3f(1f, -1f, 0));
+		test.add(new Vector3f(0, 1f, 0));
+		Delaunay delaunay = new Delaunay(test);
 		terrain = delaunay.getTriangles();
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
 		int c = 0;
@@ -70,21 +72,24 @@ public class World {
 
 			for (int j = 0; j < 3; j++) {
 				float pZ = (float) Math
-						.abs(noise.getValue(terrain.get(i).getPoint(j).x, terrain.get(i).getPoint(j).y, 0.1));
+						.abs(noise.getValue(terrain.get(i).getPoint(j).x/PERLINSCALER, terrain.get(i).getPoint(j).y/PERLINSCALER, 0.1));
 
-				float g = -0.25f*pZ*pZ +0.25f*pZ+0.1f;
+				float g = -0.25f*pZ*pZ +0.25f*pZ+0.15f;
 				float r;
 				float b;
 				if (pZ>0.5){
-					r = -0.5f*pZ*pZ +0.75f*pZ-0.15f;
+					r = -0.5f*pZ*pZ +0.75f*pZ-0.1f;
 					b = 0;
 				}else{
 					r = 0;
-					b =-2*pZ +0.5f;
+					b =-2*pZ +0.6f;
 				}
+				r = Window.mathRandom.nextFloat();
+				g = Window.mathRandom.nextFloat();
+				b = Window.mathRandom.nextFloat();
 				vertices[c++] = terrain.get(i).getPoint(j).x;
 				vertices[c++] = terrain.get(i).getPoint(j).y;
-				vertices[c++] = pZ;
+				vertices[c++] = 0;//u
 
 				vertices[c++] = r;
 				vertices[c++] = g;
