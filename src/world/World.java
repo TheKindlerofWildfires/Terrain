@@ -67,18 +67,21 @@ public class World {
 			*/
 			//float pZ =  (float) Math.abs(noise.getValue(terrain.get(i).getCircumcenter().x, terrain.get(i).getCircumcenter().y, 0.1));
 
-			float r = 0;
-			float b = 0;
 
 			for (int j = 0; j < 3; j++) {
 				float pZ = (float) Math
 						.abs(noise.getValue(terrain.get(i).getPoint(j).x, terrain.get(i).getPoint(j).y, 0.1));
 
-				float g = pZ;
-				if (pZ < .25) {
-					b = (float) 0.5;
+				float g = -0.25f*pZ*pZ +0.25f*pZ+0.1f;
+				float r;
+				float b;
+				if (pZ>0.5){
+					r = -0.5f*pZ*pZ +0.75f*pZ-0.15f;
+					b = 0;
+				}else{
+					r = 0;
+					b =-2*pZ +0.5f;
 				}
-
 				vertices[c++] = terrain.get(i).getPoint(j).x;
 				vertices[c++] = terrain.get(i).getPoint(j).y;
 				vertices[c++] = pZ;

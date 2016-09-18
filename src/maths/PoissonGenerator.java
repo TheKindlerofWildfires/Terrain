@@ -12,7 +12,7 @@ public class PoissonGenerator {
 
 	public int width = 640;
 	public int height = 480;
-	public int remainingPoints = 100;
+	public int remainingPoints = 1000;
 
 	public PoissonGenerator() {
 		/*System.out.println("CALLED MAIN!");
