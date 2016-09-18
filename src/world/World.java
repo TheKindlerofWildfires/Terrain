@@ -18,6 +18,10 @@ public class World {
 	private ArrayList<Triangle> terrain;
 	
 	public static final float PERLINSCALER = 20;//higher = smoother
+	public static final int CHUNKX = 2; //breaks at 3
+	public static final int CHUNKY = 2; //breaks at 3
+	public static final int CHUNKS = CHUNKY*CHUNKX;
+	int genSize;
 	Perlin noise = new Perlin();
 	private VertexArrayObject VAO;
 
@@ -35,6 +39,23 @@ public class World {
 		noise.setSeed(perlinSeed);
 		terrain = new ArrayList<Triangle>();
 		int[] offset = {0,0};
+		ArrayList<Float> agglom = new ArrayList<Float>();
+		genSize = 0;
+		for(int x = 0; x<CHUNKX;x++){
+			for(int y=0; y<CHUNKY;y++){
+				offset[0] = x;
+				offset[1] = y;
+				float [] vChunk = Chunk(offset);
+				for(int i = 0; i<vChunk.length;i++){
+					agglom.add(vChunk[i]);
+				}
+			}
+		}
+		float[] fin = new float[agglom.size()];
+		for(int j = 0; j<fin.length;j++){
+			fin[j]= agglom.get(j);
+		}
+		/*
 		float[] zero = Chunk(offset);
 		offset[0] = 1;
 		float[] one = Chunk(offset);
@@ -45,7 +66,7 @@ public class World {
 			}else{
 				fin[i] = one[i-zero.length];
 			}
-		}
+		}*/
 		VAO = new VertexArrayObject(fin, 2);
 	}
 	private float[] Chunk(int[] offset) {
@@ -68,6 +89,7 @@ public class World {
 		terrain.clear();
 		terrain = delaunay.getTriangles();
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
+		genSize += terrain.size();
 		int c = 0;
 		float mx = 0;
 		for (int i = 0; i < terrain.size(); i++) {
@@ -112,7 +134,7 @@ public class World {
 	public void render() {
 		landShader.start();
 		glBindVertexArray(VAO.getVaoID());
-		glDrawArrays(GL_TRIANGLES, 0, terrain.size() * 3*2);
+		glDrawArrays(GL_TRIANGLES, 0, genSize * 3);
 		landShader.stop();
 	}
 }
