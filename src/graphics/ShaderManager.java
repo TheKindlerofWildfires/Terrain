@@ -26,6 +26,7 @@ public class ShaderManager {
 	public static void setCamera(Matrix4f view, Vector3f cameraPos) {
 		landShader.start();
 		landShader.setUniformMatrix4f("view", view);
+		//this throws an error
 		landShader.setUniform3f("cameraPos", cameraPos);
 		landShader.stop();
 	}
