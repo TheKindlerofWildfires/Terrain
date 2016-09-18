@@ -7,18 +7,23 @@ public class Delaunay {
 	/**
 	 * Performs Delanay Triangulation via Boyer-Watson Algorithm
 	 */
-	public static double sqrt3 = 1.7320508075688772935274463415058723669428052538103806280558069794519330169088;
+	/*public static double sqrt3 = 1.7320508075688772935274463415058723669428052538103806280558069794519330169088;
 	static double sin60 = sqrt3/2;
-	static int x = PoissonGenerator.getSize();
+	static int x = 10;
 	static double y = x +x/sin60;
 	static double z = (y)/2;
-	static float xOf = (float) (x/2+z+1+x);
-	static float yOf = (float) (Math.sqrt(Math.pow(x+y,2)+Math.pow(x/2+z,2))+1+x);
-	public static final Vector3f startingTriPt0 = new Vector3f(-xOf, 0, 0);
-	public static final Vector3f startingTriPt1 = new Vector3f(0, yOf, 0);
-	public static final Vector3f startingTriPt2 = new Vector3f(xOf, 0, 0);
+	static float xOf = 28;//(float) (x/2+z+1+x);
 
-	public static final Triangle startingTri = new Triangle(startingTriPt0,
+	static float yOf = 48;//(float) (Math.sqrt(Math.pow(x+y,2)+Math.pow(x/2+z,2))+1+x);
+	*/
+	//upon further consideration, i hate maths
+	static float xOf =3;
+	static float yOf =3;
+	public static Vector3f startingTriPt0 = new Vector3f(-xOf, -yOf, 0);
+	public static Vector3f startingTriPt1 = new Vector3f(xOf, -yOf, 0);
+	public static Vector3f startingTriPt2 = new Vector3f(0, yOf, 0);
+	
+	public static Triangle startingTri = new Triangle(startingTriPt0,
 			startingTriPt1, startingTriPt2);
 
 	private ArrayList<Triangle> triangles;
@@ -28,6 +33,11 @@ public class Delaunay {
 	 * @param pt
 	 * 			The point added
 	 */
+	private void reBigTrig(int oX, int oY){
+		Vector3f displacement = new Vector3f(oX*3f, oY*3f,0);
+		//startingTri.translate(displacement);
+		System.out.println(startingTriPt0+" "+startingTriPt1+" " +startingTriPt2);
+	}
 	private void addPoint(Vector3f pt) {
 		// System.out.println("added a pt");
 		ArrayList<Triangle> badTris = new ArrayList<Triangle>();// triangles
@@ -71,12 +81,13 @@ public class Delaunay {
 	 * Creates a Delaunay Triangulation with the given points
 	 * @param points
 	 * 			The points used to make the Triangulation
+	 * @param offset 
 	 */
-	public Delaunay(ArrayList<Vector3f> points) {
+	public Delaunay(ArrayList<Vector3f> points, int[] offset) {
 		triangles = new ArrayList<Triangle>();
+		reBigTrig(offset[0], offset[1]);
 		triangles.add(startingTri);
 
-		// ftriangles.remove(startingTri);
 		for (Vector3f point : points) {
 			addPoint(point);
 		}

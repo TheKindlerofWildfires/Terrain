@@ -108,6 +108,7 @@ public class Window implements Runnable {
 	private void randomize() {
 		//setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
+		worldRandom.setSeed(1);
 		mathRandom.setSeed(worldRandom.nextLong());
 		World.perlinSeed = mathRandom.nextInt();
 		

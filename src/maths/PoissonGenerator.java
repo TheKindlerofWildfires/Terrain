@@ -8,11 +8,9 @@ public class PoissonGenerator {
 
 	public ArrayList<int[]> points = new ArrayList<int[]>();
 	public int POINTS_PER_ITER = 20;
-	public static int frame = 50;
-	public static int width = 500;
-	public static int invframe = width/frame;
+	public static int width = 1000;
 	public int height = width;
-	public int remainingPoints = 5000;
+	public int remainingPoints = 1000;
 
 	public PoissonGenerator() {}
 	/**
@@ -79,8 +77,5 @@ public class PoissonGenerator {
 		int dx = p2[0] - p1[0];
 		int dy = p2[1] - p1[1];
 		return Math.sqrt(dx * dx + dy * dy);
-	}
-	public static int getSize(){
-		return frame;
 	}
 }

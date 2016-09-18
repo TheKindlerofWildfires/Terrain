@@ -62,4 +62,12 @@ public class Triangle {
 	public float getCircumradius() {
 		return circumradius;
 	}
+	public void translate(Vector3f displacement){
+		for(int j = 0; j<3;j++){
+			points[j].x += displacement.x;
+			points[j].y += displacement.y;
+			points[j].z += displacement.z;
+			
+		}
+	}
 }
