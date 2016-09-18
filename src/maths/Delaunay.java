@@ -34,9 +34,9 @@ public class Delaunay {
 	 * 			The point added
 	 */
 	private void reBigTrig(int oX, int oY){
-		Vector3f displacement = new Vector3f(oX*3f, oY*3f,0);
-		//startingTri.translate(displacement);
-		System.out.println(startingTriPt0+" "+startingTriPt1+" " +startingTriPt2);
+		Vector3f displacement = new Vector3f(oX, oY,0);
+		startingTri.translate(displacement);
+		//System.out.println(startingTriPt0+" "+startingTriPt1+" " +startingTriPt2);
 	}
 	private void addPoint(Vector3f pt) {
 		// System.out.println("added a pt");

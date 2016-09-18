@@ -16,10 +16,11 @@ import noiseLibrary.module.source.Perlin;
 
 public class World {
 	private ArrayList<Triangle> terrain;
-	private ArrayList<Vector3f> points;
+	
 	public static final float PERLINSCALER = 20;//higher = smoother
 	Perlin noise = new Perlin();
 	private VertexArrayObject VAO;
+
 	
 	public static int perlinSeed;
 	/**
@@ -45,20 +46,26 @@ public class World {
 				fin[i] = one[i-zero.length];
 			}
 		}
-		VAO = new VertexArrayObject(zero, 2);
+		VAO = new VertexArrayObject(fin, 2);
 	}
 	private float[] Chunk(int[] offset) {
-		points = new ArrayList<Vector3f>();
-		System.out.println(offset[0] + " " +offset[1]);
+		ArrayList<Vector3f> points = new ArrayList<Vector3f>();
+		//System.out.println(offset[0] + " " +offset[1]);
 		PoissonGenerator fish = new PoissonGenerator();
 		fish.generate();
+		float max = 0;
 		for (int i = 0; i < fish.points.size(); i++) {
-			float fishX = fish.points.get(i)[0]/500f-1f;//+(offset[0]);
-			float fishY = fish.points.get(i)[1]/500f-1f;//+(offset[1]);
+			float fishX = fish.points.get(i)[0]/500f-1f+(offset[0]);
+			float fishY = fish.points.get(i)[1]/500f-1f+(offset[1]);
 			Vector3f thisVec = new Vector3f(fishX, fishY, 0);
 			points.add(thisVec);
+			if (fishX>max){
+				max = fishX;
+			}
 		}
+		System.out.println(max);
 		Delaunay delaunay = new Delaunay(points,offset);
+		terrain.clear();
 		terrain = delaunay.getTriangles();
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
 		int c = 0;
@@ -105,7 +112,7 @@ public class World {
 	public void render() {
 		landShader.start();
 		glBindVertexArray(VAO.getVaoID());
-		glDrawArrays(GL_TRIANGLES, 0, terrain.size() * 3);
+		glDrawArrays(GL_TRIANGLES, 0, terrain.size() * 3*2);
 		landShader.stop();
 	}
 }
