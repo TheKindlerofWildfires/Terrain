@@ -1,0 +1,23 @@
+Assigned:
+	Fix shaders and normals
+	Ensure classpath is valid
+	Enable movement
+	Extended map
+Eventual:
+	Water level
+	Caves
+	Object loader 
+	Textures
+	Rivers
+	Weather
+	Day night cycle
+	
+Mitchell:
+	Assigned: 3,4,5
+	Suggested 7,13
+Simon:
+	Assigned: 2,3
+	Suggested 7,9,10
+Will:
+	Assigned: 3,5
+	Suggested: 7,8,11

@@ -17,7 +17,11 @@ public class Delaunay {
 
 	private ArrayList<Triangle> triangles;
 	private boolean calculated = false;
-
+	/**
+	 * Adds a point and makes triangles with it
+	 * @param pt
+	 * 			The point added
+	 */
 	private void addPoint(Vector3f pt) {
 		// System.out.println("added a pt");
 		ArrayList<Triangle> badTris = new ArrayList<Triangle>();// triangles
@@ -57,7 +61,11 @@ public class Delaunay {
 		// System.out.println(triangles.size());
 		triangles = goodTris;
 	}
-
+	/**
+	 * Creates a Delaunay Triangulation with the given points
+	 * @param points
+	 * 			The points used to make the Triangulation
+	 */
 	public Delaunay(ArrayList<Vector3f> points) {
 		triangles = new ArrayList<Triangle>();
 		triangles.add(startingTri);
@@ -67,6 +75,10 @@ public class Delaunay {
 			addPoint(point);
 		}
 		boolean breaker = true;
+		/**
+		 * It should be noted that this micro-function could use to be optimised
+		 * It scans known good triangles over and over to find the bad ones that hide
+		 */
 		while (breaker) {
 			int b1 = triangles.size();
 			for (int i = 0; i < triangles.size(); i++) {

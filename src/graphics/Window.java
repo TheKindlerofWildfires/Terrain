@@ -26,6 +26,7 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.system.MemoryUtil.NULL;
+
 import java.util.Random;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
@@ -78,6 +79,7 @@ public class Window implements Runnable {
 		if (window == NULL) {
 			System.err.println("Could not create window");
 		}
+		//enable keyboard and mouse
 		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
 		glfwSetCursorPosCallback(window,
 				cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
@@ -104,14 +106,19 @@ public class Window implements Runnable {
 	}
 
 	private void randomize() {
+		//setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
+		worldRandom.setSeed(1);
 		mathRandom.setSeed(worldRandom.nextLong());
 		World.perlinSeed = mathRandom.nextInt();
 		
 	}
 
 	public void update() {
+		//all updates should go through here and and their managers
 		graphicsManager.update();
+		//would have sworn this did something
+		//graphicsManager.moveCamera(new Vector3f(-.1f,0,0));
 		glfwPollEvents();
 	}
 
@@ -126,8 +133,7 @@ public class Window implements Runnable {
 		//		ShaderManager.landShader.stop();
 		//		
 		world.render();
-
-		//graphicsManager.moveCamera(new Vector3f(.01f,0,0));
+		
 
 	}
 

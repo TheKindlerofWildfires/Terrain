@@ -1,6 +1,5 @@
 package graphics;
 
-import maths.Matrix4f;
 import maths.Vector3f;
 
 public class ShaderManager {

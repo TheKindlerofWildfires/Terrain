@@ -27,9 +27,10 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 
 /**
- * This class represents a 4x4-Matrix. GLSL equivalent to mat4.
+ * Used for 4x4 Matrix
  *
  * @author Heiko Brumme
+ * 			There are many authors at this point
  */
 public class Matrix4f {
 

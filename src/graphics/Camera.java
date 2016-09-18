@@ -34,6 +34,7 @@ public class Camera {
 
 	/**
 	 * Moves the camera and target
+	 * Depricated
 	 * 
 	 * @param displacement
 	 *            displacement vector
@@ -44,7 +45,11 @@ public class Camera {
 		target = target.add(displacement);
 		pv = pv.multiply(Matrix4f.translate(displacement.x, displacement.y, displacement.z));
 	}
-
+	/**
+	 * Moves the camera and target
+	 * @param dir
+	 * 			which way the player has told to move
+	 */
 	public void moveCamera(String dir) {
 		float vx = pos.x- target.x;
 		float vy = pos.y - target.y;
@@ -71,7 +76,12 @@ public class Camera {
 		//ShaderManager.setCamera(view, pos);
 		//frust.updateMatrix(projection.multiply(view));
 	}
-	
+	/**
+	 * Rotates field of view, only works on xy plane
+	 * 
+	 * @param mousePos
+	 * 				location of mouse on screen, given by mouseInput
+	 */
 	public void rotateCamera(double[] mousePos) {
 		if (degX>360){
 			degX -=360;
@@ -80,19 +90,15 @@ public class Camera {
 			degZ -=360;
 		}
 		float mouseX = (float) ((1920/2-mousePos[0])/1920*2); 
-		//could be -pi/2 to pi/2
 		float mouseY = (float) ((1080/2-mousePos[1])/1080*2); 
-		//why does this slow down(prolly a clamp issue)
-		//float dx = target.x-pos.x;
-		//float dy = target.y-pos.y;
 		degX += mouseX;
 		degZ += mouseY;
 
 		float x = (float) Math.cos(degX*sense);
 		float y = (float) Math.sin(degX*sense);
 		
-		float xz = (float) Math.cos(degZ*sense);
-		float z= (float) Math.sin(degZ*sense);
+		//float xz = (float) Math.cos(degZ*sense);
+		//float z= (float) Math.sin(degZ*sense);
 		
 		target.x = x +pos.x;
 		target.y = y +pos.y;
@@ -102,7 +108,7 @@ public class Camera {
 		//ShaderManager.setCamera(view, pos);
 		//frust.updateMatrix(projection.multiply(view));
 	}
-
+	
 	public Vector3f getPos() {
 		return pos;
 	}

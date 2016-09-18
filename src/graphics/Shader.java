@@ -48,7 +48,6 @@ public class Shader {
 	public int getID() {
 		return this.programID;
 	}
-
 	public int getUniform(String name) {
 		//for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
 		//    System.out.println(ste);
