@@ -94,7 +94,7 @@ public class Window implements Runnable {
 		GL.createCapabilities();
 
 		//background colour
-		glClearColor(0f, 0f, 0f, 1.0f);
+		glClearColor(75/255f, 10/255f, 130/255f, 1.0f);
 
 		//enable depth testing and face culling
 		glEnable(GL_DEPTH_TEST);
@@ -108,7 +108,6 @@ public class Window implements Runnable {
 	private void randomize() {
 		//setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
-		worldRandom.setSeed(1);
 		mathRandom.setSeed(worldRandom.nextLong());
 		World.perlinSeed = mathRandom.nextInt();
 		

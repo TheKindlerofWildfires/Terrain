@@ -7,10 +7,16 @@ public class Delaunay {
 	/**
 	 * Performs Delanay Triangulation via Boyer-Watson Algorithm
 	 */
-
-	public static final Vector3f startingTriPt0 = new Vector3f(-3f, -3f, 0);
-	public static final Vector3f startingTriPt1 = new Vector3f(3f, -3f, 0);
-	public static final Vector3f startingTriPt2 = new Vector3f(0, 3f, 0);
+	public static double sqrt3 = 1.7320508075688772935274463415058723669428052538103806280558069794519330169088;
+	static double sin60 = sqrt3/2;
+	static int x = PoissonGenerator.getSize();
+	static double y = x +x/sin60;
+	static double z = (y)/2;
+	static float xOf = (float) (x/2+z+1+x);
+	static float yOf = (float) (Math.sqrt(Math.pow(x+y,2)+Math.pow(x/2+z,2))+1+x);
+	public static final Vector3f startingTriPt0 = new Vector3f(-xOf, 0, 0);
+	public static final Vector3f startingTriPt1 = new Vector3f(0, yOf, 0);
+	public static final Vector3f startingTriPt2 = new Vector3f(xOf, 0, 0);
 
 	public static final Triangle startingTri = new Triangle(startingTriPt0,
 			startingTriPt1, startingTriPt2);

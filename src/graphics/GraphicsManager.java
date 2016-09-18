@@ -13,13 +13,13 @@ import maths.Vector3f;
 public class GraphicsManager {
 
 	// Camera init constants
-	private static final Vector3f cameraStartPos = new Vector3f(-1, 0, 3f);
-	private static final Vector3f cameraStartTarget = new Vector3f(0, 0, 0);
+	private static final Vector3f cameraStartPos = new Vector3f(0, 0, 100f);
+	private static final Vector3f cameraStartTarget = new Vector3f(1, 0, 0);
 	private static final Vector3f up = new Vector3f(0, 0, 1);
 	private static final float fov = 45f;
 	private static final float aspect = 16f / 9;
 	private static final float near = 0.1f;
-	private static final float far = 10f;
+	private static final float far = 300f;
 
 	// Light init constants
 	private static final Vector3f lightStartPos = new Vector3f(0, 0, 1);

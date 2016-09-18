@@ -17,8 +17,8 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	private ArrayList<Triangle> terrain;
 	private ArrayList<Vector3f> points;
-	public static final float PERLINSCALER = 3;
-	private static final float WATERLEVEL = 0.5f;
+	public static final float PERLINSCALER = 10;
+	private static final float WATERLEVEL = PoissonGenerator.frame/10;
 
 	private VertexArrayObject VAO;
 
@@ -38,8 +38,15 @@ public class World {
 		PoissonGenerator fish = new PoissonGenerator();
 		fish.generate();
 		for (int i = 0; i < fish.points.size(); i++) {
-			float fishX = fish.points.get(i)[0] / 500f - 1;
-			float fishY = fish.points.get(i)[1] / 500f - 1;
+			//500 = range -1:1
+			//625 = range -0.8-0.8
+			//325
+			//200 = range -2.5, 2.5
+			//1000/x = y-y/2
+			// y-y/2 = 1.5 y = 31.5
+			
+			float fishX = fish.points.get(i)[0]/PoissonGenerator.invframe-PoissonGenerator.frame/2;
+			float fishY = fish.points.get(i)[1]/PoissonGenerator.invframe;
 			Vector3f thisVec = new Vector3f(fishX, fishY, 0);
 			points.add(thisVec);
 		}
@@ -47,30 +54,31 @@ public class World {
 		terrain = delaunay.getTriangles();
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
 		int c = 0;
+		float mx = 0;
 		for (int i = 0; i < terrain.size(); i++) {
 			for (int j = 0; j < 3; j++) {
 				float pZ = (float) Math
-						.abs(noise.getValue(terrain.get(i).getPoint(j).x/PERLINSCALER, terrain.get(i).getPoint(j).y/PERLINSCALER, 0.1));
+						.abs(noise.getValue(terrain.get(i).getPoint(j).x/PERLINSCALER, terrain.get(i).getPoint(j).y/PERLINSCALER, 0.1))*4;
 				/*float nX = (terrain.get(i).getPoint(0).x+terrain.get(i).getPoint(1).x+terrain.get(i).getPoint(2).x)/3;
 				float nY = (terrain.get(i).getPoint(0).y+terrain.get(i).getPoint(1).y+terrain.get(i).getPoint(2).y)/3;
 				float nZ = (float)Math.abs(noise.getValue(nX/PERLINSCALER, nY/PERLINSCALER, 0.1));
 				float qZ = pZ;
 				pZ = nZ;
 				*/
-				float g = -0.3f*pZ*pZ +0.25f*pZ+0.15f;
+				//0-4
+				if (pZ>mx){
+					mx = pZ;
+				}
+				float g;
 				float r;
 				float b;
-				if (pZ>WATERLEVEL){
-					r = -0.5f*pZ*pZ +0.75f*pZ-0.12f;
-					b = 0;
-				}else{
-					r = 0;
-					b =-2*pZ +0.6f;
-				}
+				g = (float)(pZ -5)*(-0.1f*pZ)-0.1f;
+				b = (float)(pZ -7)*(0.05f*pZ)+0.6f;
+				r = (float)(pZ -7)*(-0.2f*pZ)-2f;
 				vertices[c++] = terrain.get(i).getPoint(j).x;
 				vertices[c++] = terrain.get(i).getPoint(j).y;
 				if(pZ<WATERLEVEL){
-					pZ = WATERLEVEL;
+					//pZ = WATERLEVEL;
 				}
 				vertices[c++] = pZ;//could be qZ
 
@@ -79,7 +87,6 @@ public class World {
 				vertices[c++] = b;
 			}
 		}
-
 		VAO = new VertexArrayObject(vertices, 2);
 	}
 	/**

@@ -7,10 +7,12 @@ import java.util.ArrayList;
 public class PoissonGenerator {
 
 	public ArrayList<int[]> points = new ArrayList<int[]>();
-	public int POINTS_PER_ITER = 50;
-	public int width = 1000;
-	public int height = 1000;
-	public int remainingPoints = 2000;
+	public int POINTS_PER_ITER = 20;
+	public static int frame = 50;
+	public static int width = 50;
+	public static int invframe = width/frame;
+	public int height = width;
+	public int remainingPoints = 1000;
 
 	public PoissonGenerator() {}
 	/**
@@ -53,7 +55,7 @@ public class PoissonGenerator {
 		return minDist;
 	}
 	/**
-	 * This makes a 1000 by 1000 grid of Poisson points
+	 * This makes a 100 by 100 grid of Poisson points
 	 */
 	public void generate() {
 		int x = Window.mathRandom.nextInt(width);
@@ -77,5 +79,8 @@ public class PoissonGenerator {
 		int dx = p2[0] - p1[0];
 		int dy = p2[1] - p1[1];
 		return Math.sqrt(dx * dx + dy * dy);
+	}
+	public static int getSize(){
+		return frame;
 	}
 }
