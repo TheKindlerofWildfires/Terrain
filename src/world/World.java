@@ -46,7 +46,7 @@ public class World {
 				fin[i] = one[i-zero.length];
 			}
 		}
-		VAO = new VertexArrayObject(fin, 2);
+		VAO = new VertexArrayObject(zero, 2);
 	}
 	private float[] Chunk(int[] offset) {
 		points = new ArrayList<Vector3f>();
@@ -54,12 +54,14 @@ public class World {
 		fish.generate();
 		float max = 0;
 		for (int i = 0; i < fish.points.size(); i++) {
-			float fishX = fish.points.get(i)[0]/500-1;//+(offset[0]+1);
-			float fishY = fish.points.get(i)[1]/500-1;//+(offset[1]+1);
+			float fishX = fish.points.get(i)[0]/500f-1f;//+(offset[0]+1);
+			float fishY = fish.points.get(i)[1]/500f-1f;//+(offset[1]+1);
 			Vector3f thisVec = new Vector3f(fishX, fishY, 0);
 			points.add(thisVec);
-			if(fishX<max){
-				max = fishX;
+			System.out.println(fishY);
+			if(fishY>max){
+				
+				max = fishY;
 			}
 		}
 		System.out.println(max);

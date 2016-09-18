@@ -8,8 +8,8 @@ public class PoissonGenerator {
 
 	public ArrayList<int[]> points = new ArrayList<int[]>();
 	public int POINTS_PER_ITER = 20;
-	public static int width = 1000;
-	public int height = width;
+	public int width = 1000;
+	public int height = 1000;
 	public int remainingPoints = 1000;
 
 	public PoissonGenerator() {}
