@@ -17,7 +17,7 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	private ArrayList<Triangle> terrain;
 	private ArrayList<Vector3f> points;
-	public static final float PERLINSCALER = 10;
+	public static final float PERLINSCALER = 20;//higher = smoother
 	private static final float WATERLEVEL = PoissonGenerator.frame/10;
 
 	private VertexArrayObject VAO;
@@ -65,7 +65,8 @@ public class World {
 				float qZ = pZ;
 				pZ = nZ;
 				*/
-				//0-4
+				//0-4.7
+				
 				if (pZ>mx){
 					mx = pZ;
 				}
@@ -75,6 +76,9 @@ public class World {
 				g = (float)(pZ -5)*(-0.1f*pZ)-0.1f;
 				b = (float)(pZ -7)*(0.05f*pZ)+0.6f;
 				r = (float)(pZ -7)*(-0.2f*pZ)-2f;
+				if(pZ>4.7){
+					b = 0;
+				}
 				vertices[c++] = terrain.get(i).getPoint(j).x;
 				vertices[c++] = terrain.get(i).getPoint(j).y;
 				if(pZ<WATERLEVEL){
