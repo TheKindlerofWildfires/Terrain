@@ -34,7 +34,7 @@ public class Camera {
 
 	/**
 	 * Moves the camera and target
-	 * Depricated
+	 * Deprecated
 	 * 
 	 * @param displacement
 	 *            displacement vector
@@ -71,7 +71,8 @@ public class Camera {
 		//System.out.println(displacement);
 		pos = pos.add(displacement);
 		target = target.add(displacement);
-		//view = Matrix4f.gluLookAt(pos, target, up);
+		//Matrix4f view = Matrix4f.gluLookAt(pos, target, up);
+		//ShaderManager.setCamera(view, pos);
 		pv = pv.multiply(Matrix4f.translate(displacement.x, displacement.y, displacement.z));
 		//ShaderManager.setCamera(view, pos);
 		//frust.updateMatrix(projection.multiply(view));

@@ -1,5 +1,6 @@
 package graphics;
 
+import maths.Matrix4f;
 import maths.Vector3f;
 
 public class ShaderManager {
@@ -21,7 +22,13 @@ public class ShaderManager {
 		landShader.setUniform3f("cameraPos", camera.getPos());
 		landShader.stop();
 	}
-
+	@Deprecated
+	public static void setCamera(Matrix4f view, Vector3f cameraPos) {
+		landShader.start();
+		landShader.setUniformMatrix4f("view", view);
+		landShader.setUniform3f("cameraPos", cameraPos);
+		landShader.stop();
+	}
 	public static void setLight(Vector3f lightPos) {
 		assert initialized : "Shaders must be initialized in order to work";
 		landShader.start();
