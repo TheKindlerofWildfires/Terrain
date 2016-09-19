@@ -16,9 +16,12 @@ import noiseLibrary.module.source.Perlin;
 
 public class World {
 	private ArrayList<Triangle> terrain;
-	
+	//x and y are backward
 	public static final float PERLINSCALER = 20;//higher = smoother
-	public static final int CHUNKX = 2; //breaks at 3
+	public static final int CHUNKX = 2; //breaks at 2 
+	/*
+	 * This part is really buggy, and there is an off by one error
+	 */
 	public static final int CHUNKY = 2; //breaks at 3
 	public static final int CHUNKS = CHUNKY*CHUNKX;
 	int genSize;
@@ -41,8 +44,8 @@ public class World {
 		int[] offset = {0,0};
 		ArrayList<Float> agglom = new ArrayList<Float>();
 		genSize = 0;
-		for(int x = 0; x<CHUNKX;x++){
-			for(int y=0; y<CHUNKY;y++){
+		for(int x = 0; x<CHUNKX+1;x++){
+			for(int y=0; y<CHUNKY+1;y++){
 				offset[0] = x;
 				offset[1] = y;
 				float [] vChunk = Chunk(offset);
@@ -71,20 +74,20 @@ public class World {
 	}
 	private float[] Chunk(int[] offset) {
 		ArrayList<Vector3f> points = new ArrayList<Vector3f>();
-		//System.out.println(offset[0] + " " +offset[1]);
+		System.out.println(offset[0] + " " +offset[1]);
 		PoissonGenerator fish = new PoissonGenerator();
 		fish.generate();
 		float max = 0;
 		for (int i = 0; i < fish.points.size(); i++) {
-			float fishX = fish.points.get(i)[0]/500f-1f+(offset[0]);
-			float fishY = fish.points.get(i)[1]/500f-1f+(offset[1]);
+			float fishX = fish.points.get(i)[0]/500f-1f+(offset[0]*2f);
+			float fishY = fish.points.get(i)[1]/500f-1f+(offset[1]*2f);
 			Vector3f thisVec = new Vector3f(fishX, fishY, 0);
 			points.add(thisVec);
 			if (fishX>max){
 				max = fishX;
 			}
 		}
-		System.out.println(max);
+		//System.out.println(max);
 		Delaunay delaunay = new Delaunay(points,offset);
 		terrain.clear();
 		terrain = delaunay.getTriangles();
