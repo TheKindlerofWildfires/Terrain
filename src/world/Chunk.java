@@ -23,8 +23,6 @@ public class Chunk {
 	private int chunkX;
 	private int chunkY;
 
-	public static final float PERLINSCALER = 3;
-
 	public Chunk(Perlin noise, int x, int y) {
 		this.noise = noise;
 		this.chunkX = x;
@@ -49,7 +47,7 @@ public class Chunk {
 
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2 * chunkX, 2 * chunkY, 0));
 
-				float pZ = (float) Math.abs(noise.getValue(point.x / PERLINSCALER, point.y / PERLINSCALER, 0.1)) * 4;
+				float pZ = (float) Math.abs(noise.getValue(point.x , point.y, 0.1)) * 4;
 
 				float g;
 				float r;

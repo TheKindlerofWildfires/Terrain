@@ -35,8 +35,8 @@ public class Camera {
 		projection = Matrix4f.perspective(angle, aspect, near, far);
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
-		down = up.negate().scale(speed);
-		backward = new Vector3f(0, -speed, 0);
+		down = up.scale(speed);
+		backward = new Vector3f(0, speed, 0);
 		left = new Vector3f(-speed, 0, 0);
 	}
 

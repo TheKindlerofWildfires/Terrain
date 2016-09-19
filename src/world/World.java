@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import noiseLibrary.module.source.Perlin;
 
 public class World {
-	//x and y are backward
-	public static final float PERLINSCALER = 20;//higher = smoother
-
 	Perlin noise;
 	public static int perlinSeed;
 
@@ -19,9 +16,10 @@ public class World {
 	 */
 	public World() {
 		noise = new Perlin();
-		noise.setFrequency(1);
+		noise.setFrequency(0.1);
 		noise.setLacunarity(2);
-		noise.setOctaveCount(3);
+		noise.setOctaveCount(30);
+		noise.setPersistence(0.4);
 		noise.setSeed(perlinSeed);
 
 		for(int x=0;x<10;x++){

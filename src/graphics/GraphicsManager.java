@@ -45,10 +45,9 @@ public class GraphicsManager {
 		//camera.rotateCamera(mousePos);
 		//camera.moveCamera("LEFT");
 		//ShaderManager.setCamera(camera);
-		/*if (KeyboardInput.isKeyDown(GLFW_KEY_D)) {
+		if (KeyboardInput.isKeyDown(GLFW_KEY_D)) {
 			camera.moveCamera("LEFT");
 			ShaderManager.setCamera(camera);
-			System.out.println("left");
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_A)) {
 			camera.moveCamera("RIGHT");
@@ -69,6 +68,6 @@ public class GraphicsManager {
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
 			camera.moveCamera("DOWN");
 			ShaderManager.setCamera(camera);
-		}*/
+		}
 	}
 }

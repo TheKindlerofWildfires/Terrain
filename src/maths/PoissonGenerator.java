@@ -7,10 +7,10 @@ import java.util.ArrayList;
 public class PoissonGenerator {
 
 	public ArrayList<int[]> points = new ArrayList<int[]>();
-	public int POINTS_PER_ITER = 20;
+	public int POINTS_PER_ITER = 10;
 	public int width = 1000;
 	public int height = 1000;
-	public int remainingPoints = 500;
+	public int remainingPoints = 300;
 
 	public PoissonGenerator() {}
 	/**
