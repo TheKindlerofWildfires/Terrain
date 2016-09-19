@@ -12,6 +12,11 @@ public class Camera {
 	private Matrix4f view;
 	public Matrix4f pv;
 
+	private Vector3f down;
+	private Vector3f backward;
+	private Vector3f left;
+	private float speed = .1f;
+
 	/**
 	 * Initializes camera
 	 * 
@@ -30,6 +35,9 @@ public class Camera {
 		projection = Matrix4f.perspective(angle, aspect, near, far);
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
+		down = up.negate().scale(speed);
+		backward = new Vector3f(0, -speed, 0);
+		left = new Vector3f(-speed, 0, 0);
 	}
 
 	/**
@@ -39,44 +47,45 @@ public class Camera {
 	 * @param displacement
 	 *            displacement vector
 	 */
-	@Deprecated
-	public void move(Vector3f displacement) {
+	private void move(Vector3f displacement) {
 		pos = pos.add(displacement);
 		target = target.add(displacement);
 		pv = pv.multiply(Matrix4f.translate(displacement.x, displacement.y, displacement.z));
 	}
+
 	/**
 	 * Moves the camera and target
 	 * @param dir
 	 * 			which way the player has told to move
 	 */
 	public void moveCamera(String dir) {
-		float vx = pos.x- target.x;
-		float vy = pos.y - target.y;
-		//float vz = pos.z - target.z;
-		Vector3f displacement = new Vector3f(0,0,0);
-		if(dir=="UP"){
-			displacement = new Vector3f(0,0,1);
-		}else if(dir=="DOWN"){
-			displacement = new Vector3f(0,0,-1);
-		}else if(dir == "FORWARD"){
-			displacement = new Vector3f(-vx,-vy,0);
-		}else if(dir == "BACK"){
-			displacement = new Vector3f(vx,vy,0);
-		}else if(dir == "LEFT"){
-			displacement = new Vector3f(-vy,vx,0);
-		}else if(dir == "RIGHT"){
-			displacement = new Vector3f(vy,-vx,0);
+		Vector3f displacement = new Vector3f(0, 0, 0);
+		switch (dir) {
+		case "UP":
+			displacement = down.negate();
+			break;
+		case "DOWN":
+			displacement = down;
+			break;
+		case "FORWARD":
+			displacement = backward.negate();
+			break;
+		case "BACK":
+			displacement = backward;
+			break;
+		case "LEFT":
+			displacement = left;
+			break;
+		case "RIGHT":
+			displacement = left.negate();
+			break;
+		default:
+			System.err.println("wtf");
 		}
 		//System.out.println(displacement);
-		pos = pos.add(displacement);
-		target = target.add(displacement);
-		//Matrix4f view = Matrix4f.gluLookAt(pos, target, up);
-		//ShaderManager.setCamera(view, pos);
-		pv = pv.multiply(Matrix4f.translate(displacement.x, displacement.y, displacement.z));
-		//ShaderManager.setCamera(view, pos);
-		//frust.updateMatrix(projection.multiply(view));
+		move(displacement);
 	}
+
 	/**
 	 * Rotates field of view, only works on xy plane
 	 * 
@@ -84,32 +93,32 @@ public class Camera {
 	 * 				location of mouse on screen, given by mouseInput
 	 */
 	public void rotateCamera(double[] mousePos) {
-		if (degX>360){
-			degX -=360;
+		if (degX > 360) {
+			degX -= 360;
 		}
-		if (degZ>360){
-			degZ -=360;
+		if (degZ > 360) {
+			degZ -= 360;
 		}
-		float mouseX = (float) ((1920/2-mousePos[0])/1920*2); 
-		float mouseY = (float) ((1080/2-mousePos[1])/1080*2); 
+		float mouseX = (float) ((1920 / 2 - mousePos[0]) / 1920 * 2);
+		float mouseY = (float) ((1080 / 2 - mousePos[1]) / 1080 * 2);
 		degX += mouseX;
 		degZ += mouseY;
 
-		float x = (float) Math.cos(degX*sense);
-		float y = (float) Math.sin(degX*sense);
-		
+		float x = (float) Math.cos(degX * sense);
+		float y = (float) Math.sin(degX * sense);
+
 		//float xz = (float) Math.cos(degZ*sense);
 		//float z= (float) Math.sin(degZ*sense);
-		
-		target.x = x +pos.x;
-		target.y = y +pos.y;
+
+		target.x = x + pos.x;
+		target.y = y + pos.y;
 
 		//Matrix4f view = Matrix4f.gluLookAt(pos, target, up);
 		pv = pv.multiply(Matrix4f.translate(x, y, 0));
 		//ShaderManager.setCamera(view, pos);
 		//frust.updateMatrix(projection.multiply(view));
 	}
-	
+
 	public Vector3f getPos() {
 		return pos;
 	}
@@ -123,6 +132,6 @@ public class Camera {
 	}
 
 	//public Frustum getFrustum() {
-		//return frust;
+	//return frust;
 	//}
 }

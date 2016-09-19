@@ -159,7 +159,7 @@ public class Window implements Runnable {
 			frames++;
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-			//	System.out.println(updates + " UPS, " + frames + " FPS");
+				System.out.println(updates + " UPS, " + frames + " FPS");
 				frames = 0;
 				updates = 0;
 			}

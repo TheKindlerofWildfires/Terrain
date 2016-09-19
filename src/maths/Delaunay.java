@@ -13,31 +13,32 @@ public class Delaunay {
 	static double y = x +x/sin60;
 	static double z = (y)/2;
 	static float xOf = 28;//(float) (x/2+z+1+x);
-
+	
 	static float yOf = 48;//(float) (Math.sqrt(Math.pow(x+y,2)+Math.pow(x/2+z,2))+1+x);
 	*/
 	//upon further consideration, i hate maths
-	static float xOf =4;
-	static float yOf =4;
+	static float xOf = 4;
+	static float yOf = 4;
 	public static Vector3f startingTriPt0 = new Vector3f(-xOf, -yOf, 0);
 	public static Vector3f startingTriPt1 = new Vector3f(xOf, -yOf, 0);
 	public static Vector3f startingTriPt2 = new Vector3f(0, yOf, 0);
-	
-	public static Triangle startingTri = new Triangle(startingTriPt0,
-			startingTriPt1, startingTriPt2);
+
+	public static Triangle startingTri = new Triangle(startingTriPt0, startingTriPt1, startingTriPt2);
 
 	private ArrayList<Triangle> triangles;
 	private boolean calculated = false;
+
 	/**
 	 * Adds a point and makes triangles with it
 	 * @param pt
 	 * 			The point added
 	 */
-	private void reBigTrig(int oX, int oY){
-		Vector3f displacement = new Vector3f(1f*oX, 1f*oY,0);
+	private void reBigTrig(int oX, int oY) {
+		Vector3f displacement = new Vector3f(1f * oX, 1f * oY, 0);
 		startingTri.translate(displacement);
 		//System.out.println(startingTriPt0+" "+startingTriPt1+" " +startingTriPt2);
 	}
+
 	private void addPoint(Vector3f pt) {
 		// System.out.println("added a pt");
 		ArrayList<Triangle> badTris = new ArrayList<Triangle>();// triangles
@@ -77,20 +78,21 @@ public class Delaunay {
 		// System.out.println(triangles.size());
 		triangles = goodTris;
 	}
+
 	/**
 	 * Creates a Delaunay Triangulation with the given points
 	 * @param points
 	 * 			The points used to make the Triangulation
 	 * @param offset 
 	 */
-	public Delaunay(ArrayList<Vector3f> points, int[] offset) {
+	public Delaunay(ArrayList<Vector3f> points) {
 		triangles = new ArrayList<Triangle>();
-		reBigTrig(offset[0], offset[1]);
 		triangles.add(startingTri);
 
 		for (Vector3f point : points) {
 			addPoint(point);
 		}
+		
 		boolean breaker = true;
 		/**
 		 * It should be noted that this micro-function could use to be optimised
@@ -101,8 +103,7 @@ public class Delaunay {
 			for (int i = 0; i < triangles.size(); i++) {
 				Triangle tri = triangles.get(i);
 				for (int j = 0; j < 3; j++) {
-					if (tri.getPoint(j) == startingTriPt0
-							|| tri.getPoint(j) == startingTriPt1
+					if (tri.getPoint(j) == startingTriPt0 || tri.getPoint(j) == startingTriPt1
 							|| tri.getPoint(j) == startingTriPt2) {
 						triangles.remove(tri);
 						break;
@@ -110,10 +111,12 @@ public class Delaunay {
 				}
 			}
 			int b2 = triangles.size();
-			if(b2 ==b1){
+			if (b2 == b1) {
 				breaker = false;
 			}
 		}
+
+		calculated = true;
 	}
 
 	/*
@@ -128,15 +131,4 @@ public class Delaunay {
 		assert calculated : "you need to math it before you can have any triangles!";
 		return triangles;
 	}
-
-	/*
-	 * public static void main(String[] args) { Vector3f pt = new
-	 * Vector3f(0,3,0);
-	 * 
-	 * if (pt.subtract(startingTriPt0).length() < 1 ||
-	 * pt.subtract(startingTriPt1).length() < 1 ||
-	 * pt.subtract(startingTriPt2).length() < 1) { System.out.println("YO");
-	 * 
-	 * } }
-	 */
 }
