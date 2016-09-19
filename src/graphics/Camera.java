@@ -12,10 +12,11 @@ public class Camera {
 	private Matrix4f view;
 	public Matrix4f pv;
 
-	private Vector3f down;
+	private Vector3f upward;
 	private Vector3f backward;
 	private Vector3f left;
-	private float speed = .1f;
+	private float speed = .2f;
+	private float rspeed = .5f;
 
 	/**
 	 * Initializes camera
@@ -35,7 +36,7 @@ public class Camera {
 		projection = Matrix4f.perspective(angle, aspect, near, far);
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
-		down = up.scale(speed);
+		upward = new Vector3f(0, 0, speed);
 		backward = new Vector3f(0, speed, 0);
 		left = new Vector3f(-speed, 0, 0);
 	}
@@ -60,29 +61,32 @@ public class Camera {
 	 */
 	public void moveCamera(String dir) {
 		Vector3f displacement = new Vector3f(0, 0, 0);
+		float vx = pos.x- target.x;
+		float vy = pos.y - target.y;
+		vx*=speed;
+		vy*=speed;
 		switch (dir) {
 		case "UP":
-			displacement = down.negate();
+			displacement = upward;
 			break;
 		case "DOWN":
-			displacement = down;
+			displacement = upward.negate();
 			break;
 		case "FORWARD":
-			displacement = backward.negate();
+			displacement = new Vector3f(-vx,-vy,0);//backward.negate();
 			break;
 		case "BACK":
-			displacement = backward;
+			displacement = new Vector3f(vx,vy,0);//backward;
 			break;
 		case "LEFT":
-			displacement = left;
+			displacement = new Vector3f(-vy,vx,0);//left;
 			break;
 		case "RIGHT":
-			displacement = left.negate();
+			displacement = new Vector3f(vy,-vx,0);//left.negate();
 			break;
 		default:
 			System.err.println("wtf");
 		}
-		//System.out.println(displacement);
 		move(displacement);
 	}
 
@@ -101,8 +105,8 @@ public class Camera {
 		}
 		float mouseX = (float) ((1920 / 2 - mousePos[0]) / 1920 * 2);
 		float mouseY = (float) ((1080 / 2 - mousePos[1]) / 1080 * 2);
-		degX += mouseX;
-		degZ += mouseY;
+		degX += mouseX*rspeed;
+		degZ += mouseY*rspeed;
 
 		float x = (float) Math.cos(degX * sense);
 		float y = (float) Math.sin(degX * sense);
@@ -113,8 +117,8 @@ public class Camera {
 		target.x = x + pos.x;
 		target.y = y + pos.y;
 
-		//Matrix4f view = Matrix4f.gluLookAt(pos, target, up);
-		pv = pv.multiply(Matrix4f.translate(x, y, 0));
+		view = Matrix4f.gluLookAt(pos, target, up);
+		pv = projection.multiply(view);
 		//ShaderManager.setCamera(view, pos);
 		//frust.updateMatrix(projection.multiply(view));
 	}

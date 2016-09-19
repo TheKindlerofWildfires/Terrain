@@ -13,8 +13,8 @@ import maths.Vector3f;
 public class GraphicsManager {
 
 	// Camera init constants
-	private static final Vector3f cameraStartPos = new Vector3f(0, -5, 20);
-	private static final Vector3f cameraStartTarget = new Vector3f(0, 0, 0);
+	private static final Vector3f cameraStartPos = new Vector3f(0, 0, 3);
+	private static final Vector3f cameraStartTarget = new Vector3f(0, 1, 2.75f);
 	private static final Vector3f up = new Vector3f(0, 0, 1);
 	private static final float fov = 45f;
 	private static final float aspect = 16f / 9;
@@ -41,10 +41,12 @@ public class GraphicsManager {
 	 * For some odd reason the camera is in the graphics manager and the player needs to control the camera
 	 */
 	public void update() {
-		//double[] mousePos = MouseInput.pos();
-		//camera.rotateCamera(mousePos);
-		//camera.moveCamera("LEFT");
-		//ShaderManager.setCamera(camera);
+		double[] mousePos = MouseInput.pos();
+		/**
+		 * for whatever reason removing this code breaks up and down
+		 */
+		camera.rotateCamera(mousePos);
+		ShaderManager.setCamera(camera);
 		if (KeyboardInput.isKeyDown(GLFW_KEY_D)) {
 			camera.moveCamera("LEFT");
 			ShaderManager.setCamera(camera);
