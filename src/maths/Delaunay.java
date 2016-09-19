@@ -17,8 +17,8 @@ public class Delaunay {
 	static float yOf = 48;//(float) (Math.sqrt(Math.pow(x+y,2)+Math.pow(x/2+z,2))+1+x);
 	*/
 	//upon further consideration, i hate maths
-	static float xOf =3;
-	static float yOf =3;
+	static float xOf =4;
+	static float yOf =4;
 	public static Vector3f startingTriPt0 = new Vector3f(-xOf, -yOf, 0);
 	public static Vector3f startingTriPt1 = new Vector3f(xOf, -yOf, 0);
 	public static Vector3f startingTriPt2 = new Vector3f(0, yOf, 0);
@@ -34,7 +34,7 @@ public class Delaunay {
 	 * 			The point added
 	 */
 	private void reBigTrig(int oX, int oY){
-		Vector3f displacement = new Vector3f(oX, oY,0);
+		Vector3f displacement = new Vector3f(1f*oX, 1f*oY,0);
 		startingTri.translate(displacement);
 		//System.out.println(startingTriPt0+" "+startingTriPt1+" " +startingTriPt2);
 	}
