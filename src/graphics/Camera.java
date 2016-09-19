@@ -7,7 +7,6 @@ public class Camera {
 
 	private Vector3f pos, target, up;
 	private double degX, degZ;
-	private double sense = 0.1;
 	private Matrix4f projection;
 	private Matrix4f view;
 	public Matrix4f pv;
@@ -16,7 +15,7 @@ public class Camera {
 	private Vector3f backward;
 	private Vector3f left;
 	private float speed = .2f;
-	private float rspeed = .5f;
+	private float rspeed = .05f;
 
 	/**
 	 * Initializes camera
@@ -105,17 +104,19 @@ public class Camera {
 		}
 		float mouseX = (float) ((1920 / 2 - mousePos[0]) / 1920 * 2);
 		float mouseY = (float) ((1080 / 2 - mousePos[1]) / 1080 * 2);
-		degX += mouseX*rspeed;
-		degZ += mouseY*rspeed;
+		degX += mouseX;
+		degZ += mouseY;
 
-		float x = (float) Math.cos(degX * sense);
-		float y = (float) Math.sin(degX * sense);
-
-		//float xz = (float) Math.cos(degZ*sense);
-		//float z= (float) Math.sin(degZ*sense);
-
-		target.x = x + pos.x;
-		target.y = y + pos.y;
+		float x = (float) Math.cos(degX*rspeed);
+		float y = (float) Math.sin(degX*rspeed);
+		
+		float z= (float) Math.sin(degZ*rspeed);
+		float h= (float) Math.cos(degZ*rspeed);
+		//gets stuck at target.z = 2, 4
+		System.out.println(degZ);
+		target.x = x*h+ pos.x; //should be in ratio
+		target.y = y*h+ pos.y;
+		target.z = z + pos.z;
 
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
