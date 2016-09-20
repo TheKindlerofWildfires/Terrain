@@ -50,27 +50,27 @@ public class GraphicsManager {
 		ShaderManager.setCamera(camera);
 		if (KeyboardInput.isKeyDown(GLFW_KEY_D)) {
 			camera.moveCamera("LEFT");
-			ShaderManager.setCamera(camera);
+			//ShaderManager.setCamera(camera);
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_A)) {
 			camera.moveCamera("RIGHT");
-			ShaderManager.setCamera(camera);
+			//ShaderManager.setCamera(camera);
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_W)) {
 			camera.moveCamera("FORWARD");
-			ShaderManager.setCamera(camera);
+			//ShaderManager.setCamera(camera);
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_S)) {
 			camera.moveCamera("BACK");
-			ShaderManager.setCamera(camera);
+			//ShaderManager.setCamera(camera);
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_SPACE)) {
 			camera.moveCamera("UP");
-			ShaderManager.setCamera(camera);
+			//ShaderManager.setCamera(camera);
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
 			camera.moveCamera("DOWN");
-			ShaderManager.setCamera(camera);
+			//ShaderManager.setCamera(camera);
 		}
 	}
 }

@@ -15,9 +15,9 @@ public class Camera {
 	private Vector3f backward;
 	private Vector3f left;
 	Vector3f cameraFront = new Vector3f(0,0,-1);
-	Vector3f cameraUp = new Vector3f(0,1,0);
+	Vector3f cameraUp = new Vector3f(0,0,1);
 	private float speed = .2f;
-	private float rspeed = .5f;
+	private float sense = .05f;
 	private double[] lastMouse  = new double[2];
 	boolean firstMouse = true;
 
@@ -54,7 +54,9 @@ public class Camera {
 	private void move(Vector3f displacement) {
 		pos = pos.add(displacement);
 		target = target.add(cameraFront);
-		pv = pv.multiply(Matrix4f.translate(displacement.x, displacement.y, displacement.z));
+		view = Matrix4f.gluLookAt(pos, cameraFront.add(pos), up);
+		pv = projection.multiply(view);
+		//pv = pv.multiply(Matrix4f.translate(displacement.x, displacement.y, displacement.z));
 	}
 
 	/**
@@ -77,19 +79,19 @@ public class Camera {
 			break;
 		case "FORWARD":
 			//displacement = new Vector3f(-vx,-vy,0);//backward.negate();
-			displacement = cameraFront.scale(speed);
+			displacement = cameraFront.normalize().scale(speed);
 			break;
 		case "BACK":
 			//displacement = new Vector3f(vx,vy,0);//backward;
-			displacement = cameraFront.scale(-speed);
+			displacement = cameraFront.normalize().scale(-speed);
 			break;
 		case "LEFT":
 			//displacement = new Vector3f(-vy,vx,0);//left;
-			displacement = cameraFront.cross(cameraUp).normalize().scale(-speed);
+			displacement = cameraFront.cross(cameraUp).normalize().scale(speed);
 			break;
 		case "RIGHT":
 			//displacement = new Vector3f(vy,-vx,0);//left.negate();
-			displacement = cameraFront.cross(cameraUp).normalize().scale(speed);
+			displacement = cameraFront.cross(cameraUp).normalize().scale(-speed);
 			break;
 		default:
 			System.err.println("wtf");
@@ -117,8 +119,8 @@ public class Camera {
 		double yOff= lastMouse[1]-mousePos[1];
 		lastMouse[0]= mousePos[0];
 		lastMouse[1] = mousePos[1];
-		xOff *= rspeed;
-		yOff *= rspeed;
+		xOff *= sense;
+		yOff *= sense;
 		yaw+= xOff;
 		pitch+= yOff;
 		if (pitch > 89) {
@@ -135,7 +137,7 @@ public class Camera {
 		Vector3f front = new Vector3f((float) (Math.cos(pitch)*Math.cos(yaw)),(float) (Math.sin(pitch)),(float) (Math.cos(pitch)*Math.cos(yaw)));
 		front.normalize();
 		cameraFront = front;
-		view = Matrix4f.gluLookAt(pos, front, up);
+		view = Matrix4f.gluLookAt(pos, cameraFront.add(pos), up);
 		pv = projection.multiply(view);
 		//ShaderManager.setCamera(view, pos);
 		//frust.updateMatrix(projection.multiply(view));
