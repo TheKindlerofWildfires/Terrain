@@ -27,25 +27,30 @@ public class Chunk {
 		this.noise = noise;
 		this.chunkX = x;
 		this.chunkY = y;
-
+		//Generating points is 1/4
 		ArrayList<Vector3f> points = new ArrayList<Vector3f>();
 		PoissonGenerator fish = new PoissonGenerator();
 		fish.generate();
+		
 		for (int i = 0; i < fish.points.size(); i++) {
 			float fishX = fish.points.get(i)[0] / 500f - 1;
 			float fishY = fish.points.get(i)[1] / 500f - 1;
 			points.add(new Vector3f(fishX, fishY, 0));
 		}
-
+	
+		//Delaunay takes 1/4
 		Delaunay delaunay = new Delaunay(points);
 		terrain = delaunay.getTriangles();
-
+		
+		World.iters++;
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
 		int c = 0;
+		
 		for (int i = 0; i < terrain.size(); i++) {
 			Vector3f centre = terrain.get(i).getCircumcenter().add(new Vector3f(2f * chunkX, 2f * chunkY, 0));
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f*chunkX, 2f*chunkY, 0));
+				//each gen takes about 1/4 of build time
 				float pZ = (float) Math.abs(noise.getValue(point.x , point.y, 0.1)) * 4;
 				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1))*4;
 				
@@ -68,7 +73,9 @@ public class Chunk {
 				vertices[c++] = b;
 			}
 		}
+		
 		VAO = new VertexArrayObject(vertices, 2);
+		
 	}
 
 	public void render() {

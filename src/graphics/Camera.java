@@ -111,7 +111,10 @@ public class Camera {
 		if(degZ>89*sense){
 			degZ = 89*sense;
 		}else if(degZ<-89*sense){
-			degZ = -89*sense;
+			degZ = -89
+					
+					
+					*sense;
 		}
 
 		float x = (float) Math.cos(degX * sense);
@@ -119,7 +122,7 @@ public class Camera {
 		float z = (float) Math.sin(degZ * sense);
 		float h = (float) Math.cos(degZ * sense);
 		// gets stuck at target.z = 2, 4
-		System.out.println(degZ);
+		//System.out.println(degZ);
 		target.x = x * h + pos.x; // should be in ratio
 		target.y = y * h + pos.y;
 		target.z = z + pos.z;

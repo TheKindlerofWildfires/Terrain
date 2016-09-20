@@ -133,18 +133,21 @@ public class Perlin extends Module {
         x1 *= frequency;
         y1 *= frequency;
         z1 *= frequency;
-
+        
         for (int curOctave = 0; curOctave < octaveCount; curOctave++) {
-
+        	
             // Make sure that these floating-point values have the same range as a 32-
             // bit integer so that we can pass them to the coherent-noise functions.
+        	
+        	//this process takes about 3/20ths of build time
             nx = Utils.makeInt32Range(x1);
             ny = Utils.makeInt32Range(y1);
             nz = Utils.makeInt32Range(z1);
-
+           
             // Get the coherent-noise value from the input value and add it to the
             // final result.
             seed = (this.seed + curOctave);
+            //this takes way! long
             signal = Noise.gradientCoherentNoise3D(nx, ny, nz, seed, noiseQuality);
             value += signal * curPersistence;
 
@@ -154,6 +157,7 @@ public class Perlin extends Module {
             z1 *= lacunarity;
             curPersistence *= persistence;
         }
+        
 
         return value;
     }
