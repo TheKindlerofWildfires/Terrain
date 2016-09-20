@@ -12,7 +12,15 @@ public class PoissonGenerator {
 	public int height = 1000;
 	public int remainingPoints = 300;
 
-	public PoissonGenerator() {}
+	int freq=0;
+	public static final int NORTH = 0;
+	public static final int SOUTH = 1;
+	public static final int EAST = 2;
+	public static final int WEST = 3;
+
+	public PoissonGenerator() {
+	}
+
 	/**
 	 * Finds the best place to put a point for best spread
 	 */
@@ -35,6 +43,7 @@ public class PoissonGenerator {
 		}
 		points.add(bestPoint);
 	}
+
 	/**
 	 * Finds the distance from the nearest point
 	 * @param point
@@ -52,6 +61,7 @@ public class PoissonGenerator {
 		}
 		return minDist;
 	}
+
 	/**
 	 * This makes a 100 by 100 grid of Poisson points
 	 */
@@ -63,7 +73,56 @@ public class PoissonGenerator {
 			iterate();
 			remainingPoints--;
 		}
+
+		/*//float spacing = width / freq;
+		for (int i = 0; i < 4; i++) {
+			float pX = 0;
+			float pY = 0;
+			switch (i) {
+			case NORTH:
+				pX = -width;
+				pY = height;
+				break;
+			case SOUTH:
+				pX = -width;
+				pY = -height;
+				break;
+			case EAST:
+				pX = width;
+				pY = -height;
+				break;
+			case WEST:
+				pX = -width;
+				pY = -height;
+				break;
+			default:
+				assert false : "too many sides to the square";
+			}
+			for (int j = 0; j < freq; j++) {
+				switch (i) {
+				case NORTH:
+					points.add(new int[] { (int) pX,(int) pY });
+					//pX += spacing;
+					break;
+				case SOUTH:
+					points.add(new int[] { (int) pX,(int) pY });
+				//	pX += spacing;
+					break;
+				case EAST:
+					points.add(new int[] { (int) pX,(int) pY });
+				//	pY += spacing;
+					break;
+				case WEST:
+					points.add(new int[] { (int) pX,(int) pY });
+				//	pY += spacing;
+					break;
+				default:
+					System.err.println("you done fucked up");
+				}
+			}
+		}*/
 	}
+
 	/**
 	 * a**2 + b**2 = c**2
 	 * @param p1

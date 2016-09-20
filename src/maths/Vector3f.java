@@ -1,6 +1,5 @@
 package maths;
 
-
 /**
  * This class represents a (x,y,z)-Vector. GLSL equivalent to vec3.
  *
@@ -12,13 +11,22 @@ public class Vector3f {
 	public float y;
 	public float z;
 
-	public boolean onScreen(){
-		if(x>1||x<-1||y>1||y<-1){
+	public boolean isInside(Direction dir, float bound) {
+		switch (dir) {
+		case NORTH:
+			return y < bound;
+		case SOUTH:
+			return y > -bound;
+		case EAST:
+			return x < bound;
+		case WEST:
+			return x > -bound;
+		default:
+			assert false : "wtf";
 			return false;
 		}
-		return true;
 	}
-	
+
 	/**
 	 * Creates a default 3-tuple vector with all values set to 0.
 	 */
@@ -166,8 +174,8 @@ public class Vector3f {
 	public String toString() {
 		return x + "," + y + "," + z;
 	}
-	
-	public float length2(){
-		return (float)Math.pow(this.length(),2);
+
+	public float length2() {
+		return (float) Math.pow(this.length(), 2);
 	}
 }

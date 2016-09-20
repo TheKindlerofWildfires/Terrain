@@ -23,7 +23,7 @@ public class Triangle {
 	}
 
 	public Vector3f getPoint(int i) {
-		return points[i];
+		return points[Math.abs(i%3)];
 	}
 
 	public Edge getEdge(int i) {
@@ -69,5 +69,13 @@ public class Triangle {
 			points[j].z += displacement.z;
 			
 		}
+	}
+	
+	public String toString(){
+		for(int i=0;i<3;i++){
+			System.out.println(points[i]);
+		}
+		System.out.println();
+		return null;
 	}
 }
