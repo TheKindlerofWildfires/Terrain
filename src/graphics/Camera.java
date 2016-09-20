@@ -114,9 +114,9 @@ public class Camera {
 		float h= (float) Math.cos(degZ*rspeed);
 		//gets stuck at target.z = 2, 4
 		System.out.println(degZ);
-		target.x = x*h+ pos.x; //should be in ratio
-		target.y = y*h+ pos.y;
-		target.z = z + pos.z;
+		target.x = x+ pos.x; //should be in ratio
+		target.y = y+ pos.y;
+		//target.z = z + pos.z;
 
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);

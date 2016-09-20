@@ -127,4 +127,24 @@ public class Utilities {
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 		return ubo;
 	}
+	
+	/**
+	 * 
+	 * @param a
+	 * @param b
+	 * @return a mod b
+	 */
+	public static int mod(int a,int b){ 
+		if(a>0){
+			return a%b;
+		} else if(a<0){
+			return b+a%b;
+		} else{
+			return 0;
+		}
+	}
+	
+	public static void main(String[] args){
+		System.out.println(mod(-1,3));
+	}
 }

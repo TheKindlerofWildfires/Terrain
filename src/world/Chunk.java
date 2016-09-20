@@ -43,19 +43,19 @@ public class Chunk {
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
 		int c = 0;
 		for (int i = 0; i < terrain.size(); i++) {
+			Vector3f centre = terrain.get(i).getCircumcenter().add(new Vector3f(2f * chunkX, 2f * chunkY, 0));
 			for (int j = 0; j < 3; j++) {
-
-				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2 * chunkX, 2 * chunkY, 0));
-
+				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f*chunkX, 2f*chunkY, 0));
 				float pZ = (float) Math.abs(noise.getValue(point.x , point.y, 0.1)) * 4;
-
+				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1))*4;
+				
 				float g;
 				float r;
 				float b;
 
-				g = (float) (pZ - 5) * (-0.1f * pZ) - 0.0f;
-				b = (float) (pZ - 7) * (0.05f * pZ) + 0.4f;
-				r = (float) (pZ - 7) * (-0.26f * pZ) - 2.6f;
+				g = (float) (cZ - 5) * (-0.1f * cZ) - 0.0f;
+				b = (float) (cZ - 7) * (0.05f * cZ) + 0.4f;
+				r = (float) (cZ - 7) * (-0.26f * cZ) - 2.6f;
 				if (pZ > 4.7) {
 					b = 0;
 				}
