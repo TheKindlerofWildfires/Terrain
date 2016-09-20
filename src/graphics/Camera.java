@@ -14,11 +14,11 @@ public class Camera {
 	private Vector3f upward;
 	private Vector3f backward;
 	private Vector3f left;
-	Vector3f cameraFront = new Vector3f(0,0,-1);
-	Vector3f cameraUp = new Vector3f(0,0,1);
+	Vector3f cameraFront = new Vector3f(0, 0, -1);
+	Vector3f cameraUp = new Vector3f(0, 0, 1);
 	private float speed = .2f;
-	private float sense = .05f;
-	private double[] lastMouse  = new double[2];
+	private float sense = .07f;
+	private double[] lastMouse = new double[2];
 	boolean firstMouse = true;
 
 	/**
@@ -31,8 +31,8 @@ public class Camera {
 	 * @param cameraUp
 	 *            up vector
 	 */
-	public Camera(Vector3f cameraPos, Vector3f cameraTarget, Vector3f cameraUp, float angle, float aspect, float near,
-			float far) {
+	public Camera(Vector3f cameraPos, Vector3f cameraTarget, Vector3f cameraUp,
+			float angle, float aspect, float near, float far) {
 		pos = cameraPos;
 		target = cameraTarget;
 		up = cameraUp;
@@ -45,8 +45,7 @@ public class Camera {
 	}
 
 	/**
-	 * Moves the camera and target
-	 * Deprecated
+	 * Moves the camera and target Deprecated
 	 * 
 	 * @param displacement
 	 *            displacement vector
@@ -56,20 +55,22 @@ public class Camera {
 		target = target.add(displacement);
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
-		//pv = pv.multiply(Matrix4f.translate(displacement.x, displacement.y, displacement.z));
+		// pv = pv.multiply(Matrix4f.translate(displacement.x, displacement.y,
+		// displacement.z));
 	}
 
 	/**
 	 * Moves the camera and target
+	 * 
 	 * @param dir
-	 * 			which way the player has told to move
+	 *            which way the player has told to move
 	 */
 	public void moveCamera(String dir) {
 		Vector3f displacement = new Vector3f(0, 0, 0);
-		float vx = pos.x- target.x;
+		float vx = pos.x - target.x;
 		float vy = pos.y - target.y;
-		vx*=speed;
-		vy*=speed;
+		vx *= speed;
+		vy *= speed;
 		switch (dir) {
 		case "UP":
 			displacement = upward;
@@ -78,16 +79,16 @@ public class Camera {
 			displacement = upward.negate();
 			break;
 		case "FORWARD":
-			displacement = new Vector3f(-vx,-vy,0);//backward.negate();
+			displacement = new Vector3f(-vx, -vy, 0);// backward.negate();
 			break;
 		case "BACK":
-			displacement = new Vector3f(vx,vy,0);//backward;
+			displacement = new Vector3f(vx, vy, 0);// backward;
 			break;
 		case "LEFT":
-			displacement = new Vector3f(-vy,vx,0);//left;
+			displacement = new Vector3f(-vy, vx, 0);// left;
 			break;
 		case "RIGHT":
-			displacement = new Vector3f(vy,-vx,0);//left.negate();
+			displacement = new Vector3f(vy, -vx, 0);// left.negate();
 			break;
 		default:
 			System.err.println("wtf");
@@ -99,27 +100,33 @@ public class Camera {
 	 * Rotates field of view, only works on xy plane
 	 * 
 	 * @param mousePos
-	 * 				location of mouse on screen, given by mouseInput
+	 *            location of mouse on screen, given by mouseInput
 	 */
 	public void rotateCamera(double[] mousePos) {
 		float mouseX = (float) ((1920 / 2 - mousePos[0]) / 1920 * 2);
 		float mouseY = (float) ((1080 / 2 - mousePos[1]) / 1080 * 2);
 		degX += mouseX;
 		degZ += mouseY;
+		degX = degX % 360;
+		if(degZ>89*sense){
+			degZ = 89*sense;
+		}else if(degZ<-89*sense){
+			degZ = -89*sense;
+		}
 
 		float x = (float) Math.cos(degX * sense);
 		float y = (float) Math.sin(degX * sense);
-		float z= (float) Math.sin(degZ * sense);
-		float h= (float) Math.cos(degZ * sense);
-		//gets stuck at target.z = 2, 4
+		float z = (float) Math.sin(degZ * sense);
+		float h = (float) Math.cos(degZ * sense);
+		// gets stuck at target.z = 2, 4
 		System.out.println(degZ);
-		target.x = x*h+ pos.x; //should be in ratio
-		target.y = y*h+ pos.y;
+		target.x = x * h + pos.x; // should be in ratio
+		target.y = y * h + pos.y;
 		target.z = z + pos.z;
 
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
-		
+
 	}
 
 	public Vector3f getPos() {
@@ -134,7 +141,7 @@ public class Camera {
 		return up;
 	}
 
-	//public Frustum getFrustum() {
-	//return frust;
-	//}
+	// public Frustum getFrustum() {
+	// return frust;
+	// }
 }
