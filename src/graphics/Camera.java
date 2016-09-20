@@ -17,7 +17,7 @@ public class Camera {
 	Vector3f cameraFront = new Vector3f(0,0,-1);
 	Vector3f cameraUp = new Vector3f(0,0,1);
 	private float speed = .2f;
-	private float sense = .05f;
+	private float sense = .005f;
 	private double[] lastMouse  = new double[2];
 	boolean firstMouse = true;
 
