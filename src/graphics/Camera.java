@@ -6,7 +6,7 @@ import maths.Vector3f;
 public class Camera {
 
 	private Vector3f pos, target, up;
-	private double degX, degZ;
+	private double pitch, yaw, roll;
 	private Matrix4f projection;
 	private Matrix4f view;
 	public Matrix4f pv;
@@ -14,8 +14,12 @@ public class Camera {
 	private Vector3f upward;
 	private Vector3f backward;
 	private Vector3f left;
+	Vector3f cameraFront = new Vector3f(0,0,-1);
+	Vector3f cameraUp = new Vector3f(0,1,0);
 	private float speed = .2f;
-	private float rspeed = .05f;
+	private float rspeed = .5f;
+	private double[] lastMouse  = new double[2];
+	boolean firstMouse = true;
 
 	/**
 	 * Initializes camera
@@ -49,7 +53,7 @@ public class Camera {
 	 */
 	private void move(Vector3f displacement) {
 		pos = pos.add(displacement);
-		target = target.add(displacement);
+		target = target.add(cameraFront);
 		pv = pv.multiply(Matrix4f.translate(displacement.x, displacement.y, displacement.z));
 	}
 
@@ -72,16 +76,20 @@ public class Camera {
 			displacement = upward.negate();
 			break;
 		case "FORWARD":
-			displacement = new Vector3f(-vx,-vy,0);//backward.negate();
+			//displacement = new Vector3f(-vx,-vy,0);//backward.negate();
+			displacement = cameraFront.scale(speed);
 			break;
 		case "BACK":
-			displacement = new Vector3f(vx,vy,0);//backward;
+			//displacement = new Vector3f(vx,vy,0);//backward;
+			displacement = cameraFront.scale(-speed);
 			break;
 		case "LEFT":
-			displacement = new Vector3f(-vy,vx,0);//left;
+			//displacement = new Vector3f(-vy,vx,0);//left;
+			displacement = cameraFront.cross(cameraUp).normalize().scale(-speed);
 			break;
 		case "RIGHT":
-			displacement = new Vector3f(vy,-vx,0);//left.negate();
+			//displacement = new Vector3f(vy,-vx,0);//left.negate();
+			displacement = cameraFront.cross(cameraUp).normalize().scale(speed);
 			break;
 		default:
 			System.err.println("wtf");
@@ -96,32 +104,42 @@ public class Camera {
 	 * 				location of mouse on screen, given by mouseInput
 	 */
 	public void rotateCamera(double[] mousePos) {
-		if (degX > 360) {
-			degX -= 360;
-		}
-		if (degZ > 360) {
-			degZ -= 360;
-		}
-		float mouseX = (float) ((1920 / 2 - mousePos[0]) / 1920 * 2);
-		float mouseY = (float) ((1080 / 2 - mousePos[1]) / 1080 * 2);
-		degX += mouseX;
-		degZ += mouseY;
-
-		float x = (float) Math.cos(degX*rspeed);
-		float y = (float) Math.sin(degX*rspeed);
+		//float mouseX = (float) ((1920 / 2 - mousePos[0]) / 1920 * 2);
+		//float mouseY= (float) ((1080 / 2 - mousePos[1]) / 1080 * 2);
+		 if(firstMouse)
+		    {
+			 lastMouse[0] = mousePos[0];
+			 lastMouse[1] = mousePos[1];
+		        firstMouse = false;
+		    }
 		
-		float z= (float) Math.sin(degZ*rspeed);
-		float h= (float) Math.cos(degZ*rspeed);
-		//gets stuck at target.z = 2, 4
-		System.out.println(degZ);
-		target.x = x*h+ pos.x; //should be in ratio
-		target.y = y*h+ pos.y;
-		target.z = z + pos.z;
+		double xOff= mousePos[0]-lastMouse[0];
+		double yOff= lastMouse[1]-mousePos[1];
+		lastMouse[0]= mousePos[0];
+		lastMouse[1] = mousePos[1];
+		xOff *= rspeed;
+		yOff *= rspeed;
+		yaw+= xOff;
+		pitch+= yOff;
+		if (pitch > 89) {
+			pitch = 89;
+		}
+		if (pitch < -89) {
+			pitch = -89;
+		}
 
-		view = Matrix4f.gluLookAt(pos, target, up);
+		//gets stuck at target.z = 2, 4
+		//target.x = (float) (Math.cos(pitch)*Math.cos(yaw))+ pos.x; 
+		//target.y = (float) (Math.sin(pitch))+ pos.y;
+		//target.z = (float) (Math.cos(pitch)*Math.cos(yaw)) + pos.z;
+		Vector3f front = new Vector3f((float) (Math.cos(pitch)*Math.cos(yaw)),(float) (Math.sin(pitch)),(float) (Math.cos(pitch)*Math.cos(yaw)));
+		front.normalize();
+		cameraFront = front;
+		view = Matrix4f.gluLookAt(pos, front, up);
 		pv = projection.multiply(view);
 		//ShaderManager.setCamera(view, pos);
 		//frust.updateMatrix(projection.multiply(view));
+		
 	}
 
 	public Vector3f getPos() {
