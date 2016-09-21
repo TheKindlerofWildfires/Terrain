@@ -116,22 +116,19 @@ public class Camera {
 		}
 		
 		//degZ += mouseY;
-		degX = degX % 360;
-		if(degZ>89*sense){
-			degZ = 89*sense;
-		}else if(degZ<-89*sense){
-			degZ = -89
-					
-					
-					*sense;
+		//degX = degX % 360;
+		if(degZ>1.57*sense){
+			degZ = 1.57*sense;
+		}else if(degZ<-1.57*sense){
+			degZ = -1.57*sense;
 		}
-
+		
 		float x = (float) Math.cos(degX * sense);
 		float y = (float) Math.sin(degX * sense);
 		float z = (float) Math.sin(degZ * sense);
 		float h = (float) Math.cos(degZ * sense);
 		// gets stuck at target.z = 2, 4
-		//System.out.println(degZ);
+		System.out.println(degZ*sense);
 		target.x = x * h + pos.x; // should be in ratio
 		target.y = y * h + pos.y;
 		target.z = z + pos.z;
