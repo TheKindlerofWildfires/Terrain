@@ -12,8 +12,6 @@ public class Camera {
 	public Matrix4f pv;
 	float lx, ly;
 	private Vector3f upward;
-
-	Vector3f cameraFront = new Vector3f(0, 0, -1);
 	Vector3f cameraUp = new Vector3f(0, 0, 1);
 	private float speed = .2f;
 	private float sense = 1f;
