@@ -6,19 +6,17 @@ import maths.Vector3f;
 public class Camera {
 
 	private Vector3f pos, target, up;
-	private double degX, degY, degZ;
+	private double degX, degZ;
 	private Matrix4f projection;
 	private Matrix4f view;
 	public Matrix4f pv;
-
+	float lx, ly;
 	private Vector3f upward;
-	private Vector3f backward;
-	private Vector3f left;
+
 	Vector3f cameraFront = new Vector3f(0, 0, -1);
 	Vector3f cameraUp = new Vector3f(0, 0, 1);
 	private float speed = .2f;
-	private float sense = .07f;
-	private double[] lastMouse = new double[2];
+	private float sense = 1f;
 	boolean firstMouse = true;
 
 	/**
@@ -40,8 +38,8 @@ public class Camera {
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
 		upward = new Vector3f(0, 0, speed);
-		backward = new Vector3f(0, speed, 0);
-		left = new Vector3f(-speed, 0, 0);
+		//backward = new Vector3f(0, speed, 0);
+		//left = new Vector3f(-speed, 0, 0);
 	}
 
 	/**
@@ -103,10 +101,23 @@ public class Camera {
 	 *            location of mouse on screen, given by mouseInput
 	 */
 	public void rotateCamera(double[] mousePos) {
-		float mouseX = (float) ((1920 / 2 - mousePos[0]) / 1920 * 2);
-		float mouseY = (float) ((1080 / 2 - mousePos[1]) / 1080 * 2);
-		degX += mouseX;
-		degZ += mouseY;
+		//float mouseX = (float) ((1920 / 2 - mousePos[0]) / 1920 * 2);
+		//float mouseY = (float) ((1080 / 2 - mousePos[1]) / 1080 * 2);
+		double dx = Window.deltaX;
+		double dy = Window.deltaY;
+		float mouseX = (float) (dx) / -1920f * 2;
+		float mouseY = (float) (dy) / -1080f * 2;
+		System.out.println(mouseX + "" + lx);
+		if(!(mouseX==lx)){
+			degX += mouseX;
+			lx = mouseX;
+		}
+		if(!(mouseY==ly)){
+			degZ += mouseY;
+			ly = mouseY;
+		}
+		
+		//degZ += mouseY;
 		degX = degX % 360;
 		if(degZ>89*sense){
 			degZ = 89*sense;

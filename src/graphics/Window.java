@@ -1,23 +1,6 @@
 package graphics;
 
-import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
-import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
-import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
-import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
-import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
-import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
-import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
-import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
-import static org.lwjgl.glfw.GLFW.glfwInit;
-import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
-import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
-import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
-import static org.lwjgl.glfw.GLFW.glfwShowWindow;
-import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
-import static org.lwjgl.glfw.GLFW.glfwWindowHint;
-import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
@@ -26,6 +9,7 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import input.MouseInput;
 
 import java.util.Random;
 
@@ -44,6 +28,7 @@ public class Window implements Runnable {
 	public static GLFWCursorPosCallback cursorCallback;
 	private GraphicsManager graphicsManager;
 	private World world;
+	public static double deltaX, deltaY;
 	public static Random worldRandom = new Random();
 	public static Random mathRandom = new Random();
 	
@@ -80,6 +65,7 @@ public class Window implements Runnable {
 			System.err.println("Could not create window");
 		}
 		//enable keyboard and mouse
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
 		glfwSetCursorPosCallback(window,
 				cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
@@ -147,6 +133,9 @@ public class Window implements Runnable {
 		int updates = 0;
 		int frames = 0;
 		while (running) {
+			deltaX = MouseInput.pos()[0]-1920/2;
+			deltaY = MouseInput.pos()[1]-1080/2;
+			glfwSetCursorPos(window, 1920/2, 1080/2);
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;

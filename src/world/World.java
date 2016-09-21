@@ -28,7 +28,7 @@ public class World {
 		 * Testing reveals 
 		 * Perlin:1/2
 		 * Delauny:1/4
-		 * Poisson:1/4
+		 * Poisson:1/4 World.aTime+=start-System.nanoTime();
 		 */
 		for(int x=0;x<10;x++){
 			for(int y=0;y<10;y++){
