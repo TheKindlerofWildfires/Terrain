@@ -107,7 +107,7 @@ public class Camera {
 		double dy = Window.deltaY;
 		float mouseX = (float) (dx) / -1920f * 2;
 		float mouseY = (float) (dy) / -1080f * 2;
-		System.out.println(mouseX + "" + lx);
+		//System.out.println(mouseX + "" + lx);
 		if(!(mouseX==lx)){
 			degX += mouseX;
 			lx = mouseX;

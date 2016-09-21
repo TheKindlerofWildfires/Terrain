@@ -16,6 +16,7 @@ import noiseLibrary.module.source.Perlin;
 
 public class Chunk {
 
+	private static final float WATERLEVEL = 1.3f;
 	Perlin noise;
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 
@@ -51,19 +52,23 @@ public class Chunk {
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f*chunkX, 2f*chunkY, 0));
 				//each gen takes about 1/4 of build time
-				float pZ = (float) Math.abs(noise.getValue(point.x , point.y, 0.1)) * 4;
+				float pZ = (float) Math.abs(noise.getValue(point.x , point.y, 0.1)) *4;
 				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1))*4;
-				
+
 				float g;
 				float r;
 				float b;
-
+				if(pZ<WATERLEVEL){
+					cZ*=0.7;
+				}
 				g = (float) (cZ - 5) * (-0.1f * cZ) - 0.0f;
-				b = (float) (cZ - 7) * (0.05f * cZ) + 0.4f;
-				r = (float) (cZ - 7) * (-0.26f * cZ) - 2.6f;
-				if (pZ > 4.7) {
+				b = (float) (cZ - 7) * (0.05f * cZ) + 0.5f;
+				r = (float) (cZ - 7) * (-0.26f * cZ) - 2.7f;
+
+				if (cZ > 4.7) {
 					b = 0;
 				}
+				
 				vertices[c++] = point.x;
 				vertices[c++] = point.y;
 				vertices[c++] = pZ;

@@ -1,23 +1,31 @@
 Assigned:
 	Fix shaders and normals
-	Ensure classpath is valid
-	Enable movement
-	Extended map
+	Fix the chunk issue
+	Optimization
 Eventual:
-	Water level
+	Sky box
 	Caves
 	Object loader 
-	Textures
-	Rivers
 	Weather
+	Colliders
 	Day night cycle
-	
 Mitchell:
-	Assigned: 3,4,5
-	Suggested 7,13
+	Assigned
+		Day night cycle
+		UI Design
+		Object loader
+	Suggested:
+		Colliders
 Simon:
-	Assigned: 2,3
-	Suggested 7,9,10
+	Assigned
+		Chunk issues
+		Shaders and normals
+	Suggested:
+		Object loader:
+	
 Will:
-	Assigned: 3,5
-	Suggested: 7,8,11
+	Assigned:
+		Caves
+		Optimization
+	Suggested:
+		Weather
