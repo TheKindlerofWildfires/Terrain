@@ -31,12 +31,12 @@ public class Mirror {
 		
 	}
 	private void corner() {
-		xp.add(new Vector3f(specificity, 1, 0));
-		xp.add(new Vector3f(specificity, -1, 0));
+		//xp.add(new Vector3f(specificity, 1, 0));
+		//xp.add(new Vector3f(specificity, -1, 0));
 		yp.add(new Vector3f(1, specificity, 0));
 		yp.add(new Vector3f(-1, specificity, 0));
-		xn.add(new Vector3f(-specificity, 1, 0));
-		xn.add(new Vector3f(-specificity, -1, 0));
+		//xn.add(new Vector3f(-specificity, 1, 0));
+		//xn.add(new Vector3f(-specificity, -1, 0));
 		yn.add(new Vector3f(1, -specificity, 0));
 		yn.add(new Vector3f(-1, -specificity, 0));
 	}
