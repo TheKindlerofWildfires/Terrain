@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * @author Mitchell
  *
  */
+@Deprecated
 public class Shear {
 	private ArrayList<Triangle> triangles = new ArrayList<Triangle>();
 
@@ -31,7 +32,7 @@ public class Shear {
 	ArrayList<Triangle> txn = new ArrayList<Triangle>();
 	ArrayList<Triangle> tyn = new ArrayList<Triangle>();
 	PoissonGenerator fish;
-	float specificity = 0.7f;
+	float specificity = 0.9f;
 	int iter = 0;
 
 	public Shear(ArrayList<Triangle> terrain, PoissonGenerator fish) {
@@ -40,8 +41,9 @@ public class Shear {
 		for (int i = 0; i < terrain.size(); i++) {
 			//clarify(triangles.get(i));
 		}
-		corner();
-		translate();
+		//corner();
+		//translate();
+		gather();
 		correct();
 		triggle();
 
@@ -57,6 +59,61 @@ public class Shear {
 		 * if((xp.get(i).x-xp.get(i+1).x)<spacing ){ xp. do some removeing from
 		 * delaunay } }
 		 */
+	}
+
+	private void gather() {
+		for(int i = 0; i<triangles.size();i++){
+			Triangle tri = triangles.get(i);
+		if (tri.getCircumcenter().x > specificity) {
+			xp.add(sort(tri,"xp"));
+		}
+		if (tri.getCircumcenter().y > specificity) {
+			yp.add(sort(tri,"xp"));
+		}
+		if (tri.getCircumcenter().x < -specificity) {
+			xn.add(sort(tri,"xp"));
+		}
+		if (tri.getCircumcenter().y < -specificity) {
+			yn.add(sort(tri,"xp"));
+		}
+		}
+		
+	}
+
+	private Vector3f sort(Triangle tri, String type) {
+		Vector3f extreme = new Vector3f();
+		switch(type){
+		case "xp":
+			for(int j = 0; j<2;j++){
+				if(tri.getPoint(j).x>extreme.x){
+					extreme = tri.getPoint(j);
+				}
+			}
+			break;
+		case "yp":
+			for(int j = 0; j<2;j++){
+				if(tri.getPoint(j).y>extreme.y){
+					extreme = tri.getPoint(j);
+				}
+			}
+			break;
+		case "xn":
+			for(int j = 0; j<2;j++){
+				if(tri.getPoint(j).x<extreme.x){
+					extreme = tri.getPoint(j);
+				}
+			}
+			break;
+		case "yn":
+			for(int j = 0; j<2;j++){
+				if(tri.getPoint(j).y<extreme.y){
+					extreme = tri.getPoint(j);
+				}
+			}
+			break;
+		}
+		
+		return extreme;
 	}
 
 	private void translate() {
