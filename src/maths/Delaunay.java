@@ -108,7 +108,7 @@ public class Delaunay {
 				if (tri.getPoint(j) == startingTriPt0
 						|| tri.getPoint(j) == startingTriPt1
 						|| tri.getPoint(j) == startingTriPt2) {
-					triangles.set(triangles.indexOf(tri), startingTri);
+					triangles.set(i, startingTri);
 					// triangles.remove(tri);
 					break;
 				}

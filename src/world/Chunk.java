@@ -45,7 +45,7 @@ public class Chunk {
 		//Delaunay takes 1/4
 		Delaunay delaunay = new Delaunay(points);
 		terrain = delaunay.getTriangles();
-		Shear shear = new Shear(terrain);
+		Shear shear = new Shear(terrain,fish);
 		terrain = shear.fix();
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
 		int c = 0;
