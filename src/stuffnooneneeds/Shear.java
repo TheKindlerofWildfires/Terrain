@@ -1,6 +1,10 @@
-package maths;
+package stuffnooneneeds;
 
 import java.util.ArrayList;
+
+import maths.PoissonGenerator;
+import maths.Triangle;
+import maths.Vector3f;
 
 /**
  * What is wrong? Its pretty simple actually If my specificity is high then the

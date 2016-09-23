@@ -7,13 +7,10 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.util.ArrayList;
 
-import com.sun.corba.se.impl.orb.ParserTable.TestAcceptor1;
-
 import graphics.VertexArrayObject;
 import maths.Delaunay;
 import maths.Mirror;
 import maths.PoissonGenerator;
-import maths.Shear;
 import maths.Triangle;
 import maths.Vector3f;
 import noiseLibrary.module.source.Perlin;

@@ -1,6 +1,11 @@
-package maths;
+package stuffnooneneeds;
 
 import java.util.ArrayList;
+
+import maths.Direction;
+import maths.Edge;
+import maths.Triangle;
+import maths.Vector3f;
 import static maths.Utilities.mod;
 
 public class Clipping {
