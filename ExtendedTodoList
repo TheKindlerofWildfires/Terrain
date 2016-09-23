@@ -1,7 +1,9 @@
+https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/
+
 Assigned:
-	Fix shaders and normals
-	Fix the chunk issue
+	Fix lighting
 	Optimization
+	Object loader
 Eventual:
 	Sky box
 	Caves
@@ -9,23 +11,3 @@ Eventual:
 	Weather
 	Colliders
 	Day night cycle
-Mitchell:
-	Assigned
-		Day night cycle
-		UI Design
-		Object loader
-	Suggested:
-		Colliders
-Simon:
-	Assigned
-		Chunk issues
-		Shaders and normals
-	Suggested:
-		Object loader:
-	
-Will:
-	Assigned:
-		Caves
-		Optimization
-	Suggested:
-		Weather
