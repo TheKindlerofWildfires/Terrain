@@ -3,11 +3,12 @@ package maths;
 import graphics.Window;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PoissonGenerator {
 
 	public ArrayList<int[]> points = new ArrayList<int[]>();
-	public int POINTS_PER_ITER = 20;
+	public int POINTS_PER_ITER = 10;
 	public int width = 1000;
 	public int height = 1000;
 	public int remainingPoints = 100;
@@ -17,7 +18,12 @@ public class PoissonGenerator {
 	public static final int SOUTH = 1;
 	public static final int EAST = 2;
 	public static final int WEST = 3;
-
+	
+	public ArrayList<Vector3f> xp = new ArrayList<Vector3f>();
+	public ArrayList<Vector3f> xn = new ArrayList<Vector3f>();
+	public ArrayList<Vector3f> yp = new ArrayList<Vector3f>();
+	public ArrayList<Vector3f> yn = new ArrayList<Vector3f>();
+	
 	public PoissonGenerator() {
 	}
 
@@ -73,7 +79,7 @@ public class PoissonGenerator {
 			iterate();
 			remainingPoints--;
 		}
-
+		cleanup();
 		/*//float spacing = width / freq;
 		for (int i = 0; i < 4; i++) {
 			float pX = 0;
@@ -121,6 +127,38 @@ public class PoissonGenerator {
 				}
 			}
 		}*/
+	}
+
+	private void cleanup() {
+		Vector3f nVec = new Vector3f(0,0,1);
+		for(int i = 0; i<1000;i++){
+			xp.add(nVec);
+			yp.add(nVec);
+			xn.add(nVec);
+			yn.add(nVec);
+		}
+		
+		for(int i =0; i<points.size();i++){
+			int[] p = points.get(i);
+			//System.out.println(xp.size());
+			if (p[0]>xp.get(p[1]).y){
+				xp.set(p[1],new Vector3f(p[0],p[1],0));
+			}
+			if (p[1]>yp.get(p[0]).x){
+				yp.set(p[0],new Vector3f(p[0],p[1],0));
+			}
+			if (p[0]<xn.get(p[1]).y){
+				xn.set(p[1],new Vector3f(p[0],p[1],0));
+			}
+			if (p[1]>yn.get(p[0]).x){
+				yn.set(p[0],new Vector3f(p[0],p[1],0));
+			}
+		}
+		xp.removeAll(Collections.singleton(nVec));
+		yp.removeAll(Collections.singleton(nVec));
+		xn.removeAll(Collections.singleton(nVec));
+		yn.removeAll(Collections.singleton(nVec));
+		//at the end of this we have 4 lists of vec3s each organized by opposite cord taking the maxiumum for that row
 	}
 
 	/**

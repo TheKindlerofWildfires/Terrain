@@ -7,9 +7,13 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.util.ArrayList;
 
+import com.sun.corba.se.impl.orb.ParserTable.TestAcceptor1;
+
 import graphics.VertexArrayObject;
 import maths.Delaunay;
+import maths.Mirror;
 import maths.PoissonGenerator;
+import maths.Shear;
 import maths.Triangle;
 import maths.Vector3f;
 import noiseLibrary.module.source.Perlin;
@@ -40,10 +44,12 @@ public class Chunk {
 		}
 	
 		//Delaunay takes 1/4
+		Mirror mirror = new Mirror(points);
+		points = mirror.give();
 		Delaunay delaunay = new Delaunay(points);
 		terrain = delaunay.getTriangles();
-		
-		World.iters++;
+		//Shear shear = new Shear(terrain,fish);
+		//terrain = shear.fix();
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
 		int c = 0;
 		
@@ -68,7 +74,6 @@ public class Chunk {
 				if (cZ > 4.7) {
 					b = 0;
 				}
-				
 				vertices[c++] = point.x;
 				vertices[c++] = point.y;
 				vertices[c++] = pZ;
