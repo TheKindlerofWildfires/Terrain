@@ -1,6 +1,6 @@
 package world;
 
-import static graphics.ShaderManager.landShader;
+//import static graphics.ShaderManager.landShader;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -90,9 +90,10 @@ public class Chunk {
 	}
 
 	public void render() {
-		landShader.start();
+		/*landShader.start();
 		glBindVertexArray(VAO.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, terrain.size() * 3);
 		landShader.stop();
+		*/
 	}
 }
