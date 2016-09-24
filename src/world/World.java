@@ -9,8 +9,8 @@ public class World {
 	public static int perlinSeed;
 	public static long aTime;
 	public static int iters;
-	public static final int chunkY=10;
-	public static final int chunkX=10;
+	public static final int chunkY=2;
+	public static final int chunkX=2;
 	ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 	
 	/**
