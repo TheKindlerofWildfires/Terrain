@@ -13,6 +13,7 @@ import input.MouseInput;
 
 import java.util.Random;
 
+import maths.Vector3f;
 import object.Mesh;
 import object.Render;
 import object.Texture;
@@ -21,6 +22,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
+import world.TestObject;
 import world.World;
 
 public class Window implements Runnable {
@@ -32,6 +34,7 @@ public class Window implements Runnable {
 	public static GLFWCursorPosCallback cursorCallback;
 	private GraphicsManager graphicsManager;
 	private World world;
+	private TestObject test;
 	public static double deltaX, deltaY;
 	public static Random worldRandom = new Random();
 	public static Random mathRandom = new Random();
@@ -93,6 +96,8 @@ public class Window implements Runnable {
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
 		world = new World();
+		test = new TestObject();
+		
 	}
 
 	private void randomize() {
@@ -121,50 +126,7 @@ public class Window implements Runnable {
 		// ShaderManager.landShader.stop();
 		//
 		world.render();
-		
-		float[] positions = new float[] {
-				// VO
-				-0.5f, 0.5f, 0.5f, 
-				// V1
-				-0.5f, -0.5f, 0.5f, 
-				// V2
-				0.5f, -0.5f, 0.5f, 
-				// V3
-				0.5f, 0.5f, 0.5f, 
-				// V4
-				-0.5f, 0.5f, -0.5f, 
-				// V5
-				0.5f, 0.5f, -0.5f, 
-				// V6
-				-0.5f, -0.5f, -0.5f, 
-				// V7
-				0.5f, -0.5f, -0.5f, };
-		int[] indices = new int[] { 0, 1, 3, 3, 1, 2,
-				// Top Face
-				4, 0, 3, 5, 4, 3,
-				// Right face
-				3, 2, 7, 5, 3, 7,
-				// Left face
-				0, 1, 6, 4, 0, 6,
-				// Bottom face
-				6, 1, 2, 7, 6, 2,
-				// Back face
-				4, 6, 7, 5, 4, 7, };
-		float[] textureCoords=new float[]{
-			0,0,
-			0,0.5f,
-			0.5f,0.5f,
-			0.5f,0,
-			0,0.5f,
-			0.5f,0.5f,
-			0,1,
-			0.5f,1
-		};
-		Texture texture = new Texture();
-
-		Mesh mesh = new Mesh(positions, textureCoords, indices,texture);
-		Render render = new Render();
-		render.render(mesh);
+		test.render();
 	
 	}
 

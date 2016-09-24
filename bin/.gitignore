@@ -1,6 +1,7 @@
 /graphics/
 /object/
-/render/
 /shaders/
-/world/
 /textures/
+/world/
+/maths/
+/models/
