@@ -13,7 +13,7 @@ public class Mirror {
 	private ArrayList<Vector3f> mxn = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> myp = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> myn = new ArrayList<Vector3f>();
-	float specificity = 0.85f;
+	float specificity = 0.6f;
 
 	public Mirror(ArrayList<Vector3f> points) {
 		this.points = points;
