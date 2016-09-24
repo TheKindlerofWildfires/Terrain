@@ -13,10 +13,13 @@ import input.MouseInput;
 
 import java.util.Random;
 
+import object.Mesh;
+
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
+import render.Render;
 import world.World;
 
 public class Window implements Runnable {
@@ -103,8 +106,6 @@ public class Window implements Runnable {
 	public void update() {
 		//all updates should go through here and and their managers
 		graphicsManager.update();
-		//would have sworn this did something
-		//graphicsManager.moveCamera(new Vector3f(-.1f,0,0));
 		glfwPollEvents();
 	}
 
@@ -119,6 +120,12 @@ public class Window implements Runnable {
 		//		ShaderManager.landShader.stop();
 		//		
 		world.render();
+		float[] test = {1,0,1,
+		                0,1,1,
+		                0,0,1};
+		Mesh mesh = new Mesh(test);
+		Render render = new Render();
+		render.render(mesh);
 		
 
 	}

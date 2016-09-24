@@ -11,7 +11,7 @@ public class PoissonGenerator {
 	public int POINTS_PER_ITER = 10;
 	public int width = 1000;
 	public int height = 1000;
-	public int remainingPoints = 100;
+	public int remainingPoints = 150;
 
 	int freq=0;
 	public static final int NORTH = 0;
