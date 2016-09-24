@@ -1,7 +1,6 @@
-/maths/
 /graphics/
-/world/
-/noiseLibrary/
-/oldStuff/
 /object/
 /render/
+/shaders/
+/world/
+/textures/
