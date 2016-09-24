@@ -15,6 +15,7 @@ public class Render {
 		landShader.start();
 		glBindVertexArray(mesh.getVaoId());
 		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
 		glDrawArrays(GL_TRIANGLES, 0, mesh.getVertexCount());
 		glDrawElements(GL_TRIANGLES, mesh.getVertexCount(), GL_UNSIGNED_INT, 0);
 		glDisableVertexAttribArray(0);
