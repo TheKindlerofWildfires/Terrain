@@ -11,7 +11,7 @@ public class PoissonGenerator {
 	public int POINTS_PER_ITER = 10;
 	public int width = 1000;
 	public int height = 1000;
-	public int remainingPoints = 100;
+	public int remainingPoints = 250;
 	public float density = (float)remainingPoints/(float)(height);
 
 	int freq=0;
@@ -24,15 +24,14 @@ public class PoissonGenerator {
 	public ArrayList<Vector3f> xn = new ArrayList<Vector3f>();
 	public ArrayList<Vector3f> yp = new ArrayList<Vector3f>();
 	public ArrayList<Vector3f> yn = new ArrayList<Vector3f>();
-	
 	public PoissonGenerator() {
-		System.out.println(density);
 	}
 
 	/**
 	 * Finds the best place to put a point for best spread
 	 */
 	public void iterate() {
+		
 		ArrayList<int[]> pts = new ArrayList<int[]>();
 		for (int i = 0; i < POINTS_PER_ITER; i++) {
 			int x = Window.mathRandom.nextInt(width);
@@ -49,7 +48,20 @@ public class PoissonGenerator {
 				bestPoint = point;
 			}
 		}
+		if(check(bestPoint)){
 		points.add(bestPoint);
+		}else{
+			remainingPoints+=1;
+		}
+	}
+
+	private boolean check(int[] bestPoint) {
+		if(bestPoint[0]>Mirror.spec || bestPoint[1]>Mirror.spec||bestPoint[0]<1000-Mirror.spec||bestPoint[1]<1000-Mirror.spec){
+			return false;
+		}else{
+			return true;
+		}
+		
 	}
 
 	/**
