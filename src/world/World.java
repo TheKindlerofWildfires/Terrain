@@ -7,11 +7,12 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	Perlin noise;
 	public static int perlinSeed;
-	public static long aTime;
-	public static int iters;
 	public static final int chunkY=20;
 	public static final int chunkX=20;
-	ArrayList<Chunk> chunks = new ArrayList<Chunk>();
+	public static final int chunkS = chunkY*chunkX;
+	public static int iter;
+	public static int wxp;
+	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 	
 	/**
 	 * Building better worlds
@@ -35,6 +36,7 @@ public class World {
 				chunks.add(new Chunk(noise,x,y));
 			}
 		}
+		//System.out.println(wxp/iter);
 	}
 
 	/**
