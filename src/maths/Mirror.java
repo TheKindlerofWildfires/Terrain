@@ -16,6 +16,8 @@ public class Mirror {
 	private ArrayList<Vector3f> myp = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> myn = new ArrayList<Vector3f>();
 	float specificity = 0.6f;
+	static int spec=970; //this must be proportional to density and to iterator
+	static int iterator = 125;
 
 	public Mirror(ArrayList<Vector3f> points) {
 		this.points = points;
@@ -30,12 +32,13 @@ public class Mirror {
 	}
 	public ArrayList<int[]> fish(){
 		ArrayList<int[]> fish = new ArrayList<int[]>();
-		for (int i = 0; i <= 500; i += 125) {
+		for (int i = 0; i <= 1000; i += iterator) {
 			fish.add(new int[]{i,1});
 			fish.add(new int[]{1,i});
 			fish.add(new int[]{i,-1});
 			fish.add(new int[]{-1,i});
 		}
+		
 		return fish;
 	}
 
