@@ -15,7 +15,7 @@ public class Render {
 	public void render(Mesh mesh) {
 		objectShader.start();
 		objectShader.setUniform1i("texture_sampler",0);
-		objectShader.setUniform1i("colour",	mesh.getColour());
+		objectShader.setUniform3f("colour",	mesh.getColour());
 		objectShader.setUniform1i("useColour",	mesh.isTextured()	?	0	:	1);
 
 		glBindVertexArray(mesh.getVaoId());
