@@ -76,7 +76,6 @@ public class Mesh {
 		glBufferData(GL_ARRAY_BUFFER,	vecNormalsBuffer,	GL_STATIC_DRAW);
 		glVertexAttribPointer(2,	3,	GL_FLOAT,	false,	0,	0);
 
-		colour = new Vector3f(0.5f,1,1);
 		
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, posVboId);
@@ -107,11 +106,11 @@ public class Mesh {
 		glDeleteVertexArrays(vaoId);
 	}
 
-	public Vector3f getColour() {
-		return colour;
+	public int getColour() {
+		return 0;
 	}
 
 	public boolean isTextured() {
-		return true;
+		return false;
 	}
 }
