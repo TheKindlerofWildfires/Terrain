@@ -3,7 +3,7 @@ in	vec2 outTexCoord;
 out	vec4 fragColor;
 
 uniform	sampler2D	texture_sampler;
-uniform	vec3	colour;
+uniform	vec3 colour;
 uniform	int	useColour;
 void main()
 {
