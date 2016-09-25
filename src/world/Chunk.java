@@ -4,14 +4,10 @@ package world;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import graphics.VertexArrayObject;
 
 import java.util.ArrayList;
 
-import oldStuff.Shear;
-
-import com.sun.corba.se.impl.orb.ParserTable.TestAcceptor1;
-
-import graphics.VertexArrayObject;
 import maths.Delaunay;
 import maths.Mirror;
 import maths.PoissonGenerator;
@@ -90,10 +86,10 @@ public class Chunk {
 	}
 
 	public void render() {
-		/*landShader.start();
+		graphics.ShaderManager.landShader.start();
 		glBindVertexArray(VAO.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, terrain.size() * 3);
-		landShader.stop();
-		*/
+		graphics.ShaderManager.landShader.stop();
+		
 	}
 }

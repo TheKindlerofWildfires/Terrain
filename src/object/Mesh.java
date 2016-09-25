@@ -41,8 +41,19 @@ public class Mesh {
 	private final int textureVboId;
 	private final int normalVboId;
 	private Vector3f colour;
+	private float[] positions;
+	private float[] textCoords;
+	private float[] normals;
+	private byte[] indices;
 
 	public Mesh(float[] positions, float[] textCoords, 	float[]	normals,int[] indices) {
+		this.positions = positions;
+		this.textCoords = textCoords;
+		this.normals = normals;
+		this.indices = new byte[indices.length];
+		for(int i = 0; i<indices.length;i++){
+			this.indices[i]=(byte) indices[i];
+		}
 		vertexCount = indices.length;
 		FloatBuffer verticesBuffer = BufferUtils
 				.createFloatBuffer(positions.length);
@@ -113,5 +124,24 @@ public class Mesh {
 
 	public boolean isTextured() {
 		return true;
+	}
+
+	public float[] getPos() {
+		return positions;
+	}
+
+	public float[] getTextCoords() {
+		// TODO Auto-generated method stub
+		return textCoords;
+	}
+
+	public float[] getNormals() {
+		// TODO Auto-generated method stub
+		return normals;
+	}
+	
+	public byte[] getIndices() {
+		// TODO Auto-generated method stub
+		return indices;
 	}
 }
