@@ -12,6 +12,7 @@ public class PoissonGenerator {
 	public int width = 1000;
 	public int height = 1000;
 	public int remainingPoints = 100;
+	public float density = (float)remainingPoints/(float)(height);
 
 	int freq=0;
 	public static final int NORTH = 0;
@@ -25,6 +26,7 @@ public class PoissonGenerator {
 	public ArrayList<Vector3f> yn = new ArrayList<Vector3f>();
 	
 	public PoissonGenerator() {
+		System.out.println(density);
 	}
 
 	/**
@@ -72,14 +74,17 @@ public class PoissonGenerator {
 	 * This makes a 100 by 100 grid of Poisson points
 	 */
 	public void generate() {
+		/*
 		int x = Window.mathRandom.nextInt(width);
 		int y = Window.mathRandom.nextInt(height);
 		points.add(new int[] { x,y });
+		*/
+		Mirror m = new Mirror();
+		points.addAll(m.fish());
 		while (remainingPoints > 0) {
 			iterate();
 			remainingPoints--;
 		}
-		cleanup();
 		/*//float spacing = width / freq;
 		for (int i = 0; i < 4; i++) {
 			float pX = 0;

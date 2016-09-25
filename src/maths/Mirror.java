@@ -20,9 +20,23 @@ public class Mirror {
 	public Mirror(ArrayList<Vector3f> points) {
 		this.points = points;
 		//corner();
-		divide();
+		//divide();
 		// spread();
 		standard();
+	}
+
+	public Mirror() {
+		standard();
+	}
+	public ArrayList<int[]> fish(){
+		ArrayList<int[]> fish = new ArrayList<int[]>();
+		for (int i = 0; i <= 500; i += 125) {
+			fish.add(new int[]{i,1});
+			fish.add(new int[]{1,i});
+			fish.add(new int[]{i,-1});
+			fish.add(new int[]{-1,i});
+		}
+		return fish;
 	}
 
 	private void standard() {
