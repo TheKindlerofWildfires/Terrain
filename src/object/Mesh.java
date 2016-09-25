@@ -21,8 +21,6 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import maths.Vector3f;
-
 import org.lwjgl.BufferUtils;
 
 /**
@@ -39,10 +37,9 @@ public class Mesh {
 	// private final int colourVboId;
 	private final int vertexCount;
 	private final int textureVboId;
-	private final int normalVboId;
-	private Vector3f colour;
 
-	public Mesh(float[] positions, float[] textCoords, 	float[]	normals,int[] indices) {
+	public Mesh(float[] positions, float[] textCoords, int[] indices,
+			Texture texture) {
 		vertexCount = indices.length;
 		FloatBuffer verticesBuffer = BufferUtils
 				.createFloatBuffer(positions.length);
@@ -69,14 +66,7 @@ public class Mesh {
 		glBindBuffer(GL_ARRAY_BUFFER, textureVboId);
 		glBufferData(GL_ARRAY_BUFFER, textCoordsBuffer, GL_STATIC_DRAW);
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
-		
-		normalVboId	=	glGenBuffers();
-		FloatBuffer	vecNormalsBuffer	=	BufferUtils.createFloatBuffer(normals.length); 
-		vecNormalsBuffer.put(normals).flip(); glBindBuffer(GL_ARRAY_BUFFER,	normalVboId);
-		glBufferData(GL_ARRAY_BUFFER,	vecNormalsBuffer,	GL_STATIC_DRAW);
-		glVertexAttribPointer(2,	3,	GL_FLOAT,	false,	0,	0);
 
-		
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, posVboId);
 		glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
@@ -84,7 +74,7 @@ public class Mesh {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_2D, texture.getId());
+		glBindTexture(GL_TEXTURE_2D, texture.getId());
 
 	}
 
@@ -104,13 +94,5 @@ public class Mesh {
 		glDeleteBuffers(textureVboId);
 		glBindVertexArray(0);
 		glDeleteVertexArrays(vaoId);
-	}
-
-	public int getColour() {
-		return 0;
-	}
-
-	public boolean isTextured() {
-		return false;
 	}
 }
