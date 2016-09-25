@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import java.util.ArrayList;
 
 import graphics.VertexArrayObject;
+import graphics.Window;
 import maths.Delaunay;
 import maths.Mirror;
 import maths.PoissonGenerator;
@@ -79,6 +80,7 @@ public class Chunk {
 				if(pZ<WATERLEVEL){
 					cZ*=0.7;
 				}
+				//cZ = pZ;
 				g = (float) (cZ - 5) * (-0.1f * cZ) - 0.0f;
 				b = (float) (cZ - 7) * (0.05f * cZ) + 0.5f;
 				r = (float) (cZ - 7) * (-0.26f * cZ) - 2.7f;

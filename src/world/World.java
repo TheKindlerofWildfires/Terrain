@@ -7,8 +7,8 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	Perlin noise;
 	public static int perlinSeed;
-	public static final int chunkY=20;
-	public static final int chunkX=20;
+	public static final int chunkY=4;
+	public static final int chunkX=4;
 	public static final int chunkS = chunkY*chunkX;
 	public static int iter;
 	public static int wxp;

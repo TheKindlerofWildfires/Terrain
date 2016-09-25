@@ -19,7 +19,7 @@ public class Mirror {
 
 	public Mirror(ArrayList<Vector3f> points) {
 		this.points = points;
-		cornered();
+		//corner();
 		divide();
 		// spread();
 		standard();
@@ -42,28 +42,19 @@ public class Mirror {
 		points.addAll(myn);
 
 	}
-
+	@Deprecated
 	private void corner() {
 		//xp.add(new Vector3f(1, 1, 0));
 		//xp.add(new Vector3f(1, -1, 0));
-		//yp.add(new Vector3f(1, 1, 0));
-		//yp.add(new Vector3f(-1, 1, 0));
+		yp.add(new Vector3f(1, 1, 0));
+		yp.add(new Vector3f(-1, 1, 0));
 		//xn.add(new Vector3f(-1, 1, 0));
 		//xn.add(new Vector3f(-1, -1, 0));
-		//yn.add(new Vector3f(1, -1, 0));
-		//yn.add(new Vector3f(-1, -1, 0));
-	}
-	private void cornered() {
-		//mxp.add(new Vector3f(specificity, 1, 0));
-		//mxp.add(new Vector3f(specificity, -1, 0));
-		//myp.add(new Vector3f(1, specificity, 0));
-		//myp.add(new Vector3f(-1, specificity, 0));
-		// mxn.add(new Vector3f(-specificity, 1, 0));
-		// mxn.add(new Vector3f(-specificity, -1, 0));
-		//myn.add(new Vector3f(1, -specificity, 0));
-		//myn.add(new Vector3f(-1, -specificity, 0));
+		yn.add(new Vector3f(1, -1, 0));
+		yn.add(new Vector3f(-1, -1, 0));
 	}
 
+	@Deprecated
 	private void divide() {
 		for (int i = 0; i < points.size(); i++) {
 			if (points.get(i).x > specificity) {
