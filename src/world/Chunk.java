@@ -7,9 +7,7 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.util.ArrayList;
 
-import oldStuff.Shear;
 
-import com.sun.corba.se.impl.orb.ParserTable.TestAcceptor1;
 
 import graphics.VertexArrayObject;
 import maths.Delaunay;
@@ -28,6 +26,10 @@ public class Chunk {
 	private VertexArrayObject VAO;
 	private int chunkX;
 	private int chunkY;
+	public ArrayList<Vector3f> mxp;
+	public ArrayList<Vector3f> mxn;
+	public ArrayList<Vector3f> myp;
+	public ArrayList<Vector3f> myn;
 
 	public Chunk(Perlin noise, int x, int y) {
 		this.noise = noise;
@@ -44,13 +46,24 @@ public class Chunk {
 			points.add(new Vector3f(fishX, fishY, 0));
 		}
 	
-		//Delaunay takes 1/4
+
+		//what needs to happen is mirror also takes points from the nearblocks
 		Mirror mirror = new Mirror(points);
-		points = mirror.give();
+		myn = mirror.getSide("yn");
+		mxn = mirror.getSide("xn");
+		myp = mirror.getSide("yp");
+		mxp = mirror.getSide("xp");
+		if(x!=0){
+			//mirror.findPointsX(x,y);
+		}
+		if(y!=0){
+			//mirror.findPointsY(x,y);
+		}
+		mirror.acc();
+		points= mirror.give();
+		
 		Delaunay delaunay = new Delaunay(points);
 		terrain = delaunay.getTriangles();
-		//Shear shear = new Shear(terrain,fish);
-		//terrain = shear.fix();
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
 		int c = 0;
 		
@@ -68,6 +81,7 @@ public class Chunk {
 				if(pZ<WATERLEVEL){
 					cZ*=0.7;
 				}
+				//cZ = pZ;
 				g = (float) (cZ - 5) * (-0.1f * cZ) - 0.0f;
 				b = (float) (cZ - 7) * (0.05f * cZ) + 0.5f;
 				r = (float) (cZ - 7) * (-0.26f * cZ) - 2.7f;
@@ -94,5 +108,20 @@ public class Chunk {
 		glBindVertexArray(VAO.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, terrain.size() * 3);
 		landShader.stop();
+	}
+	public ArrayList<Vector3f> getSide(String side) {
+		switch (side) {
+		case "yn":
+			return myn;
+		case "yp":
+			return myp;
+		case "xp":
+			return mxp;
+		case "xn":
+			return mxn;
+		default:
+			System.err.println("invalid type");
+			return null;
+		}
 	}
 }

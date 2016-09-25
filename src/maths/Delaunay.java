@@ -8,18 +8,6 @@ public class Delaunay {
 	/**
 	 * Performs Delanay Triangulation via Boyer-Watson Algorithm
 	 */
-	/*
-	 * public static double sqrt3 =
-	 * 1.7320508075688772935274463415058723669428052538103806280558069794519330169088
-	 * ; static double sin60 = sqrt3/2; static int x = 10; static double y = x
-	 * +x/sin60; static double z = (y)/2; static float xOf = 28;//(float)
-	 * (x/2+z+1+x);
-	 * 
-	 * static float yOf = 48;//(float)
-	 * (Math.sqrt(Math.pow(x+y,2)+Math.pow(x/2+z,2))+1+x);
-	 */
-	// upon further consideration, i hate maths
-
 	static float xOf = 3;
 	static float yOf = 3;
 	public static Vector3f startingTriPt0 = new Vector3f(-xOf, -yOf, 0);
@@ -101,7 +89,7 @@ public class Delaunay {
 		 * hide
 		 */
 		// while (breaker) {
-		int b1 = triangles.size();
+		//int b1 = triangles.size();
 		for (int i = 0; i < triangles.size(); i++) {
 			Triangle tri = triangles.get(i);
 			for (int j = 0; j < 3; j++) {
@@ -115,7 +103,7 @@ public class Delaunay {
 			}
 		}
 		triangles.removeAll(Collections.singleton(startingTri));
-		int b2 = triangles.size();
+		//int b2 = triangles.size();
 		//if (b2 == b1) {
 			// breaker = false;
 			// }
