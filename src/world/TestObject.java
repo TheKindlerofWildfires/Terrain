@@ -47,7 +47,7 @@ public class TestObject {
 
 	public TestObject() {
 		try {
-			vao = OBJLoader.loadMesh("src/models/test.obj");
+			vao = OBJLoader.loadMesh("src/models/torus.obj");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
