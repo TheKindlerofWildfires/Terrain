@@ -1,4 +1,5 @@
-/world/
-/object/
 /graphics/
 /maths/
+/object/
+/shaders/
+/world/
