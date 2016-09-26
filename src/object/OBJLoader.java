@@ -74,10 +74,10 @@ public class OBJLoader {
 		int x = 1;
 		for (Face face : facesList) {
 			IdxGroup[] faceVertexIndices = face.getFaceVertexIndices();
-			System.out.println(x++);
+			//System.out.println(x++);
 			int y = 0;
 			for (IdxGroup indValue : faceVertexIndices) {
-				System.out.println(y++);
+				//System.out.println(y++);
 				int pos = indValue.idxPos;
 				int norm = indValue.idxVecNormal;
 				int textCoord = indValue.idxTextCoord;
