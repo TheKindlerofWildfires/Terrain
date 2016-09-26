@@ -11,7 +11,7 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
-public class Render {
+public class Renderer {
 	public void render(Mesh mesh) {
 		objectShader.start();
 		objectShader.setUniform1i("texture_sampler",0);

@@ -2,11 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lwjgl/lwjgl.jar" sourcepath="lwjgl/src.zip">
+	<classpathentry kind="lib" path="/Users/Simon/Desktop/code/git/Terrain/PNGDecoder.jar"/>
+	<classpathentry kind="lib" path="lwjgl/jar/lwjgl.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Terrain/lwjgl/native"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="OceanGame/lwjgl/native"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="PNGDecoder/PNGDecoder.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

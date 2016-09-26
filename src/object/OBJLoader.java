@@ -7,38 +7,37 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import graphics.VertexArrayObject;
 import maths.Vector2f;
 import maths.Vector3f;
 
 public class OBJLoader {
 
-	public static Mesh loadMesh(String fileName) throws Exception {
+	public static VertexArrayObject loadMesh(String fileName) throws Exception {
 		Path path = Paths.get(fileName);
 		List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-		List<Vector3f> vertices = new ArrayList<>();
-		List<Vector2f> textures = new ArrayList<>();
-		List<Vector3f> normals = new ArrayList<>();
+		List<Vector3f> vertices = new ArrayList<Vector3f>();
+		List<Vector2f> textures = new ArrayList<Vector2f>();
+		List<Vector3f> normals = new ArrayList<Vector3f>();
 		List<Face> faces = new ArrayList<>();
+		int c = 0;
 		for (String line : lines) {
 			String[] tokens = line.split("\\s+");
 			switch (tokens[0]) {
 			case "v":
 				// Geometric vertex
-				Vector3f vec3f = new Vector3f(Float.parseFloat(tokens[1]),
-						Float.parseFloat(tokens[2]),
+				Vector3f vec3f = new Vector3f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]),
 						Float.parseFloat(tokens[3]));
 				vertices.add(vec3f);
 				break;
 			case "vt":
 				// Texture coordinate
-				Vector2f vec2f = new Vector2f(Float.parseFloat(tokens[1]),
-						Float.parseFloat(tokens[2]));
+				Vector2f vec2f = new Vector2f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
 				textures.add(vec2f);
 				break;
 			case "vn":
 				// Vertex normal
-				Vector3f vec3fNorm = new Vector3f(Float.parseFloat(tokens[1]),
-						Float.parseFloat(tokens[2]),
+				Vector3f vec3fNorm = new Vector3f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]),
 						Float.parseFloat(tokens[3]));
 				normals.add(vec3fNorm);
 				break;
@@ -53,41 +52,60 @@ public class OBJLoader {
 		}
 		return reorderLists(vertices, textures, normals, faces);
 	}
-	private	static	Mesh	reorderLists(List<Vector3f>	posList,	List<Vector2f>	textCoordList,				List<Vector3f>	normList,	List<Face>	facesList)	{
-		List<Integer>	indices	=	new	ArrayList();
-		float[]	posArr	=	new	float[posList.size()	*	3];
-		int	i	=	0;
-		for	(Vector3f	pos	:	posList){	
-			posArr[i	*	3]	=	pos.x;	
-			posArr[i	*	3	+	1]	=	pos.y;	
-			posArr[i	*	3	+	2]	=	pos.z;	
+
+	private static VertexArrayObject reorderLists(List<Vector3f> posList, List<Vector2f> textCoordList,
+			List<Vector3f> normList, List<Face> facesList) {
+		List<Integer> indices = new ArrayList<Integer>();
+		float[] posArr = new float[posList.size() * 3];
+		int i = 0;
+		for (Vector3f pos : posList) {
+			posArr[i * 3] = pos.x;
+			posArr[i * 3 + 1] = pos.y;
+			posArr[i * 3 + 2] = pos.z;
 			i++;
 		}
-		float[]	textCoordArr	=	new	float[posList.size()	*	2];
-		float[]	normArr	=	new	float[posList.size()	*	3];
-		
-		for	(Face	face	:	facesList)	{
-			IdxGroup[]	faceVertexIndices	=	face.getFaceVertexIndices();
-			for	(IdxGroup	indValue	:	faceVertexIndices)	{
-				processFaceVertex(indValue,	textCoordList,	normList,indices,	textCoordArr,	normArr);
-				
+		float[] textCoordArr = new float[posList.size() * 2];
+		float[] normArr = new float[posList.size() * 3];
+
+		List<Vector3f> vertices = new ArrayList<Vector3f>();
+
+		for (Face face : facesList) {
+			IdxGroup[] faceVertexIndices = face.getFaceVertexIndices();
+			System.out.println("face");
+			for (IdxGroup indValue : faceVertexIndices) {
+				System.out.println("IDX");
+				int pos = indValue.idxPos;
+				int norm = indValue.idxVecNormal;
+				int textCoord = indValue.idxTextCoord;
+				vertices.add(posList.get(pos));
+				vertices.add(normList.get(norm));
+				vertices.add(new Vector3f(0, 0, 0));
 			}
 		}
-		int[]	indicesArr	=	new	int[indices.size()];
-		indicesArr	=	indices.stream().mapToInt((Integer	v)	->	v).toArray();
-		Mesh	mesh	=	new	Mesh(posArr,	textCoordArr,	normArr,	indicesArr);
-		return	mesh; 
-}
-	private	static	void	processFaceVertex(IdxGroup	indices,	List<Vector2f>	textCoordList,				List<Vector3f>	normList,	List<Integer>	indicesList,				float[]	texCoordArr,	float[]	normArr)	{
-		int	posIndex	=	indices.idxPos;
+		int[] indicesArr = new int[indices.size()];
+		indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
+		float[] verts = new float[vertices.size() * 3];
+		int c = 0;
+		for (i = 0; i < vertices.size(); i++) {
+			verts[c++] = vertices.get(i).x;
+			verts[c++] = vertices.get(i).y;
+			verts[c++] = vertices.get(i).z;
+		}
+		return new VertexArrayObject(verts, 3);
+	}
+
+	private static void processFaceVertex(IdxGroup indices, List<Vector2f> textCoordList, List<Vector3f> normList,
+			List<Integer> indicesList, float[] texCoordArr, float[] normArr) {
+		int posIndex = indices.idxPos;
 		indicesList.add(posIndex);
-		if	(indices.idxTextCoord	>=	0)	{
-			Vector2f	textCoord	=	textCoordList.get(indices.idxTextCoord);
-			texCoordArr[posIndex	*	2]	=	textCoord.x;
-			texCoordArr[posIndex	*	2	+	1]	=	1	-	textCoord.y;
-			}	
+		if (indices.idxTextCoord >= 0) {
+			Vector2f textCoord = textCoordList.get(indices.idxTextCoord);
+			texCoordArr[posIndex * 2] = textCoord.x;
+			texCoordArr[posIndex * 2 + 1] = 1 - textCoord.y;
 		}
 	}
+}
+
 class IdxGroup {
 	public static final int NO_VALUE = -1;
 	public int idxPos;
@@ -113,20 +131,21 @@ class Face {
 		idxGroups[2] = parseLine(v3);
 	}
 
-	private	IdxGroup	parseLine(String	line)	{	
-		IdxGroup	idxGroup	=	new	IdxGroup();
-		String[]	lineTokens	=	line.split("/");
-		int	length	=	lineTokens.length;
-		idxGroup.idxPos	=	Integer.parseInt(lineTokens[0])	-	1;	
-		if	(length	>	1)	{	
-//			It	can	be	empty	if	the	obj	does	not	define	text	coords	
-			String	textCoord	=	lineTokens[1];	
-			idxGroup.idxTextCoord	=	textCoord.length()	>	0	?	Integer.parseInt(textCoord)	-	1	:	IdxGroup.NO_VALUE;	
-		if	(length	>	2)	{																
-			idxGroup.idxVecNormal	=	Integer.parseInt(lineTokens[2])	-	1;		
-			}								
+	private IdxGroup parseLine(String line) {
+		IdxGroup idxGroup = new IdxGroup();
+		String[] lineTokens = line.split("/");
+		int length = lineTokens.length;
+		idxGroup.idxPos = Integer.parseInt(lineTokens[0]) - 1;
+		if (length > 1) {
+			//			It	can	be	empty	if	the	obj	does	not	define	text	coords	
+			String textCoord = lineTokens[1];
+			idxGroup.idxTextCoord = textCoord.length() > 0 ? Integer.parseInt(textCoord) - 1 : IdxGroup.NO_VALUE;
+			if (length > 2) {
+				idxGroup.idxVecNormal = Integer.parseInt(lineTokens[2]) - 1;
+			}
 		}
-	return	idxGroup;				}
+		return idxGroup;
+	}
 
 	public IdxGroup[] getFaceVertexIndices() {
 		return idxGroups;
