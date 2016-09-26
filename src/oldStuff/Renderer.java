@@ -1,4 +1,4 @@
-package object;
+package oldStuff;
 
 import static graphics.ShaderManager.objectShader;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;

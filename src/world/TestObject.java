@@ -1,16 +1,14 @@
 package world;
 
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+
 import graphics.VertexArrayObject;
-import object.Mesh;
 import object.OBJLoader;
-import object.Renderer;
 import object.Texture;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL31.*;
-import static org.lwjgl.opengl.GL33.*;
-import static org.lwjgl.opengl.GL11.*;
 
 public class TestObject {
 	float[] positions = new float[] {
@@ -43,16 +41,14 @@ public class TestObject {
 	4,6,7,5,4,7, };
 	float[] textureCoords = new float[] { 0,0,0,0.5f,0.5f,0.5f,0.5f,0,0,0.5f,0.5f,0.5f,0,1,0.5f,1 };
 	Texture texture;
-	Mesh mesh;
-	Renderer render;
+	//Mesh mesh;
+	//Renderer render;
 	VertexArrayObject vao;
 
 	public TestObject() {
-		texture = new Texture();
 		try {
-			vao = OBJLoader.loadMesh("src/models/drone1.obj");
+			vao = OBJLoader.loadMesh("src/models/wood.obj");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		/*float[] positions = mesh.getPos();
@@ -86,11 +82,13 @@ public class TestObject {
 			vertices[c++] = tCoords[i + 2];
 		}
 		*/
+		texture = new Texture("src/textures/wood.png");
 	}
 
 	public void render() {
 		//render.render(mesh);
 		graphics.ShaderManager.objectShader.start();
+		glBindTexture(GL_TEXTURE_2D, texture.getId());
 		glBindVertexArray(vao.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, indices.length);
 		graphics.ShaderManager.landShader.stop();

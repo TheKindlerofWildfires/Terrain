@@ -79,7 +79,9 @@ public class OBJLoader {
 				int textCoord = indValue.idxTextCoord;
 				vertices.add(posList.get(pos));
 				vertices.add(normList.get(norm));
-				vertices.add(new Vector3f(0, 0, 0));
+				if(textCoord>=0){
+					vertices.add(new Vector3f(textCoordList.get(textCoord), 0));
+				}
 			}
 		}
 		int[] indicesArr = new int[indices.size()];

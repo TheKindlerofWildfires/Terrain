@@ -36,6 +36,12 @@ public class Vector3f {
 		this.z = 0f;
 	}
 
+	public Vector3f(Vector2f vec, float z) {
+		this.x = vec.x;
+		this.y = vec.y;
+		this.z = z;
+	}
+
 	/**
 	 * Creates a 3-tuple vector with specified values.
 	 *

@@ -9,10 +9,10 @@ public class World {
 	public static int perlinSeed;
 	public static long aTime;
 	public static int iters;
-	public static final int chunkY=3;
-	public static final int chunkX=3;
+	public static final int chunkY = 3;
+	public static final int chunkX = 3;
 	ArrayList<Chunk> chunks = new ArrayList<Chunk>();
-	
+
 	/**
 	 * Building better worlds
 	 * 		tl;Dr: Uses poisson disk, delauny and perlin noise to great a cool map
@@ -30,9 +30,9 @@ public class World {
 		 * Delauny:1/4
 		 * Poisson:1/4 World.aTime+=start-System.nanoTime();
 		 */
-		for(int x=0;x<chunkX;x++){
-			for(int y=0;y<chunkY;y++){
-				chunks.add(new Chunk(noise,x,y));
+		for (int x = 0; x < chunkX; x++) {
+			for (int y = 0; y < chunkY; y++) {
+				chunks.add(new Chunk(noise, x, y));
 			}
 		}
 	}
@@ -41,6 +41,6 @@ public class World {
 	 * Going to assume this drawls
 	 */
 	public void render() {
-		chunks.stream().forEach(c->c.render());
+		chunks.stream().forEach(c -> c.render());
 	}
 }
