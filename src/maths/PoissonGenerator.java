@@ -6,13 +6,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class PoissonGenerator {
-
+	//have we considered mirroring before posisson?
 	public ArrayList<int[]> points = new ArrayList<int[]>();
-	public int POINTS_PER_ITER = 10;
+	public int POINTS_PER_ITER = 20;
 	public int width = 1000;
 	public int height = 1000;
+
 	public int remainingPoints = 250;
 	public float density = (float)remainingPoints/(float)(height);
+
 
 	int freq=0;
 	public static final int NORTH = 0;

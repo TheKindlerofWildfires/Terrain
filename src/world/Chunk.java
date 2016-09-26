@@ -1,15 +1,13 @@
 package world;
 
-import static graphics.ShaderManager.landShader;
+//import static graphics.ShaderManager.landShader;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import graphics.VertexArrayObject;
 
 import java.util.ArrayList;
 
-
-
-import graphics.VertexArrayObject;
 import maths.Delaunay;
 import maths.Mirror;
 import maths.PoissonGenerator;
@@ -39,13 +37,12 @@ public class Chunk {
 		ArrayList<Vector3f> points = new ArrayList<Vector3f>();
 		PoissonGenerator fish = new PoissonGenerator();
 		fish.generate();
-		
+
 		for (int i = 0; i < fish.points.size(); i++) {
 			float fishX = fish.points.get(i)[0] / 500f - 1;
 			float fishY = fish.points.get(i)[1] / 500f - 1;
 			points.add(new Vector3f(fishX, fishY, 0));
 		}
-	
 
 		//what needs to happen is mirror also takes points from the nearblocks
 		Mirror mirror = new Mirror(points);
@@ -53,33 +50,33 @@ public class Chunk {
 		mxn = mirror.getSide("xn");
 		myp = mirror.getSide("yp");
 		mxp = mirror.getSide("xp");
-		if(x!=0){
+		if (x != 0) {
 			//mirror.findPointsX(x,y);
 		}
-		if(y!=0){
+		if (y != 0) {
 			//mirror.findPointsY(x,y);
 		}
 		mirror.acc();
-		points= mirror.give();
-		
+		points = mirror.give();
+
 		Delaunay delaunay = new Delaunay(points);
 		terrain = delaunay.getTriangles();
 		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
 		int c = 0;
-		
+
 		for (int i = 0; i < terrain.size(); i++) {
 			Vector3f centre = terrain.get(i).getCircumcenter().add(new Vector3f(2f * chunkX, 2f * chunkY, 0));
 			for (int j = 0; j < 3; j++) {
-				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f*chunkX, 2f*chunkY, 0));
+				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0));
 				//each gen takes about 1/4 of build time
-				float pZ = (float) Math.abs(noise.getValue(point.x , point.y, 0.1)) *4;
-				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1))*4;
+				float pZ = (float) Math.abs(noise.getValue(point.x, point.y, 0.1)) * 4;
+				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * 4;
 
 				float g;
 				float r;
 				float b;
-				if(pZ<WATERLEVEL){
-					cZ*=0.7;
+				if (pZ < WATERLEVEL) {
+					cZ *= 0.7;
 				}
 				//cZ = pZ;
 				g = (float) (cZ - 5) * (-0.1f * cZ) - 0.0f;
@@ -98,17 +95,19 @@ public class Chunk {
 				vertices[c++] = b;
 			}
 		}
-		
+
 		VAO = new VertexArrayObject(vertices, 2);
-		
+
 	}
 
 	public void render() {
-		landShader.start();
+		graphics.ShaderManager.landShader.start();
 		glBindVertexArray(VAO.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, terrain.size() * 3);
-		landShader.stop();
+		graphics.ShaderManager.landShader.stop();
+
 	}
+
 	public ArrayList<Vector3f> getSide(String side) {
 		switch (side) {
 		case "yn":

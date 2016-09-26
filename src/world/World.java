@@ -7,6 +7,7 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	Perlin noise;
 	public static int perlinSeed;
+
 	public static final int chunkY=4;
 	public static final int chunkX=4;
 	public static final int chunkS = chunkY*chunkX;
@@ -31,9 +32,9 @@ public class World {
 		 * Delauny:1/4
 		 * Poisson:1/4 World.aTime+=start-System.nanoTime();
 		 */
-		for(int x=0;x<chunkX;x++){
-			for(int y=0;y<chunkY;y++){
-				chunks.add(new Chunk(noise,x,y));
+		for (int x = 0; x < chunkX; x++) {
+			for (int y = 0; y < chunkY; y++) {
+				chunks.add(new Chunk(noise, x, y));
 			}
 		}
 		//System.out.println(wxp/iter);
@@ -43,6 +44,6 @@ public class World {
 	 * Going to assume this drawls
 	 */
 	public void render() {
-		chunks.stream().forEach(c->c.render());
+		chunks.stream().forEach(c -> c.render());
 	}
 }
