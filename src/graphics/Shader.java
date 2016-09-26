@@ -34,7 +34,8 @@ public class Shader {
 	public Shader(String vertexFile, String fragmentFile) {
 		initialized = true;
 		vertexShaderID = Utilities.loadShader(vertexFile, GL_VERTEX_SHADER);
-		fragmentShaderID = Utilities.loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+		fragmentShaderID = Utilities.loadShader(fragmentFile,
+				GL_FRAGMENT_SHADER);
 		programID = glCreateProgram();
 		if (vertexShaderID == -1 || fragmentShaderID == -1) {
 			initialized = false;
@@ -48,10 +49,12 @@ public class Shader {
 	public int getID() {
 		return this.programID;
 	}
+
 	public int getUniform(String name) {
-		//for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-		//    System.out.println(ste);
-		//}
+		// for (StackTraceElement ste : Thread.currentThread().getStackTrace())
+		// {
+		// System.out.println(ste);
+		// }
 		int result = glGetUniformLocation(programID, name);
 		if (result == -1) {
 			System.err.println("Could not find uniform variable " + name);

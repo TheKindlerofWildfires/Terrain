@@ -1,5 +1,7 @@
 package maths;
 
+import stuffnooneneeds.Direction;
+
 public class Edge {
 
 	public Vector3f[] points = new Vector3f[2];

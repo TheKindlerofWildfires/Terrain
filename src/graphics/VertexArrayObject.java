@@ -11,8 +11,6 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
-import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
-
 import maths.Utilities;
 
 public class VertexArrayObject {
@@ -34,7 +32,8 @@ public class VertexArrayObject {
 		createArrayObject(vertices, numberOfVec3s);
 	}
 
-	public void createArrayObject(float[] positions, byte[] indices, int numberOfVec3s) {
+	public void createArrayObject(float[] positions, byte[] indices,
+			int numberOfVec3s) {
 		vaoID = glGenVertexArrays();
 		glBindVertexArray(vaoID);
 
@@ -54,10 +53,12 @@ public class VertexArrayObject {
 	private void createVerticesBuffer(float[] positions, int numberOfVec3s) {
 		int vboID = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, vboID);
-		glBufferData(GL_ARRAY_BUFFER, Utilities.createFloatBuffer(positions), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, Utilities.createFloatBuffer(positions),
+				GL_STATIC_DRAW);
 		for (int i = 0; i < numberOfVec3s; i++) {
 			glEnableVertexAttribArray(i);
-			glVertexAttribPointer(i, 3, GL_FLOAT, false, 4 * 3 * numberOfVec3s, i * 3 * 4); //send positions on pipe i
+			glVertexAttribPointer(i, 3, GL_FLOAT, false, 4 * 3 * numberOfVec3s,
+					i * 3 * 4); // send positions on pipe i
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
@@ -65,7 +66,8 @@ public class VertexArrayObject {
 	private void createIndicesBuffer(byte[] indices) {
 		int ibo = glGenBuffers();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Utilities.createByteBuffer(indices), GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+				Utilities.createByteBuffer(indices), GL_STATIC_DRAW);
 	}
 
 	public int getVaoID() {

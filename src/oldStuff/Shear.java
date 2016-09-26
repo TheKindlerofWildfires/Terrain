@@ -7,12 +7,8 @@ import maths.Triangle;
 import maths.Vector3f;
 
 /**
- * What is wrong? Its pretty simple actually If my specificity is high then the
- * triangles are thin and look wrong If my specificity is low then there is
- * overlap with other points essentially I think this idea is bust without
- * smarter coder
- * 
- * @author Mitchell
+ * Up for deletion
+ * @author TheKingInYellow
  *
  */
 @Deprecated

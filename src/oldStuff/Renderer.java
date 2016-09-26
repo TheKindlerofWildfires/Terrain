@@ -10,7 +10,11 @@ import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
-
+/**
+ * Up for deletion
+ * @author TheKingInYellow
+ *
+ */
 public class Renderer {
 	public void render(Mesh mesh) {
 		objectShader.start();

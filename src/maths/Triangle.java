@@ -23,7 +23,7 @@ public class Triangle {
 	}
 
 	public Vector3f getPoint(int i) {
-		return points[Math.abs(i%3)];
+		return points[Math.abs(i % 3)];
 	}
 
 	public Edge getEdge(int i) {
@@ -43,12 +43,15 @@ public class Triangle {
 		Vector3f abXac = ab.cross(ac);
 
 		// this is the vector from a TO the circumsphere center
-		Vector3f toCircumsphereCenter = (abXac.cross(ab).scale(ac.length2()).add(ac.cross(abXac).scale(ab.length2())))
-				.divide(2.f * abXac.length2());
+		Vector3f toCircumsphereCenter = (abXac.cross(ab).scale(ac.length2())
+				.add(ac.cross(abXac).scale(ab.length2()))).divide(2.f * abXac
+				.length2());
 		circumradius = toCircumsphereCenter.length();
 
 		// The 3 space coords of the circumsphere center then:
-		circumcenter = points[0].add(toCircumsphereCenter); // now this is the actual 3space location
+		circumcenter = points[0].add(toCircumsphereCenter); // now this is the
+															// actual 3space
+															// location
 	}
 
 	public boolean isInCircumsphere(Vector3f pt) {
@@ -62,17 +65,18 @@ public class Triangle {
 	public float getCircumradius() {
 		return circumradius;
 	}
-	public void translate(Vector3f displacement){
-		for(int j = 0; j<3;j++){
+
+	public void translate(Vector3f displacement) {
+		for (int j = 0; j < 3; j++) {
 			points[j].x += displacement.x;
 			points[j].y += displacement.y;
 			points[j].z += displacement.z;
-			
+
 		}
 	}
-	
-	public String toString(){
-		for(int i=0;i<3;i++){
+
+	public String toString() {
+		for (int i = 0; i < 3; i++) {
 			System.out.println(points[i]);
 		}
 		System.out.println();

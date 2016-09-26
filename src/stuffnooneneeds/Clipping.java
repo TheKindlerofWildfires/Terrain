@@ -2,7 +2,6 @@ package stuffnooneneeds;
 
 import java.util.ArrayList;
 
-import maths.Direction;
 import maths.Edge;
 import maths.Triangle;
 import maths.Vector3f;

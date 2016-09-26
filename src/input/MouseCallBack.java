@@ -6,7 +6,7 @@ public class MouseCallBack extends GLFWMouseButtonCallback {
 
 	@Override
 	public void invoke(long window, int button, int action, int mods) {
-		// TODO Auto-generated method stub
+		// TODO If you want clicks this is the place
 
 	}
 

@@ -36,8 +36,8 @@ public class Camera {
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
 		upward = new Vector3f(0, 0, speed);
-		//backward = new Vector3f(0, speed, 0);
-		//left = new Vector3f(-speed, 0, 0);
+		// backward = new Vector3f(0, speed, 0);
+		// left = new Vector3f(-speed, 0, 0);
 	}
 
 	/**
@@ -99,30 +99,30 @@ public class Camera {
 	 *            location of mouse on screen, given by mouseInput
 	 */
 	public void rotateCamera(double[] mousePos) {
-		//float mouseX = (float) ((1920 / 2 - mousePos[0]) / 1920 * 2);
-		//float mouseY = (float) ((1080 / 2 - mousePos[1]) / 1080 * 2);
+		// float mouseX = (float) ((1920 / 2 - mousePos[0]) / 1920 * 2);
+		// float mouseY = (float) ((1080 / 2 - mousePos[1]) / 1080 * 2);
 		double dx = Window.deltaX;
 		double dy = Window.deltaY;
 		float mouseX = (float) (dx) / -1920f * 2;
 		float mouseY = (float) (dy) / -1080f * 2;
-		//System.out.println(mouseX + "" + lx);
-		if(!(mouseX==lx)){
+		// System.out.println(mouseX + "" + lx);
+		if (!(mouseX == lx)) {
 			degX += mouseX;
 			lx = mouseX;
 		}
-		if(!(mouseY==ly)){
+		if (!(mouseY == ly)) {
 			degZ += mouseY;
 			ly = mouseY;
 		}
-		
-		//degZ += mouseY;
-		degX = degX % (2*Math.PI);
-		if(degZ>1.57*sense){
-			degZ = 1.57*sense;
-		}else if(degZ<-1.57*sense){
-			degZ = -1.57*sense;
+
+		// degZ += mouseY;
+		degX = degX % (2 * Math.PI);
+		if (degZ > 1.57 * sense) {
+			degZ = 1.57 * sense;
+		} else if (degZ < -1.57 * sense) {
+			degZ = -1.57 * sense;
 		}
-		
+
 		float x = (float) Math.cos(degX * sense);
 		float y = (float) Math.sin(degX * sense);
 		float z = (float) Math.sin(degZ * sense);

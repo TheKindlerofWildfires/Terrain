@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Delaunay {
-
 	/**
 	 * Performs Delanay Triangulation via Boyer-Watson Algorithm
 	 */
@@ -26,25 +25,18 @@ public class Delaunay {
 	 * @param pt
 	 *            The point added
 	 */
-
 	private void addPoint(Vector3f pt) {
-		// System.out.println("added a pt");
-		ArrayList<Triangle> badTris = new ArrayList<Triangle>();// triangles
-																// changing/going
-																// away
+		ArrayList<Triangle> badTris = new ArrayList<Triangle>();
 		ArrayList<Triangle> goodTris = new ArrayList<Triangle>();
-		ArrayList<Edge> edges = new ArrayList<Edge>();// edges of space opened
-														// up by removed tris
-		for (Triangle tri : triangles) { // discover which tris are effected
+		ArrayList<Edge> edges = new ArrayList<Edge>();
+		for (Triangle tri : triangles) {
 			if (tri.isInCircumsphere(pt)) {
 				badTris.add(tri);
 			} else {
 				goodTris.add(tri);
 			}
 		}
-		// System.out.println(badTris.size());
 		for (Triangle tri : badTris) { // work out edges and remove bad
-										// triangles
 			for (int i = 0; i < 3; i++) {
 				Edge edge = tri.getEdge(i);
 				boolean isIn = false;
@@ -63,7 +55,6 @@ public class Delaunay {
 		for (Edge edge : edges) {
 			goodTris.add(new Triangle(edge, pt));
 		}
-		// System.out.println(triangles.size());
 		triangles = goodTris;
 	}
 
@@ -81,15 +72,9 @@ public class Delaunay {
 		for (Vector3f point : points) {
 			addPoint(point);
 		}
-
-		// boolean breaker = true;
 		/**
-		 * It should be noted that this micro-function could use to be optimised
-		 * It scans known good triangles over and over to find the bad ones that
-		 * hide
+		 * This mircofunction could take small amounts of optimization
 		 */
-		// while (breaker) {
-		//int b1 = triangles.size();
 		for (int i = 0; i < triangles.size(); i++) {
 			Triangle tri = triangles.get(i);
 			for (int j = 0; j < 3; j++) {
@@ -97,30 +82,14 @@ public class Delaunay {
 						|| tri.getPoint(j) == startingTriPt1
 						|| tri.getPoint(j) == startingTriPt2) {
 					triangles.set(i, startingTri);
-					// triangles.remove(tri);
 					break;
 				}
 			}
 		}
 		triangles.removeAll(Collections.singleton(startingTri));
-		//int b2 = triangles.size();
-		//if (b2 == b1) {
-			// breaker = false;
-			// }
-		//}
-
-		// System.out.println(startTime- endTime);
 		calculated = true;
 	}
 
-	/*
-	 * Things i've learned A) All the triangles that pass the sieve are good B)
-	 * If we do if(true) remove triangles triangles still remain C) However the
-	 * bad triangles are still in the triangles list D) And if we clear it the
-	 * triangles go away E) The iteration never finishes F) All this is
-	 * occurring because the size of the triangle list is shrinking as we go
-	 * G)And now very clearly I am not removing the triangles correctly
-	 */
 	public ArrayList<Triangle> getTriangles() {
 		assert calculated : "you need to math it before you can have any triangles!";
 		return triangles;

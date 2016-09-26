@@ -7,12 +7,9 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	Perlin noise;
 	public static int perlinSeed;
-
 	public static final int chunkY=4;
 	public static final int chunkX=4;
 	public static final int chunkS = chunkY*chunkX;
-	public static int iter;
-	public static int wxp;
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 	
 	/**
@@ -30,14 +27,13 @@ public class World {
 		 * Testing reveals 
 		 * Perlin:1/2
 		 * Delauny:1/4
-		 * Poisson:1/4 World.aTime+=start-System.nanoTime();
+		 * Poisson:1/4 
 		 */
 		for (int x = 0; x < chunkX; x++) {
 			for (int y = 0; y < chunkY; y++) {
 				chunks.add(new Chunk(noise, x, y));
 			}
 		}
-		//System.out.println(wxp/iter);
 	}
 
 	/**

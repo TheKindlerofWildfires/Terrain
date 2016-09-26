@@ -30,6 +30,7 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import input.MouseInput;
 
 import java.util.Random;
 
@@ -37,8 +38,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
-import input.MouseInput;
-import world.TestObject;
+import world.Object;
 import world.World;
 
 public class Window implements Runnable {
@@ -50,7 +50,7 @@ public class Window implements Runnable {
 	public static GLFWCursorPosCallback cursorCallback;
 	private GraphicsManager graphicsManager;
 	private World world;
-	private TestObject test;
+	private Object test;
 	public static double deltaX, deltaY;
 	public static Random worldRandom = new Random();
 	public static Random mathRandom = new Random();
@@ -65,7 +65,9 @@ public class Window implements Runnable {
 		thread = new Thread(this, "SpaceGame");
 		thread.start();
 	}
-
+	/**
+	 * Code called at the start of the gameloop
+	 */
 	public void init() {
 
 		randomize();
@@ -75,13 +77,11 @@ public class Window implements Runnable {
 		}
 		// make window resizable
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-
 		// set opengl to version 3.2, core profile, forward compatable
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
 		// create window
 		window = glfwCreateWindow(1920, 1080, "WaterGame", NULL, NULL);
 		if (window == NULL) {
@@ -94,28 +94,27 @@ public class Window implements Runnable {
 				cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
 		// set window pos
 		glfwSetWindowPos(window, 0, 20);
-
 		// display window
 		glfwMakeContextCurrent(window);
 		glfwShowWindow(window);
-
 		// init gl
 		GL.createCapabilities();
-
 		// background colour
 		glClearColor(75 / 255f, 10 / 255f, 130 / 255f, 1.0f);
-
 		// enable depth testing and face culling
 		glEnable(GL_DEPTH_TEST);
-		// glEnable(GL_CULL_FACE);
+		//Hm this looks wrong
+		//glEnable(GL_CULL_FACE);
 
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
 		world = new World();
-		test = new TestObject();
+		test = new Object("src/models/torus.obj","src/textures/wood.png");
 		
 	}
-
+	/**
+	 * Sets the seeds for everything
+	 */
 	private void randomize() {
 		// setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
@@ -124,28 +123,26 @@ public class Window implements Runnable {
 		World.perlinSeed = mathRandom.nextInt();
 
 	}
-
+	/**
+	 * The start of the update call
+	 */
 	public void update() {
-		// all updates should go through here and and their managers
 		graphicsManager.update();
 		glfwPollEvents();
 	}
-
+	/**
+	 * The start of the render call
+	 */
 	public void render() {
 		glfwSwapBuffers(window);
-
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// ShaderManager.landShader.start();
-		// glBindVertexArray(VAO.getVaoID());
-		// glDrawArrays(GL_TRIANGLES,0,3);
-		// ShaderManager.landShader.stop();
-		//
 		world.render();
 		test.render();
 	
 	}
-
+	/**
+	 * The game loop
+	 */
 	@Override
 	public void run() {
 		init();

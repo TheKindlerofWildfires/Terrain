@@ -24,7 +24,8 @@ import org.lwjgl.BufferUtils;
 
 public class Utilities {
 
-	public static float[][][] unflatten(int[] input, int xSize, int ySize, int zSize) {
+	public static float[][][] unflatten(int[] input, int xSize, int ySize,
+			int zSize) {
 		float[][][] output = new float[xSize][ySize][zSize];
 		for (int i = 0; i < input.length; i++) {
 			int xPos = i % xSize;
@@ -39,7 +40,8 @@ public class Utilities {
 	}
 
 	public static float[] flatten(int[][][] properties) {
-		float[] output = new float[properties.length * properties[0].length * properties[0][0].length];
+		float[] output = new float[properties.length * properties[0].length
+				* properties[0][0].length];
 		int counter = 0;
 		for (int z = 0; z < properties[0][0].length; z++) {
 			for (int y = 0; y < properties[0].length; y++) {
@@ -117,8 +119,8 @@ public class Utilities {
 		return shaderID;
 	}
 
-	/** 
-	 * creates uniform buffer object in gpu memory 
+	/**
+	 * creates uniform buffer object in gpu memory
 	 */
 	public static int createUniformBuffer(FloatBuffer data) {
 		int ubo = glGenBuffers();
@@ -127,24 +129,24 @@ public class Utilities {
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 		return ubo;
 	}
-	
+
 	/**
 	 * 
 	 * @param a
 	 * @param b
 	 * @return a mod b
 	 */
-	public static int mod(int a,int b){ 
-		if(a>0){
-			return a%b;
-		} else if(a<0){
-			return b+a%b;
-		} else{
+	public static int mod(int a, int b) {
+		if (a > 0) {
+			return a % b;
+		} else if (a < 0) {
+			return b + a % b;
+		} else {
 			return 0;
 		}
 	}
-	
-	public static void main(String[] args){
-		System.out.println(mod(-1,3));
+
+	public static void main(String[] args) {
+		System.out.println(mod(-1, 3));
 	}
 }

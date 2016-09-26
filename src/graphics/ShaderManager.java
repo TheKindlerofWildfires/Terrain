@@ -22,32 +22,28 @@ public class ShaderManager {
 		landShader.start();
 		landShader.setUniformMatrix4f("pv", camera.pv);
 		landShader.stop();
+		
 		objectShader.start();
-		
 		objectShader.setUniformMatrix4f("pv", camera.pv);
-		//landShader.setUniform3f("cameraPos", camera.getPos());
-		
 		objectShader.stop();
+		
+		//landShader.setUniform3f("cameraPos", camera.getPos());
 	}
 	@Deprecated
 	public static void setCamera(Matrix4f view, Vector3f cameraPos) {
 		landShader.start();
 		landShader.setUniformMatrix4f("view", view);
 		landShader.stop();
-		objectShader.start();
 		
+		objectShader.start();
 		objectShader.setUniformMatrix4f("view", view);
-		//this throws an error
+		objectShader.stop();
+		
 		//landShader.setUniform3f("cameraPos", cameraPos);
 		
-		objectShader.stop();
+		
 	}
 	public static void setLight(Vector3f lightPos) {
 		assert initialized : "Shaders must be initialized in order to work";
-		//landShader.start();
-		objectShader.start();
-		//landShader.setUniform3f("lightPos", lightPos);
-		objectShader.stop();
-		//landShader.stop();
 	}
 }

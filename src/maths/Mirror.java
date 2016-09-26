@@ -2,8 +2,6 @@ package maths;
 
 import java.util.ArrayList;
 
-import world.World;
-
 public class Mirror {
 	private ArrayList<Vector3f> points;
 	private ArrayList<Vector3f> xp = new ArrayList<Vector3f>();
@@ -16,38 +14,45 @@ public class Mirror {
 	private ArrayList<Vector3f> myp = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> myn = new ArrayList<Vector3f>();
 	float specificity = 0.6f;
-	static int spec=970; //this must be proportional to density and to iterator
+	static int spec = 970; // this must be proportional to density and to
+							// iterator
 	static int iterator = 125;
 
 	public Mirror(ArrayList<Vector3f> points) {
 		this.points = points;
-		//corner();
-		//divide();
-		// spread();
 		standard();
 	}
 
 	public Mirror() {
 		standard();
 	}
-	public ArrayList<int[]> fish(){
+
+	/**
+	 * I can't remember what this does
+	 * 
+	 * @return
+	 */
+	public ArrayList<int[]> fish() {
 		ArrayList<int[]> fish = new ArrayList<int[]>();
 		for (int i = 0; i <= 1000; i += iterator) {
-			fish.add(new int[]{i,1});
-			fish.add(new int[]{1,i});
-			fish.add(new int[]{i,-1});
-			fish.add(new int[]{-1,i});
+			fish.add(new int[] { i, 1 });
+			fish.add(new int[] { 1, i });
+			fish.add(new int[] { i, -1 });
+			fish.add(new int[] { -1, i });
 		}
-		
+
 		return fish;
 	}
 
+	/**
+	 * Makes a point shell for poisson
+	 */
 	private void standard() {
 		for (float i = -1; i <= 1; i += .25f) {
 			mxp.add(new Vector3f(1, i, 0));
-			myp.add(new Vector3f(i,1,0));
-			mxn.add(new Vector3f(-1, i,0));
-			myn.add(new Vector3f(i,-1,0));
+			myp.add(new Vector3f(i, 1, 0));
+			mxn.add(new Vector3f(-1, i, 0));
+			myn.add(new Vector3f(i, -1, 0));
 		}
 
 	}
@@ -59,14 +64,15 @@ public class Mirror {
 		points.addAll(myn);
 
 	}
+
 	@Deprecated
 	private void corner() {
-		//xp.add(new Vector3f(specificity, 1, 0));
-		//xp.add(new Vector3f(specificity, -1, 0));
+		// xp.add(new Vector3f(specificity, 1, 0));
+		// xp.add(new Vector3f(specificity, -1, 0));
 		yp.add(new Vector3f(1, specificity, 0));
 		yp.add(new Vector3f(-1, specificity, 0));
-		//xn.add(new Vector3f(-specificity, 1, 0));
-		//xn.add(new Vector3f(-specificity, -1, 0));
+		// xn.add(new Vector3f(-specificity, 1, 0));
+		// xn.add(new Vector3f(-specificity, -1, 0));
 		yn.add(new Vector3f(1, -specificity, 0));
 		yn.add(new Vector3f(-1, -specificity, 0));
 	}
@@ -90,10 +96,11 @@ public class Mirror {
 		}
 	}
 
-	public ArrayList<Vector3f> give() {
+	public ArrayList<Vector3f> points() {
 		return points;
 	}
 
+	@Deprecated
 	private void spread() {
 		for (int i = 0; i < xp.size(); i++) {
 			mxp.add(new Vector3f(1, xp.get(i).y, 0));
@@ -125,23 +132,4 @@ public class Mirror {
 		}
 	}
 
-	public void findPointsX(int x, int y) {
-		mxn.clear();
-		mxn = World.chunks.get(World.chunks.size() / World.chunkY + x - 1)
-				.getSide("xp");
-		// this needs to find the side points of the chunk to its xn and change
-		// mxn to match;
-
-	}
-
-	public void findPointsY(int x, int y) {
-		myn.clear();
-		System.out.println(World.chunks.size() / World.chunkX + y - 1);
-		System.out.println((y + 1) * (x + 1));
-		myn = World.chunks.get(World.chunks.size() / World.chunkX + y - 1)
-				.getSide("yp");
-		// this needs to find the side points of the chunk to its yn and change
-		// myn to match;
-
-	}
 }

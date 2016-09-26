@@ -2,12 +2,15 @@ package oldStuff;
 
 import java.util.ArrayList;
 
-import maths.Direction;
+import stuffnooneneeds.Direction;
 import maths.Edge;
 import maths.Triangle;
 import maths.Vector3f;
 import static maths.Utilities.mod;
-
+/**
+ * Up for deletion
+ *
+ */
 public class Clipping {
 
 	ArrayList<Triangle> badOnes = new ArrayList<Triangle>();

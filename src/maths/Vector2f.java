@@ -1,9 +1,9 @@
 package maths;
 
 /**
- * This class represents a (x,y,z)-Vector. GLSL equivalent to vec3.
+ * This class represents a vec2
  *
- * @author Heiko Brumme
+ * @author TheKingInYellow
  */
 public class Vector2f {
 
@@ -11,7 +11,7 @@ public class Vector2f {
 	public float y;
 
 	/**
-	 * Creates a default 3-tuple vector with all values set to 0.
+	 * Creates a default 2 vector with all values set to 0.
 	 */
 	public Vector2f() {
 		this.x = 0f;
@@ -19,11 +19,14 @@ public class Vector2f {
 	}
 
 	/**
-	 * Creates a 3-tuple vector with specified values.
+	 * Creates a 2 vector with specified values.
 	 *
-	 * @param x x value
-	 * @param y y value
-	 * @param z z value
+	 * @param x
+	 *            x value
+	 * @param y
+	 *            y value
+	 * @param z
+	 *            z value
 	 */
 	public Vector2f(float x, float y) {
 		this.x = x;
@@ -61,7 +64,8 @@ public class Vector2f {
 	/**
 	 * Adds this vector to another vector.
 	 *
-	 * @param other The other vector
+	 * @param other
+	 *            The other vector
 	 * @return Sum of this + other
 	 */
 	public Vector2f add(Vector2f other) {
@@ -82,7 +86,8 @@ public class Vector2f {
 	/**
 	 * Subtracts this vector from another vector.
 	 *
-	 * @param other The other vector
+	 * @param other
+	 *            The other vector
 	 * @return Difference of this - other
 	 */
 	public Vector2f subtract(Vector2f other) {
@@ -92,7 +97,8 @@ public class Vector2f {
 	/**
 	 * Multiplies a vector by a scalar.
 	 *
-	 * @param scalar Scalar to multiply
+	 * @param scalar
+	 *            Scalar to multiply
 	 * @return Scalar product of this * scalar
 	 */
 	public Vector2f scale(float scalar) {
@@ -104,7 +110,8 @@ public class Vector2f {
 	/**
 	 * Divides a vector by a scalar.
 	 *
-	 * @param scalar Scalar to multiply
+	 * @param scalar
+	 *            Scalar to multiply
 	 * @return Scalar quotient of this / scalar
 	 */
 	public Vector2f divide(float scalar) {
@@ -114,7 +121,8 @@ public class Vector2f {
 	/**
 	 * Calculates the dot product of this vector with another vector.
 	 *
-	 * @param other The other vector
+	 * @param other
+	 *            The other vector
 	 * @return Dot product of this * other
 	 */
 	public float dot(Vector2f other) {
@@ -125,8 +133,10 @@ public class Vector2f {
 	 * Calculates a linear interpolation between this vector with another
 	 * vector.
 	 *
-	 * @param other The other vector
-	 * @param alpha The alpha value, must be between 0.0 and 1.0
+	 * @param other
+	 *            The other vector
+	 * @param alpha
+	 *            The alpha value, must be between 0.0 and 1.0
 	 * @return Linear interpolated vector
 	 */
 	public Vector2f lerp(Vector2f other, float alpha) {

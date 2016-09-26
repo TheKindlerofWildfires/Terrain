@@ -26,9 +26,7 @@ import maths.Vector3f;
 import org.lwjgl.BufferUtils;
 
 /**
- * This class takes a series of points (float[])and turns them into a "mesh"
- * This mesh can be passed to render to show it
- * 
+ * Up for deletion
  * @author KingInYellow
  *
  */

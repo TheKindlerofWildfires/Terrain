@@ -1,4 +1,5 @@
 package maths;
+
 /*
  * The MIT License (MIT)
  *
@@ -24,13 +25,13 @@ package maths;
  */
 
 import java.nio.FloatBuffer;
+
 import org.lwjgl.BufferUtils;
 
 /**
  * Used for 4x4 Matrix
  *
- * @author Heiko Brumme
- * 			There are many authors at this point
+ * @author Mainly Heiko Brumme, with some other Internet ppl
  */
 public class Matrix4f {
 
@@ -49,14 +50,19 @@ public class Matrix4f {
 	/**
 	 * Creates a 4x4 matrix with specified columns.
 	 *
-	 * @param col1 Vector with values of the first column
-	 * @param col2 Vector with values of the second column
-	 * @param col3 Vector with values of the third column
-	 * @param col4 Vector with values of the fourth column
+	 * @param col1
+	 *            Vector with values of the first column
+	 * @param col2
+	 *            Vector with values of the second column
+	 * @param col3
+	 *            Vector with values of the third column
+	 * @param col4
+	 *            Vector with values of the fourth column
 	 */
 
-	public Matrix4f(float i00, float i01, float i02, float i03, float i10, float i11, float i12, float i13, float i20,
-			float i21, float i22, float i23, float i30, float i31, float i32, float i33) {
+	public Matrix4f(float i00, float i01, float i02, float i03, float i10,
+			float i11, float i12, float i13, float i20, float i21, float i22,
+			float i23, float i30, float i31, float i32, float i33) {
 		m00 = i00;
 		m01 = i01;
 		m02 = i02;
@@ -123,7 +129,8 @@ public class Matrix4f {
 	/**
 	 * Adds this matrix to another matrix.
 	 *
-	 * @param other The other matrix
+	 * @param other
+	 *            The other matrix
 	 * @return Sum of this + other
 	 */
 	public Matrix4f add(Matrix4f other) {
@@ -164,7 +171,8 @@ public class Matrix4f {
 	/**
 	 * Subtracts this matrix from another matrix.
 	 *
-	 * @param other The other matrix
+	 * @param other
+	 *            The other matrix
 	 * @return Difference of this - other
 	 */
 	public Matrix4f subtract(Matrix4f other) {
@@ -174,7 +182,8 @@ public class Matrix4f {
 	/**
 	 * Multiplies this matrix with a scalar.
 	 *
-	 * @param scalar The scalar
+	 * @param scalar
+	 *            The scalar
 	 * @return Scalar product of this * scalar
 	 */
 	public Matrix4f multiply(float scalar) {
@@ -206,45 +215,67 @@ public class Matrix4f {
 	/**
 	 * Multiplies this matrix to a vector.
 	 *
-	 * @param vector The vector
+	 * @param vector
+	 *            The vector
 	 * @return Vector product of this * other
 	 */
 	public Vector4f multiply(Vector4f vector) {
-		float x = this.m00 * vector.x + this.m01 * vector.y + this.m02 * vector.z + this.m03 * vector.w;
-		float y = this.m10 * vector.x + this.m11 * vector.y + this.m12 * vector.z + this.m13 * vector.w;
-		float z = this.m20 * vector.x + this.m21 * vector.y + this.m22 * vector.z + this.m23 * vector.w;
-		float w = this.m30 * vector.x + this.m31 * vector.y + this.m32 * vector.z + this.m33 * vector.w;
+		float x = this.m00 * vector.x + this.m01 * vector.y + this.m02
+				* vector.z + this.m03 * vector.w;
+		float y = this.m10 * vector.x + this.m11 * vector.y + this.m12
+				* vector.z + this.m13 * vector.w;
+		float z = this.m20 * vector.x + this.m21 * vector.y + this.m22
+				* vector.z + this.m23 * vector.w;
+		float w = this.m30 * vector.x + this.m31 * vector.y + this.m32
+				* vector.z + this.m33 * vector.w;
 		return new Vector4f(x, y, z, w);
 	}
 
 	/**
 	 * Multiplies this matrix to another matrix.
 	 *
-	 * @param other The other matrix
+	 * @param other
+	 *            The other matrix
 	 * @return Matrix product of this * other
 	 */
 	public Matrix4f multiply(Matrix4f other) {
 		Matrix4f result = new Matrix4f();
 
-		result.m00 = this.m00 * other.m00 + this.m01 * other.m10 + this.m02 * other.m20 + this.m03 * other.m30;
-		result.m10 = this.m10 * other.m00 + this.m11 * other.m10 + this.m12 * other.m20 + this.m13 * other.m30;
-		result.m20 = this.m20 * other.m00 + this.m21 * other.m10 + this.m22 * other.m20 + this.m23 * other.m30;
-		result.m30 = this.m30 * other.m00 + this.m31 * other.m10 + this.m32 * other.m20 + this.m33 * other.m30;
+		result.m00 = this.m00 * other.m00 + this.m01 * other.m10 + this.m02
+				* other.m20 + this.m03 * other.m30;
+		result.m10 = this.m10 * other.m00 + this.m11 * other.m10 + this.m12
+				* other.m20 + this.m13 * other.m30;
+		result.m20 = this.m20 * other.m00 + this.m21 * other.m10 + this.m22
+				* other.m20 + this.m23 * other.m30;
+		result.m30 = this.m30 * other.m00 + this.m31 * other.m10 + this.m32
+				* other.m20 + this.m33 * other.m30;
 
-		result.m01 = this.m00 * other.m01 + this.m01 * other.m11 + this.m02 * other.m21 + this.m03 * other.m31;
-		result.m11 = this.m10 * other.m01 + this.m11 * other.m11 + this.m12 * other.m21 + this.m13 * other.m31;
-		result.m21 = this.m20 * other.m01 + this.m21 * other.m11 + this.m22 * other.m21 + this.m23 * other.m31;
-		result.m31 = this.m30 * other.m01 + this.m31 * other.m11 + this.m32 * other.m21 + this.m33 * other.m31;
+		result.m01 = this.m00 * other.m01 + this.m01 * other.m11 + this.m02
+				* other.m21 + this.m03 * other.m31;
+		result.m11 = this.m10 * other.m01 + this.m11 * other.m11 + this.m12
+				* other.m21 + this.m13 * other.m31;
+		result.m21 = this.m20 * other.m01 + this.m21 * other.m11 + this.m22
+				* other.m21 + this.m23 * other.m31;
+		result.m31 = this.m30 * other.m01 + this.m31 * other.m11 + this.m32
+				* other.m21 + this.m33 * other.m31;
 
-		result.m02 = this.m00 * other.m02 + this.m01 * other.m12 + this.m02 * other.m22 + this.m03 * other.m32;
-		result.m12 = this.m10 * other.m02 + this.m11 * other.m12 + this.m12 * other.m22 + this.m13 * other.m32;
-		result.m22 = this.m20 * other.m02 + this.m21 * other.m12 + this.m22 * other.m22 + this.m23 * other.m32;
-		result.m32 = this.m30 * other.m02 + this.m31 * other.m12 + this.m32 * other.m22 + this.m33 * other.m32;
+		result.m02 = this.m00 * other.m02 + this.m01 * other.m12 + this.m02
+				* other.m22 + this.m03 * other.m32;
+		result.m12 = this.m10 * other.m02 + this.m11 * other.m12 + this.m12
+				* other.m22 + this.m13 * other.m32;
+		result.m22 = this.m20 * other.m02 + this.m21 * other.m12 + this.m22
+				* other.m22 + this.m23 * other.m32;
+		result.m32 = this.m30 * other.m02 + this.m31 * other.m12 + this.m32
+				* other.m22 + this.m33 * other.m32;
 
-		result.m03 = this.m00 * other.m03 + this.m01 * other.m13 + this.m02 * other.m23 + this.m03 * other.m33;
-		result.m13 = this.m10 * other.m03 + this.m11 * other.m13 + this.m12 * other.m23 + this.m13 * other.m33;
-		result.m23 = this.m20 * other.m03 + this.m21 * other.m13 + this.m22 * other.m23 + this.m23 * other.m33;
-		result.m33 = this.m30 * other.m03 + this.m31 * other.m13 + this.m32 * other.m23 + this.m33 * other.m33;
+		result.m03 = this.m00 * other.m03 + this.m01 * other.m13 + this.m02
+				* other.m23 + this.m03 * other.m33;
+		result.m13 = this.m10 * other.m03 + this.m11 * other.m13 + this.m12
+				* other.m23 + this.m13 * other.m33;
+		result.m23 = this.m20 * other.m03 + this.m21 * other.m13 + this.m22
+				* other.m23 + this.m23 * other.m33;
+		result.m33 = this.m30 * other.m03 + this.m31 * other.m13 + this.m32
+				* other.m23 + this.m33 * other.m33;
 
 		return result;
 	}
@@ -299,15 +330,22 @@ public class Matrix4f {
 	 * Creates a orthographic projection matrix. Similar to
 	 * <code>glOrtho(left, right, bottom, top, near, far)</code>.
 	 *
-	 * @param left Coordinate for the left vertical clipping pane
-	 * @param right Coordinate for the right vertical clipping pane
-	 * @param bottom Coordinate for the bottom horizontal clipping pane
-	 * @param top Coordinate for the bottom horizontal clipping pane
-	 * @param near Coordinate for the near depth clipping pane
-	 * @param far Coordinate for the far depth clipping pane
+	 * @param left
+	 *            Coordinate for the left vertical clipping pane
+	 * @param right
+	 *            Coordinate for the right vertical clipping pane
+	 * @param bottom
+	 *            Coordinate for the bottom horizontal clipping pane
+	 * @param top
+	 *            Coordinate for the bottom horizontal clipping pane
+	 * @param near
+	 *            Coordinate for the near depth clipping pane
+	 * @param far
+	 *            Coordinate for the far depth clipping pane
 	 * @return Orthographic matrix
 	 */
-	public static Matrix4f orthographic(float left, float right, float bottom, float top, float near, float far) {
+	public static Matrix4f orthographic(float left, float right, float bottom,
+			float top, float near, float far) {
 		Matrix4f ortho = new Matrix4f();
 
 		float tx = -(right + left) / (right - left);
@@ -328,15 +366,22 @@ public class Matrix4f {
 	 * Creates a perspective projection matrix. Similar to
 	 * <code>glFrustum(left, right, bottom, top, near, far)</code>.
 	 *
-	 * @param left Coordinate for the left vertical clipping pane
-	 * @param right Coordinate for the right vertical clipping pane
-	 * @param bottom Coordinate for the bottom horizontal clipping pane
-	 * @param top Coordinate for the bottom horizontal clipping pane
-	 * @param near Coordinate for the near depth clipping pane, must be positive
-	 * @param far Coordinate for the far depth clipping pane, must be positive
+	 * @param left
+	 *            Coordinate for the left vertical clipping pane
+	 * @param right
+	 *            Coordinate for the right vertical clipping pane
+	 * @param bottom
+	 *            Coordinate for the bottom horizontal clipping pane
+	 * @param top
+	 *            Coordinate for the bottom horizontal clipping pane
+	 * @param near
+	 *            Coordinate for the near depth clipping pane, must be positive
+	 * @param far
+	 *            Coordinate for the far depth clipping pane, must be positive
 	 * @return Perspective matrix
 	 */
-	public static Matrix4f frustum(float left, float right, float bottom, float top, float near, float far) {
+	public static Matrix4f frustum(float left, float right, float bottom,
+			float top, float near, float far) {
 		Matrix4f frustum = new Matrix4f();
 
 		float a = (right + left) / (right - left);
@@ -360,15 +405,20 @@ public class Matrix4f {
 	 * Creates a perspective projection matrix. Similar to
 	 * <code>gluPerspective(fovy, aspec, zNear, zFar)</code>.
 	 *
-	 * @param fovy Field of view angle in degrees
-	 * @param aspect The aspect ratio is the ratio of width to height
-	 * @param near Distance from the viewer to the near clipping plane, must be
-	 * positive
-	 * @param far Distance from the viewer to the far clipping plane, must be
-	 * positive
+	 * @param fovy
+	 *            Field of view angle in degrees
+	 * @param aspect
+	 *            The aspect ratio is the ratio of width to height
+	 * @param near
+	 *            Distance from the viewer to the near clipping plane, must be
+	 *            positive
+	 * @param far
+	 *            Distance from the viewer to the far clipping plane, must be
+	 *            positive
 	 * @return Perspective matrix
 	 */
-	public static Matrix4f perspective(float fovy, float aspect, float near, float far) {
+	public static Matrix4f perspective(float fovy, float aspect, float near,
+			float far) {
 		Matrix4f perspective = new Matrix4f();
 
 		float f = (float) (1f / Math.tan(Math.toRadians(fovy) / 2f));
@@ -384,12 +434,14 @@ public class Matrix4f {
 	}
 
 	/**
-	 * Creates a translation matrix. Similar to
-	 * <code>glTranslate(x, y, z)</code>.
+	 * Creates a translation matrix.
 	 *
-	 * @param x x coordinate of translation vector
-	 * @param y y coordinate of translation vector
-	 * @param z z coordinate of translation vector
+	 * @param x
+	 *            x coordinate of translation vector
+	 * @param y
+	 *            y coordinate of translation vector
+	 * @param z
+	 *            z coordinate of translation vector
 	 * @return Translation matrix
 	 */
 	public static Matrix4f translate(float x, float y, float z) {
@@ -410,26 +462,58 @@ public class Matrix4f {
 
 		s = 1 / s;
 
-		Matrix4f result = new Matrix4f(
-				mat.m11 * (mat.m22 * mat.m33 - mat.m23 * mat.m32) + mat.m12 * (mat.m23 * mat.m31 - mat.m21 * mat.m33) + mat.m13 * (mat.m21 * mat.m32 - mat.m22 * mat.m31),
-				mat.m21 * (mat.m02 * mat.m33 - mat.m03 * mat.m32) + mat.m22 * (mat.m03 * mat.m31 - mat.m01 * mat.m33) + mat.m23 * (mat.m01 * mat.m32 - mat.m02 * mat.m31),
-				mat.m31 * (mat.m02 * mat.m13 - mat.m03 * mat.m12) + mat.m32 * (mat.m03 * mat.m11 - mat.m01 * mat.m13) + mat.m33 * (mat.m01 * mat.m12 - mat.m02 * mat.m11),
-				mat.m01 * (mat.m13 * mat.m22 - mat.m12 * mat.m23) + mat.m02 * (mat.m11 * mat.m23 - mat.m13 * mat.m21) + mat.m03 * (mat.m12 * mat.m21 - mat.m11 * mat.m22),
+		Matrix4f result = new Matrix4f(mat.m11
+				* (mat.m22 * mat.m33 - mat.m23 * mat.m32) + mat.m12
+				* (mat.m23 * mat.m31 - mat.m21 * mat.m33) + mat.m13
+				* (mat.m21 * mat.m32 - mat.m22 * mat.m31), mat.m21
+				* (mat.m02 * mat.m33 - mat.m03 * mat.m32) + mat.m22
+				* (mat.m03 * mat.m31 - mat.m01 * mat.m33) + mat.m23
+				* (mat.m01 * mat.m32 - mat.m02 * mat.m31), mat.m31
+				* (mat.m02 * mat.m13 - mat.m03 * mat.m12) + mat.m32
+				* (mat.m03 * mat.m11 - mat.m01 * mat.m13) + mat.m33
+				* (mat.m01 * mat.m12 - mat.m02 * mat.m11), mat.m01
+				* (mat.m13 * mat.m22 - mat.m12 * mat.m23) + mat.m02
+				* (mat.m11 * mat.m23 - mat.m13 * mat.m21) + mat.m03
+				* (mat.m12 * mat.m21 - mat.m11 * mat.m22),
 
-				mat.m12 * (mat.m20 * mat.m33 - mat.m23 * mat.m30) + mat.m13 * (mat.m22 * mat.m30 - mat.m20 * mat.m32) + mat.m10 * (mat.m23 * mat.m32 - mat.m22 * mat.m33),
-				mat.m22 * (mat.m00 * mat.m33 - mat.m03 * mat.m30) + mat.m23 * (mat.m02 * mat.m30 - mat.m00 * mat.m32) + mat.m20 * (mat.m03 * mat.m32 - mat.m02 * mat.m33),
-				mat.m32 * (mat.m00 * mat.m13 - mat.m03 * mat.m10) + mat.m33 * (mat.m02 * mat.m10 - mat.m00 * mat.m12) + mat.m30 * (mat.m03 * mat.m12 - mat.m02 * mat.m13),
-				mat.m02 * (mat.m13 * mat.m20 - mat.m10 * mat.m23) + mat.m03 * (mat.m10 * mat.m22 - mat.m12 * mat.m20) + mat.m00 * (mat.m12 * mat.m23 - mat.m13 * mat.m22),
+		mat.m12 * (mat.m20 * mat.m33 - mat.m23 * mat.m30) + mat.m13
+				* (mat.m22 * mat.m30 - mat.m20 * mat.m32) + mat.m10
+				* (mat.m23 * mat.m32 - mat.m22 * mat.m33), mat.m22
+				* (mat.m00 * mat.m33 - mat.m03 * mat.m30) + mat.m23
+				* (mat.m02 * mat.m30 - mat.m00 * mat.m32) + mat.m20
+				* (mat.m03 * mat.m32 - mat.m02 * mat.m33), mat.m32
+				* (mat.m00 * mat.m13 - mat.m03 * mat.m10) + mat.m33
+				* (mat.m02 * mat.m10 - mat.m00 * mat.m12) + mat.m30
+				* (mat.m03 * mat.m12 - mat.m02 * mat.m13), mat.m02
+				* (mat.m13 * mat.m20 - mat.m10 * mat.m23) + mat.m03
+				* (mat.m10 * mat.m22 - mat.m12 * mat.m20) + mat.m00
+				* (mat.m12 * mat.m23 - mat.m13 * mat.m22),
 
-				mat.m13 * (mat.m20 * mat.m31 - mat.m21 * mat.m30) + mat.m10 * (mat.m21 * mat.m33 - mat.m23 * mat.m31) + mat.m11 * (mat.m23 * mat.m30 - mat.m20 * mat.m33),
-				mat.m23 * (mat.m00 * mat.m31 - mat.m01 * mat.m30) + mat.m20 * (mat.m01 * mat.m33 - mat.m03 * mat.m31) + mat.m21 * (mat.m03 * mat.m30 - mat.m00 * mat.m33),
-				mat.m33 * (mat.m00 * mat.m11 - mat.m01 * mat.m10) + mat.m30 * (mat.m01 * mat.m13 - mat.m03 * mat.m11) + mat.m31 * (mat.m03 * mat.m10 - mat.m00 * mat.m13),
-				mat.m03 * (mat.m11 * mat.m20 - mat.m10 * mat.m21) + mat.m00 * (mat.m13 * mat.m21 - mat.m11 * mat.m23) + mat.m01 * (mat.m10 * mat.m23 - mat.m13 * mat.m20),
+		mat.m13 * (mat.m20 * mat.m31 - mat.m21 * mat.m30) + mat.m10
+				* (mat.m21 * mat.m33 - mat.m23 * mat.m31) + mat.m11
+				* (mat.m23 * mat.m30 - mat.m20 * mat.m33), mat.m23
+				* (mat.m00 * mat.m31 - mat.m01 * mat.m30) + mat.m20
+				* (mat.m01 * mat.m33 - mat.m03 * mat.m31) + mat.m21
+				* (mat.m03 * mat.m30 - mat.m00 * mat.m33), mat.m33
+				* (mat.m00 * mat.m11 - mat.m01 * mat.m10) + mat.m30
+				* (mat.m01 * mat.m13 - mat.m03 * mat.m11) + mat.m31
+				* (mat.m03 * mat.m10 - mat.m00 * mat.m13), mat.m03
+				* (mat.m11 * mat.m20 - mat.m10 * mat.m21) + mat.m00
+				* (mat.m13 * mat.m21 - mat.m11 * mat.m23) + mat.m01
+				* (mat.m10 * mat.m23 - mat.m13 * mat.m20),
 
-				mat.m10 * (mat.m22 * mat.m31 - mat.m21 * mat.m32) + mat.m11 * (mat.m20 * mat.m32 - mat.m22 * mat.m30) + mat.m12 * (mat.m21 * mat.m30 - mat.m20 * mat.m31),
-				mat.m20 * (mat.m02 * mat.m31 - mat.m01 * mat.m32) + mat.m21 * (mat.m00 * mat.m32 - mat.m02 * mat.m30) + mat.m22 * (mat.m01 * mat.m30 - mat.m00 * mat.m31),
-				mat.m30 * (mat.m02 * mat.m11 - mat.m01 * mat.m12) + mat.m31 * (mat.m00 * mat.m12 - mat.m02 * mat.m10) + mat.m32 * (mat.m01 * mat.m10 - mat.m00 * mat.m11),
-				mat.m00 * (mat.m11 * mat.m22 - mat.m12 * mat.m21) + mat.m01 * (mat.m12 * mat.m20 - mat.m10 * mat.m22) + mat.m02 * (mat.m10 * mat.m21 - mat.m11 * mat.m20));
+		mat.m10 * (mat.m22 * mat.m31 - mat.m21 * mat.m32) + mat.m11
+				* (mat.m20 * mat.m32 - mat.m22 * mat.m30) + mat.m12
+				* (mat.m21 * mat.m30 - mat.m20 * mat.m31), mat.m20
+				* (mat.m02 * mat.m31 - mat.m01 * mat.m32) + mat.m21
+				* (mat.m00 * mat.m32 - mat.m02 * mat.m30) + mat.m22
+				* (mat.m01 * mat.m30 - mat.m00 * mat.m31), mat.m30
+				* (mat.m02 * mat.m11 - mat.m01 * mat.m12) + mat.m31
+				* (mat.m00 * mat.m12 - mat.m02 * mat.m10) + mat.m32
+				* (mat.m01 * mat.m10 - mat.m00 * mat.m11), mat.m00
+				* (mat.m11 * mat.m22 - mat.m12 * mat.m21) + mat.m01
+				* (mat.m12 * mat.m20 - mat.m10 * mat.m22) + mat.m02
+				* (mat.m10 * mat.m21 - mat.m11 * mat.m20));
 
 		result.multiply(s);
 		return result;
@@ -437,19 +521,26 @@ public class Matrix4f {
 
 	public float determinant() {
 		// less *,+,- calculation than expanded expression.
-		return (m00 * m11 - m01 * m10) * (m22 * m33 - m23 * m32) - (m00 * m12 - m02 * m10) * (m21 * m33 - m23 * m31)
-				+ (m00 * m13 - m03 * m10) * (m21 * m32 - m22 * m31) + (m01 * m12 - m02 * m11) * (m20 * m33 - m23 * m30)
-				- (m01 * m13 - m03 * m11) * (m20 * m32 - m22 * m30) + (m02 * m13 - m03 * m12) * (m20 * m31 - m21 * m30);
+		return (m00 * m11 - m01 * m10) * (m22 * m33 - m23 * m32)
+				- (m00 * m12 - m02 * m10) * (m21 * m33 - m23 * m31)
+				+ (m00 * m13 - m03 * m10) * (m21 * m32 - m22 * m31)
+				+ (m01 * m12 - m02 * m11) * (m20 * m33 - m23 * m30)
+				- (m01 * m13 - m03 * m11) * (m20 * m32 - m22 * m30)
+				+ (m02 * m13 - m03 * m12) * (m20 * m31 - m21 * m30);
 	}
 
 	/**
 	 * Creates a rotation matrix. Similar to
 	 * <code>glRotate(angle, x, y, z)</code>.
 	 *
-	 * @param angle Angle of rotation in degrees
-	 * @param x x coordinate of the rotation vector
-	 * @param y y coordinate of the rotation vector
-	 * @param z z coordinate of the rotation vector
+	 * @param angle
+	 *            Angle of rotation in degrees
+	 * @param x
+	 *            x coordinate of the rotation vector
+	 * @param y
+	 *            y coordinate of the rotation vector
+	 * @param z
+	 *            z coordinate of the rotation vector
 	 * @return Rotation matrix
 	 */
 	public static Matrix4f rotate(float angle, float x, float y, float z) {
@@ -481,9 +572,12 @@ public class Matrix4f {
 	/**
 	 * Creates a scaling matrix. Similar to <code>glScale(x, y, z)</code>.
 	 *
-	 * @param x Scale factor along the x coordinate
-	 * @param y Scale factor along the y coordinate
-	 * @param z Scale factor along the z coordinate
+	 * @param x
+	 *            Scale factor along the x coordinate
+	 * @param y
+	 *            Scale factor along the y coordinate
+	 * @param z
+	 *            Scale factor along the z coordinate
 	 * @return Scaling matrix
 	 */
 	public static Matrix4f scale(float x, float y, float z) {
@@ -512,11 +606,11 @@ public class Matrix4f {
 		result.m22 = -forward.z;
 		return result.multiply(Matrix4f.translate(-eye.x, -eye.y, -eye.z));
 	}
-	
-	public String toString(){
-		return (m00 + "," + m01 + "," + m02 + "," + m03 + "\n" +
-				m10 + "," + m11 + "," + m12 + "," + m13 + "\n" + 
-				m20 + "," + m21 + "," + m22 + "," + m23 + "\n" +
-				m30 + "," + m31 + "," + m32 + "," + m33 + "\n");
+
+	public String toString() {
+		return (m00 + "," + m01 + "," + m02 + "," + m03 + "\n" + m10 + ","
+				+ m11 + "," + m12 + "," + m13 + "\n" + m20 + "," + m21 + ","
+				+ m22 + "," + m23 + "\n" + m30 + "," + m31 + "," + m32 + ","
+				+ m33 + "\n");
 	}
 }
