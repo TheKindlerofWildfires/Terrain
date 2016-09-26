@@ -20,13 +20,17 @@ public class VertexArrayObject {
 	public static int numberOfVAOS = 0;
 
 	private int vaoID;
+	private int size;
 
 	public VertexArrayObject(float[] vertices, byte[] indices, int numberOfVec3s) {
 		numberOfVAOS++;
+		size = indices.length;
 		createArrayObject(vertices, indices, numberOfVec3s);
 	}
 
 	public VertexArrayObject(float[] vertices, int numberOfVec3s) {
+		numberOfVAOS++;
+		size = vertices.length / 3 / numberOfVec3s;
 		createArrayObject(vertices, numberOfVec3s);
 	}
 
@@ -66,5 +70,9 @@ public class VertexArrayObject {
 
 	public int getVaoID() {
 		return this.vaoID;
+	}
+
+	public int getSize() {
+		return this.size;
 	}
 }

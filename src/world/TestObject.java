@@ -47,7 +47,7 @@ public class TestObject {
 
 	public TestObject() {
 		try {
-			vao = OBJLoader.loadMesh("src/models/wood.obj");
+			vao = OBJLoader.loadMesh("src/models/test.obj");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -90,7 +90,7 @@ public class TestObject {
 		graphics.ShaderManager.objectShader.start();
 		glBindTexture(GL_TEXTURE_2D, texture.getId());
 		glBindVertexArray(vao.getVaoID());
-		glDrawArrays(GL_TRIANGLES, 0, indices.length);
+		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
 		graphics.ShaderManager.landShader.stop();
 		//objectShader.
 

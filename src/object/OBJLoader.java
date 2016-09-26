@@ -64,26 +64,30 @@ public class OBJLoader {
 			posArr[i * 3 + 2] = pos.z;
 			i++;
 		}
-		float[] textCoordArr = new float[posList.size() * 2];
-		float[] normArr = new float[posList.size() * 3];
 
 		List<Vector3f> vertices = new ArrayList<Vector3f>();
 
+		System.out.println(facesList.size());
+		int x=1;
 		for (Face face : facesList) {
 			IdxGroup[] faceVertexIndices = face.getFaceVertexIndices();
-			System.out.println("face");
+			System.out.println(x++);
+			int y=0;
 			for (IdxGroup indValue : faceVertexIndices) {
-				System.out.println("IDX");
+				System.out.println(y++);
 				int pos = indValue.idxPos;
 				int norm = indValue.idxVecNormal;
 				int textCoord = indValue.idxTextCoord;
 				vertices.add(posList.get(pos));
 				vertices.add(normList.get(norm));
-				if(textCoord>=0){
+				if(textCoordList.size()>0){
 					vertices.add(new Vector3f(textCoordList.get(textCoord), 0));
+				}else{
+					vertices.add(new Vector3f(0,0,0));
 				}
 			}
 		}
+		System.out.println(vertices.size());
 		int[] indicesArr = new int[indices.size()];
 		indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
 		float[] verts = new float[vertices.size() * 3];
