@@ -71,11 +71,11 @@ public class OBJLoader {
 		List<Vector3f> vertices = new ArrayList<Vector3f>();
 
 		//System.out.println(facesList.size());
-		int x = 1;
+		//int x = 1;
 		for (Face face : facesList) {
 			IdxGroup[] faceVertexIndices = face.getFaceVertexIndices();
 			//System.out.println(x++);
-			int y = 0;
+		//	int y = 0;
 			for (IdxGroup indValue : faceVertexIndices) {
 				//System.out.println(y++);
 				int pos = indValue.idxPos;

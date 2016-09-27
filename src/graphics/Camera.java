@@ -89,6 +89,7 @@ public class Camera {
 		default:
 			System.err.println("wtf");
 		}
+		displacement.normalize();
 		move(displacement);
 	}
 

@@ -3,10 +3,12 @@ https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/
 Assigned:
 	Fix lighting
 	Optimization
-	Object loader
-Eventual:
+	Fix camera strait down bug
+	Make models move
 	Sky box
 	Caves
+Eventual:
+	Chunks load as move
 	Weather
 	Colliders
 	Day night cycle

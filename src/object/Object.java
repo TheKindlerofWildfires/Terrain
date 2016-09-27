@@ -1,4 +1,4 @@
-package world;
+package object;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -6,8 +6,6 @@ import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import graphics.VertexArrayObject;
-import object.OBJLoader;
-import object.Texture;
 
 public class Object {
 	Texture texture;
@@ -22,11 +20,11 @@ public class Object {
 	 */
 	public Object(String modelPath, String texturePath) {
 		try {
-			vao = OBJLoader.loadMesh("src/models/torus.obj");
+			vao = OBJLoader.loadMesh(modelPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		texture = new Texture("src/textures/wood.png");
+		texture = new Texture(texturePath);
 	}
 
 	/**

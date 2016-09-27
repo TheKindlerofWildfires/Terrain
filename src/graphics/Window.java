@@ -34,11 +34,12 @@ import input.MouseInput;
 
 import java.util.Random;
 
+import object.Object;
+
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
-import world.Object;
 import world.World;
 
 public class Window implements Runnable {
