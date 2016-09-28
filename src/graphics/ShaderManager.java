@@ -19,8 +19,8 @@ public class ShaderManager {
 		atten = new Attenuation();
 		light = new PointLight();
 		atten.constant = 0f;
-		atten.exponent = 0f;
-		atten.linear = .5f;
+		atten.exponent = .1f;
+		atten.linear = .1f;
 		light.att = atten;
 		light.colour = new Vector3f(1, 1, 1);
 		light.intensity = 1f;
@@ -38,10 +38,14 @@ public class ShaderManager {
 		objectShader.start();
 		objectShader.setPointLight("pointLight", light);
 		objectShader.setMaterial("material", matt);
+		objectShader.setUniform1f("specularPower", 1);
+		objectShader.setUniform3f("ambientLight", new Vector3f(.1f,.1f,.1f));
 		objectShader.stop();
 
 		landShader.start();
 		landShader.setPointLight("pointLight", light);
+		landShader.setUniform1f("specularPower", 1);
+		landShader.setUniform3f("ambientLight", new Vector3f(.3f,.3f,.3f));
 		landShader.stop();
 	}
 
