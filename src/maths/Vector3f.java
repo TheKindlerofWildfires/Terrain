@@ -1,7 +1,5 @@
 package maths;
 
-import stuffnooneneeds.Direction;
-
 /**
  * This class represents a (x,y,z)-Vector. GLSL equivalent to vec3.
  *
@@ -13,7 +11,7 @@ public class Vector3f {
 	public float y;
 	public float z;
 
-	public boolean isInside(Direction dir, float bound) {
+	/*public boolean isInside(Direction dir, float bound) {
 		switch (dir) {
 		case NORTH:
 			return y < bound;

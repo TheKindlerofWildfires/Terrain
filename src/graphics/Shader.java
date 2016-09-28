@@ -1,6 +1,6 @@
 package graphics;
 
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL20.glAttachShader;
 import static org.lwjgl.opengl.GL20.glCreateProgram;
@@ -13,8 +13,8 @@ import static org.lwjgl.opengl.GL20.glUniform3f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
-import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.opengl.GL31.*;
+import static org.lwjgl.opengl.GL30.glBindBufferBase;
+import static org.lwjgl.opengl.GL31.GL_UNIFORM_BUFFER;
 import static org.lwjgl.opengl.GL31.glGetUniformBlockIndex;
 import static org.lwjgl.opengl.GL31.glUniformBlockBinding;
 
@@ -53,7 +53,8 @@ public class Shader {
 	public Shader(String vertexFile, String fragmentFile) {
 		initialized = true;
 		vertexShaderID = Utilities.loadShader(vertexFile, GL_VERTEX_SHADER);
-		fragmentShaderID = Utilities.loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+		fragmentShaderID = Utilities.loadShader(fragmentFile,
+				GL_FRAGMENT_SHADER);
 		programID = glCreateProgram();
 		if (vertexShaderID == -1 || fragmentShaderID == -1) {
 			initialized = false;

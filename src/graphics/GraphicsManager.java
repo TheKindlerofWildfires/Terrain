@@ -26,6 +26,7 @@ public class GraphicsManager {
 	private static final Vector3f lightStartPos = new Vector3f(0, 0, 1);
 
 	Camera camera;
+	//95% sure this is worthless
 	private Vector3f lightPos;
 
 	public GraphicsManager() {

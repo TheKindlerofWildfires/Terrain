@@ -47,6 +47,7 @@ public class Window implements Runnable {
 	public boolean running = true;
 
 	private Long window;
+	@SuppressWarnings("unused")
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
 	private GraphicsManager graphicsManager;
@@ -119,7 +120,7 @@ public class Window implements Runnable {
 	private void randomize() {
 		// setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
-		worldRandom.setSeed(120);
+		//worldRandom.setSeed(120);
 		mathRandom.setSeed(worldRandom.nextLong());
 		World.perlinSeed = mathRandom.nextInt();
 

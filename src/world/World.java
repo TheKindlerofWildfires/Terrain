@@ -7,8 +7,8 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	Perlin noise;
 	public static int perlinSeed;
-	public static final int chunkY=4;
-	public static final int chunkX=4;
+	public static final int chunkY=10;
+	public static final int chunkX=10;
 	public static final int chunkS = chunkY*chunkX;
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 	
@@ -19,8 +19,8 @@ public class World {
 	public World() {
 		noise = new Perlin();
 		noise.setFrequency(0.04);
-		noise.setLacunarity(2);
-		noise.setOctaveCount(30);
+		noise.setLacunarity(2.2);
+		noise.setOctaveCount(10);
 		//noise.setPersistence(0.4);
 		noise.setSeed(perlinSeed);
 		/*

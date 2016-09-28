@@ -32,20 +32,22 @@ public class ShaderManager {
 		matt.reflectance = .05f;
 
 		initialized = true;
-		landShader = new Shader("src/shaders/land.vert", "src/shaders/land.frag");
-		objectShader = new Shader("src/shaders/object.vert", "src/shaders/object.frag");
+		landShader = new Shader("src/shaders/land.vert",
+				"src/shaders/land.frag");
+		objectShader = new Shader("src/shaders/object.vert",
+				"src/shaders/object.frag");
 
 		objectShader.start();
 		objectShader.setPointLight("pointLight", light);
 		objectShader.setMaterial("material", matt);
 		objectShader.setUniform1f("specularPower", 1);
-		objectShader.setUniform3f("ambientLight", new Vector3f(.1f,.1f,.1f));
+		objectShader.setUniform3f("ambientLight", new Vector3f(.1f, .1f, .1f));
 		objectShader.stop();
 
 		landShader.start();
 		landShader.setPointLight("pointLight", light);
 		landShader.setUniform1f("specularPower", 1);
-		landShader.setUniform3f("ambientLight", new Vector3f(.3f,.3f,.3f));
+		landShader.setUniform3f("ambientLight", new Vector3f(.3f, .3f, .3f));
 		landShader.stop();
 	}
 
@@ -55,16 +57,19 @@ public class ShaderManager {
 		landShader.start();
 		landShader.setUniformMatrix4f("projection", camera.projection);
 		landShader.setUniformMatrix4f("modelView", camera.view);
-		Vector4f pos = camera.view.multiply(new Vector4f(light.position.x, light.position.y, light.position.z, 1));
-		landShader.setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
+		Vector4f pos = camera.view.multiply(new Vector4f(light.position.x,
+				light.position.y, light.position.z, 1));
+		landShader.setUniform3f("pointLight.position", new Vector3f(pos.x,
+				pos.y, pos.z));
 		landShader.stop();
 
 		objectShader.start();
 		objectShader.setUniformMatrix4f("projection", camera.projection);
 		objectShader.setUniformMatrix4f("modelView", camera.view);
-		objectShader.setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
+		objectShader.setUniform3f("pointLight.position", new Vector3f(pos.x,
+				pos.y, pos.z));
 		objectShader.stop();
-		//landShader.setUniform3f("cameraPos", camera.getPos());
+		// landShader.setUniform3f("cameraPos", camera.getPos());
 	}
 
 	@Deprecated
@@ -77,6 +82,6 @@ public class ShaderManager {
 		objectShader.setUniformMatrix4f("view", view);
 		objectShader.stop();
 
-		//landShader.setUniform3f("cameraPos", cameraPos);
+		// landShader.setUniform3f("cameraPos", cameraPos);
 	}
 }

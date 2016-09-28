@@ -1,6 +1,5 @@
 package maths;
 
-import stuffnooneneeds.Direction;
 
 public class Edge {
 
@@ -27,7 +26,7 @@ public class Edge {
 			return false;
 		}
 	}
-
+	/*
 	public static Vector3f intersect(Edge edge, Direction dir, float bound) {
 		System.out.println(dir);
 		System.out.println(edge);
@@ -53,7 +52,7 @@ public class Edge {
 			assert false : "you done fucked up";
 			return null;
 		}
-	}
+	}*/
 	
 	public String toString(){
 		return points[0] + " ; " + points[1];
