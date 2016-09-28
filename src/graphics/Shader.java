@@ -1,6 +1,6 @@
 package graphics;
 
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL20.glAttachShader;
 import static org.lwjgl.opengl.GL20.glCreateProgram;
@@ -13,8 +13,8 @@ import static org.lwjgl.opengl.GL20.glUniform3f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
-import static org.lwjgl.opengl.GL30.glBindBufferBase;
-import static org.lwjgl.opengl.GL31.GL_UNIFORM_BUFFER;
+import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL31.*;
 import static org.lwjgl.opengl.GL31.glGetUniformBlockIndex;
 import static org.lwjgl.opengl.GL31.glUniformBlockBinding;
 
@@ -23,6 +23,25 @@ import java.nio.IntBuffer;
 import maths.Matrix4f;
 import maths.Utilities;
 import maths.Vector3f;
+
+class Attenuation {
+	float constant;
+	float linear;
+	float exponent;
+}
+
+class PointLight {
+	Vector3f colour;
+	Vector3f position; // Light position is assumed to be in view coordinates
+	float intensity;
+	Attenuation att;
+}
+
+class Material {
+	Vector3f colour;
+	int useColour;
+	float reflectance;
+};
 
 public class Shader {
 	private int programID;
@@ -34,8 +53,7 @@ public class Shader {
 	public Shader(String vertexFile, String fragmentFile) {
 		initialized = true;
 		vertexShaderID = Utilities.loadShader(vertexFile, GL_VERTEX_SHADER);
-		fragmentShaderID = Utilities.loadShader(fragmentFile,
-				GL_FRAGMENT_SHADER);
+		fragmentShaderID = Utilities.loadShader(fragmentFile, GL_FRAGMENT_SHADER);
 		programID = glCreateProgram();
 		if (vertexShaderID == -1 || fragmentShaderID == -1) {
 			initialized = false;
@@ -102,6 +120,20 @@ public class Shader {
 
 	public void setUniform1iv(String name, IntBuffer position) {
 		glUniform1iv(getUniform(name), position);
+	}
 
+	public void setMaterial(String name, Material material) {
+		setUniform3f(name + ".colour", material.colour);
+		setUniform1i(name + ".useColour", material.useColour);
+		setUniform1f(name + ".reflectance", material.reflectance);
+	}
+
+	public void setPointLight(String name, PointLight pointlight) {
+		setUniform3f(name + ".colour", pointlight.colour);
+		setUniform3f(name + ".position", pointlight.position);
+		setUniform1f(name + ".intensity", pointlight.intensity);
+		setUniform1f(name + ".att.constant", pointlight.att.constant);
+		setUniform1f(name + ".att.linear", pointlight.att.linear);
+		setUniform1f(name + ".att.exponent", pointlight.att.exponent);
 	}
 }

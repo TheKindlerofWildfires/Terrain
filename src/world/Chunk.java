@@ -54,20 +54,16 @@ public class Chunk {
 
 		Delaunay delaunay = new Delaunay(points);
 		terrain = delaunay.getTriangles();
-		float[] vertices = new float[terrain.size() * 3 * 3 * 2];
+		float[] vertices = new float[terrain.size() * 3 * 3 * 3];
 		int c = 0;
 
 		for (int i = 0; i < terrain.size(); i++) {
-			Vector3f centre = terrain.get(i).getCircumcenter()
-					.add(new Vector3f(2f * chunkX, 2f * chunkY, 0));
+			Vector3f centre = terrain.get(i).getCircumcenter().add(new Vector3f(2f * chunkX, 2f * chunkY, 0));
 			for (int j = 0; j < 3; j++) {
-				Vector3f point = terrain.get(i).getPoint(j)
-						.add(new Vector3f(2f * chunkX, 2f * chunkY, 0));
+				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0));
 				// each gen takes about 1/4 of build time
-				float pZ = (float) Math.abs(noise.getValue(point.x, point.y,
-						0.1)) * 4;
-				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y,
-						0.1)) * 4;
+				float pZ = (float) Math.abs(noise.getValue(point.x, point.y, 0.1)) * 4;
+				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * 4;
 
 				float g;
 				float r;
@@ -90,10 +86,14 @@ public class Chunk {
 				vertices[c++] = r;
 				vertices[c++] = g;
 				vertices[c++] = b;
+
+				vertices[c++] = terrain.get(i).getNormal().x;
+				vertices[c++] = terrain.get(i).getNormal().y;
+				vertices[c++] = terrain.get(i).getNormal().z;
 			}
 		}
 
-		VAO = new VertexArrayObject(vertices, 2);
+		VAO = new VertexArrayObject(vertices, 3);
 
 	}
 
