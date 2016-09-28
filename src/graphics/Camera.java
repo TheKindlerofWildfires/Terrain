@@ -7,8 +7,8 @@ public class Camera {
 
 	private Vector3f pos, target, up;
 	private double degX, degZ;
-	private Matrix4f projection;
-	private Matrix4f view;
+	public Matrix4f projection;
+	public Matrix4f view;
 	public Matrix4f pv;
 	float lx, ly;
 	private Vector3f upward;

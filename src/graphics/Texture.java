@@ -1,4 +1,4 @@
-package object;
+package graphics;
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGBA;

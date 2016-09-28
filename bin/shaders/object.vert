@@ -4,10 +4,19 @@ layout (location = 1) in vec3 normal;
 layout (location = 2) in vec3 textCoord;
 
 out vec2 texCoord;
+out vec3 mvVertexNormal;
+out vec3 mvVertexPos;
 
-uniform mat4 pv;
+uniform mat4 projection;
+uniform mat4 modelView;
 
 void main(){
-    gl_Position = pv*vec4(position.x,position.y,position.z, 1.0); // See how we directly give a vec3 to vec4's constructor
+    vec4 mvPos = modelView * vec4(position, 1.0);
+    gl_Position = projection * mvPos;
+ 	texCoord = texCoord;
+    mvVertexNormal = normalize(modelView * vec4(normal, 0.0)).xyz;
+    mvVertexPos = mvPos.xyz;
 	texCoord = vec2(textCoord);
 }
+
+

@@ -34,7 +34,6 @@ public class GraphicsManager {
 				near, far);
 		ShaderManager.setCamera(camera);
 		lightPos = lightStartPos;
-		ShaderManager.setLight(lightPos);
 
 	}
 
