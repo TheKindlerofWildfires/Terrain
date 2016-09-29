@@ -47,6 +47,7 @@ public class ShaderManager {
 		landShader.start();
 		landShader.setPointLight("pointLight", light);
 		landShader.setUniform1f("specularPower", 1);
+		landShader.setUniform1f("material.reflectance", 3);
 		landShader.setUniform3f("ambientLight", new Vector3f(.3f, .3f, .3f));
 		landShader.stop();
 	}

@@ -21,10 +21,19 @@ struct PointLight
     Attenuation att;
 };
 
+struct Material
+{
+    vec3 colour;
+    int useColour;
+    float reflectance;
+};
+
 uniform vec3 ambientLight;
 uniform float specularPower;
 uniform PointLight pointLight;
+uniform Material material;
 uniform vec3 camera_pos;
+uniform float reflectance;
 
 vec4 calcPointLight(PointLight light, vec3 position, vec3 normal)
 {
@@ -43,7 +52,7 @@ vec4 calcPointLight(PointLight light, vec3 position, vec3 normal)
     vec3 reflected_light = normalize(reflect(from_light_source, normal));
     float specularFactor = max( dot(camera_direction, reflected_light), 0.0);
     specularFactor = pow(specularFactor, specularPower);
-    specColour = specularFactor * .8f * vec4(light.colour, 1.0);
+    specColour = specularFactor * material.reflectance * vec4(light.colour, 1.0);
 
     // Attenuation
     float distance = length(light_direction);
