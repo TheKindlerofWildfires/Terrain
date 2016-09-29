@@ -25,5 +25,6 @@
  */
 package noiseLibrary.exception;
 
+@SuppressWarnings("serial")
 public class NoModuleException extends NoiseException {
 }

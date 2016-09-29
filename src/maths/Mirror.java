@@ -4,18 +4,18 @@ import java.util.ArrayList;
 
 public class Mirror {
 	private ArrayList<Vector3f> points;
+	/*
 	private ArrayList<Vector3f> xp = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> xn = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> yp = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> yn = new ArrayList<Vector3f>();
-
+*/
 	private ArrayList<Vector3f> mxp = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> mxn = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> myp = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> myn = new ArrayList<Vector3f>();
 	float specificity = 0.6f;
-	static int spec = 970; // this must be proportional to density and to
-							// iterator
+	static int spec = 970; 
 	static int iterator = 125;
 
 	public Mirror(ArrayList<Vector3f> points) {
@@ -28,7 +28,7 @@ public class Mirror {
 	}
 
 	/**
-	 * I can't remember what this does
+	 * I can't remember what this does, but when you take it away the wholes come back
 	 * 
 	 * @return
 	 */
@@ -64,7 +64,7 @@ public class Mirror {
 		points.addAll(myn);
 
 	}
-
+	/*
 	@Deprecated
 	private void corner() {
 		// xp.add(new Vector3f(specificity, 1, 0));
@@ -75,8 +75,8 @@ public class Mirror {
 		// xn.add(new Vector3f(-specificity, -1, 0));
 		yn.add(new Vector3f(1, -specificity, 0));
 		yn.add(new Vector3f(-1, -specificity, 0));
-	}
-
+	}*/
+	/*
 	@Deprecated
 	private void divide() {
 		for (int i = 0; i < points.size(); i++) {
@@ -94,12 +94,12 @@ public class Mirror {
 			}
 
 		}
-	}
+	}*/
 
 	public ArrayList<Vector3f> points() {
 		return points;
 	}
-
+/*
 	@Deprecated
 	private void spread() {
 		for (int i = 0; i < xp.size(); i++) {
@@ -115,7 +115,7 @@ public class Mirror {
 			myn.add(new Vector3f(yn.get(i).x, -1, 0));
 		}
 	}
-
+*/
 	public ArrayList<Vector3f> getSide(String side) {
 		switch (side) {
 		case "yn":

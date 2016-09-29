@@ -23,18 +23,18 @@ public class GraphicsManager {
 	private static final float far = 100f;
 
 	// Light init constants
-	private static final Vector3f lightStartPos = new Vector3f(0, 0, 1);
+	//private static final Vector3f lightStartPos = new Vector3f(0, 0, 1);
 
 	Camera camera;
 	//95% sure this is worthless
-	private Vector3f lightPos;
+	//private Vector3f lightPos;
 
 	public GraphicsManager() {
 		ShaderManager.init();
 		camera = new Camera(cameraStartPos, cameraStartTarget, up, fov, aspect,
 				near, far);
 		ShaderManager.setCamera(camera);
-		lightPos = lightStartPos;
+		//lightPos = lightStartPos;
 
 	}
 

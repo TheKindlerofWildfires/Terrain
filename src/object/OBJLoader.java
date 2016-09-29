@@ -1,5 +1,7 @@
 package object;
 
+import graphics.VertexArrayObject;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import graphics.VertexArrayObject;
 import maths.Vector2f;
 import maths.Vector3f;
 
@@ -58,7 +59,7 @@ public class OBJLoader {
 	private static VertexArrayObject reorderLists(List<Vector3f> posList,
 			List<Vector2f> textCoordList, List<Vector3f> normList,
 			List<Face> facesList) {
-		List<Integer> indices = new ArrayList<Integer>();
+		//List<Integer> indices = new ArrayList<Integer>();
 		float[] posArr = new float[posList.size() * 3];
 		int i = 0;
 		for (Vector3f pos : posList) {
@@ -91,8 +92,8 @@ public class OBJLoader {
 			}
 		}
 		//System.out.println(vertices.size());
-		int[] indicesArr = new int[indices.size()];
-		indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
+		//int[] indicesArr = new int[indices.size()];
+		//indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
 		float[] verts = new float[vertices.size() * 3];
 		int c = 0;
 		for (i = 0; i < vertices.size(); i++) {
@@ -102,6 +103,7 @@ public class OBJLoader {
 		}
 		return new VertexArrayObject(verts, 3);
 	}
+	/*
 	@Deprecated
 	private static void processFaceVertex(IdxGroup indices,
 			List<Vector2f> textCoordList, List<Vector3f> normList,
@@ -113,7 +115,7 @@ public class OBJLoader {
 			texCoordArr[posIndex * 2] = textCoord.x;
 			texCoordArr[posIndex * 2 + 1] = 1 - textCoord.y;
 		}
-	}
+	}*/
 }
 
 class IdxGroup {

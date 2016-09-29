@@ -3,7 +3,6 @@ package maths;
 import graphics.Window;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class PoissonGenerator {
 	public ArrayList<int[]> points = new ArrayList<int[]>();
@@ -96,7 +95,7 @@ public class PoissonGenerator {
 			remainingPoints--;
 		}
 	}
-
+	/*
 	@Deprecated
 	private void cleanup() {
 		Vector3f nVec = new Vector3f(0, 0, 1);
