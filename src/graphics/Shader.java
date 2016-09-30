@@ -24,25 +24,6 @@ import maths.Matrix4f;
 import maths.Utilities;
 import maths.Vector3f;
 
-class Attenuation {
-	float constant;
-	float linear;
-	float exponent;
-}
-
-class PointLight {
-	Vector3f colour;
-	Vector3f position; // Light position is assumed to be in view coordinates
-	float intensity;
-	Attenuation att;
-}
-
-class Material {
-	Vector3f colour;
-	int useColour;
-	float reflectance;
-};
-
 public class Shader {
 	private int programID;
 	private int vertexShaderID;
@@ -53,8 +34,7 @@ public class Shader {
 	public Shader(String vertexFile, String fragmentFile) {
 		initialized = true;
 		vertexShaderID = Utilities.loadShader(vertexFile, GL_VERTEX_SHADER);
-		fragmentShaderID = Utilities.loadShader(fragmentFile,
-				GL_FRAGMENT_SHADER);
+		fragmentShaderID = Utilities.loadShader(fragmentFile, GL_FRAGMENT_SHADER);
 		programID = glCreateProgram();
 		if (vertexShaderID == -1 || fragmentShaderID == -1) {
 			initialized = false;
@@ -136,5 +116,11 @@ public class Shader {
 		setUniform1f(name + ".att.constant", pointlight.att.constant);
 		setUniform1f(name + ".att.linear", pointlight.att.linear);
 		setUniform1f(name + ".att.exponent", pointlight.att.exponent);
+	}
+
+	public void setDirectionalLight(String uniformName, DirectionalLight dirLight) {
+		setUniform3f(uniformName + ".colour", dirLight.colour);
+		setUniform3f(uniformName + ".direction", dirLight.direction);
+		setUniform1f(uniformName + ".intensity", dirLight.intensity);
 	}
 }

@@ -8,11 +8,13 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import graphics.Texture;
 import graphics.VertexArrayObject;
+import maths.Matrix4f;
 
 public class Object {
-	Texture texture;
+	protected Texture texture;
+	protected VertexArrayObject vao;
 
-	VertexArrayObject vao;
+	protected Matrix4f model;
 
 	/**
 	 * Creates a new object with the model and texture given
@@ -27,6 +29,7 @@ public class Object {
 			e.printStackTrace();
 		}
 		texture = new Texture(texturePath);
+		model = new Matrix4f().multiply(Matrix4f.scale(3, 3, 1));
 	}
 
 	/**
@@ -34,6 +37,8 @@ public class Object {
 	 */
 	public void render() {
 		graphics.ShaderManager.objectShader.start();
+		graphics.ShaderManager.objectShader.setUniformMatrix4f("modelView",
+				graphics.GraphicsManager.camera.view.multiply(model));
 		glBindTexture(GL_TEXTURE_2D, texture.getId());
 		glBindVertexArray(vao.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
