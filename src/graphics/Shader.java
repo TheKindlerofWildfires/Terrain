@@ -24,92 +24,84 @@ import maths.Matrix4f;
 import maths.Utilities;
 import maths.Vector3f;
 
-public class Shader {
-	private int programID;
-	private int vertexShaderID;
-	private int fragmentShaderID;
+public abstract class Shader {
+	private static int currentProgramID;
 
-	private boolean initialized = false;
-
-	public Shader(String vertexFile, String fragmentFile) {
-		initialized = true;
-		vertexShaderID = Utilities.loadShader(vertexFile, GL_VERTEX_SHADER);
-		fragmentShaderID = Utilities.loadShader(fragmentFile, GL_FRAGMENT_SHADER);
-		programID = glCreateProgram();
+	public static int makeShader(String vertexFile, String fragmentFile) {
+		int vertexShaderID = Utilities.loadShader(vertexFile, GL_VERTEX_SHADER);
+		int fragmentShaderID = Utilities.loadShader(fragmentFile, GL_FRAGMENT_SHADER);
+		int programID = glCreateProgram();
 		if (vertexShaderID == -1 || fragmentShaderID == -1) {
-			initialized = false;
+			assert false : "shader compilation failed";
 		}
 		glAttachShader(programID, vertexShaderID);
 		glAttachShader(programID, fragmentShaderID);
 		glLinkProgram(programID);
 		glValidateProgram(programID);
+		return programID;
 	}
 
-	public int getID() {
-		return this.programID;
-	}
-
-	public int getUniform(String name) {
+	private static int getUniform(String name) {
 		// for (StackTraceElement ste : Thread.currentThread().getStackTrace())
 		// {
 		// System.out.println(ste);
 		// }
-		int result = glGetUniformLocation(programID, name);
+		int result = glGetUniformLocation(currentProgramID, name);
 		if (result == -1) {
 			System.err.println("Could not find uniform variable " + name);
 		}
 		return result;
 	}
 
-	public int getUniformBlock(String name) {
-		int result = glGetUniformBlockIndex(programID, name);
+	private static int getUniformBlock(String name) {
+		int result = glGetUniformBlockIndex(currentProgramID, name);
 		if (result == -1) {
 			System.err.println("Could not find uniform block " + name);
 		}
 		return result;
 	}
 
-	public void setUniformBlockf(String name, int ubo, int location) {
-		glUniformBlockBinding(programID, getUniformBlock(name), location);
+	public static void setUniformBlockf(String name, int ubo, int location) {
+		glUniformBlockBinding(currentProgramID, getUniformBlock(name), location);
 		glBindBufferBase(GL_UNIFORM_BUFFER, location, ubo);
 	}
 
-	public void setUniform1f(String name, float position) {
+	public static void setUniform1f(String name, float position) {
 		glUniform1f(getUniform(name), position);
 	}
 
-	public void setUniformMatrix4f(String name, Matrix4f mat) {
+	public static void setUniformMatrix4f(String name, Matrix4f mat) {
 		glUniformMatrix4fv(getUniform(name), false, mat.getBuffer());
 	}
 
-	public void setUniform1i(String name, int position) {
+	public static void setUniform1i(String name, int position) {
 		glUniform1i(getUniform(name), position);
 	}
 
-	public void setUniform3f(String name, Vector3f position) {
+	public static void setUniform3f(String name, Vector3f position) {
 		glUniform3f(getUniform(name), position.x, position.y, position.z);
 	}
 
-	public void start() {
-		assert initialized : "can't use an uninitialized shader!";
-		glUseProgram(programID);
+	public static void start(int id) {
+		currentProgramID = id;
+		glUseProgram(currentProgramID);
 	}
 
-	public void stop() {
+	public static void stop() {
 		glUseProgram(0);
 	}
 
-	public void setUniform1iv(String name, IntBuffer position) {
+	public static void setUniform1iv(String name, IntBuffer position) {
 		glUniform1iv(getUniform(name), position);
 	}
 
-	public void setMaterial(String name, Material material) {
+	public static void setMaterial(String name, Material material) {
 		setUniform3f(name + ".colour", material.colour);
 		setUniform1i(name + ".useColour", material.useColour);
 		setUniform1f(name + ".reflectance", material.reflectance);
 	}
 
-	public void setPointLight(String name, PointLight pointlight) {
+	public static void setPointLight(String name, PointLight pointlight) {
 		setUniform3f(name + ".colour", pointlight.colour);
 		setUniform3f(name + ".position", pointlight.position);
 		setUniform1f(name + ".intensity", pointlight.intensity);
@@ -118,7 +110,7 @@ public class Shader {
 		setUniform1f(name + ".att.exponent", pointlight.att.exponent);
 	}
 
-	public void setDirectionalLight(String uniformName, DirectionalLight dirLight) {
+	public static void setDirectionalLight(String uniformName, DirectionalLight dirLight) {
 		setUniform3f(uniformName + ".colour", dirLight.colour);
 		setUniform3f(uniformName + ".direction", dirLight.direction);
 		setUniform1f(uniformName + ".intensity", dirLight.intensity);

@@ -2,14 +2,15 @@ package graphics;
 
 import maths.Vector3f;
 import maths.Vector4f;
+import static graphics.Shader.*;
 
 public class ShaderManager {
 
 	private static boolean initialized = false;
 
-	public static Shader objectShader;
-	public static Shader landShader;
-	public static Shader skyboxShader;
+	public static int objectShader;
+	public static int landShader;
+	public static int skyboxShader;
 
 	static Attenuation atten;
 	static PointLight light;
@@ -38,44 +39,42 @@ public class ShaderManager {
 		matt.reflectance = .05f;
 
 		initialized = true;
-		landShader = new Shader("src/shaders/land.vert", "src/shaders/land.frag");
-		objectShader = new Shader("src/shaders/object.vert", "src/shaders/object.frag");
-		skyboxShader = new Shader("src/shaders/skybox.vert", "src/shaders/skybox.frag");
+		landShader = makeShader("src/shaders/land.vert", "src/shaders/land.frag");
+		objectShader = makeShader("src/shaders/object.vert", "src/shaders/object.frag");
+		skyboxShader = makeShader("src/shaders/skybox.vert", "src/shaders/skybox.frag");
 
-		objectShader.start();
-		objectShader.setPointLight("pointLight", light);
-		objectShader.setMaterial("material", matt);
-		objectShader.setUniform1f("specularPower", 1);
-		objectShader.setUniform3f("ambientLight", new Vector3f(.1f, .1f, .1f));
-		objectShader.stop();
+		start(objectShader);
+		setPointLight("pointLight", light);
+		setMaterial("material", matt);
+		setUniform1f("specularPower", 1);
+		setUniform3f("ambientLight", new Vector3f(.1f, .1f, .1f));
 
-		landShader.start();
-		landShader.setPointLight("pointLight", light);
-		landShader.setDirectionalLight("directionalLight", dirLight);
-		landShader.setUniform1f("specularPower", 1);
-		landShader.setUniform1f("material.reflectance", 0);
-		landShader.setUniform3f("ambientLight", new Vector3f(.3f, .3f, .3f));
-		landShader.stop();
+		start(landShader);
+		setPointLight("pointLight", light);
+		setDirectionalLight("directionalLight", dirLight);
+		setUniform1f("specularPower", 1);
+		setUniform1f("material.reflectance", 0);
+		setUniform3f("ambientLight", new Vector3f(.3f, .3f, .3f));
+		stop();
 	}
 
 	public static void setCamera(Camera camera) {
 		assert initialized : "Shaders must be initialized in order to work";
 
-		landShader.start();
-		landShader.setUniformMatrix4f("projection", camera.projection);
-		landShader.setUniformMatrix4f("modelView", camera.view);
+		start(landShader);
+		setUniformMatrix4f("projection", camera.projection);
+		setUniformMatrix4f("modelView", camera.view);
 		Vector4f pos = camera.view.multiply(new Vector4f(light.position.x, light.position.y, light.position.z, 1));
-		landShader.setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
+		setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
 		Vector4f dir = camera.view
 				.multiply(new Vector4f(dirLight.direction.x, dirLight.direction.y, dirLight.direction.z, 0));
-		landShader.setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
-		landShader.stop();
+		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
 
-		objectShader.start();
-		objectShader.setUniformMatrix4f("projection", camera.projection);
-		objectShader.setUniformMatrix4f("modelView", camera.view);
-		objectShader.setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
-		objectShader.stop();
+		start(objectShader);
+		setUniformMatrix4f("projection", camera.projection);
+		setUniformMatrix4f("modelView", camera.view);
+		setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
+		stop();
 		// landShader.setUniform3f("cameraPos", camera.getPos());
 
 		lightAngle += .01f;
