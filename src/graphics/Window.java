@@ -39,6 +39,7 @@ import org.lwjgl.opengl.GL;
 
 import input.MouseInput;
 import object.Object;
+import object.ObjectManager;
 import world.Skybox;
 import world.World;
 
@@ -52,8 +53,7 @@ public class Window implements Runnable {
 	public static GLFWCursorPosCallback cursorCallback;
 	private GraphicsManager graphicsManager;
 	private World world;
-	private Object test;
-	private Skybox box;
+	private ObjectManager objectManager;
 	public static double deltaX, deltaY;
 	public static Random worldRandom = new Random();
 	public static Random mathRandom = new Random();
@@ -112,8 +112,9 @@ public class Window implements Runnable {
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
 		world = new World();
-		test = new Object("src/models/torus.obj", "src/textures/wood.png");
-		box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
+		objectManager = new ObjectManager();
+		
+		
 	}
 
 	/**
@@ -134,6 +135,8 @@ public class Window implements Runnable {
 	public void update() {
 		graphicsManager.update();
 		glfwPollEvents();
+		objectManager.test();
+		
 	}
 
 	/**
@@ -143,8 +146,7 @@ public class Window implements Runnable {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		world.render();
-		test.render();
-		box.render();
+		objectManager.render();
 	}
 
 	/**

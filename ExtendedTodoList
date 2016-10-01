@@ -3,13 +3,11 @@ https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/
 Assigned:
 	Optimization
 	Sky box
-<<<<<<< HEAD
-	Thinkness
-=======
+	Thickness
 	Caves
 	Have Chunk extend Object
->>>>>>> refs/remotes/origin/sun
 Eventual:
+	Water physics
 	Chunks load as move
 	Weather
 	Colliders

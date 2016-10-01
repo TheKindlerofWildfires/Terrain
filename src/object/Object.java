@@ -38,10 +38,10 @@ public class Object {
 		}
 		material = new Material();
 		texture = new Texture(texturePath);
-		model = new Matrix4f().multiply(Matrix4f.translate(6, 8, 9));
+		model = new Matrix4f().multiply(Matrix4f.translate(10, 3, 7));
 		shader = graphics.ShaderManager.objectShader;
 		material.colour = new Vector3f(1, 1, 1);
-		material.reflectance = 0;
+		material.reflectance = 1;
 		material.useColour = 1;
 	}
 
