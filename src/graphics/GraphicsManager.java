@@ -23,12 +23,6 @@ class PointLight {
 	Attenuation att;
 }
 
-class Material {
-	Vector3f colour;
-	int useColour;
-	float reflectance;
-};
-
 class DirectionalLight {
 	Vector3f colour;
 	Vector3f direction;

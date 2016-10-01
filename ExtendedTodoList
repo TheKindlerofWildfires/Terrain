@@ -3,9 +3,9 @@ https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/
 Assigned:
 	Fix lighting
 	Optimization
-	Make models move
 	Sky box
 	Caves
+	Have Chunk extend Object
 Eventual:
 	Chunks load as move
 	Weather

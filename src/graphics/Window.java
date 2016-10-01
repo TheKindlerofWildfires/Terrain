@@ -30,16 +30,16 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.system.MemoryUtil.NULL;
-import input.MouseInput;
 
 import java.util.Random;
-
-import object.Object;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
+import input.MouseInput;
+import object.Object;
+import world.Skybox;
 import world.World;
 
 public class Window implements Runnable {
@@ -53,6 +53,7 @@ public class Window implements Runnable {
 	private GraphicsManager graphicsManager;
 	private World world;
 	private Object test;
+	private Skybox box;
 	public static double deltaX, deltaY;
 	public static Random worldRandom = new Random();
 	public static Random mathRandom = new Random();
@@ -67,6 +68,7 @@ public class Window implements Runnable {
 		thread = new Thread(this, "SpaceGame");
 		thread.start();
 	}
+
 	/**
 	 * Code called at the start of the gameloop
 	 */
@@ -92,8 +94,7 @@ public class Window implements Runnable {
 		// enable keyboard and mouse
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
-		glfwSetCursorPosCallback(window,
-				cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
+		glfwSetCursorPosCallback(window, cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
 		// set window pos
 		glfwSetWindowPos(window, 0, 20);
 		// display window
@@ -111,9 +112,10 @@ public class Window implements Runnable {
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
 		world = new World();
-		test = new Object("src/models/torus.obj","src/textures/wood.png");
-		
+		test = new Object("src/models/torus.obj", "src/textures/wood.png");
+		box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
 	}
+
 	/**
 	 * Sets the seeds for everything
 	 */
@@ -125,6 +127,7 @@ public class Window implements Runnable {
 		World.perlinSeed = mathRandom.nextInt();
 
 	}
+
 	/**
 	 * The start of the update call
 	 */
@@ -132,6 +135,7 @@ public class Window implements Runnable {
 		graphicsManager.update();
 		glfwPollEvents();
 	}
+
 	/**
 	 * The start of the render call
 	 */
@@ -140,8 +144,9 @@ public class Window implements Runnable {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		world.render();
 		test.render();
-	
+		box.render();
 	}
+
 	/**
 	 * The game loop
 	 */
