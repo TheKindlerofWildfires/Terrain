@@ -29,9 +29,12 @@ public class Skybox extends Object {
 	public void render() {
 		start(shader);
 		Matrix4f view = graphics.GraphicsManager.camera.view;
+		view.m03 = 0;
+		view.m13 = 0;
+		view.m23 = 0;
 		setUniformMatrix4f("modelView", view.multiply(model));
-		setMaterial("material",material);
-		setUniform3f("ambientLight" , new Vector3f(1,1,1));
+		setMaterial("material", material);
+		setUniform3f("ambientLight", new Vector3f(1, 1, 1));
 		glBindTexture(GL_TEXTURE_2D, texture.getId());
 		glBindVertexArray(vao.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
