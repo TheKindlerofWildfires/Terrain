@@ -41,27 +41,14 @@ public class GraphicsManager {
 	private static final float near = 0.1f;
 	private static final float far = 100f;
 
-<<<<<<< HEAD
-	// Light init constants
-	//private static final Vector3f lightStartPos = new Vector3f(0, 0, 1);
 
-	Camera camera;
-	//95% sure this is worthless
-	//private Vector3f lightPos;
-=======
 	public static Camera camera;
-	//95% sure this is worthless
->>>>>>> refs/remotes/origin/sun
+
 
 	public GraphicsManager() {
 		ShaderManager.init();
 		camera = new Camera(cameraStartPos, cameraStartTarget, up, fov, aspect, near, far);
 		ShaderManager.setCamera(camera);
-<<<<<<< HEAD
-		//lightPos = lightStartPos;
-
-=======
->>>>>>> refs/remotes/origin/sun
 	}
 
 	/**

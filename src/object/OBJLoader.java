@@ -1,11 +1,9 @@
 package object;
 
-<<<<<<< HEAD
+
 import graphics.VertexArrayObject;
 
-=======
 import java.io.IOException;
->>>>>>> refs/remotes/origin/sun
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
