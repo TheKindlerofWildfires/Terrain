@@ -27,8 +27,8 @@ public class Camera {
 	 * @param cameraUp
 	 *            up vector
 	 */
-	public Camera(Vector3f cameraPos, Vector3f cameraTarget, Vector3f cameraUp,
-			float angle, float aspect, float near, float far) {
+	public Camera(Vector3f cameraPos, Vector3f cameraTarget, Vector3f cameraUp, float angle, float aspect, float near,
+			float far) {
 		pos = cameraPos;
 		target = cameraTarget;
 		up = cameraUp;
@@ -149,7 +149,7 @@ public class Camera {
 	public Vector3f getUp() {
 		return up;
 	}
-
+	
 	// public Frustum getFrustum() {
 	// return frust;
 	// }

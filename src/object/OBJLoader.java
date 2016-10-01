@@ -1,7 +1,11 @@
 package object;
 
+<<<<<<< HEAD
 import graphics.VertexArrayObject;
 
+=======
+import java.io.IOException;
+>>>>>>> refs/remotes/origin/sun
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +18,7 @@ import maths.Vector3f;
 
 public class OBJLoader {
 
-	public static VertexArrayObject loadMesh(String fileName) throws Exception {
+	public static VertexArrayObject loadMesh(String fileName) throws IOException {
 		Path path = Paths.get(fileName);
 		List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 		List<Vector3f> vertices = new ArrayList<Vector3f>();

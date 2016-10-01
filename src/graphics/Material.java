@@ -1,0 +1,9 @@
+package graphics;
+
+import maths.Vector3f;
+
+public class Material {
+	public Vector3f colour;
+	public int useColour;
+	public float reflectance;
+};

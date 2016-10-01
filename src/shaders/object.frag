@@ -69,7 +69,6 @@ void main(){
     else {
         baseColour = texture(texture_sampler, texCoord);
     }
-    baseColour = vec4(1,1,1,1);
     vec4 lightColour = calcPointLight(pointLight, mvVertexPos, mvVertexNormal); 
 
     vec4 totalLight = vec4(ambientLight, 1.0);
