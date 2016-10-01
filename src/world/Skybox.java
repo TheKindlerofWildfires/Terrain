@@ -19,9 +19,7 @@ public class Skybox extends Object {
 	public Skybox(String obj, String texture) {
 		super(obj, texture);
 		shader = graphics.ShaderManager.objectShader;
-		this.material.colour = new Vector3f(0, 0, 0);
 		this.material.useColour = 0;
-		this.material.reflectance = 0;
 		this.model = Matrix4f.scale(10, 10, 10).multiply(Matrix4f.rotate(90, 1, 0, 0));
 	}
 
@@ -40,5 +38,4 @@ public class Skybox extends Object {
 		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
 		stop();
 	}
-
 }
