@@ -8,12 +8,18 @@ public class BoundingBox {
 	public float x, y, z;
 
 	/**
+	 * The maximum possible deviation from snug fit
+	 */
+	public static final float margin = .05f;
+
+	/**
+	 * A bounding box
+	 * 
 	 * @param centre centre of box
 	 * @param x dist from centre to side along x
 	 * @param y dist from centre to side along y
 	 * @param z dist from centre to side along z
 	 */
-
 	public BoundingBox(Vector3f centre, float x, float y, float z) {
 		this.centre = centre;
 		this.x = x;
@@ -22,6 +28,8 @@ public class BoundingBox {
 	}
 
 	/**
+	 * Tests collision of two objects. If they collide it corrects their positions accordingly
+	 * 
 	 * @param ob0 first object
 	 * @param ob1 second object
 	 * @param vOb0 velocity object 1
@@ -36,10 +44,21 @@ public class BoundingBox {
 		boolean zIntersect = Math.abs(b0.centre.z - b1.centre.z) < b0.z + b1.z;
 		if (xIntersect && yIntersect && zIntersect) {
 			boolean colliding = true;
-			float x = .5f;
+			Vector3f v0;
+			Vector3f v1;
+			if (vOb0.length() != 0) {
+				v0 = vOb0.negate().normalize().scale(margin);
+			} else {
+				v0 = new Vector3f(0, 0, 0);
+			}
+			if (vOb1.length() != 0) {
+				v1 = vOb1.negate().normalize().scale(margin);
+			} else {
+				v1 = new Vector3f(0, 0, 0);
+			}
 			while (colliding) {
-				ob0.translate(vOb0.negate().scale(x));
-				ob1.translate(vOb1.negate().scale(x));
+				ob0.translate(v0);
+				ob1.translate(v1);
 				b0 = ob0.boundingBox;
 				b1 = ob1.boundingBox;
 				boolean xI = Math.abs(b0.centre.x - b1.centre.x) < b0.x + b1.x;
@@ -47,7 +66,6 @@ public class BoundingBox {
 				boolean zI = Math.abs(b0.centre.z - b1.centre.z) < b0.z + b1.z;
 				colliding = xI && yI && zI;
 			}
-			//ob0+x*-vOb0 is at the boundary of ob1+x*vOb1 
 		}
 	}
 }
