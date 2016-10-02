@@ -5,6 +5,7 @@ Assigned:
 	Thickness
 	Caves
 	Have Chunk extend Object
+	Make OBB colliders
 	Load chunks around camera
 Eventual:
 	Water physics

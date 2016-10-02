@@ -23,7 +23,8 @@ public class Object {
 	protected Transformation model;
 
 	protected int shader;
-
+	public Vector3f velocity;
+	public float mass;
 	public BoundingBox boundingBox;
 
 	/**
@@ -62,6 +63,10 @@ public class Object {
 		boundingBox.centre.y += y;
 		boundingBox.centre.z += z;
 	}
+	public void rotate(int angle, int x, int y, int z) {
+		model.rotate(angle, x, y, z);
+		
+	}
 
 	public void translate(Vector3f displacement) {
 		translate(displacement.x, displacement.y, displacement.z);
@@ -86,4 +91,6 @@ public class Object {
 		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
 		stop();
 	}
+
+
 }

@@ -21,15 +21,19 @@ public class ObjectManager {
 		//	ball.model.translate(5, 0, 0);
 
 		ball.scale(.25f,.25f,.25f);
-		ball.translate(5,0,0);
+		ball.translate(5,2,0);
+		target.translate(0,2,0);
+		//ball.rotate(30, 1,0,0);
 		//	box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
 		c = 0;
 	}
 
 	public void test() {
-		//test.model = test.model.multiply(Matrix4f.rotate(1, 0, 1, 10));
+		target.translate((float)(0.1*Math.sin(c)),0,0);
+		target.velocity = new Vector3f((float)(0.1*Math.sin(c)),0,0);
+		maths.BoundingBox.collide(ball, target, ball.velocity, target.velocity);
 		//	test.model = test.model.multiply(Matrix4f.translate(0,(float)(0.2*Math.sin(c)),0));
-		//	c+= Math.PI/100;
+		c+= Math.PI/100;
 
 	}
 

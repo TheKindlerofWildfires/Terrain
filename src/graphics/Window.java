@@ -10,6 +10,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
@@ -36,17 +37,18 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import input.KeyboardInput;
+import input.MouseInput;
 
 import java.util.Random;
+
+import maths.Vector3f;
+import object.ObjectManager;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
-import input.KeyboardInput;
-import input.MouseInput;
-import maths.Vector3f;
-import object.ObjectManager;
 import world.ChunkLoader;
 import world.World;
 
@@ -57,7 +59,7 @@ public class Window implements Runnable {
 	@SuppressWarnings("unused")
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
-	private GraphicsManager graphicsManager;
+	public static GraphicsManager graphicsManager;
 	public static World world;
 	private ObjectManager objectManager;
 	private static ChunkLoader chunkLoader;
@@ -96,7 +98,8 @@ public class Window implements Runnable {
 		// enable keyboard and mouse
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
-		glfwSetCursorPosCallback(window, cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
+		glfwSetCursorPosCallback(window,
+				cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
 		// set window pos
 		glfwSetWindowPos(window, 0, 20);
 		// display window
@@ -108,15 +111,15 @@ public class Window implements Runnable {
 		glClearColor(75 / 255f, 10 / 255f, 130 / 255f, 1.0f);
 		// enable depth testing and face culling
 		glEnable(GL_DEPTH_TEST);
-		//Hm this looks wrong
-		//glEnable(GL_CULL_FACE);
+		// Hm this looks wrong
+		// glEnable(GL_CULL_FACE);
 
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
 		world = new World();
 		objectManager = new ObjectManager();
 
-		//chunkLoader.start();
+		chunkLoader.start();
 	}
 
 	/**
@@ -125,13 +128,14 @@ public class Window implements Runnable {
 	private void randomize() {
 		// setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
-		//worldRandom.setSeed(120);
+		// worldRandom.setSeed(120);
 		mathRandom.setSeed(worldRandom.nextLong());
 		World.perlinSeed = mathRandom.nextInt();
 
 	}
 
 	float speed = .1f;
+	Vector3f vel = new Vector3f();
 
 	/**
 	 * The start of the update call
@@ -142,39 +146,30 @@ public class Window implements Runnable {
 		objectManager.test();
 
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT)) {
-			objectManager.ball.translate(speed, 0, 0);
-			maths.BoundingBox.collide(objectManager.ball, objectManager.target, new Vector3f(speed, 0, 0),
-					new Vector3f(0, 0, 0));
+			vel = new Vector3f(speed, 0, 0);
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_RIGHT)) {
-			objectManager.ball.translate(-speed, 0, 0);
-			maths.BoundingBox.collide(objectManager.ball, objectManager.target, new Vector3f(-speed, 0, 0),
-					new Vector3f(0, 0, 0));
-
+			vel = new Vector3f(-speed, 0, 0);
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_UP)) {
-			objectManager.ball.translate(0, -speed, 0);
-			maths.BoundingBox.collide(objectManager.ball, objectManager.target, new Vector3f(0, -speed, 0),
-					new Vector3f(0, 0, 0));
-
+			vel = new Vector3f(0, -speed, 0);
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_DOWN)) {
-			objectManager.ball.translate(0, speed, 0);
-			maths.BoundingBox.collide(objectManager.ball, objectManager.target, new Vector3f(0, speed, 0),
-					new Vector3f(0, 0, 0));
-
+			vel = new Vector3f(0, speed, 0);
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_Q)) {
-			objectManager.ball.translate(0, 0, speed);
-			maths.BoundingBox.collide(objectManager.ball, objectManager.target, new Vector3f(0, 0, speed),
-					new Vector3f(0, 0, 0));
-
+			vel = new Vector3f(0, 0, speed);
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_E)) {
-			objectManager.ball.translate(0, 0, -speed);
-			maths.BoundingBox.collide(objectManager.ball, objectManager.target, new Vector3f(0, 0, -speed),
-					new Vector3f(0, 0, 0));
+			vel = new Vector3f(0, 0, -speed);
 		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_Z)) {
+			vel = new Vector3f(0, 0, -speed);
+		}
+		objectManager.ball.velocity = vel;
+		maths.BoundingBox.collide(objectManager.ball, objectManager.target,
+				objectManager.ball.velocity, objectManager.target.velocity);
+		objectManager.ball.translate(vel.x, vel.y, vel.z);
 	}
 
 	/**
@@ -183,7 +178,7 @@ public class Window implements Runnable {
 	public void render() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//	world.render();
+		// world.render();
 		objectManager.render();
 	}
 
