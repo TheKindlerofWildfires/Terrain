@@ -90,6 +90,7 @@ public class Camera {
 			System.err.println("wtf");
 		}
 		displacement.normalize();
+		//displacement.scale(speed*0.1f);
 		move(displacement);
 	}
 

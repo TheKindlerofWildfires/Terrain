@@ -1,7 +1,6 @@
 package object;
 
 import maths.BoundingBox;
-import maths.Matrix4f;
 import maths.Vector3f;
 
 public class ObjectManager {
