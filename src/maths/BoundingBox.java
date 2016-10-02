@@ -39,7 +39,7 @@ public class BoundingBox {
 			float x = .5f;
 			while (colliding) {
 				ob0.translate(vOb0.negate().scale(x));
-				ob1.translate(vOb0.negate().scale(x));
+				ob1.translate(vOb1.negate().scale(x));
 				b0 = ob0.boundingBox;
 				b1 = ob1.boundingBox;
 				boolean xI = Math.abs(b0.centre.x - b1.centre.x) < b0.x + b1.x;
