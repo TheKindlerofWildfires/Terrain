@@ -134,7 +134,7 @@ public class Window implements Runnable {
 
 	}
 
-	float speed = .1f;
+	float speed = .01f;
 	Vector3f vel = new Vector3f();
 
 	/**
@@ -143,33 +143,34 @@ public class Window implements Runnable {
 	public void update() {
 		graphicsManager.update();
 		glfwPollEvents();
-		objectManager.test();
+		objectManager.update();
 
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT)) {
-			vel = new Vector3f(speed, 0, 0);
+			vel = vel.add(new Vector3f(speed, 0, 0));
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_RIGHT)) {
-			vel = new Vector3f(-speed, 0, 0);
+			vel = vel.add(new Vector3f(-speed, 0, 0));
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_UP)) {
-			vel = new Vector3f(0, -speed, 0);
+			vel = vel.add(new Vector3f(0, -speed, 0));
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_DOWN)) {
-			vel = new Vector3f(0, speed, 0);
+			vel = 	vel.add(new Vector3f(0, speed, 0));
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_Q)) {
-			vel = new Vector3f(0, 0, speed);
+			vel = vel.add(new Vector3f(0, 0, speed));
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_E)) {
-			vel = new Vector3f(0, 0, -speed);
+			vel = vel.add(new Vector3f(0, 0, -speed));
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_Z)) {
-			vel = new Vector3f(0, 0, -speed);
+			vel = new Vector3f(0, 0, 0);
+			objectManager.ball.placeAt(0,0,0);
 		}
 		objectManager.ball.velocity = vel;
-		maths.BoundingBox.collide(objectManager.ball, objectManager.target,
-				objectManager.ball.velocity, objectManager.target.velocity);
-		objectManager.ball.translate(vel.x, vel.y, vel.z);
+		//maths.BoundingBox.collide(objectManager.ball, objectManager.target,
+				//objectManager.ball.velocity, objectManager.target.velocity);
+		//objectManager.ball.translate(vel.x, vel.y, vel.z);
 	}
 
 	/**

@@ -27,7 +27,6 @@ public class BoundingBox {
 	 * @param vOb0 velocity object 1
 	 * @param vOb1 velocity object 2
 	 */
-
 	public static void collide(Object ob0, Object ob1, Vector3f vOb0, Vector3f vOb1) {
 		BoundingBox b0 = ob0.boundingBox;
 		BoundingBox b1 = ob1.boundingBox;

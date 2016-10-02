@@ -23,7 +23,7 @@ public class Object {
 	protected Transformation model;
 
 	protected int shader;
-	public Vector3f velocity;
+	public Vector3f velocity = new Vector3f();
 	public float mass;
 	public BoundingBox boundingBox;
 
