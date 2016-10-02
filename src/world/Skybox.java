@@ -20,11 +20,11 @@ import object.Object;
 public class Skybox extends Object {
 
 	public Skybox(String obj, String texture) {
-		super(obj, texture,new BoundingBox(new Vector3f(0,0,0),1,1,1));
+		super(obj, texture);
 		shader = graphics.ShaderManager.objectShader;
 		this.material.useColour = 0;
 		this.model = new Transformation();
-		model.scale(10,10,10);
+		model.scale(10, 10, 10);
 	}
 
 	@Override

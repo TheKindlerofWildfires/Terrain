@@ -33,9 +33,10 @@ public class Object {
 	 * @param texturePath path to texture
 	 * @param box Bounding Box
 	 */
-	public Object(String modelPath, String texturePath, BoundingBox box) {
+	public Object(String modelPath, String texturePath) {
 		try {
 			vao = OBJLoader.loadMesh(modelPath);
+			boundingBox = OBJLoader.loadBox(modelPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -46,7 +47,7 @@ public class Object {
 		material.colour = new Vector3f(1, 1, 1);
 		material.reflectance = 1;
 		material.useColour = 1;
-		boundingBox = box;
+
 	}
 
 	public void scale(float x, float y, float z) {

@@ -1,6 +1,5 @@
 package object;
 
-
 import graphics.VertexArrayObject;
 
 import java.io.IOException;
@@ -11,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import maths.BoundingBox;
 import maths.Vector2f;
 import maths.Vector3f;
 
@@ -28,21 +28,18 @@ public class OBJLoader {
 			switch (tokens[0]) {
 			case "v":
 				// Geometric vertex
-				Vector3f vec3f = new Vector3f(Float.parseFloat(tokens[1]),
-						Float.parseFloat(tokens[2]),
+				Vector3f vec3f = new Vector3f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]),
 						Float.parseFloat(tokens[3]));
 				vertices.add(vec3f);
 				break;
 			case "vt":
 				// Texture coordinate
-				Vector2f vec2f = new Vector2f(Float.parseFloat(tokens[1]),
-						Float.parseFloat(tokens[2]));
+				Vector2f vec2f = new Vector2f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]));
 				textures.add(vec2f);
 				break;
 			case "vn":
 				// Vertex normal
-				Vector3f vec3fNorm = new Vector3f(Float.parseFloat(tokens[1]),
-						Float.parseFloat(tokens[2]),
+				Vector3f vec3fNorm = new Vector3f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]),
 						Float.parseFloat(tokens[3]));
 				normals.add(vec3fNorm);
 				break;
@@ -58,9 +55,8 @@ public class OBJLoader {
 		return reorderLists(vertices, textures, normals, faces);
 	}
 
-	private static VertexArrayObject reorderLists(List<Vector3f> posList,
-			List<Vector2f> textCoordList, List<Vector3f> normList,
-			List<Face> facesList) {
+	private static VertexArrayObject reorderLists(List<Vector3f> posList, List<Vector2f> textCoordList,
+			List<Vector3f> normList, List<Face> facesList) {
 		//List<Integer> indices = new ArrayList<Integer>();
 		float[] posArr = new float[posList.size() * 3];
 		int i = 0;
@@ -78,7 +74,7 @@ public class OBJLoader {
 		for (Face face : facesList) {
 			IdxGroup[] faceVertexIndices = face.getFaceVertexIndices();
 			//System.out.println(x++);
-		//	int y = 0;
+			//	int y = 0;
 			for (IdxGroup indValue : faceVertexIndices) {
 				//System.out.println(y++);
 				int pos = indValue.idxPos;
@@ -105,19 +101,50 @@ public class OBJLoader {
 		}
 		return new VertexArrayObject(verts, 3);
 	}
-	/*
-	@Deprecated
-	private static void processFaceVertex(IdxGroup indices,
-			List<Vector2f> textCoordList, List<Vector3f> normList,
-			List<Integer> indicesList, float[] texCoordArr, float[] normArr) {
-		int posIndex = indices.idxPos;
-		indicesList.add(posIndex);
-		if (indices.idxTextCoord >= 0) {
-			Vector2f textCoord = textCoordList.get(indices.idxTextCoord);
-			texCoordArr[posIndex * 2] = textCoord.x;
-			texCoordArr[posIndex * 2 + 1] = 1 - textCoord.y;
+
+	public static BoundingBox loadBox(String fileName) throws IOException {
+		Path path = Paths.get(fileName);
+		List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
+		Vector3f max = new Vector3f(0, 0, 0);
+		Vector3f min = new Vector3f(0, 0, 0);
+		for (String line : lines) {
+			String[] tokens = line.split("\\s+");
+			switch (tokens[0]) {
+			case "v":
+				// Geometric vertex
+				Vector3f vec3f = new Vector3f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]),
+						Float.parseFloat(tokens[3]));
+				if (vec3f.x < min.x) {
+					min.x = vec3f.x;
+				}
+				if (vec3f.y < min.y) {
+					min.y = vec3f.y;
+				}
+				if (vec3f.z < min.z) {
+					min.z = vec3f.z;
+				}
+
+				if (vec3f.x > max.x) {
+					max.x = vec3f.x;
+				}
+				if (vec3f.y > max.y) {
+					max.y = vec3f.y;
+				}
+				if (vec3f.z > max.z) {
+					max.z = vec3f.z;
+				}
+				break;
+			default:
+				break;
+			}
 		}
-	}*/
+		Vector3f centre = new Vector3f((min.x + max.x) / 2, (min.y + max.y) / 2, (min.z + max.z) / 2);
+		float x = max.x - centre.x;
+		float y = max.y - centre.y;
+		float z = max.z - centre.z;
+		BoundingBox box = new BoundingBox(centre, x, y, z);
+		return box;
+	}
 }
 
 class IdxGroup {
@@ -153,8 +180,7 @@ class Face {
 		if (length > 1) {
 			// It can be empty if the obj does not define text coords
 			String textCoord = lineTokens[1];
-			idxGroup.idxTextCoord = textCoord.length() > 0 ? Integer
-					.parseInt(textCoord) - 1 : IdxGroup.NO_VALUE;
+			idxGroup.idxTextCoord = textCoord.length() > 0 ? Integer.parseInt(textCoord) - 1 : IdxGroup.NO_VALUE;
 			if (length > 2) {
 				idxGroup.idxVecNormal = Integer.parseInt(lineTokens[2]) - 1;
 			}
