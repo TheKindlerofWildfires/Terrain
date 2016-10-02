@@ -50,7 +50,7 @@ public class Object {
 	 */
 	public void render() {
 		start(shader);
-		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model));
+		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(Matrix4f.translate(0, 0, 15)));
 		setMaterial("material", material);
 		glBindTexture(GL_TEXTURE_2D, texture.getId());
 		glBindVertexArray(vao.getVaoID());

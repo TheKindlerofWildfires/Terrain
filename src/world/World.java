@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import noiseLibrary.module.source.Perlin;
 
 public class World {
-	Perlin noise;
+	public static Perlin noise;
 	public static int perlinSeed;
-	public static final int chunkY=10;
-	public static final int chunkX=10;
-	public static final int chunkS = chunkY*chunkX;
+	public static final int chunkY = 10;
+	public static final int chunkX = 10;
+	public static final int chunkS = chunkY * chunkX;
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
-	
+
 	/**
 	 * Building better worlds
 	 * 		tl;Dr: Uses poisson disk, delauny and perlin noise to great a cool map
@@ -29,11 +29,11 @@ public class World {
 		 * Delauny:1/4
 		 * Poisson:1/4 
 		 */
-		for (int x = 0; x < chunkX; x++) {
-			for (int y = 0; y < chunkY; y++) {
-				chunks.add(new Chunk(noise, x, y));
-			}
-		}
+	//	for (int x = 0; x < chunkX; x++) {
+	//		for (int y = 0; y < chunkY; y++) {
+	//			chunks.add(new Chunk(noise, x, y,true));
+	//		}
+	//	}
 	}
 
 	/**
@@ -41,5 +41,11 @@ public class World {
 	 */
 	public void render() {
 		chunks.stream().forEach(c -> c.render());
+	}
+	
+	public void addChunk(Chunk c){
+		if(!c.isGL){
+			c.makeGL();
+		} chunks.add(c);
 	}
 }

@@ -16,7 +16,7 @@ public class ShaderManager {
 	static PointLight light;
 	static Material matt;
 	static DirectionalLight dirLight;
-	static float lightAngle = 0;
+	static float lightAngle = 45;
 
 	public static void init() {
 		atten = new Attenuation();
@@ -77,7 +77,7 @@ public class ShaderManager {
 		stop();
 		// landShader.setUniform3f("cameraPos", camera.getPos());
 
-		lightAngle += .01f;
+		//lightAngle += .01f;
 		dirLight.direction.y = (float) Math.cos(lightAngle);
 		dirLight.direction.z = (float) Math.sin(lightAngle);
 		if (lightAngle >= 360) {

@@ -21,6 +21,7 @@ public class Chunk {
 	private static final float WATERLEVEL = 1.3f;
 	Perlin noise;
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
+	float[] vertices;
 
 	private VertexArrayObject VAO;
 	private int chunkX;
@@ -30,7 +31,9 @@ public class Chunk {
 	public ArrayList<Vector3f> myp;
 	public ArrayList<Vector3f> myn;
 
-	public Chunk(Perlin noise, int x, int y) {
+	public boolean isGL = false;
+
+	public Chunk(Perlin noise, int x, int y, boolean gl) {
 		this.noise = noise;
 		this.chunkX = x;
 		this.chunkY = y;
@@ -56,7 +59,7 @@ public class Chunk {
 
 		Delaunay delaunay = new Delaunay(points);
 		terrain = delaunay.getTriangles();
-		float[] vertices = new float[terrain.size() * 3 * 3 * 3];
+		vertices = new float[terrain.size() * 3 * 3 * 3];
 		int c = 0;
 
 		for (int i = 0; i < terrain.size(); i++) {
@@ -95,8 +98,10 @@ public class Chunk {
 			}
 		}
 
-		VAO = new VertexArrayObject(vertices, 3);
-
+		if (gl) {
+			VAO = new VertexArrayObject(vertices, 3);
+		}
+		isGL = gl;
 	}
 
 	public void render() {
@@ -120,5 +125,9 @@ public class Chunk {
 			System.err.println("invalid type");
 			return null;
 		}
+	}
+
+	public void makeGL() {
+		VAO = new VertexArrayObject(vertices, 3);
 	}
 }

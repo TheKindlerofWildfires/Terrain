@@ -1,9 +1,3 @@
 /graphics/
-/input/
-/object/
 /world/
-/textures/
-/maths/
-/models/
-/shaders/
-/noiseLibrary/
+/object/

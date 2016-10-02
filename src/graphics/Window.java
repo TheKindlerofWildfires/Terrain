@@ -40,11 +40,11 @@ import org.lwjgl.opengl.GL;
 import input.MouseInput;
 import object.Object;
 import object.ObjectManager;
+import world.ChunkLoader;
 import world.Skybox;
 import world.World;
 
 public class Window implements Runnable {
-	private Thread thread;
 	public boolean running = true;
 
 	private Long window;
@@ -52,21 +52,17 @@ public class Window implements Runnable {
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
 	private GraphicsManager graphicsManager;
-	private World world;
+	public static World world;
 	private ObjectManager objectManager;
+	private static ChunkLoader chunkLoader;
 	public static double deltaX, deltaY;
 	public static Random worldRandom = new Random();
 	public static Random mathRandom = new Random();
 
 	public static void main(String args[]) {
 		Window game = new Window();
+		chunkLoader = new ChunkLoader();
 		game.run();
-	}
-
-	public void start() {
-		running = true;
-		thread = new Thread(this, "SpaceGame");
-		thread.start();
 	}
 
 	/**
@@ -113,8 +109,8 @@ public class Window implements Runnable {
 		graphicsManager = new GraphicsManager();
 		world = new World();
 		objectManager = new ObjectManager();
-		
-		
+
+		chunkLoader.start();
 	}
 
 	/**
@@ -136,7 +132,7 @@ public class Window implements Runnable {
 		graphicsManager.update();
 		glfwPollEvents();
 		objectManager.test();
-		
+
 	}
 
 	/**
@@ -182,8 +178,13 @@ public class Window implements Runnable {
 				updates = 0;
 			}
 
+			if (chunkLoader.loadedChunks.size() > 0) {
+				world.addChunk(chunkLoader.loadedChunks.poll());
+			}
+
 			if (glfwWindowShouldClose(window)) {
 				running = false;
+				chunkLoader.running = false;
 			}
 		}
 		glfwDestroyWindow(window);
