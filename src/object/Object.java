@@ -24,6 +24,8 @@ public class Object {
 	protected Material material;
 	protected Transformation model;
 
+	private boolean textured;
+
 	protected int shader;
 	public Vector3f velocity = new Vector3f();
 	public Vector3f position = new Vector3f();
@@ -39,20 +41,28 @@ public class Object {
 	 * @param texturePath path to texture
 	 * @param box Bounding Box
 	 */
-	public Object(String modelPath, String texturePath, BoundingBox box) {
-		try {
-			vao = OBJLoader.loadMesh(modelPath);
-		} catch (Exception e) {
-			e.printStackTrace();
+	public Object(String modelPath, String texturePath) {
+		if (modelPath != "none") {
+			try {
+				vao = OBJLoader.loadMesh(modelPath);
+				boundingBox = OBJLoader.loadBox(modelPath);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		material = new Material();
-		texture = new Texture(texturePath);
+		if (texturePath != "none") {
+			texture = new Texture(texturePath);
+			textured = true;
+		} else {
+			textured = false;
+		}
 		model = new Transformation();
 		shader = graphics.ShaderManager.objectShader;
 		material.colour = new Vector3f(1, 1, 1);
 		material.reflectance = 1;
 		material.useColour = 1;
-		boundingBox = box;
+
 	}
 
 	public void scale(float x, float y, float z) {
@@ -70,6 +80,22 @@ public class Object {
 	}
 	public void rotate(int angle, int x, int y, int z) {
 		model.rotate(angle, x, y, z);
+	}
+
+	public void rotate(int angle, int x, int y, int z) throws IllegalArgumentException {
+		if (angle % 90 != 0) {
+			throw new IllegalArgumentException("you can only rotate bounding boxes by right angles");
+		}
+		if (angle < 0) {
+			angle = 360 + angle;
+		}
+		if (!(x >= 1 ^ y >= 1 ^ z >= 1)) {
+			throw new IllegalArgumentException("pls don't rotate in multiple axes at once");
+		}
+		model.rotate(angle, x, y, z);
+		int a = angle / 90;
+		boundingBox.rotate(a * x, a * y, a * z);
+		//at some point the bounding box should rotate too
 	}
 
 	public void translate(Vector3f displacement) {
@@ -90,7 +116,9 @@ public class Object {
 		start(shader);
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
 		setMaterial("material", material);
-		glBindTexture(GL_TEXTURE_2D, texture.getId());
+		if (textured) {
+			glBindTexture(GL_TEXTURE_2D, texture.getId());
+		}
 		glBindVertexArray(vao.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
 		stop();

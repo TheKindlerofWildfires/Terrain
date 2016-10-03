@@ -77,7 +77,6 @@ public class Window implements Runnable {
 	 * Code called at the start of the gameloop
 	 */
 	public void init() {
-
 		randomize();
 		// Initialize glfw
 		if (!glfwInit()) {
@@ -118,7 +117,11 @@ public class Window implements Runnable {
 		graphicsManager = new GraphicsManager();
 		world = new World();
 		objectManager = new ObjectManager();
+<<<<<<< HEAD
 
+=======
+		chunkLoader.setPriority(Thread.MIN_PRIORITY	);
+>>>>>>> colisions
 		chunkLoader.start();
 	}
 
@@ -179,7 +182,11 @@ public class Window implements Runnable {
 	public void render() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+<<<<<<< HEAD
 		world.render();
+=======
+		//world.render();
+>>>>>>> colisions
 		objectManager.render();
 	}
 
