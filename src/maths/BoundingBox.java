@@ -46,6 +46,11 @@ public class BoundingBox {
 				boolean zI = Math.abs(b0.centre.z - b1.centre.z) < b0.z + b1.z;
 				colliding = xI && yI && zI;
 			}
+		 Vector3f momentum = ob0.velocity.scale(ob0.mass).add(ob1.velocity.scale(ob1.mass));
+		 Float kin = (float) (0.5*(ob0.velocity.length2()*ob0.mass+ob1.velocity.length2()*ob1.mass));
+		 ob0.velocity = ob0.velocity.negate();
+		 ob1.velocity = ob1.velocity.negate();
+		 
 			//ob0+x*-vOb0 is at the boundary of ob1+x*vOb1 
 		}
 	}

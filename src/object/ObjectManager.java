@@ -24,8 +24,10 @@ public class ObjectManager {
 
 
 		ball.scale(.25f,.25f,.25f);
-		ball.translate(5,2,0);
-		target.translate(0,2,0);
+		ball.translate(5,2,10);
+		//System.out.println(target.position);
+		target.translate(0,2,10);
+		//System.out.println(target.position);
 		objectList.add(target);
 		objectList.add(ball);
 		//ball.rotate(30, 1,0,0);
@@ -33,31 +35,23 @@ public class ObjectManager {
 		c = 0;
 	}
 	public void update(){
-		target.velocity = new Vector3f((float)(0.1*Math.sin(c)),0,0);
-		
+		//target.force = new Vector3f((float)(-0.1*Math.sin(c)),0,0);
+		target.force = target.position.subtract(new Vector3f(0,5,10)).scale(-0.1f);
+		System.out.println(target.position);
 		for(int i = 0; i<objectList.size();i++){
 			Object object = objectList.get(i);
 			object.translate(object.velocity);
+			//object.placeAt(object.position.x, object.position.y, object.position.z);
+			object.physic();
 		}
 		maths.BoundingBox.collide(ball, target, ball.velocity, target.velocity);
-		/* for all objects:
-		calculate acceleration from mass and force
-		calculate velocity from mass,current velocity, acceleration and gravity
-		apply relevant frictions 
-		move them by their velocity
-		check bounding box
-		
-		
-		*/
+	
 		c+= Math.PI/100;
 	}
 	public void render() {
-		/*
-		 * For all objects render
-		 */
-		target.render();
-		ball.render();
-		//		test.render();
-		//box.render();	
+		for(int i = 0; i<objectList.size();i++){
+			Object object = objectList.get(i);
+			object.render();
+		}
 	}
 }

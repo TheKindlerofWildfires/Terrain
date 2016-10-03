@@ -134,7 +134,7 @@ public class Window implements Runnable {
 
 	}
 
-	float speed = .01f;
+	float speed = .001f;
 	Vector3f vel = new Vector3f();
 
 	/**
@@ -165,9 +165,9 @@ public class Window implements Runnable {
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_Z)) {
 			vel = new Vector3f(0, 0, 0);
-			objectManager.ball.placeAt(0,0,0);
+			//objectManager.ball.placeAt(0,0,0);
 		}
-		objectManager.ball.velocity = vel;
+		objectManager.ball.force = vel;
 		//maths.BoundingBox.collide(objectManager.ball, objectManager.target,
 				//objectManager.ball.velocity, objectManager.target.velocity);
 		//objectManager.ball.translate(vel.x, vel.y, vel.z);
@@ -179,7 +179,7 @@ public class Window implements Runnable {
 	public void render() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		// world.render();
+		world.render();
 		objectManager.render();
 	}
 

@@ -1,8 +1,5 @@
 package world;
 
-import graphics.Window;
-
-
 import java.util.LinkedList;
 import java.util.Queue;
 

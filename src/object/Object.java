@@ -17,6 +17,8 @@ import maths.Transformation;
 import maths.Vector3f;
 
 public class Object {
+	private static final Vector3f GRAVITY = new Vector3f(0,0,0);
+	private Vector3f FRICTION = new Vector3f();
 	protected Texture texture;
 	protected VertexArrayObject vao;
 	protected Material material;
@@ -24,7 +26,10 @@ public class Object {
 
 	protected int shader;
 	public Vector3f velocity = new Vector3f();
-	public float mass;
+	public Vector3f position = new Vector3f();
+	public float mass = 10;
+	public Vector3f acceleration = new Vector3f();
+	public Vector3f force = new Vector3f();
 	public BoundingBox boundingBox;
 
 	/**
@@ -65,11 +70,10 @@ public class Object {
 	}
 	public void rotate(int angle, int x, int y, int z) {
 		model.rotate(angle, x, y, z);
-		
 	}
 
 	public void translate(Vector3f displacement) {
-		translate(displacement.x, displacement.y, displacement.z);
+		translate(displacement.x, displacement.y, displacement.z);	
 	}
 
 	public void placeAt(float x, float y, float z) {
@@ -90,6 +94,27 @@ public class Object {
 		glBindVertexArray(vao.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
 		stop();
+	}
+
+	public void physic() {
+		FRICTION = velocity.negate().scale(0.1f);
+		force = force.add(FRICTION);
+		acceleration= force.scale(1/mass).add(GRAVITY);
+		velocity = velocity.add(acceleration);
+		position = boundingBox.centre;
+		System.out.println(boundingBox.centre);
+		System.out.println(position);
+		
+		/* for all objects:
+		calculate acceleration from mass and force
+		calculate velocity from mass,current velocity, acceleration and gravity
+		apply relevant frictions 
+		move them by their velocity
+		check bounding box
+		
+		
+		*/
+		
 	}
 
 
