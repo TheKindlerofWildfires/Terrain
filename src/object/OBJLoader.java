@@ -15,7 +15,6 @@ import maths.Vector2f;
 import maths.Vector3f;
 
 public class OBJLoader {
-
 	public static VertexArrayObject loadMesh(String fileName) throws IOException {
 		Path path = Paths.get(fileName);
 		List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
@@ -139,10 +138,15 @@ public class OBJLoader {
 			}
 		}
 		Vector3f centre = new Vector3f((min.x + max.x) / 2, (min.y + max.y) / 2, (min.z + max.z) / 2);
+		System.out.println(centre.x);
+		System.out.println(centre.y);
+		System.out.println(centre.z);
 		float x = max.x - centre.x;
 		float y = max.y - centre.y;
 		float z = max.z - centre.z;
+		//	System.out.println(x + "," + y + "," + z);
 		BoundingBox box = new BoundingBox(centre, x, y, z);
+		//	System.out.println(box.centre.x);
 		return box;
 	}
 }

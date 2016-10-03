@@ -45,7 +45,6 @@ public class BoundingBox {
 			this.y = oldX;
 		} else if (x == 0 && y == 1 && z == 0) { //rotate once in y
 			float oldX = this.x;
-			float oldY = this.y;
 			float oldZ = this.z;
 			this.x = oldZ;
 			this.z = oldX;
