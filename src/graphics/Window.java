@@ -97,8 +97,7 @@ public class Window implements Runnable {
 		// enable keyboard and mouse
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
-		glfwSetCursorPosCallback(window,
-				cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
+		glfwSetCursorPosCallback(window, cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
 		// set window pos
 		glfwSetWindowPos(window, 0, 20);
 		// display window
@@ -117,11 +116,7 @@ public class Window implements Runnable {
 		graphicsManager = new GraphicsManager();
 		world = new World();
 		objectManager = new ObjectManager();
-<<<<<<< HEAD
-
-=======
-		chunkLoader.setPriority(Thread.MIN_PRIORITY	);
->>>>>>> colisions
+		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();
 	}
 
@@ -158,7 +153,7 @@ public class Window implements Runnable {
 			vel = vel.add(new Vector3f(0, -speed, 0));
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_DOWN)) {
-			vel = 	vel.add(new Vector3f(0, speed, 0));
+			vel = vel.add(new Vector3f(0, speed, 0));
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_Q)) {
 			vel = vel.add(new Vector3f(0, 0, speed));
@@ -172,7 +167,7 @@ public class Window implements Runnable {
 		}
 		objectManager.ball.force = vel;
 		//maths.BoundingBox.collide(objectManager.ball, objectManager.target,
-				//objectManager.ball.velocity, objectManager.target.velocity);
+		//objectManager.ball.velocity, objectManager.target.velocity);
 		//objectManager.ball.translate(vel.x, vel.y, vel.z);
 	}
 
@@ -182,11 +177,8 @@ public class Window implements Runnable {
 	public void render() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-<<<<<<< HEAD
 		world.render();
-=======
-		//world.render();
->>>>>>> colisions
+
 		objectManager.render();
 	}
 
@@ -223,7 +215,7 @@ public class Window implements Runnable {
 				updates = 0;
 			}
 
-			if (chunkLoader.loadedChunks.size() > 0) {
+			while (chunkLoader.loadedChunks.size() > 0) {
 				world.addChunk(chunkLoader.loadedChunks.poll());
 			}
 

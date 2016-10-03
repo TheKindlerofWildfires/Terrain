@@ -78,9 +78,6 @@ public class Object {
 		boundingBox.centre.y += y;
 		boundingBox.centre.z += z;
 	}
-	public void rotate(int angle, int x, int y, int z) {
-		model.rotate(angle, x, y, z);
-	}
 
 	public void rotate(int angle, int x, int y, int z) throws IllegalArgumentException {
 		if (angle % 90 != 0) {
