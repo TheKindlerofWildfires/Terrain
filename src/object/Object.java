@@ -23,7 +23,6 @@ public class Object {
 	protected Transformation model;
 
 	private boolean textured;
-	private boolean modeled;
 
 	protected int shader;
 
@@ -41,12 +40,9 @@ public class Object {
 			try {
 				vao = OBJLoader.loadMesh(modelPath);
 				boundingBox = OBJLoader.loadBox(modelPath);
-				modeled = true;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else {
-			modeled = false;
 		}
 		material = new Material();
 		if (texturePath != "none") {
