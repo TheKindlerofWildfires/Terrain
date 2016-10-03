@@ -22,6 +22,9 @@ public class Object {
 	protected Material material;
 	protected Transformation model;
 
+	private boolean textured;
+	private boolean modeled;
+
 	protected int shader;
 
 	public BoundingBox boundingBox;
@@ -34,14 +37,24 @@ public class Object {
 	 * @param box Bounding Box
 	 */
 	public Object(String modelPath, String texturePath) {
-		try {
-			vao = OBJLoader.loadMesh(modelPath);
-			boundingBox = OBJLoader.loadBox(modelPath);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (modelPath != "none") {
+			try {
+				vao = OBJLoader.loadMesh(modelPath);
+				boundingBox = OBJLoader.loadBox(modelPath);
+				modeled = true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			modeled = false;
 		}
 		material = new Material();
-		texture = new Texture(texturePath);
+		if (texturePath != "none") {
+			texture = new Texture(texturePath);
+			textured = true;
+		} else {
+			textured = false;
+		}
 		model = new Transformation();
 		shader = graphics.ShaderManager.objectShader;
 		material.colour = new Vector3f(1, 1, 1);
@@ -64,6 +77,11 @@ public class Object {
 		boundingBox.centre.z += z;
 	}
 
+	public void rotate(float angle, float x, float y, float z) {
+		model.rotate(angle, x, y, z);
+		//at some point the bounding box should rotate too
+	}
+
 	public void translate(Vector3f displacement) {
 		translate(displacement.x, displacement.y, displacement.z);
 	}
@@ -82,7 +100,9 @@ public class Object {
 		start(shader);
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
 		setMaterial("material", material);
-		glBindTexture(GL_TEXTURE_2D, texture.getId());
+		if (textured) {
+			glBindTexture(GL_TEXTURE_2D, texture.getId());
+		}
 		glBindVertexArray(vao.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
 		stop();

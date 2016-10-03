@@ -21,7 +21,7 @@ public class ChunkLoader extends Thread {
 		int maxI = t * t;
 		for (int i = 0; i < maxI & running; i++) {
 			if ((-X / 2 <= x) && (x <= X / 2) && (-Y / 2 <= y) && (y <= Y / 2)) {
-				loadedChunks.add(new Chunk(World.noise, x, y, false));
+				loadedChunks.add(new Chunk(World.noise, x, y));
 			}
 			if ((x == y) || ((x < 0) && (x == -y)) || ((x > 0) && (x == 1 - y))) {
 				t = dx;
