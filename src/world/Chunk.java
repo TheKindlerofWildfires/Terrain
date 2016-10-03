@@ -15,15 +15,15 @@ import maths.PoissonGenerator;
 import maths.Triangle;
 import maths.Vector3f;
 import noiseLibrary.module.source.Perlin;
+import object.Object;
 
-public class Chunk {
+public class Chunk extends Object {
 
 	private static final float WATERLEVEL = 1.3f;
 	Perlin noise;
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 	float[] vertices;
 
-	private VertexArrayObject VAO;
 	private int chunkX;
 	private int chunkY;
 	public ArrayList<Vector3f> mxp;
@@ -33,7 +33,8 @@ public class Chunk {
 
 	public boolean isGL = false;
 
-	public Chunk(Perlin noise, int x, int y, boolean gl) {
+	public Chunk(Perlin noise, int x, int y) {
+		super("none", "none");
 		this.noise = noise;
 		this.chunkX = x;
 		this.chunkY = y;
@@ -98,17 +99,8 @@ public class Chunk {
 			}
 		}
 
-		if (gl) {
-			VAO = new VertexArrayObject(vertices, 3);
-		}
-		isGL = gl;
-	}
-
-	public void render() {
-		Shader.start(graphics.ShaderManager.landShader);
-		glBindVertexArray(VAO.getVaoID());
-		glDrawArrays(GL_TRIANGLES, 0, terrain.size() * 3);
-		Shader.stop();
+		isGL = false;
+		shader = graphics.ShaderManager.landShader;
 	}
 
 	public ArrayList<Vector3f> getSide(String side) {
@@ -128,6 +120,6 @@ public class Chunk {
 	}
 
 	public void makeGL() {
-		VAO = new VertexArrayObject(vertices, 3);
+		this.vao = new VertexArrayObject(vertices, 3);
 	}
 }

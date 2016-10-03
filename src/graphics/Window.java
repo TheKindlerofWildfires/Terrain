@@ -4,6 +4,13 @@ import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_DISABLED;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
@@ -30,18 +37,19 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import input.KeyboardInput;
+import input.MouseInput;
 
 import java.util.Random;
+
+import maths.Vector3f;
+import object.ObjectManager;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
-import input.MouseInput;
-import object.Object;
-import object.ObjectManager;
 import world.ChunkLoader;
-import world.Skybox;
 import world.World;
 
 public class Window implements Runnable {
@@ -51,7 +59,7 @@ public class Window implements Runnable {
 	@SuppressWarnings("unused")
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
-	private GraphicsManager graphicsManager;
+	public static GraphicsManager graphicsManager;
 	public static World world;
 	private ObjectManager objectManager;
 	private static ChunkLoader chunkLoader;
@@ -69,7 +77,6 @@ public class Window implements Runnable {
 	 * Code called at the start of the gameloop
 	 */
 	public void init() {
-
 		randomize();
 		// Initialize glfw
 		if (!glfwInit()) {
@@ -102,14 +109,14 @@ public class Window implements Runnable {
 		glClearColor(75 / 255f, 10 / 255f, 130 / 255f, 1.0f);
 		// enable depth testing and face culling
 		glEnable(GL_DEPTH_TEST);
-		//Hm this looks wrong
-		//glEnable(GL_CULL_FACE);
+		// Hm this looks wrong
+		// glEnable(GL_CULL_FACE);
 
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
 		world = new World();
 		objectManager = new ObjectManager();
-
+		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();
 	}
 
@@ -119,11 +126,14 @@ public class Window implements Runnable {
 	private void randomize() {
 		// setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
-		//worldRandom.setSeed(120);
+		// worldRandom.setSeed(120);
 		mathRandom.setSeed(worldRandom.nextLong());
 		World.perlinSeed = mathRandom.nextInt();
 
 	}
+
+	float speed = .001f;
+	Vector3f vel = new Vector3f();
 
 	/**
 	 * The start of the update call
@@ -131,8 +141,34 @@ public class Window implements Runnable {
 	public void update() {
 		graphicsManager.update();
 		glfwPollEvents();
-		objectManager.test();
+		objectManager.update();
 
+		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT)) {
+			vel = vel.add(new Vector3f(speed, 0, 0));
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_RIGHT)) {
+			vel = vel.add(new Vector3f(-speed, 0, 0));
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_UP)) {
+			vel = vel.add(new Vector3f(0, -speed, 0));
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_DOWN)) {
+			vel = vel.add(new Vector3f(0, speed, 0));
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_Q)) {
+			vel = vel.add(new Vector3f(0, 0, speed));
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_E)) {
+			vel = vel.add(new Vector3f(0, 0, -speed));
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_Z)) {
+			vel = new Vector3f(0, 0, 0);
+			//objectManager.ball.placeAt(0,0,0);
+		}
+		objectManager.ball.force = vel;
+		//maths.BoundingBox.collide(objectManager.ball, objectManager.target,
+		//objectManager.ball.velocity, objectManager.target.velocity);
+		//objectManager.ball.translate(vel.x, vel.y, vel.z);
 	}
 
 	/**
@@ -142,6 +178,7 @@ public class Window implements Runnable {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		world.render();
+
 		objectManager.render();
 	}
 
@@ -178,7 +215,7 @@ public class Window implements Runnable {
 				updates = 0;
 			}
 
-			if (chunkLoader.loadedChunks.size() > 0) {
+			while (chunkLoader.loadedChunks.size() > 0) {
 				world.addChunk(chunkLoader.loadedChunks.poll());
 			}
 

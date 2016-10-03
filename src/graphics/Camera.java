@@ -5,7 +5,9 @@ import maths.Vector3f;
 
 public class Camera {
 
-	private Vector3f pos, target, up;
+	public Vector3f pos;
+	private Vector3f target;
+	private Vector3f up;
 	private double degX, degZ;
 	public Matrix4f projection;
 	public Matrix4f view;
@@ -15,7 +17,6 @@ public class Camera {
 	Vector3f cameraUp = new Vector3f(0, 0, 1);
 	private float speed = .2f;
 	private float sense = 1f;
-	boolean firstMouse = true;
 
 	/**
 	 * Initializes camera
@@ -36,8 +37,6 @@ public class Camera {
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
 		upward = new Vector3f(0, 0, speed);
-		// backward = new Vector3f(0, speed, 0);
-		// left = new Vector3f(-speed, 0, 0);
 	}
 
 	/**
@@ -90,6 +89,7 @@ public class Camera {
 			System.err.println("wtf");
 		}
 		displacement.normalize();
+		//displacement.scale(speed*0.1f);
 		move(displacement);
 	}
 

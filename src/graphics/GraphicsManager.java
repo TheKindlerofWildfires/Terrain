@@ -32,9 +32,9 @@ class DirectionalLight {
 public class GraphicsManager {
 
 	// Camera init constants
-	private static final Vector3f cameraStartPos = new Vector3f(0, 0, 7);// usual
+	private static final Vector3f cameraStartPos = new Vector3f(5, 0, 0);// usual
 																			// 0,2,0
-	private static final Vector3f cameraStartTarget = new Vector3f(1, 1, 0);
+	private static final Vector3f cameraStartTarget = new Vector3f(3, 0, 0);
 	private static final Vector3f up = new Vector3f(0, 0, 1);
 	private static final float fov = 45f;
 	private static final float aspect = 16f / 9;

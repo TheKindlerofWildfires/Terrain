@@ -10,7 +10,10 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
+
+import maths.BoundingBox;
 import maths.Matrix4f;
+import maths.Transformation;
 import maths.Vector3f;
 import object.Object;
 
@@ -20,7 +23,8 @@ public class Skybox extends Object {
 		super(obj, texture);
 		shader = graphics.ShaderManager.objectShader;
 		this.material.useColour = 0;
-		this.model = Matrix4f.scale(10, 10, 10).multiply(Matrix4f.rotate(90, 1, 0, 0));
+		this.model = new Transformation();
+		this.scale(10, 10, 10);
 	}
 
 	@Override
@@ -30,7 +34,7 @@ public class Skybox extends Object {
 		view.m03 = 0;
 		view.m13 = 0;
 		view.m23 = 0;
-		setUniformMatrix4f("modelView", view.multiply(model));
+		setUniformMatrix4f("modelView", view.multiply(model.getMatrix()));
 		setMaterial("material", material);
 		setUniform3f("ambientLight", new Vector3f(1, 1, 1));
 		glBindTexture(GL_TEXTURE_2D, texture.getId());
