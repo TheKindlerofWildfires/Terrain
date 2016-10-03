@@ -19,7 +19,7 @@ public class ObjectManager {
 
 		ball.scale(.5f, .5f, .5f);
 		ball.translate(5, 0, 0);
-		//ball.rotate(-90, 0, 1, 0);
+		ball.rotate(-90, 0, 1, 0);
 		//box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
 		c = 0;
 	}
@@ -28,7 +28,6 @@ public class ObjectManager {
 		//test.model = test.model.multiply(Matrix4f.rotate(1, 0, 1, 10));
 		//	test.model = test.model.multiply(Matrix4f.translate(0,(float)(0.2*Math.sin(c)),0));
 		//	c+= Math.PI/100;
-
 	}
 
 	public void render() {

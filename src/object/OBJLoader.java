@@ -14,6 +14,15 @@ import maths.BoundingBox;
 import maths.Vector2f;
 import maths.Vector3f;
 
+/**
+ * TO DO BEFORE UPLOADING MODEL
+ * 
+ * Did you:
+ * 	Write normals
+ * 	Triangulate faces
+ * 	Set origin to geometry (bounds center)
+ * 	Set origin to 0,0,0
+ */
 public class OBJLoader {
 	public static VertexArrayObject loadMesh(String fileName) throws IOException {
 		Path path = Paths.get(fileName);

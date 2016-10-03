@@ -84,6 +84,9 @@ public class Object {
 		if (angle < 0) {
 			angle = 360 + angle;
 		}
+		if (!(x >= 1 ^ y >= 1 ^ z >= 1)) {
+			throw new IllegalArgumentException("pls don't rotate in multiple axes at once");
+		}
 		model.rotate(angle, x, y, z);
 		int a = angle / 90;
 		boundingBox.rotate(a * x, a * y, a * z);
