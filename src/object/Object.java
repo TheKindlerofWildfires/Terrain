@@ -77,8 +77,16 @@ public class Object {
 		boundingBox.centre.z += z;
 	}
 
-	public void rotate(float angle, float x, float y, float z) {
+	public void rotate(int angle, int x, int y, int z) throws IllegalArgumentException {
+		if (angle % 90 != 0) {
+			throw new IllegalArgumentException("you can only rotate bounding boxes by right angles");
+		}
+		if (angle < 0) {
+			angle = 360 + angle;
+		}
 		model.rotate(angle, x, y, z);
+		int a = angle / 90;
+		boundingBox.rotate(a * x, a * y, a * z);
 		//at some point the bounding box should rotate too
 	}
 

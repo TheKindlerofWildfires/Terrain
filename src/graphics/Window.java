@@ -182,8 +182,8 @@ public class Window implements Runnable {
 	public void render() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			world.render();
-		//objectManager.render();
+		//world.render();
+		objectManager.render();
 	}
 
 	/**
