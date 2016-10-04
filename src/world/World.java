@@ -24,12 +24,6 @@ public class World {
 		noise.setOctaveCount(10);
 		//noise.setPersistence(0.4);
 		noise.setSeed(perlinSeed);
-		/*
-		 * Testing reveals 
-		 * Perlin:1/2
-		 * Delauny:1/4
-		 * Poisson:1/4 
-		 */
 		//	for (int x = 0; x < chunkX; x++) {
 		//		for (int y = 0; y < chunkY; y++) {
 		//			chunks.add(new Chunk(noise, x, y,true));
@@ -43,14 +37,16 @@ public class World {
 
 		int chunkX = (int) (cameraX / Chunk.SIZE / 2);
 		int chunkY = (int) (cameraY / Chunk.SIZE / 2);
-
-		if (!Window.chunkLoader.chunks.get(new int[] { chunkX,chunkY })) {
+		/*
+		 * This commented line is dumb and should be removed entirly but exists to show you what not todo
+		 */
+		//if (!Window.chunkLoader.chunks.get(new int[] { chunkX,chunkY })) {
 			for (int x = -1; x < 2; x++) {
 				for (int y = -1; y < 2; y++) {
 					Window.chunkLoader.chunksToLoad.add(new int[] { chunkX + x,chunkY + y });
 				}
 			}
-		}
+		//}
 
 	}
 

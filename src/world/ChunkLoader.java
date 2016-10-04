@@ -15,6 +15,19 @@ public class ChunkLoader extends Thread {
 	public Queue<int[]> chunksToLoad = new LinkedList<int[]>();
 
 	private void loadChunk(int x, int y) {
+		//this  line doesn't work at all
+		/*
+		 * Which leads to it just reloading the same chunks over and over again, hogging the pipline from this side
+		 */
+		/*
+		 * HEY THIS IS THE ERROR I NEEDED TO TELL YOU ABOUT, THIS IS HOGGING THE PIPELINE WITH ITS BADNESS
+		 * To fix the pipeline problem:
+		 * a) Make this line actually detect something
+		 * b) Check if it is fixed
+		 * c) If fixed celebrate 
+		 * d) If not fixed cry
+		 * e) Investigate the queing methodss
+		 */
 		if (chunks.get(new int[] { x,y }) == null || !chunks.get(new int[] { x,y })) {
 			loadedChunks.add(new Chunk(World.noise, x, y));
 			chunks.put(new int[] { x,y }, true);

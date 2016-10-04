@@ -42,10 +42,6 @@ public abstract class Shader {
 	}
 
 	private static int getUniform(String name) {
-		// for (StackTraceElement ste : Thread.currentThread().getStackTrace())
-		// {
-		// System.out.println(ste);
-		// }
 		int result = glGetUniformLocation(currentProgramID, name);
 		if (result == -1) {
 			System.err.println("Could not find uniform variable " + name);

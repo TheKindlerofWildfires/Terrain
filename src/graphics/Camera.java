@@ -50,8 +50,6 @@ public class Camera {
 		target = target.add(displacement);
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
-		// pv = pv.multiply(Matrix4f.translate(displacement.x, displacement.y,
-		// displacement.z));
 	}
 
 	/**
@@ -100,13 +98,10 @@ public class Camera {
 	 *            location of mouse on screen, given by mouseInput
 	 */
 	public void rotateCamera(double[] mousePos) {
-		// float mouseX = (float) ((1920 / 2 - mousePos[0]) / 1920 * 2);
-		// float mouseY = (float) ((1080 / 2 - mousePos[1]) / 1080 * 2);
 		double dx = Window.deltaX;
 		double dy = Window.deltaY;
 		float mouseX = (float) (dx) / -1920f * 2;
 		float mouseY = (float) (dy) / -1080f * 2;
-		// System.out.println(mouseX + "" + lx);
 		if (!(mouseX == lx)) {
 			degX += mouseX;
 			lx = mouseX;
@@ -115,8 +110,6 @@ public class Camera {
 			degZ += mouseY;
 			ly = mouseY;
 		}
-
-		// degZ += mouseY;
 		degX = degX % (2 * Math.PI);
 		if (degZ > 1.57 * sense) {
 			degZ = 1.57 * sense;
@@ -128,11 +121,18 @@ public class Camera {
 		float y = (float) Math.sin(degX * sense);
 		float z = (float) Math.sin(degZ * sense);
 		float h = (float) Math.cos(degZ * sense);
-		// gets stuck at target.z = 2, 4
-		target.x = x * h + pos.x; // should be in ratio
+		/*
+		target.x = x * h + pos.x;
 		target.y = y * h + pos.y;
 		target.z = z + pos.z;
-
+		*/
+		target.x = x*h;
+		target.y = y*h;
+		target.z = z;
+		target.normalize();
+		target.x+=pos.x;
+		target.y+= pos.y;
+		target.z+=pos.z;
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
 

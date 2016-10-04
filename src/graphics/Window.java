@@ -143,6 +143,9 @@ public class Window implements Runnable {
 		graphicsManager.update();
 		objectManager.update();
 		world.update();
+		/**
+		 * Move this bs
+		 */
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT)) {
 			vel = vel.add(new Vector3f(speed, 0, 0));
 		}
@@ -163,12 +166,8 @@ public class Window implements Runnable {
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_Z)) {
 			vel = new Vector3f(0, 0, 0);
-			//objectManager.ball.placeAt(0,0,0);
 		}
 		objectManager.ball.force = vel;
-		//maths.BoundingBox.collide(objectManager.ball, objectManager.target,
-		//objectManager.ball.velocity, objectManager.target.velocity);
-		//objectManager.ball.translate(vel.x, vel.y, vel.z);
 	}
 
 	/**
