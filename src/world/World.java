@@ -2,6 +2,7 @@ package world;
 
 import java.util.ArrayList;
 
+import graphics.Window;
 import noiseLibrary.module.source.Perlin;
 
 public class World {
@@ -29,11 +30,28 @@ public class World {
 		 * Delauny:1/4
 		 * Poisson:1/4 
 		 */
-	//	for (int x = 0; x < chunkX; x++) {
-	//		for (int y = 0; y < chunkY; y++) {
-	//			chunks.add(new Chunk(noise, x, y,true));
-	//		}
-	//	}
+		//	for (int x = 0; x < chunkX; x++) {
+		//		for (int y = 0; y < chunkY; y++) {
+		//			chunks.add(new Chunk(noise, x, y,true));
+		//		}
+		//	}
+	}
+
+	public void update() {
+		float cameraX = graphics.GraphicsManager.camera.pos.x;
+		float cameraY = graphics.GraphicsManager.camera.pos.y;
+
+		int chunkX = (int) (cameraX / Chunk.SIZE / 2);
+		int chunkY = (int) (cameraY / Chunk.SIZE / 2);
+
+		if (!Window.chunkLoader.chunks.get(new int[] { chunkX,chunkY })) {
+			for (int x = -1; x < 2; x++) {
+				for (int y = -1; y < 2; y++) {
+					Window.chunkLoader.chunksToLoad.add(new int[] { chunkX + x,chunkY + y });
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -42,10 +60,11 @@ public class World {
 	public void render() {
 		chunks.stream().forEach(c -> c.render());
 	}
-	
-	public void addChunk(Chunk c){
-		if(!c.isGL){
+
+	public void addChunk(Chunk c) {
+		if (!c.isGL) {
 			c.makeGL();
-		} chunks.add(c);
+		}
+		chunks.add(c);
 	}
 }

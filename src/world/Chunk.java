@@ -19,8 +19,8 @@ import object.Object;
 
 public class Chunk extends Object {
 
-	public static final float SIZE = 5;
-	
+	public static final float SIZE = 3;
+
 	private static final float WATERLEVEL = 1.3f;
 	Perlin noise;
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
@@ -123,5 +123,6 @@ public class Chunk extends Object {
 
 	public void makeGL() {
 		this.vao = new VertexArrayObject(vertices, 3);
+		this.isGL = true;
 	}
 }

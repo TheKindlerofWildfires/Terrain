@@ -62,7 +62,7 @@ public class Window implements Runnable {
 	public static GraphicsManager graphicsManager;
 	public static World world;
 	private ObjectManager objectManager;
-	private static ChunkLoader chunkLoader;
+	public static ChunkLoader chunkLoader;
 	public static double deltaX, deltaY;
 	public static Random worldRandom = new Random();
 	public static Random mathRandom = new Random();
@@ -139,10 +139,10 @@ public class Window implements Runnable {
 	 * The start of the update call
 	 */
 	public void update() {
-		graphicsManager.update();
 		glfwPollEvents();
+		graphicsManager.update();
 		objectManager.update();
-
+		world.update();
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT)) {
 			vel = vel.add(new Vector3f(speed, 0, 0));
 		}

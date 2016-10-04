@@ -1,16 +1,24 @@
 package world;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 public class ChunkLoader extends Thread {
 
 	public boolean running = true;
 
+	public Map<int[], Boolean> chunks = new HashMap<int[], Boolean>();
+
 	public Queue<Chunk> loadedChunks = new LinkedList<Chunk>();
+	public Queue<int[]> chunksToLoad = new LinkedList<int[]>();
 
 	private void loadChunk(int x, int y) {
-		loadedChunks.add(new Chunk(World.noise, x, y));
+		if (chunks.get(new int[] { x,y }) == null || !chunks.get(new int[] { x,y })) {
+			loadedChunks.add(new Chunk(World.noise, x, y));
+			chunks.put(new int[] { x,y }, true);
+		}
 	}
 
 	public void run() {
@@ -19,7 +27,7 @@ public class ChunkLoader extends Thread {
 		int dx = 0;
 		int dy = 0;
 		dy = -1;
-		int t = 20;
+		int t = 4;
 		int X = t;
 		int Y = t;
 		int maxI = t * t;
@@ -34,6 +42,12 @@ public class ChunkLoader extends Thread {
 			}
 			x += dx;
 			y += dy;
+		}
+		while (running) {
+			if (chunksToLoad.size() > 0) {
+				int[] in = chunksToLoad.poll();
+				loadChunk(in[0], in[1]);
+			}
 		}
 	}
 }
