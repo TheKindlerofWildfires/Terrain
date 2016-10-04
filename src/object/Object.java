@@ -127,8 +127,6 @@ public class Object {
 		acceleration= force.scale(1/mass).add(GRAVITY);
 		velocity = velocity.add(acceleration);
 		position = boundingBox.centre;
-		System.out.println(boundingBox.centre);
-		System.out.println(position);
 		
 		/* for all objects:
 		calculate acceleration from mass and force

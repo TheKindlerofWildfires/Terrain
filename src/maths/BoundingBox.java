@@ -35,7 +35,6 @@ public class BoundingBox {
 	 * @param z the number of 90 degree rotations to be performed in the z axis
 	 */
 	public void rotate(int x, int y, int z) {
-		System.out.println("hello");
 		if (x == 0 && y == 0 && z == 0) { //no rotation
 			return;
 		} else if (x == 0 && y == 0 && z == 1) { //rotate once in z

@@ -2,7 +2,6 @@ package object;
 
 import java.util.ArrayList;
 
-import maths.BoundingBox;
 import maths.Vector3f;
 import world.Skybox;
 
@@ -30,14 +29,14 @@ public class ObjectManager {
 		objectList.add(target);
 		objectList.add(ball);
 		//ball.rotate(30, 1,0,0);
-		//	box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
+		box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
+		box.rotate(90, 1, 0, 0);
 		c = 0;
 	}
 
 	public void update() {
 		//target.force = new Vector3f((float)(-0.1*Math.sin(c)),0,0);
 		target.force = target.position.subtract(new Vector3f(0, 5, 10)).scale(-0.1f);
-		System.out.println(target.position);
 		for (int i = 0; i < objectList.size(); i++) {
 			Object object = objectList.get(i);
 			object.translate(object.velocity);
@@ -54,5 +53,6 @@ public class ObjectManager {
 			Object object = objectList.get(i);
 			object.render();
 		}
+		box.render();
 	}
 }

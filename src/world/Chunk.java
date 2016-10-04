@@ -19,6 +19,8 @@ import object.Object;
 
 public class Chunk extends Object {
 
+	public static final float SIZE = 5;
+	
 	private static final float WATERLEVEL = 1.3f;
 	Perlin noise;
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
@@ -66,7 +68,7 @@ public class Chunk extends Object {
 		for (int i = 0; i < terrain.size(); i++) {
 			Vector3f centre = terrain.get(i).getCircumcenter().add(new Vector3f(2f * chunkX, 2f * chunkY, 0));
 			for (int j = 0; j < 3; j++) {
-				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0));
+				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
 				// each gen takes about 1/4 of build time
 				float pZ = (float) Math.abs(noise.getValue(point.x, point.y, 0.1)) * 4;
 				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * 4;

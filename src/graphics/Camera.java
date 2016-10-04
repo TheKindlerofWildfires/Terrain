@@ -149,7 +149,7 @@ public class Camera {
 	public Vector3f getUp() {
 		return up;
 	}
-	
+
 	// public Frustum getFrustum() {
 	// return frust;
 	// }
