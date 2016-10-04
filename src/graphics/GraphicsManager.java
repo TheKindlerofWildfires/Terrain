@@ -1,6 +1,6 @@
 package graphics;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
@@ -55,6 +55,7 @@ public class GraphicsManager {
 	 * Move this to player control
 	 */
 	public void update() {
+
 		double[] mousePos = MouseInput.pos();
 		camera.rotateCamera(mousePos);
 		ShaderManager.setCamera(camera);
@@ -76,5 +77,25 @@ public class GraphicsManager {
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
 			camera.moveCamera("DOWN");
 		}
+		
+		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT)) {
+			camera.movePlayer("RIGHT");//dont ask
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_RIGHT)) {
+			camera.movePlayer("LEFT");
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_UP)) {
+			camera.movePlayer("FORWARD");
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_DOWN)) {
+			camera.movePlayer("BACK");
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_Q)) {
+			camera.movePlayer("UP");
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_E)) {
+			camera.movePlayer("DOWN");
+		}
+		
 	}
 }

@@ -61,7 +61,7 @@ public class Window implements Runnable {
 	public static GLFWCursorPosCallback cursorCallback;
 	public static GraphicsManager graphicsManager;
 	public static World world;
-	private ObjectManager objectManager;
+	public ObjectManager objectManager;
 	public static ChunkLoader chunkLoader;
 	public static double deltaX, deltaY;
 	public static Random worldRandom = new Random();
@@ -143,31 +143,7 @@ public class Window implements Runnable {
 		graphicsManager.update();
 		objectManager.update();
 		world.update();
-		/**
-		 * Move this bs
-		 */
-		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT)) {
-			vel = vel.add(new Vector3f(speed, 0, 0));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_RIGHT)) {
-			vel = vel.add(new Vector3f(-speed, 0, 0));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_UP)) {
-			vel = vel.add(new Vector3f(0, -speed, 0));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_DOWN)) {
-			vel = vel.add(new Vector3f(0, speed, 0));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_Q)) {
-			vel = vel.add(new Vector3f(0, 0, speed));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_E)) {
-			vel = vel.add(new Vector3f(0, 0, -speed));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_Z)) {
-			vel = new Vector3f(0, 0, 0);
-		}
-		objectManager.ball.force = vel;
+
 	}
 
 	/**

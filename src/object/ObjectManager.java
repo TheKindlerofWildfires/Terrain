@@ -7,7 +7,7 @@ import world.Skybox;
 
 public class ObjectManager {
 	public Object target;
-	public Object ball;
+	public static Object ball;
 	//private Object test;
 	private Skybox box;
 	float c;

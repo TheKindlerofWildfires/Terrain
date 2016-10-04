@@ -59,7 +59,7 @@ public class ChunkLoader extends Thread {
 		while (running) {
 			if (chunksToLoad.size() > 0) {
 				int[] in = chunksToLoad.poll();
-				loadChunk(in[0], in[1]);
+				//loadChunk(in[0], in[1]);
 			}
 		}
 	}
