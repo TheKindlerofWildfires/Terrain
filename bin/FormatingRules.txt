@@ -1,8 +1,0 @@
-Formating rules
-Classes start with Caps
-Constants are Caps and underscored
-Only one random per package, run through window
-Updates run through an update manager, through window
-CamelCase
-Clean up imports
-Unit testing is a thing we should do
