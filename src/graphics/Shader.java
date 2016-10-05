@@ -111,4 +111,10 @@ public abstract class Shader {
 		setUniform3f(uniformName + ".direction", dirLight.direction);
 		setUniform1f(uniformName + ".intensity", dirLight.intensity);
 	}
+
+	public static void setFog(String uniformName, Fog fog) {
+		setUniform3f(uniformName + ".colour", fog.colour);
+		setUniform1f(uniformName + ".density", fog.density);
+		setUniform1i(uniformName + ".activeFog", fog.active);
+	}
 }

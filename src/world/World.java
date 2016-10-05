@@ -45,42 +45,32 @@ public class World {
 		return false;
 	}
 
+	int renderDist = 2;
+
 	public void update() {
 		float cameraX = graphics.GraphicsManager.camera.pos.x;
 		float cameraY = graphics.GraphicsManager.camera.pos.y;
 
-<<<<<<< HEAD
 		int chunkX = Math.round(cameraX / 2 / Chunk.SIZE);
 		int chunkY = Math.round(cameraY / 2 / Chunk.SIZE);
 		Vector2i xy = new Vector2i(chunkX, chunkY);
 
 		if (!Window.chunkLoader.loadingChunks) {
-=======
-		int chunkX = (int) (cameraX / Chunk.SIZE / 2);
-		int chunkY = (int) (cameraY / Chunk.SIZE / 2);
-		/*
-		 * This commented line is dumb and should be removed entirly but exists to show you what not todo
-		 */
-		//if (!Window.chunkLoader.chunks.get(new int[] { chunkX,chunkY })) {
->>>>>>> origin/infinite-terrain
-			for (int x = -1; x < 2; x++) {
-				for (int y = -1; y < 2; y++) {
+			for (int x = -renderDist; x <= renderDist; x++) {
+				for (int y = -renderDist; y <= renderDist; y++) {
 					xy.x = chunkX + x;
 					xy.y = chunkY + y;
 					if (!setContains(new HashSet<Vector2i>(Window.chunkLoader.loaded), xy)) {
 						Window.chunkLoader.chunksToLoad.add(xy);
-						Window.chunkLoader.loadChunks();
-						System.out.println(Window.chunkLoader.loaded.size());
-
+					//	Window.chunkLoader.loadChunks();
+						synchronized (Window.chunkLoader.lock) {
+							Window.chunkLoader.wakeup = true;
+							Window.chunkLoader.lock.notifyAll();
+						}
 					}
 				}
 			}
-<<<<<<< HEAD
 		}
-=======
-		//}
-
->>>>>>> origin/infinite-terrain
 	}
 
 	/**

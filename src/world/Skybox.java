@@ -22,7 +22,7 @@ public class Skybox extends Object {
 		shader = graphics.ShaderManager.objectShader;
 		this.material.useColour = 0;
 		this.model = new Transformation();
-		this.scale(10, 10, 10);
+		this.scale(7, 7, 7);
 	}
 
 	@Override

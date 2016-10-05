@@ -8,6 +8,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import maths.Vector2i;
 
 public class ChunkLoader extends Thread {
+	public boolean wakeup = false;
+
+	final Object lock = new Object();
 
 	public boolean running = true;
 
@@ -19,7 +22,7 @@ public class ChunkLoader extends Thread {
 	public Queue<Vector2i> chunksToLoad = new LinkedBlockingQueue<Vector2i>();
 
 	private void loadChunk(int x, int y) {
-<<<<<<< HEAD
+
 		loadedChunks.add(new Chunk(World.noise, x, y));
 		loaded.add(new Vector2i(x, y));
 	}
@@ -27,25 +30,6 @@ public class ChunkLoader extends Thread {
 	private void loadChunk(Vector2i xy) {
 		loadedChunks.add(new Chunk(World.noise, xy.x, xy.y));
 		loaded.add(new Vector2i(xy.x, xy.y));
-=======
-		//this  line doesn't work at all
-		/*
-		 * Which leads to it just reloading the same chunks over and over again, hogging the pipline from this side
-		 */
-		/*
-		 * HEY THIS IS THE ERROR I NEEDED TO TELL YOU ABOUT, THIS IS HOGGING THE PIPELINE WITH ITS BADNESS
-		 * To fix the pipeline problem:
-		 * a) Make this line actually detect something
-		 * b) Check if it is fixed
-		 * c) If fixed celebrate 
-		 * d) If not fixed cry
-		 * e) Investigate the queing methodss
-		 */
-		if (chunks.get(new int[] { x,y }) == null || !chunks.get(new int[] { x,y })) {
-			loadedChunks.add(new Chunk(World.noise, x, y));
-			chunks.put(new int[] { x,y }, true);
-		}
->>>>>>> origin/infinite-terrain
 	}
 
 	public void run() {
@@ -55,7 +39,7 @@ public class ChunkLoader extends Thread {
 		int dx = 0;
 		int dy = 0;
 		dy = -1;
-		int t = 10;
+		int t = 3;
 		int X = t;
 		int Y = t;
 		int maxI = t * t;
@@ -72,6 +56,16 @@ public class ChunkLoader extends Thread {
 			y += dy;
 		}
 		loadingChunks = false;
+		synchronized (lock) {
+			while (!wakeup) {
+				try {
+					lock.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			this.loadChunks();
+		}
 	}
 
 	public void loadChunks() {

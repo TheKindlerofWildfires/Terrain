@@ -14,7 +14,7 @@ import object.Object;
 
 public class Chunk extends Object {
 
-	public static final float SIZE = 1;
+	public static final float SIZE = 10;
 
 	private static final float WATERLEVEL = 1.3f;
 	Perlin noise;
