@@ -87,7 +87,7 @@ public class Camera {
 		default:
 			System.err.println("wtf");
 		}
-		displacement.normalize();
+		displacement = displacement.normalize().scale(speed);
 		//displacement.scale(speed*0.1f);
 		move(displacement);
 	}

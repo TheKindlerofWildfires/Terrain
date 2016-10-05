@@ -15,11 +15,13 @@ import object.ObjectManager;
 public class Player {
 	Vector3f target = new Vector3f();
 	Vector3f pos = new Vector3f();
-	Float speed = Camera.speed;
-	Vector3f upward = new Vector3f(0,1,0);
+	Float speed = Camera.speed/10;
+	Vector3f upward = new Vector3f(0,0,1);
+	Vector3f force;
 	public void update(){
 		this.target = GraphicsManager.camera.getTarget();
 		this.pos = GraphicsManager.camera.getPos();
+		force = new Vector3f();
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT)) {
 			movePlayer("RIGHT");//dont ask
 		}
@@ -38,9 +40,11 @@ public class Player {
 		if (KeyboardInput.isKeyDown(GLFW_KEY_E)) {
 			movePlayer("DOWN");
 		}
+		//force = force.scale(0.9f);
+			ObjectManager.ball.setForce(force);
 	}
 	public void movePlayer(String dir){
-		Vector3f displacement = new Vector3f(0, 0, 0);
+
 		float vx = pos.x - target.x;
 		float vy = pos.y - target.y;
 		vx *= speed;
@@ -48,28 +52,27 @@ public class Player {
 		
 		switch (dir) {
 		case "UP":
-			displacement = upward;
+			force = upward;
 			break;
 		case "DOWN":
-			displacement = upward.negate();
+			force = upward.negate();
 			break;
 		case "FORWARD":
-			displacement = new Vector3f(-vx, -vy, 0);// backward.negate();
+			force = new Vector3f(-vx, -vy, 0);// backward.negate();
 			break;
 		case "BACK":
-			displacement = new Vector3f(vx, vy, 0);// backward;
+			force = new Vector3f(vx, vy, 0);// backward;
 			break;
 		case "LEFT":
-			displacement = new Vector3f(-vy, vx, 0);// left;
+			force = new Vector3f(-vy, vx, 0);// left;
 			break;
 		case "RIGHT":
-			displacement = new Vector3f(vy, -vx, 0);// left.negate();
+			force = new Vector3f(vy, -vx, 0);// left.negate();
 			break;
 		default:
 			System.err.println("wtf");
 		}
-		displacement.normalize();
-		//displacement.scale(speed*0.1f);
-		ObjectManager.ball.translate(displacement);
+		
+		force = force.normalize().scale(speed);
 	}
 }
