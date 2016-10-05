@@ -1,0 +1,15 @@
+https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/
+
+Assigned:
+	Optimization
+	Thickness
+	Caves
+	Have Chunk extend Object
+	Make OBB colliders
+	Load chunks around camera
+Eventual:
+	Water physics
+	Chunks load as move
+	Weather
+	Colliders
+	Day night cycle
