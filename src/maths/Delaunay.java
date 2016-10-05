@@ -36,7 +36,7 @@ public class Delaunay {
 				goodTris.add(tri);
 			}
 		}
-		for (Triangle tri : badTris) { // work out edges and remove bad
+		for (Triangle tri : badTris) {
 			for (int i = 0; i < 3; i++) {
 				Edge edge = tri.getEdge(i);
 				boolean isIn = false;
@@ -72,9 +72,6 @@ public class Delaunay {
 		for (Vector3f point : points) {
 			addPoint(point);
 		}
-		/**
-		 * This mircofunction could take small amounts of optimization
-		 */
 		for (int i = 0; i < triangles.size(); i++) {
 			Triangle tri = triangles.get(i);
 			for (int j = 0; j < 3; j++) {

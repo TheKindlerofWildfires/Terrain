@@ -10,8 +10,6 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
-
-import maths.BoundingBox;
 import maths.Matrix4f;
 import maths.Transformation;
 import maths.Vector3f;

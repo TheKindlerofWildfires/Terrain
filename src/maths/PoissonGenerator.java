@@ -10,7 +10,6 @@ public class PoissonGenerator {
 	public int width = 1000;
 	public int height = 1000;
 	public int remainingPoints = 250;
-	// public float density = (float)remainingPoints/(float)(height);
 	int freq = 0;
 	public ArrayList<Vector3f> xp = new ArrayList<Vector3f>();
 	public ArrayList<Vector3f> xn = new ArrayList<Vector3f>();
@@ -84,10 +83,6 @@ public class PoissonGenerator {
 	 * This makes a 100 by 100 grid of Poisson points
 	 */
 	public void generate() {
-		/*
-		 * int x = Window.mathRandom.nextInt(width); int y =
-		 * Window.mathRandom.nextInt(height); points.add(new int[] { x,y });
-		 */
 		Mirror m = new Mirror();
 		points.addAll(m.fish());
 		while (remainingPoints > 0) {
@@ -95,50 +90,6 @@ public class PoissonGenerator {
 			remainingPoints--;
 		}
 	}
-	/*
-	@Deprecated
-	private void cleanup() {
-		Vector3f nVec = new Vector3f(0, 0, 1);
-		for (int i = 0; i < 1000; i++) {
-			xp.add(nVec);
-			yp.add(nVec);
-			xn.add(nVec);
-			yn.add(nVec);
-		}
-
-		for (int i = 0; i < points.size(); i++) {
-			int[] p = points.get(i);
-			// System.out.println(xp.size());
-			if (p[0] > xp.get(p[1]).y) {
-				xp.set(p[1], new Vector3f(p[0], p[1], 0));
-			}
-			if (p[1] > yp.get(p[0]).x) {
-				yp.set(p[0], new Vector3f(p[0], p[1], 0));
-			}
-			if (p[0] < xn.get(p[1]).y) {
-				xn.set(p[1], new Vector3f(p[0], p[1], 0));
-			}
-			if (p[1] > yn.get(p[0]).x) {
-				yn.set(p[0], new Vector3f(p[0], p[1], 0));
-			}
-		}
-		xp.removeAll(Collections.singleton(nVec));
-		yp.removeAll(Collections.singleton(nVec));
-		xn.removeAll(Collections.singleton(nVec));
-		yn.removeAll(Collections.singleton(nVec));
-		// at the end of this we have 4 lists of vec3s each organized by
-		// opposite cord taking the maxiumum for that row
-	}
-
-	/**
-	 * a**2 + b**2 = c**2
-	 * 
-	 * @param p1
-	 *            a
-	 * @param p2
-	 *            b
-	 * @return c
-	 */
 	public double distance(int[] p1, int[] p2) {
 		int dx = p2[0] - p1[0];
 		int dy = p2[1] - p1[1];

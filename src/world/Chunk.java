@@ -1,10 +1,5 @@
 package world;
 
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-
-import graphics.Shader;
 import graphics.VertexArrayObject;
 
 import java.util.ArrayList;

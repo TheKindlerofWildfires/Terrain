@@ -1,4 +1,13 @@
-/world/
+/LICENSE
+/build.txt
 /graphics/
-/object/
+/input/
 /maths/
+/models/
+/noiseLibrary/
+/object/
+<<<<<<< HEAD
+/maths/
+=======
+/world/
+>>>>>>> origin/infinite-terrain

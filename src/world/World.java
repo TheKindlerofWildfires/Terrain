@@ -28,12 +28,6 @@ public class World {
 		noise.setOctaveCount(10);
 		//noise.setPersistence(0.4);
 		noise.setSeed(perlinSeed);
-		/*
-		 * Testing reveals 
-		 * Perlin:1/2
-		 * Delauny:1/4
-		 * Poisson:1/4 
-		 */
 		//	for (int x = 0; x < chunkX; x++) {
 		//		for (int y = 0; y < chunkY; y++) {
 		//			chunks.add(new Chunk(noise, x, y,true));
@@ -55,11 +49,20 @@ public class World {
 		float cameraX = graphics.GraphicsManager.camera.pos.x;
 		float cameraY = graphics.GraphicsManager.camera.pos.y;
 
+<<<<<<< HEAD
 		int chunkX = Math.round(cameraX / 2 / Chunk.SIZE);
 		int chunkY = Math.round(cameraY / 2 / Chunk.SIZE);
 		Vector2i xy = new Vector2i(chunkX, chunkY);
 
 		if (!Window.chunkLoader.loadingChunks) {
+=======
+		int chunkX = (int) (cameraX / Chunk.SIZE / 2);
+		int chunkY = (int) (cameraY / Chunk.SIZE / 2);
+		/*
+		 * This commented line is dumb and should be removed entirly but exists to show you what not todo
+		 */
+		//if (!Window.chunkLoader.chunks.get(new int[] { chunkX,chunkY })) {
+>>>>>>> origin/infinite-terrain
 			for (int x = -1; x < 2; x++) {
 				for (int y = -1; y < 2; y++) {
 					xy.x = chunkX + x;
@@ -72,7 +75,12 @@ public class World {
 					}
 				}
 			}
+<<<<<<< HEAD
 		}
+=======
+		//}
+
+>>>>>>> origin/infinite-terrain
 	}
 
 	/**

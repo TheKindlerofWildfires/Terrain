@@ -18,7 +18,7 @@ class Attenuation {
 
 class PointLight {
 	Vector3f colour;
-	Vector3f position; // Light position is assumed to be in view coordinates
+	Vector3f position;
 	float intensity;
 	Attenuation att;
 }
@@ -31,7 +31,9 @@ class DirectionalLight {
 
 public class GraphicsManager {
 
-	// Camera init constants
+	/**
+	 * Inits camera contents
+	 */
 	private static final Vector3f cameraStartPos = new Vector3f(5, 0, 10);// usual
 																			// 0,2,0
 	private static final Vector3f cameraStartTarget = new Vector3f(3, 0, 15);
@@ -50,8 +52,7 @@ public class GraphicsManager {
 	}
 
 	/**
-	 * For some odd reason the camera is in the graphics manager and the player
-	 * needs to control the camera
+	 * Move this to player control
 	 */
 	public void update() {
 		double[] mousePos = MouseInput.pos();
