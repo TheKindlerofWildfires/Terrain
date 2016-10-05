@@ -1,33 +1,41 @@
 package world;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import maths.Vector2i;
 
 public class ChunkLoader extends Thread {
 
 	public boolean running = true;
 
-	public Map<int[], Boolean> chunks = new HashMap<int[], Boolean>();
+	public boolean loadingChunks = false;
 
-	public Queue<Chunk> loadedChunks = new LinkedList<Chunk>();
-	public Queue<int[]> chunksToLoad = new LinkedList<int[]>();
+	public Set<Vector2i> loaded = new HashSet<Vector2i>();
+
+	public Queue<Chunk> loadedChunks = new LinkedBlockingQueue<Chunk>();
+	public Queue<Vector2i> chunksToLoad = new LinkedBlockingQueue<Vector2i>();
 
 	private void loadChunk(int x, int y) {
-		if (chunks.get(new int[] { x,y }) == null || !chunks.get(new int[] { x,y })) {
-			loadedChunks.add(new Chunk(World.noise, x, y));
-			chunks.put(new int[] { x,y }, true);
-		}
+		loadedChunks.add(new Chunk(World.noise, x, y));
+		loaded.add(new Vector2i(x, y));
+	}
+
+	private void loadChunk(Vector2i xy) {
+		loadedChunks.add(new Chunk(World.noise, xy.x, xy.y));
+		loaded.add(new Vector2i(xy.x, xy.y));
 	}
 
 	public void run() {
+		loadingChunks = true;
 		int x = 0;
 		int y = 0;
 		int dx = 0;
 		int dy = 0;
 		dy = -1;
-		int t = 4;
+		int t = 10;
 		int X = t;
 		int Y = t;
 		int maxI = t * t;
@@ -43,11 +51,14 @@ public class ChunkLoader extends Thread {
 			x += dx;
 			y += dy;
 		}
-		while (running) {
-			if (chunksToLoad.size() > 0) {
-				int[] in = chunksToLoad.poll();
-				loadChunk(in[0], in[1]);
-			}
+		loadingChunks = false;
+	}
+
+	public void loadChunks() {
+		loadingChunks = true;
+		while (!chunksToLoad.isEmpty()) {
+			loadChunk(chunksToLoad.poll());
 		}
+		loadingChunks = false;
 	}
 }

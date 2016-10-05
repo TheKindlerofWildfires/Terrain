@@ -1,8 +1,12 @@
 package world;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import graphics.Window;
+import maths.Vector2i;
 import noiseLibrary.module.source.Perlin;
 
 public class World {
@@ -37,21 +41,38 @@ public class World {
 		//	}
 	}
 
+	public boolean setContains(Set<?> set, Object o) {
+		Iterator<?> iterator = set.iterator();
+		while (iterator.hasNext()) {
+			if (iterator.next().equals(o)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void update() {
 		float cameraX = graphics.GraphicsManager.camera.pos.x;
 		float cameraY = graphics.GraphicsManager.camera.pos.y;
 
-		int chunkX = (int) (cameraX / Chunk.SIZE / 2);
-		int chunkY = (int) (cameraY / Chunk.SIZE / 2);
+		int chunkX = Math.round(cameraX / 2 / Chunk.SIZE);
+		int chunkY = Math.round(cameraY / 2 / Chunk.SIZE);
+		Vector2i xy = new Vector2i(chunkX, chunkY);
 
-		if (!Window.chunkLoader.chunks.get(new int[] { chunkX,chunkY })) {
+		if (!Window.chunkLoader.loadingChunks) {
 			for (int x = -1; x < 2; x++) {
 				for (int y = -1; y < 2; y++) {
-					Window.chunkLoader.chunksToLoad.add(new int[] { chunkX + x,chunkY + y });
+					xy.x = chunkX + x;
+					xy.y = chunkY + y;
+					if (!setContains(new HashSet<Vector2i>(Window.chunkLoader.loaded), xy)) {
+						Window.chunkLoader.chunksToLoad.add(xy);
+						Window.chunkLoader.loadChunks();
+						System.out.println(Window.chunkLoader.loaded.size());
+
+					}
 				}
 			}
 		}
-
 	}
 
 	/**
