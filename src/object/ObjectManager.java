@@ -45,7 +45,7 @@ public class ObjectManager {
 		}
 		maths.BoundingBox.collide(ball, target, ball.velocity, target.velocity);
 
-		c += Math.PI / 100;
+		c += Math.PI / 500;
 	}
 
 	public void render() {

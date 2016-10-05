@@ -1,6 +1,5 @@
 package graphics;
 
-import object.ObjectManager;
 import maths.Matrix4f;
 import maths.Vector3f;
 
@@ -16,7 +15,7 @@ public class Camera {
 	float lx, ly;
 	private Vector3f upward;
 	Vector3f cameraUp = new Vector3f(0, 0, 1);
-	private float speed = .2f;
+	public static float speed = .2f;
 	private float sense = 1f;
 
 	/**
@@ -59,38 +58,7 @@ public class Camera {
 	 * @param dir
 	 *            which way the player has told to move
 	 */
-	public void movePlayer(String dir){
-		Vector3f displacement = new Vector3f(0, 0, 0);
-		float vx = pos.x - target.x;
-		float vy = pos.y - target.y;
-		vx *= speed;
-		vy *= speed;
-		switch (dir) {
-		case "UP":
-			displacement = upward;
-			break;
-		case "DOWN":
-			displacement = upward.negate();
-			break;
-		case "FORWARD":
-			displacement = new Vector3f(-vx, -vy, 0);// backward.negate();
-			break;
-		case "BACK":
-			displacement = new Vector3f(vx, vy, 0);// backward;
-			break;
-		case "LEFT":
-			displacement = new Vector3f(-vy, vx, 0);// left;
-			break;
-		case "RIGHT":
-			displacement = new Vector3f(vy, -vx, 0);// left.negate();
-			break;
-		default:
-			System.err.println("wtf");
-		}
-		displacement.normalize();
-		//displacement.scale(speed*0.1f);
-		ObjectManager.ball.translate(displacement);
-	}
+	
 	public void moveCamera(String dir) {
 		Vector3f displacement = new Vector3f(0, 0, 0);
 		float vx = pos.x - target.x;

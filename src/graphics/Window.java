@@ -49,6 +49,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
+import entity.EntityManager;
 import world.ChunkLoader;
 import world.World;
 
@@ -60,8 +61,9 @@ public class Window implements Runnable {
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
 	public static GraphicsManager graphicsManager;
+	public static ObjectManager objectManager;
+	public static EntityManager entityManager;
 	public static World world;
-	public ObjectManager objectManager;
 	public static ChunkLoader chunkLoader;
 	public static double deltaX, deltaY;
 	public static Random worldRandom = new Random();
@@ -114,8 +116,10 @@ public class Window implements Runnable {
 
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
+		
 		world = new World();
 		objectManager = new ObjectManager();
+		entityManager = new EntityManager();
 		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();
 	}
@@ -141,8 +145,10 @@ public class Window implements Runnable {
 	public void update() {
 		glfwPollEvents();
 		graphicsManager.update();
-		objectManager.update();
+		
 		world.update();
+		objectManager.update();
+		entityManager.update();
 
 	}
 
@@ -153,7 +159,6 @@ public class Window implements Runnable {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		world.render();
-
 		objectManager.render();
 	}
 
