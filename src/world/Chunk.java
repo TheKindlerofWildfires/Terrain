@@ -14,9 +14,9 @@ import object.Object;
 
 public class Chunk extends Object {
 
-	public static final float SIZE = 3;
+	public static final float SIZE = 10;
 
-	private static final float WATERLEVEL = 1.3f;
+	private static final float WATERLEVEL = 2;
 	Perlin noise;
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 	float[] vertices;
@@ -61,27 +61,31 @@ public class Chunk extends Object {
 		int c = 0;
 
 		for (int i = 0; i < terrain.size(); i++) {
-			Vector3f centre = terrain.get(i).getCircumcenter().add(new Vector3f(2f * chunkX, 2f * chunkY, 0));
+			Vector3f centre = terrain.get(i).getCircumcenter().add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
 				// each gen takes about 1/4 of build time
-				float pZ = (float) Math.abs(noise.getValue(point.x, point.y, 0.1)) * 4;
-				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * 4;
+				float pZ = (float) Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE/2;
+				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE;
 
 				float g;
 				float r;
 				float b;
-				if (pZ < WATERLEVEL) {
-					cZ *= 0.7;
+				b = 0.5f/(cZ+1);
+				g = 0.9f/(cZ+1);
+				r = 0.5f/(cZ+1);
+				if(pZ<WATERLEVEL){
+					b *=0.5f;
+					r*=0.1f;
+					g *= 0.2f;
 				}
-				// cZ = pZ;
+				
+				//cZ = pZ;
+				/*
 				g = (float) (cZ - 5) * (-0.1f * cZ) - 0.0f;
 				b = (float) (cZ - 7) * (0.05f * cZ) + 0.5f;
 				r = (float) (cZ - 7) * (-0.26f * cZ) - 2.7f;
-
-				if (cZ > 4.7) {
-					b = 0;
-				}
+				*/
 				vertices[c++] = point.x;
 				vertices[c++] = point.y;
 				vertices[c++] = pZ;
