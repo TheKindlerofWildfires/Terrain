@@ -1,6 +1,9 @@
 package maths;
 
+import graphics.Window;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Mirror {
 	private ArrayList<Vector3f> points;
@@ -9,9 +12,9 @@ public class Mirror {
 	private ArrayList<Vector3f> myp = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> myn = new ArrayList<Vector3f>();
 	float specificity = 0.6f;
-	static int spec = 970; 
+	static int spec = 960; 
 	static int iterator = 125;
-
+	Random rng = Window.mathRandom;
 	public Mirror(ArrayList<Vector3f> points) {
 		this.points = points;
 		standard();

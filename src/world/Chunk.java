@@ -14,9 +14,10 @@ import object.Object;
 
 public class Chunk extends Object {
 
-	public static final float SIZE = 10;
+	public static final float SIZE =9;
 
-	private static final float WATERLEVEL = 2;
+	private static final float WATERLEVEL = SIZE/6;
+	private static final float TREELINE = 2*SIZE/6;
 	Perlin noise;
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 	float[] vertices;
@@ -66,7 +67,7 @@ public class Chunk extends Object {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
 				// each gen takes about 1/4 of build time
 				float pZ = (float) Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE/2;
-				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE;
+				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE/2;
 
 				float g;
 				float r;
@@ -75,9 +76,14 @@ public class Chunk extends Object {
 				g = 0.9f/(cZ+1);
 				r = 0.5f/(cZ+1);
 				if(pZ<WATERLEVEL){
-					b *=0.5f;
+					b *=0.6f;
 					r*=0.1f;
 					g *= 0.2f;
+				}
+				if(pZ>TREELINE){
+					b *=0.5f;
+					r*=1.4f;
+					g *= 1.1f;
 				}
 				
 				//cZ = pZ;

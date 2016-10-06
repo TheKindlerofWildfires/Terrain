@@ -19,8 +19,8 @@ public class World {
 	 */
 	public World() {
 		noise = new Perlin();
-		noise.setFrequency(0.04);
-		noise.setLacunarity(2.2);
+		noise.setFrequency(0.02);
+		noise.setLacunarity(2);
 		noise.setOctaveCount(10);
 		//noise.setPersistence(0.4);
 		noise.setSeed(perlinSeed);
