@@ -8,32 +8,20 @@ import java.util.concurrent.LinkedBlockingQueue;
 import maths.Vector2i;
 
 public class ChunkLoader extends Thread {
-	public boolean wakeup = false;
-
-	final Object lock = new Object();
-
 	public boolean running = true;
-
-	public boolean loadingChunks = false;
-
-	public Set<Vector2i> loaded = new HashSet<Vector2i>();
 
 	public Queue<Chunk> loadedChunks = new LinkedBlockingQueue<Chunk>();
 	public Queue<Vector2i> chunksToLoad = new LinkedBlockingQueue<Vector2i>();
 
 	private void loadChunk(int x, int y) {
-
 		loadedChunks.add(new Chunk(World.noise, x, y));
-		loaded.add(new Vector2i(x, y));
 	}
 
 	private void loadChunk(Vector2i xy) {
 		loadedChunks.add(new Chunk(World.noise, xy.x, xy.y));
-		loaded.add(new Vector2i(xy.x, xy.y));
 	}
 
 	public void run() {
-		loadingChunks = true;
 		int x = 0;
 		int y = 0;
 		int dx = 0;
@@ -55,24 +43,10 @@ public class ChunkLoader extends Thread {
 			x += dx;
 			y += dy;
 		}
-		loadingChunks = false;
-		synchronized (lock) {
-			while (!wakeup) {
-				try {
-					lock.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+		while (running) {
+			if (!chunksToLoad.isEmpty()) {
+				loadChunk(chunksToLoad.poll());
 			}
-			this.loadChunks();
 		}
-	}
-
-	public void loadChunks() {
-		loadingChunks = true;
-		while (!chunksToLoad.isEmpty()) {
-			loadChunk(chunksToLoad.poll());
-		}
-		loadingChunks = false;
 	}
 }

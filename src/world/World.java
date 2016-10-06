@@ -12,10 +12,10 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	public static Perlin noise;
 	public static int perlinSeed;
-	public static final int chunkY = 10;
-	public static final int chunkX = 10;
-	public static final int chunkS = chunkY * chunkX;
+	public static final int LOAD_DIST = 2;
+
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
+	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 
 	/**
 	 * Building better worlds
@@ -45,8 +45,6 @@ public class World {
 		return false;
 	}
 
-	int renderDist = 2;
-
 	public void update() {
 		float cameraX = graphics.GraphicsManager.camera.pos.x;
 		float cameraY = graphics.GraphicsManager.camera.pos.y;
@@ -55,19 +53,16 @@ public class World {
 		int chunkY = Math.round(cameraY / 2 / Chunk.SIZE);
 		Vector2i xy = new Vector2i(chunkX, chunkY);
 
-		if (!Window.chunkLoader.loadingChunks) {
-			for (int x = -renderDist; x <= renderDist; x++) {
-				for (int y = -renderDist; y <= renderDist; y++) {
-					xy.x = chunkX + x;
-					xy.y = chunkY + y;
-					if (!setContains(new HashSet<Vector2i>(Window.chunkLoader.loaded), xy)) {
-						Window.chunkLoader.chunksToLoad.add(xy);
-					//	Window.chunkLoader.loadChunks();
-						synchronized (Window.chunkLoader.lock) {
-							Window.chunkLoader.wakeup = true;
-							Window.chunkLoader.lock.notifyAll();
-						}
-					}
+		for (int x = -LOAD_DIST; x < LOAD_DIST + 1; x++) {
+			for (int y = -LOAD_DIST; y < LOAD_DIST + 1; y++) {
+				xy = new Vector2i(x + chunkX, y + chunkY);
+				if (!setContains(loadedChunks, xy)) {
+					System.out.println(loadedChunks.size());
+					System.out.println(setContains(loadedChunks, xy));
+					loadedChunks.add(xy);
+					System.out.println(setContains(loadedChunks, xy));
+					System.out.println(loadedChunks.size());
+					Window.chunkLoader.chunksToLoad.add(xy);
 				}
 			}
 		}
