@@ -14,7 +14,11 @@ import object.Object;
 
 public class Chunk extends Object {
 
+<<<<<<< HEAD
 	public static final float SIZE =9;
+=======
+	public static final float SIZE = 10;
+>>>>>>> infinite-terrain
 
 	private static final float WATERLEVEL = SIZE/6;
 	private static final float TREELINE = 2*SIZE/6;

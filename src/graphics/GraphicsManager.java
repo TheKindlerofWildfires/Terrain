@@ -24,6 +24,12 @@ class DirectionalLight {
 	float intensity;
 }
 
+class Fog {
+	Vector3f colour;
+	int active;
+	float density;
+}
+
 public class GraphicsManager {
 
 	/**

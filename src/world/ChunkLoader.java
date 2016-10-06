@@ -1,37 +1,24 @@
 package world;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
+
+import maths.Vector2i;
 
 public class ChunkLoader extends Thread {
-
 	public boolean running = true;
 
-	public Map<int[], Boolean> chunks = new HashMap<int[], Boolean>();
-
-	public Queue<Chunk> loadedChunks = new LinkedList<Chunk>();
-	public Queue<int[]> chunksToLoad = new LinkedList<int[]>();
+	public Queue<Chunk> loadedChunks = new LinkedBlockingQueue<Chunk>();
+	public Queue<Vector2i> chunksToLoad = new LinkedBlockingQueue<Vector2i>();
 
 	private void loadChunk(int x, int y) {
-		//this  line doesn't work at all
-		/*
-		 * Which leads to it just reloading the same chunks over and over again, hogging the pipline from this side
-		 */
-		/*
-		 * HEY THIS IS THE ERROR I NEEDED TO TELL YOU ABOUT, THIS IS HOGGING THE PIPELINE WITH ITS BADNESS
-		 * To fix the pipeline problem:
-		 * a) Make this line actually detect something
-		 * b) Check if it is fixed
-		 * c) If fixed celebrate 
-		 * d) If not fixed cry
-		 * e) Investigate the queing methodss
-		 */
-		if (chunks.get(new int[] { x,y }) == null || !chunks.get(new int[] { x,y })) {
-			loadedChunks.add(new Chunk(World.noise, x, y));
-			chunks.put(new int[] { x,y }, true);
-		}
+		loadedChunks.add(new Chunk(World.noise, x, y));
+	}
+
+	private void loadChunk(Vector2i xy) {
+		loadedChunks.add(new Chunk(World.noise, xy.x, xy.y));
 	}
 
 	public void run() {
@@ -40,7 +27,7 @@ public class ChunkLoader extends Thread {
 		int dx = 0;
 		int dy = 0;
 		dy = -1;
-		int t = 4;
+		int t = 3;
 		int X = t;
 		int Y = t;
 		int maxI = t * t;
@@ -57,9 +44,14 @@ public class ChunkLoader extends Thread {
 			y += dy;
 		}
 		while (running) {
+<<<<<<< HEAD
 			if (chunksToLoad.size() > 0) {
 				int[] in = chunksToLoad.poll();
 				//loadChunk(in[0], in[1]);
+=======
+			if (!chunksToLoad.isEmpty()) {
+				loadChunk(chunksToLoad.poll());
+>>>>>>> infinite-terrain
 			}
 		}
 	}

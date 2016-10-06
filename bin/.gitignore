@@ -1,5 +1,13 @@
 /graphics/
 /entity/
 /object/
-/world/
+<<<<<<< HEAD
 /maths/
+=======
+/world/
+<<<<<<< HEAD
+/maths/
+=======
+>>>>>>> origin/infinite-terrain
+/shaders/
+>>>>>>> infinite-terrain

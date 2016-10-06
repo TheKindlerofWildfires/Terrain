@@ -1,17 +1,21 @@
 package world;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import graphics.Window;
+import maths.Vector2i;
 import noiseLibrary.module.source.Perlin;
 
 public class World {
 	public static Perlin noise;
 	public static int perlinSeed;
-	public static final int chunkY = 10;
-	public static final int chunkX = 10;
-	public static final int chunkS = chunkY * chunkX;
+	public static final int LOAD_DIST = 2;
+
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
+	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 
 	/**
 	 * Building better worlds
@@ -31,23 +35,37 @@ public class World {
 		//	}
 	}
 
+	public boolean setContains(Set<?> set, Object o) {
+		Iterator<?> iterator = set.iterator();
+		while (iterator.hasNext()) {
+			if (iterator.next().equals(o)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void update() {
 		float cameraX = graphics.GraphicsManager.camera.pos.x;
 		float cameraY = graphics.GraphicsManager.camera.pos.y;
 
-		int chunkX = (int) (cameraX / Chunk.SIZE / 2);
-		int chunkY = (int) (cameraY / Chunk.SIZE / 2);
-		/*
-		 * This commented line is dumb and should be removed entirly but exists to show you what not todo
-		 */
-		//if (!Window.chunkLoader.chunks.get(new int[] { chunkX,chunkY })) {
-			for (int x = -1; x < 2; x++) {
-				for (int y = -1; y < 2; y++) {
-					Window.chunkLoader.chunksToLoad.add(new int[] { chunkX + x,chunkY + y });
+		int chunkX = Math.round(cameraX / 2 / Chunk.SIZE);
+		int chunkY = Math.round(cameraY / 2 / Chunk.SIZE);
+		Vector2i xy = new Vector2i(chunkX, chunkY);
+
+		for (int x = -LOAD_DIST; x < LOAD_DIST + 1; x++) {
+			for (int y = -LOAD_DIST; y < LOAD_DIST + 1; y++) {
+				xy = new Vector2i(x + chunkX, y + chunkY);
+				if (!setContains(loadedChunks, xy)) {
+					System.out.println(loadedChunks.size());
+					System.out.println(setContains(loadedChunks, xy));
+					loadedChunks.add(xy);
+					System.out.println(setContains(loadedChunks, xy));
+					System.out.println(loadedChunks.size());
+					Window.chunkLoader.chunksToLoad.add(xy);
 				}
 			}
-		//}
-
+		}
 	}
 
 	/**
