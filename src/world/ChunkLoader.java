@@ -44,14 +44,8 @@ public class ChunkLoader extends Thread {
 			y += dy;
 		}
 		while (running) {
-<<<<<<< HEAD
-			if (chunksToLoad.size() > 0) {
-				int[] in = chunksToLoad.poll();
-				//loadChunk(in[0], in[1]);
-=======
 			if (!chunksToLoad.isEmpty()) {
 				loadChunk(chunksToLoad.poll());
->>>>>>> infinite-terrain
 			}
 		}
 	}

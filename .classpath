@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="libs/lwjgl/lwjgl.jar" sourcepath="libs/lwjgl/src.zip">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Terrain/libs/lwjgl/doc/javadoc.zip!/"/>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Terrain/libs/lwjgl/native"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="OceanGame/libs/lwjgl/native"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="libs/PNGDecoder/PNGDecoder.jar"/>

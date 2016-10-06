@@ -41,8 +41,8 @@ public class ShaderManager {
 
 		fog = new Fog();
 		fog.active = 1;
-		fog.density = .005f;
-		fog.colour = new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random());
+		fog.density = .0003f;
+		fog.colour = new Vector3f(0, (float) Math.random(), (float) Math.random());
 
 		initialized = true;
 		landShader = makeShader("src/shaders/land.vert", "src/shaders/land.frag");
@@ -69,6 +69,11 @@ public class ShaderManager {
 	public static void setCamera(Camera camera) {
 		assert initialized : "Shaders must be initialized in order to work";
 
+		fog.colour.x+=.002f;
+		if(fog.colour.x>1){
+			fog.colour.x=0;
+		}
+			
 		start(landShader);
 		setUniformMatrix4f("projection", camera.projection);
 		setUniformMatrix4f("modelView", camera.view);
@@ -77,15 +82,17 @@ public class ShaderManager {
 		Vector4f dir = camera.view
 				.multiply(new Vector4f(dirLight.direction.x, dirLight.direction.y, dirLight.direction.z, 0));
 		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
+		setFog("fog", fog);
 
 		start(objectShader);
 		setUniformMatrix4f("projection", camera.projection);
 		setUniformMatrix4f("modelView", camera.view);
 		setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
+		setFog("fog", fog);
 		stop();
 		// landShader.setUniform3f("cameraPos", camera.getPos());
 
-		//lightAngle += .01f;
+		lightAngle += .01f;
 		dirLight.direction.y = (float) Math.cos(lightAngle);
 		dirLight.direction.z = (float) Math.sin(lightAngle);
 		if (lightAngle >= 360) {
