@@ -33,6 +33,11 @@ public class World {
 		//			chunks.add(new Chunk(noise, x, y,true));
 		//		}
 		//	}
+		for (int x = -LOAD_DIST+1; x < LOAD_DIST; x++) {
+			for (int y = -LOAD_DIST+1; y < LOAD_DIST; y++) {
+				loadedChunks.add(new Vector2i(0+x,0+y));
+			}
+		}
 	}
 
 	public boolean setContains(Set<?> set, Object o) {
@@ -52,7 +57,7 @@ public class World {
 		int chunkX = Math.round(cameraX / 2 / Chunk.SIZE);
 		int chunkY = Math.round(cameraY / 2 / Chunk.SIZE);
 		Vector2i xy = new Vector2i(chunkX, chunkY);
-
+		
 		for (int x = -LOAD_DIST; x < LOAD_DIST + 1; x++) {
 			for (int y = -LOAD_DIST; y < LOAD_DIST + 1; y++) {
 				xy = new Vector2i(x + chunkX, y + chunkY);
