@@ -2,12 +2,11 @@ package object;
 
 import java.util.ArrayList;
 
-import maths.Vector3f;
 import world.Skybox;
 
 public class ObjectManager {
 	public Object target;
-	public Object ball;
+	public static Object ball;
 	//private Object test;
 	private Skybox box;
 	float c;
@@ -36,7 +35,7 @@ public class ObjectManager {
 
 	public void update() {
 		//target.force = new Vector3f((float)(-0.1*Math.sin(c)),0,0);
-		target.force = target.position.subtract(new Vector3f(0, 5, 10)).scale(-0.1f);
+		//target.force = target.position.subtract(new Vector3f(0, 5, 10)).scale(-0.1f);
 		for (int i = 0; i < objectList.size(); i++) {
 			Object object = objectList.get(i);
 			object.translate(object.velocity);
@@ -45,7 +44,7 @@ public class ObjectManager {
 		}
 		maths.BoundingBox.collide(ball, target, ball.velocity, target.velocity);
 
-		c += Math.PI / 100;
+		c += Math.PI / 500;
 	}
 
 	public void render() {

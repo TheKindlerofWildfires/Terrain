@@ -4,13 +4,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_DISABLED;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
@@ -37,7 +30,6 @@ import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.system.MemoryUtil.NULL;
-import input.KeyboardInput;
 import input.MouseInput;
 
 import java.util.Random;
@@ -51,6 +43,7 @@ import org.lwjgl.opengl.GL;
 
 import world.ChunkLoader;
 import world.World;
+import entity.EntityManager;
 
 public class Window implements Runnable {
 	public boolean running = true;
@@ -60,9 +53,10 @@ public class Window implements Runnable {
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
 	public static GraphicsManager graphicsManager;
+	public static ObjectManager objectManager;
+	public static EntityManager entityManager;
 	public static World world;
-	private ObjectManager objectManager;
-	private static ChunkLoader chunkLoader;
+	public static ChunkLoader chunkLoader;
 	public static double deltaX, deltaY;
 	public static Random worldRandom = new Random();
 	public static Random mathRandom = new Random();
@@ -114,8 +108,10 @@ public class Window implements Runnable {
 
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
+		
 		world = new World();
 		objectManager = new ObjectManager();
+		entityManager = new EntityManager();
 		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();
 	}
@@ -139,36 +135,13 @@ public class Window implements Runnable {
 	 * The start of the update call
 	 */
 	public void update() {
-		graphicsManager.update();
 		glfwPollEvents();
+		graphicsManager.update();
+		
+		world.update();
 		objectManager.update();
+		entityManager.update();
 
-		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT)) {
-			vel = vel.add(new Vector3f(speed, 0, 0));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_RIGHT)) {
-			vel = vel.add(new Vector3f(-speed, 0, 0));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_UP)) {
-			vel = vel.add(new Vector3f(0, -speed, 0));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_DOWN)) {
-			vel = vel.add(new Vector3f(0, speed, 0));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_Q)) {
-			vel = vel.add(new Vector3f(0, 0, speed));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_E)) {
-			vel = vel.add(new Vector3f(0, 0, -speed));
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_Z)) {
-			vel = new Vector3f(0, 0, 0);
-			//objectManager.ball.placeAt(0,0,0);
-		}
-		objectManager.ball.force = vel;
-		//maths.BoundingBox.collide(objectManager.ball, objectManager.target,
-		//objectManager.ball.velocity, objectManager.target.velocity);
-		//objectManager.ball.translate(vel.x, vel.y, vel.z);
 	}
 
 	/**
@@ -178,7 +151,6 @@ public class Window implements Runnable {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		world.render();
-
 		objectManager.render();
 	}
 

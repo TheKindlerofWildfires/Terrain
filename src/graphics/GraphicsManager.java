@@ -1,11 +1,6 @@
 package graphics;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.*;
 import input.KeyboardInput;
 import input.MouseInput;
 import maths.Vector3f;
@@ -18,7 +13,7 @@ class Attenuation {
 
 class PointLight {
 	Vector3f colour;
-	Vector3f position; // Light position is assumed to be in view coordinates
+	Vector3f position;
 	float intensity;
 	Attenuation att;
 }
@@ -29,9 +24,17 @@ class DirectionalLight {
 	float intensity;
 }
 
+class Fog {
+	Vector3f colour;
+	int active;
+	float density;
+}
+
 public class GraphicsManager {
 
-	// Camera init constants
+	/**
+	 * Inits camera contents
+	 */
 	private static final Vector3f cameraStartPos = new Vector3f(5, 0, 10);// usual
 																			// 0,2,0
 	private static final Vector3f cameraStartTarget = new Vector3f(3, 0, 15);
@@ -50,10 +53,10 @@ public class GraphicsManager {
 	}
 
 	/**
-	 * For some odd reason the camera is in the graphics manager and the player
-	 * needs to control the camera
+	 * Move this to player control
 	 */
 	public void update() {
+
 		double[] mousePos = MouseInput.pos();
 		camera.rotateCamera(mousePos);
 		ShaderManager.setCamera(camera);
@@ -75,5 +78,6 @@ public class GraphicsManager {
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
 			camera.moveCamera("DOWN");
 		}
+		
 	}
 }

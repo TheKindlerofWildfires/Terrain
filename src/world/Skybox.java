@@ -10,8 +10,6 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
-
-import maths.BoundingBox;
 import maths.Matrix4f;
 import maths.Transformation;
 import maths.Vector3f;
@@ -24,7 +22,7 @@ public class Skybox extends Object {
 		shader = graphics.ShaderManager.objectShader;
 		this.material.useColour = 0;
 		this.model = new Transformation();
-		this.scale(10, 10, 10);
+		this.scale(15, 15, 15);
 	}
 
 	@Override

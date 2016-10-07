@@ -11,21 +11,6 @@ public class Vector3f {
 	public float y;
 	public float z;
 
-	/*public boolean isInside(Direction dir, float bound) {
-		switch (dir) {
-		case NORTH:
-			return y < bound;
-		case SOUTH:
-			return y > -bound;
-		case EAST:
-			return x < bound;
-		case WEST:
-			return x > -bound;
-		default:
-			assert false : "wtf";
-			return false;
-		}
-	}
 
 	/**
 	 * Creates a default 3-tuple vector with all values set to 0.

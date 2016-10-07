@@ -42,10 +42,6 @@ public abstract class Shader {
 	}
 
 	private static int getUniform(String name) {
-		// for (StackTraceElement ste : Thread.currentThread().getStackTrace())
-		// {
-		// System.out.println(ste);
-		// }
 		int result = glGetUniformLocation(currentProgramID, name);
 		if (result == -1) {
 			System.err.println("Could not find uniform variable " + name);
@@ -96,9 +92,12 @@ public abstract class Shader {
 	}
 
 	public static void setMaterial(String name, Material material) {
+		//this is causing my error
+		if(!(name == "material")){
 		setUniform3f(name + ".colour", material.colour);
 		setUniform1i(name + ".useColour", material.useColour);
 		setUniform1f(name + ".reflectance", material.reflectance);
+		}
 	}
 
 	public static void setPointLight(String name, PointLight pointlight) {
@@ -114,5 +113,11 @@ public abstract class Shader {
 		setUniform3f(uniformName + ".colour", dirLight.colour);
 		setUniform3f(uniformName + ".direction", dirLight.direction);
 		setUniform1f(uniformName + ".intensity", dirLight.intensity);
+	}
+
+	public static void setFog(String uniformName, Fog fog) {
+		setUniform3f(uniformName + ".colour", fog.colour);
+		setUniform1f(uniformName + ".density", fog.density);
+		setUniform1i(uniformName + ".activeFog", fog.active);
 	}
 }

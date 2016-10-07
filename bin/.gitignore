@@ -1,7 +1,6 @@
-/noiseLibrary/
-/object/
-/world/
+/entity/
 /graphics/
-/maths/
+/world/
 /models/
-/textures/
+/shaders/
+/maths/

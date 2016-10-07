@@ -18,7 +18,7 @@ import maths.Vector3f;
 
 public class Object {
 	private static final Vector3f GRAVITY = new Vector3f(0,0,0);
-	private Vector3f FRICTION = new Vector3f();
+	private Vector3f fakeFriction = new Vector3f();
 	protected Texture texture;
 	protected VertexArrayObject vao;
 	protected Material material;
@@ -122,10 +122,9 @@ public class Object {
 	}
 
 	public void physic() {
-		FRICTION = velocity.negate().scale(0.1f);
-		force = force.add(FRICTION);
+		fakeFriction = velocity.negate().scale(0.01f);
 		acceleration= force.scale(1/mass).add(GRAVITY);
-		velocity = velocity.add(acceleration);
+		velocity = velocity.add(acceleration).add(fakeFriction);
 		position = boundingBox.centre;
 		
 		/* for all objects:
@@ -137,6 +136,11 @@ public class Object {
 		
 		
 		*/
+		
+	}
+
+	public void setForce(Vector3f force) {
+		this.force = force;
 		
 	}
 

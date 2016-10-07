@@ -30,9 +30,16 @@ struct DirectionalLight
 
 struct Material
 {
-    vec3 colour;
-    int useColour;
+   vec3 colour;
+   int useColour;
     float reflectance;
+};
+
+struct Fog
+{
+    int activeFog;
+    vec3 colour;
+    float density;
 };
 
 uniform vec3 ambientLight;
@@ -41,6 +48,17 @@ uniform PointLight pointLight;
 uniform DirectionalLight directionalLight;
 uniform Material material;
 uniform vec3 camera_pos;
+uniform Fog fog;
+
+vec4 calcFog(vec3 pos, vec4 colour, Fog fog)
+{
+    float distance = length(pos);
+    float fogFactor = 1.0 / exp( (distance * fog.density)* (distance * fog.density));
+    fogFactor = clamp( fogFactor, 0.0, 1.0 );
+
+    vec3 resultColour = mix(fog.colour, colour.xyz, fogFactor);
+    return vec4(resultColour.xyz, 1);
+}
 
 vec4 calcLightColour(vec3 light_colour, float light_intensity, vec3 position, vec3 to_light_dir, vec3 normal) {
     vec4 diffuseColour = vec4(0, 0, 0, 0);
@@ -90,5 +108,9 @@ void main(){
     totalLight += calcDirectionalLight(directionalLight, mvVertexPos, mvVertexNormal);
 
     fragColor = baseColour * totalLight; 
+    
+	if ( fog.activeFog == 1 ){ 
+		fragColor = calcFog(mvVertexPos, fragColor, fog);
+	}
 } 
 
