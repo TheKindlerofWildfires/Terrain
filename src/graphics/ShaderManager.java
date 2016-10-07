@@ -10,7 +10,7 @@ public class ShaderManager {
 
 	public static int objectShader;
 	public static int landShader;
-	public static int skyboxShader;
+	//public static int skyboxShader;
 
 	static Attenuation atten;
 	static PointLight light;
@@ -47,7 +47,7 @@ public class ShaderManager {
 		initialized = true;
 		landShader = makeShader("src/shaders/land.vert", "src/shaders/land.frag");
 		objectShader = makeShader("src/shaders/object.vert", "src/shaders/object.frag");
-		skyboxShader = makeShader("src/shaders/skybox.vert", "src/shaders/skybox.frag");
+		//skyboxShader = makeShader("src/shaders/skybox.vert", "src/shaders/skybox.frag");
 
 		start(objectShader);
 		setPointLight("pointLight", light);

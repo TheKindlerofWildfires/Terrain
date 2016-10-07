@@ -57,11 +57,7 @@ public class World {
 			for (int y = -LOAD_DIST; y < LOAD_DIST + 1; y++) {
 				xy = new Vector2i(x + chunkX, y + chunkY);
 				if (!setContains(loadedChunks, xy)) {
-					System.out.println(loadedChunks.size());
-					System.out.println(setContains(loadedChunks, xy));
 					loadedChunks.add(xy);
-					System.out.println(setContains(loadedChunks, xy));
-					System.out.println(loadedChunks.size());
 					Window.chunkLoader.chunksToLoad.add(xy);
 				}
 			}

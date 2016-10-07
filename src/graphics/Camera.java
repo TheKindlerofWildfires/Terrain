@@ -15,7 +15,7 @@ public class Camera {
 	float lx, ly;
 	private Vector3f upward;
 	Vector3f cameraUp = new Vector3f(0, 0, 1);
-	public static float speed = .2f;
+	public static float speed = .4f;
 	private float sense = 1f;
 
 	/**

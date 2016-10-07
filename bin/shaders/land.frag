@@ -30,8 +30,8 @@ struct DirectionalLight
 
 struct Material
 {
-    vec3 colour;
-    int useColour;
+   vec3 colour;
+   int useColour;
     float reflectance;
 };
 

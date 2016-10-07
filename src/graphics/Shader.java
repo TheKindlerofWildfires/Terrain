@@ -92,9 +92,12 @@ public abstract class Shader {
 	}
 
 	public static void setMaterial(String name, Material material) {
+		//this is causing my error
+		if(!(name == "material")){
 		setUniform3f(name + ".colour", material.colour);
 		setUniform1i(name + ".useColour", material.useColour);
 		setUniform1f(name + ".reflectance", material.reflectance);
+		}
 	}
 
 	public static void setPointLight(String name, PointLight pointlight) {
