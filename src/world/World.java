@@ -12,7 +12,7 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	public static Perlin noise;
 	public static int perlinSeed;
-	public static final int LOAD_DIST = 2;
+	public static final int LOAD_DIST = 4;
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
@@ -33,8 +33,8 @@ public class World {
 		//			chunks.add(new Chunk(noise, x, y,true));
 		//		}
 		//	}
-		for (int x = -LOAD_DIST+1; x < LOAD_DIST; x++) {
-			for (int y = -LOAD_DIST+1; y < LOAD_DIST; y++) {
+		for (int x = -1; x < 2; x++) {
+			for (int y = -1; y < 2; y++) {
 				loadedChunks.add(new Vector2i(0+x,0+y));
 			}
 		}

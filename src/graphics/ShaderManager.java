@@ -41,8 +41,9 @@ public class ShaderManager {
 
 		fog = new Fog();
 		fog.active = 1;
-		fog.density = .0003f;
-		fog.colour = new Vector3f(0, (float) Math.random(), (float) Math.random());
+		fog.density = .018f;
+		//fog.colour = new Vector3f(0, (float) Math.random(), (float) Math.random());
+		fog.colour = new Vector3f(0.5f, 0.5f,0.5f);
 
 		initialized = true;
 		landShader = makeShader("src/shaders/land.vert", "src/shaders/land.frag");
@@ -69,10 +70,10 @@ public class ShaderManager {
 	public static void setCamera(Camera camera) {
 		assert initialized : "Shaders must be initialized in order to work";
 
-		fog.colour.x+=.002f;
-		if(fog.colour.x>1){
-			fog.colour.x=0;
-		}
+		//fog.colour.x+=.002f;
+		//if(fog.colour.x>1){
+		//	fog.colour.x=0;
+		//}
 			
 		start(landShader);
 		setUniformMatrix4f("projection", camera.projection);
