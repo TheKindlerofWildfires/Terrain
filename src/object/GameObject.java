@@ -17,14 +17,15 @@ import maths.Transformation;
 import maths.Vector3f;
 
 public class GameObject {
-	private static final Vector3f GRAVITY = new Vector3f(0,0,0);
+	private static final Vector3f GRAVITY = new Vector3f(0, 0, 0);
 	private Vector3f fakeFriction = new Vector3f();
 	protected Texture texture;
 	protected VertexArrayObject vao;
 	protected Material material;
 	protected Transformation model;
 
-	private boolean textured;
+	protected boolean textured;
+	protected boolean hasMaterial = true;
 
 	protected int shader;
 	public Vector3f velocity = new Vector3f();
@@ -96,7 +97,7 @@ public class GameObject {
 	}
 
 	public void translate(Vector3f displacement) {
-		translate(displacement.x, displacement.y, displacement.z);	
+		translate(displacement.x, displacement.y, displacement.z);
 	}
 
 	public void placeAt(float x, float y, float z) {
@@ -112,7 +113,9 @@ public class GameObject {
 	public void render() {
 		start(shader);
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
-		setMaterial("material", material);
+		if (hasMaterial) {
+			setMaterial("material", material);
+		}
 		if (textured) {
 			glBindTexture(GL_TEXTURE_2D, texture.getId());
 		}
@@ -123,10 +126,10 @@ public class GameObject {
 
 	public void physic() {
 		fakeFriction = velocity.negate().scale(0.01f);
-		acceleration= force.scale(1/mass).add(GRAVITY);
+		acceleration = force.scale(1 / mass).add(GRAVITY);
 		velocity = velocity.add(acceleration).add(fakeFriction);
 		position = boundingBox.centre;
-		
+
 		/* for all objects:
 		calculate acceleration from mass and force
 		calculate velocity from mass,current velocity, acceleration and gravity
@@ -136,13 +139,12 @@ public class GameObject {
 		
 		
 		*/
-		
+
 	}
 
 	public void setForce(Vector3f force) {
 		this.force = force;
-		
-	}
 
+	}
 
 }

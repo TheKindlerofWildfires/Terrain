@@ -50,6 +50,7 @@ public class ShaderManager {
 		initialized = true;
 		landShader = makeShader("src/shaders/land.vert", "src/shaders/land.frag");
 		objectShader = makeShader("src/shaders/object.vert", "src/shaders/object.frag");
+		waterShader = makeShader("src/shaders/water.vert", "src/shaders/water.frag");
 		//skyboxShader = makeShader("src/shaders/skybox.vert", "src/shaders/skybox.frag");
 
 		start(objectShader);
@@ -68,6 +69,7 @@ public class ShaderManager {
 		setUniform3f("ambientLight", new Vector3f(.3f, .3f, .3f));
 		setFog("fog", fog);
 		setUniform1f("fogExponent", fogExponent);
+		
 		stop();
 	}
 
@@ -94,6 +96,10 @@ public class ShaderManager {
 		setUniformMatrix4f("modelView", camera.view);
 		setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
 		setFog("fog", fog);
+		
+		start(waterShader);
+		setUniformMatrix4f("projection", camera.projection);
+		setUniformMatrix4f("modelView", camera.view);
 		stop();
 		// landShader.setUniform3f("cameraPos", camera.getPos());
 

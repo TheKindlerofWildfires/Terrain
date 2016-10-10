@@ -12,6 +12,7 @@ public class ObjectManager {
 	public static GameObject ball;
 	//private Object test;
 	private Skybox box;
+	public static Water water;
 	float c;
 	public ArrayList<GameObject> objectList = new ArrayList<GameObject>();
 
@@ -22,7 +23,7 @@ public class ObjectManager {
 
 		target = new GameObject("src/models/box.obj", "src/textures/wood.png");
 		ball = new GameObject("src/models/torus.obj", "src/textures/wood.png");
-
+		water = new Water("src/models/plane.obj");
 		ball.scale(.25f, .25f, .25f);
 		ball.translate(5, 2, 10);
 		//System.out.println(target.position);
@@ -55,8 +56,9 @@ public class ObjectManager {
 	public void render() {
 		for (int i = 0; i < objectList.size(); i++) {
 			GameObject object = objectList.get(i);
-			object.render();
+			//object.render();
 		}
-		box.render();
+	//	box.render();
+		water.render();
 	}
 }
