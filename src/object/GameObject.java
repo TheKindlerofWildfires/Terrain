@@ -16,7 +16,7 @@ import maths.BoundingBox;
 import maths.Transformation;
 import maths.Vector3f;
 
-public class Object {
+public class GameObject {
 	private static final Vector3f GRAVITY = new Vector3f(0,0,0);
 	private Vector3f fakeFriction = new Vector3f();
 	protected Texture texture;
@@ -41,7 +41,7 @@ public class Object {
 	 * @param texturePath path to texture
 	 * @param box Bounding Box
 	 */
-	public Object(String modelPath, String texturePath) {
+	public GameObject(String modelPath, String texturePath) {
 		if (modelPath != "none") {
 			try {
 				vao = OBJLoader.loadMesh(modelPath);

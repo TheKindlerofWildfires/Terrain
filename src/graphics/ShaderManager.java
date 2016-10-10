@@ -10,6 +10,7 @@ public class ShaderManager {
 
 	public static int objectShader;
 	public static int landShader;
+	public static int waterShader;
 	//public static int skyboxShader;
 
 	static Attenuation atten;
@@ -18,6 +19,7 @@ public class ShaderManager {
 	static DirectionalLight dirLight;
 	static Fog fog;
 	static float lightAngle = 45;
+	static float fogExponent = 4;
 
 	public static void init() {
 		atten = new Attenuation();
@@ -43,7 +45,7 @@ public class ShaderManager {
 		fog.active = 1;
 		fog.density = .018f;
 		//fog.colour = new Vector3f(0, (float) Math.random(), (float) Math.random());
-		fog.colour = new Vector3f(0.5f, 0.5f,0.5f);
+		fog.colour = new Vector3f(0.5f, 0.5f, 0.5f);
 
 		initialized = true;
 		landShader = makeShader("src/shaders/land.vert", "src/shaders/land.frag");
@@ -56,6 +58,7 @@ public class ShaderManager {
 		setUniform1f("specularPower", 1);
 		setUniform3f("ambientLight", new Vector3f(.1f, .1f, .1f));
 		setFog("fog", fog);
+		setUniform1f("fogExponent", fogExponent);
 
 		start(landShader);
 		setPointLight("pointLight", light);
@@ -64,6 +67,7 @@ public class ShaderManager {
 		setUniform1f("material.reflectance", 0);
 		setUniform3f("ambientLight", new Vector3f(.3f, .3f, .3f));
 		setFog("fog", fog);
+		setUniform1f("fogExponent", fogExponent);
 		stop();
 	}
 
@@ -74,7 +78,7 @@ public class ShaderManager {
 		//if(fog.colour.x>1){
 		//	fog.colour.x=0;
 		//}
-			
+
 		start(landShader);
 		setUniformMatrix4f("projection", camera.projection);
 		setUniformMatrix4f("modelView", camera.view);
@@ -93,7 +97,7 @@ public class ShaderManager {
 		stop();
 		// landShader.setUniform3f("cameraPos", camera.getPos());
 
-		lightAngle += .01f;
+		//lightAngle += .01f;
 		dirLight.direction.y = (float) Math.cos(lightAngle);
 		dirLight.direction.z = (float) Math.sin(lightAngle);
 		if (lightAngle >= 360) {

@@ -13,9 +13,9 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import maths.Matrix4f;
 import maths.Transformation;
 import maths.Vector3f;
-import object.Object;
+import object.GameObject;
 
-public class Skybox extends Object {
+public class Skybox extends GameObject {
 
 	public Skybox(String obj, String texture) {
 		super(obj, texture);
