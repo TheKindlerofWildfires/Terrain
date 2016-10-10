@@ -196,6 +196,12 @@ public class Window implements Runnable {
 				chunkLoader.running = false;
 			}
 		}
+		cleanUp();
 		glfwDestroyWindow(window);
+	}
+
+	private void cleanUp() {
+		objectManager.cleanUp();
+		
 	}
 }
