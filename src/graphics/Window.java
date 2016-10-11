@@ -73,6 +73,7 @@ public class Window implements Runnable {
 
 	private static Vector4f reflectionClipPlane;
 	private static Vector4f refractionClipPlane;
+	private static Vector4f renderClipPlane;
 
 	public static void main(String args[]) {
 		Window game = new Window();
@@ -133,8 +134,9 @@ public class Window implements Runnable {
 		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();
 
-		reflectionClipPlane = new Vector4f(0, 1, 0, -Chunk.WATERLEVEL);
-		refractionClipPlane = new Vector4f(0, -1, 0, Chunk.WATERLEVEL);
+		reflectionClipPlane = new Vector4f(0, 0, 1, -Chunk.WATERLEVEL);
+		refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL);
+		renderClipPlane = new Vector4f(0, 0, 1, 100000);
 	}
 
 	/**
@@ -172,18 +174,24 @@ public class Window implements Runnable {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//move camera down by twice dist to waterheight and then invert its pitch
+		//move camera to appropriate location and render reflection texture
+		float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
+		float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
+		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, -camDist * 2));
+		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, -targetDist * 2));
 		waterFBO.bindReflectionFrameBuffer();
 		world.render(reflectionClipPlane);
 		objectManager.render();
 
-		//move camera back
+		//move camera back and render refraction texture
+		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
+		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
 		waterFBO.bindRefractionFrameBuffer();
 		world.render(refractionClipPlane);
 		objectManager.render();
 
 		waterFBO.unbindCurrentFrameBuffer();
-		world.render(new Vector4f(0, 1, 0, -100000));
+		world.render(renderClipPlane);
 		objectManager.render();
 		water.render();
 	}

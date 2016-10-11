@@ -45,6 +45,12 @@ public class Camera {
 	 * @param displacement
 	 *            displacement vector
 	 */
+	public void moveCamera(Vector3f displacement) {
+		pos = pos.add(displacement);
+		view = Matrix4f.gluLookAt(pos, target, up);
+		pv = projection.multiply(view);
+	}
+
 	private void move(Vector3f displacement) {
 		pos = pos.add(displacement);
 		target = target.add(displacement);
@@ -58,7 +64,6 @@ public class Camera {
 	 * @param dir
 	 *            which way the player has told to move
 	 */
-	
 	public void moveCamera(String dir) {
 		Vector3f displacement = new Vector3f(0, 0, 0);
 		float vx = pos.x - target.x;
@@ -127,16 +132,21 @@ public class Camera {
 		target.y = y * h + pos.y;
 		target.z = z + pos.z;
 		*/
-		target.x = x*h;
-		target.y = y*h;
+		target.x = x * h;
+		target.y = y * h;
 		target.z = z;
 		target.normalize();
-		target.x+=pos.x;
-		target.y+= pos.y;
-		target.z+=pos.z;
+		target.x += pos.x;
+		target.y += pos.y;
+		target.z += pos.z;
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
+	}
 
+	public void moveTarget(Vector3f displacement) {
+		target = target.add(displacement);
+		view = Matrix4f.gluLookAt(pos, target, up);
+		pv = projection.multiply(view);
 	}
 
 	public Vector3f getPos() {

@@ -21,11 +21,10 @@ import static org.lwjgl.opengl.GL31.glUniformBlockBinding;
 
 import java.nio.IntBuffer;
 
-import javax.vecmath.Vector4f;
-
 import maths.Matrix4f;
 import maths.Utilities;
 import maths.Vector3f;
+import maths.Vector4f;
 
 public abstract class Shader {
 	private static int currentProgramID;

@@ -1,6 +1,7 @@
 package object;
 
 import static graphics.Shader.setMaterial;
+import static graphics.Shader.setUniform4f;
 import static graphics.Shader.setUniformMatrix4f;
 import static graphics.Shader.start;
 import static graphics.Shader.stop;
@@ -113,6 +114,21 @@ public class GameObject {
 	 * Renders the specified object
 	 */
 	public void render(Vector4f clipPlane) {
+		start(shader);
+		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
+		if (hasMaterial) {
+			setMaterial("material", material);
+		}
+		if (textured) {
+			glBindTexture(GL_TEXTURE_2D, texture.getId());
+		}
+		setUniform4f("clipPlane",clipPlane);
+		glBindVertexArray(vao.getVaoID());
+		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
+		stop();
+	}
+	
+	public void render() {
 		start(shader);
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
 		if (hasMaterial) {

@@ -14,8 +14,4 @@ public class Water extends GameObject {
 		shader = ShaderManager.waterShader;
 		hasMaterial = false;
 	}
-
-	public void render() {
-		super.render(new Vector4f(0, 0, -1, 100));
-	}
 }
