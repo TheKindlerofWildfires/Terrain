@@ -10,12 +10,11 @@ out vec3 vertexColour;
 uniform mat4 projection;
 uniform mat4 modelView;
 
-uniform vec4 clipPlane = vec4(0,0,-1,1);
+uniform vec4 clipPlane;
 
 void main(){
     vec4 mvPos = modelView * vec4(position, 1.0);
     mvVertexPos = mvPos.xyz;
-   
     gl_Position = projection * mvPos;
     gl_ClipDistance[0] = dot(vec4(position,1),clipPlane);
     mvVertexNormal = normalize(modelView * vec4(normal, 0.0)).xyz;

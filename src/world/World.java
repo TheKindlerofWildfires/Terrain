@@ -10,12 +10,13 @@ import graphics.Window;
 import maths.Triangle;
 import maths.Vector2i;
 import maths.Vector3f;
+import maths.Vector4f;
 import noiseLibrary.module.source.Perlin;
 
 public class World {
 	public static Perlin noise;
 	public static int perlinSeed;
-	public static final int LOAD_DIST = 4;
+	public static final int LOAD_DIST = 2;
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
@@ -44,9 +45,6 @@ public class World {
 				loadedChunks.add(new Vector2i(0 + x, 0 + y));
 			}
 		}
-
-		water = new Water("src/models/plane.obj");
-		waterFBO = new WaterFBO();
 	}
 
 	public boolean setContains(Set<?> set, Object o) {
@@ -81,13 +79,8 @@ public class World {
 	/**
 	 * Going to assume this drawls
 	 */
-	public void render() {
-		waterFBO.bindReflectionFrameBuffer();
-		chunks.stream().forEach(c -> c.render());
-		waterFBO.unbindCurrentFrameBuffer();
-
-		chunks.stream().forEach(c -> c.render());
-
+	public void render(Vector4f clipPlane) {
+		chunks.stream().forEach(c -> c.render(clipPlane));
 	}
 
 	public void addChunk(Chunk c) {

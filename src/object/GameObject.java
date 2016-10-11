@@ -9,12 +9,14 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
+
 import graphics.Material;
 import graphics.Texture;
 import graphics.VertexArrayObject;
 import maths.BoundingBox;
 import maths.Transformation;
 import maths.Vector3f;
+import maths.Vector4f;
 
 public class GameObject {
 	private static final Vector3f GRAVITY = new Vector3f(0, 0, 0);
@@ -110,7 +112,7 @@ public class GameObject {
 	/**
 	 * Renders the specified object
 	 */
-	public void render() {
+	public void render(Vector4f clipPlane) {
 		start(shader);
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
 		if (hasMaterial) {

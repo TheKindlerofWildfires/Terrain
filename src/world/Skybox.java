@@ -25,7 +25,6 @@ public class Skybox extends GameObject {
 		this.scale(15, 15, 15);
 	}
 
-	@Override
 	public void render() {
 		start(shader);
 		Matrix4f view = graphics.GraphicsManager.camera.view;

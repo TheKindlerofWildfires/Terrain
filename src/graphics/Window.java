@@ -2,7 +2,7 @@ package graphics;
 
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_DISABLED;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
@@ -22,46 +22,57 @@ import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL30.*;
-
+import static org.lwjgl.opengl.GL30.GL_CLIP_DISTANCE0;
 import static org.lwjgl.system.MemoryUtil.NULL;
-import input.MouseInput;
 
 import java.util.Random;
-
-import maths.Vector3f;
-import object.ObjectManager;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
-import world.ChunkLoader;
-import world.World;
 import entity.EntityManager;
+import input.MouseInput;
+import maths.Vector3f;
+import maths.Vector4f;
+import object.ObjectManager;
+import world.Chunk;
+import world.ChunkLoader;
+import world.Water;
+import world.World;
 
 public class Window implements Runnable {
 	public boolean running = true;
 
 	static Long window;
-	@SuppressWarnings("unused")
+
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
+
 	public static GraphicsManager graphicsManager;
 	public static ObjectManager objectManager;
 	public static EntityManager entityManager;
+
 	public static World world;
+	public static Water water;
+	public static WaterFBO waterFBO;
+
 	public static ChunkLoader chunkLoader;
+
 	public static double deltaX, deltaY;
+
 	public static Random worldRandom = new Random();
 	public static Random mathRandom = new Random();
+
+	private static Vector4f reflectionClipPlane;
+	private static Vector4f refractionClipPlane;
 
 	public static void main(String args[]) {
 		Window game = new Window();
@@ -111,12 +122,19 @@ public class Window implements Runnable {
 
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
-		
+
 		world = new World();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
+
+		water = new Water("src/models/plane.obj");
+		waterFBO = new WaterFBO();
+
 		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();
+
+		reflectionClipPlane = new Vector4f(0, 1, 0, -Chunk.WATERLEVEL);
+		refractionClipPlane = new Vector4f(0, -1, 0, Chunk.WATERLEVEL);
 	}
 
 	/**
@@ -140,7 +158,7 @@ public class Window implements Runnable {
 	public void update() {
 		glfwPollEvents();
 		graphicsManager.update();
-		
+
 		world.update();
 		objectManager.update();
 		entityManager.update();
@@ -153,8 +171,21 @@ public class Window implements Runnable {
 	public void render() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		world.render();
+
+		//move camera down by twice dist to waterheight and then invert its pitch
+		waterFBO.bindReflectionFrameBuffer();
+		world.render(reflectionClipPlane);
 		objectManager.render();
+
+		//move camera back
+		waterFBO.bindRefractionFrameBuffer();
+		world.render(refractionClipPlane);
+		objectManager.render();
+
+		waterFBO.unbindCurrentFrameBuffer();
+		world.render(new Vector4f(0, 1, 0, -100000));
+		objectManager.render();
+		water.render();
 	}
 
 	/**

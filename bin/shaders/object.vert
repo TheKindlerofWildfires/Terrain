@@ -10,8 +10,11 @@ out vec3 mvVertexPos;
 uniform mat4 projection;
 uniform mat4 modelView;
 
+uniform vec4 clipPlane;
+
 void main(){
     vec4 mvPos = modelView * vec4(position, 1.0);
+    gl_ClipDistance[0] = dot(vec4(position,1),clipPlane);
     gl_Position = projection * mvPos;
     mvVertexNormal = normalize(modelView * vec4(normal, 0.0)).xyz;
     mvVertexPos = mvPos.xyz;
