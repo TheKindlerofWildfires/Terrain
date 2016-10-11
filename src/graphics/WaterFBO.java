@@ -6,27 +6,13 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
-/*
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL21;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL31;
-import org.lwjgl.opengl.GL32;
-import org.lwjgl.opengl.GL33;
-import org.lwjgl.opengl.GL40;
-import org.lwjgl.opengl.GL42;
-*/
-public class FrameBufferObject {
 
-	protected static final int REFLECTION_WIDTH = 320;
+public class WaterFBO {
+
+	private static final int REFLECTION_WIDTH = 320;
 	private static final int REFLECTION_HEIGHT = 180;
 
-	protected static final int REFRACTION_WIDTH = 1280;
+	private static final int REFRACTION_WIDTH = 1280;
 	private static final int REFRACTION_HEIGHT = 720;
 
 	private int reflectionFrameBuffer;
@@ -37,7 +23,7 @@ public class FrameBufferObject {
 	private int refractionTexture;
 	private int refractionDepthTexture;
 
-	public FrameBufferObject() {//call when loading the game
+	public WaterFBO() {//call when loading the game
 		initialiseReflectionFrameBuffer();
 		initialiseRefractionFrameBuffer();
 	}
