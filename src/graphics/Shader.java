@@ -10,6 +10,7 @@ import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniform1iv;
 import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniform4f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
@@ -19,6 +20,8 @@ import static org.lwjgl.opengl.GL31.glGetUniformBlockIndex;
 import static org.lwjgl.opengl.GL31.glUniformBlockBinding;
 
 import java.nio.IntBuffer;
+
+import javax.vecmath.Vector4f;
 
 import maths.Matrix4f;
 import maths.Utilities;
@@ -78,6 +81,10 @@ public abstract class Shader {
 		glUniform3f(getUniform(name), position.x, position.y, position.z);
 	}
 
+	public static void setUniform4f(String name, Vector4f position) {
+		glUniform4f(getUniform(name), position.x, position.y, position.z, position.w);
+	}
+
 	public static void start(int id) {
 		currentProgramID = id;
 		glUseProgram(currentProgramID);
@@ -93,11 +100,11 @@ public abstract class Shader {
 
 	public static void setMaterial(String name, Material material) {
 		//this is causing my error
-		
+
 		setUniform3f(name + ".colour", material.colour);
 		setUniform1i(name + ".useColour", material.useColour);
 		setUniform1f(name + ".reflectance", material.reflectance);
-		
+
 	}
 
 	public static void setPointLight(String name, PointLight pointlight) {

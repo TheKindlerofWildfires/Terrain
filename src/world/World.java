@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import graphics.WaterFBO;
 import graphics.Window;
 import maths.Triangle;
 import maths.Vector2i;
@@ -18,6 +19,9 @@ public class World {
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
+
+	Water water;
+	WaterFBO waterFBO;
 
 	/**
 	 * Building better worlds
@@ -40,6 +44,9 @@ public class World {
 				loadedChunks.add(new Vector2i(0 + x, 0 + y));
 			}
 		}
+
+		water = new Water("src/models/plane.obj");
+		waterFBO = new WaterFBO();
 	}
 
 	public boolean setContains(Set<?> set, Object o) {
@@ -75,7 +82,12 @@ public class World {
 	 * Going to assume this drawls
 	 */
 	public void render() {
+		waterFBO.bindReflectionFrameBuffer();
 		chunks.stream().forEach(c -> c.render());
+		waterFBO.unbindCurrentFrameBuffer();
+
+		chunks.stream().forEach(c -> c.render());
+
 	}
 
 	public void addChunk(Chunk c) {

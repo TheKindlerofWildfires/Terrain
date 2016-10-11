@@ -1,22 +1,17 @@
 package graphics;
 
+import static org.lwjgl.glfw.GLFW.glfwGetFramebufferSize;
+
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL21;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL32;
-import org.lwjgl.opengl.GL33;
-import org.lwjgl.opengl.GL40;
-import org.lwjgl.opengl.GL42;
 
-public class FrameBufferObject {
+public class WaterFBO {
 
 	protected static final int REFLECTION_WIDTH = 320;
 	private static final int REFLECTION_HEIGHT = 180;
@@ -32,7 +27,7 @@ public class FrameBufferObject {
 	private int refractionTexture;
 	private int refractionDepthTexture;
 
-	public FrameBufferObject() {//call when loading the game
+	public WaterFBO() {//call when loading the game
 		initialiseReflectionFrameBuffer();
 		initialiseRefractionFrameBuffer();
 	}
@@ -56,7 +51,10 @@ public class FrameBufferObject {
 
 	public void unbindCurrentFrameBuffer() {//call to switch to default frame buffer
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-		GL11.glViewport(0, 0, 1920, 1080);
+		IntBuffer width = BufferUtils.createIntBuffer(1);
+		IntBuffer height = BufferUtils.createIntBuffer(1);
+		glfwGetFramebufferSize(Window.window, width, height);
+		GL11.glViewport(0, 0, width.get(0), height.get(0));
 	}
 
 	public int getReflectionTexture() {//get the resulting texture
