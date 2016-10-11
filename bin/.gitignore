@@ -1,7 +1,8 @@
 /entity/
 /graphics/
-/maths/
-/models/
-/object/
-/shaders/
 /world/
+/models/
+/shaders/
+/maths/
+/object/
+/textures/
