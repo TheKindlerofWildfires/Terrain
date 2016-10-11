@@ -110,7 +110,7 @@ public class Window implements Runnable {
 		// Create GraphicsManager and World
 		glEnable(GL_CLIP_DISTANCE0);
 		graphicsManager = new GraphicsManager();
-
+		
 		world = new World();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
@@ -130,15 +130,20 @@ public class Window implements Runnable {
 
 	}
 
+	float speed = .001f;
+	Vector3f vel = new Vector3f();
+
 	/**
 	 * The start of the update call
 	 */
 	public void update() {
 		glfwPollEvents();
 		graphicsManager.update();
+		
 		world.update();
 		objectManager.update();
 		entityManager.update();
+
 	}
 
 	/**
@@ -163,7 +168,7 @@ public class Window implements Runnable {
 		long timer = System.currentTimeMillis();
 		int updates = 0;
 		int frames = 0;
-
+		
 		while (running) {
 			deltaX = MouseInput.pos()[0] - 1920 / 2;
 			deltaY = MouseInput.pos()[1] - 1080 / 2;
@@ -200,6 +205,6 @@ public class Window implements Runnable {
 
 	private void cleanUp() {
 		objectManager.cleanUp();
-
+		
 	}
 }

@@ -1,6 +1,9 @@
 package world;
 
 import graphics.ShaderManager;
+import maths.Triangle;
+import maths.Vector3f;
+import noiseLibrary.module.source.Perlin;
 import object.GameObject;
 
 public class Water extends GameObject {
