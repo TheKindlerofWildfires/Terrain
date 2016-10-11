@@ -8,12 +8,9 @@ out vec2 texCoord;
 uniform mat4 projection;
 uniform mat4 modelView;
 
-uniform vec4 plane;
-
 void main(){
     vec4 mvPos = modelView * vec4(position, 1.0);
     gl_Position = projection * mvPos;
-    gl_ClipDistance[0] = dot(position, plane);
 	texCoord = vec2(textCoord);
 }
 
