@@ -4,6 +4,7 @@ import graphics.FrameBufferObject;
 
 import java.util.ArrayList;
 
+import maths.Vector2f;
 import world.Chunk;
 import world.Skybox;
 import world.Water;
@@ -34,6 +35,7 @@ public class ObjectManager {
 		box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
 		box.rotate(90, 1, 0, 0);
 		WaterFBO = new FrameBufferObject();
+		//GuiTexture gui = new GuiTexture(WaterFBO.getReflectionTexture(), new Vector2f(-0.5f,0.5f), new Vector2f(0.5f,0.5f));
 		c = 0;
 	}
 
@@ -55,14 +57,17 @@ public class ObjectManager {
 	}
 
 	public void render() {
+		//this just makes rendering sad
+		WaterFBO.bindReflectionFrameBuffer();
 		for (int i = 0; i < objectList.size(); i++) {
 			GameObject object = objectList.get(i);
-			//object.render();
+			object.render();
 		}
-	//	box.render();
-		WaterFBO.bindReflectionFrameBuffer();
-		water.render();
 		WaterFBO.unbindCurrentFrameBuffer();
+	//	box.render();
+		
+		water.render();
+		
 		
 	}
 

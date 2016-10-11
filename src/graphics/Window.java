@@ -29,6 +29,7 @@ import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import input.MouseInput;
 
@@ -107,6 +108,7 @@ public class Window implements Runnable {
 		// glEnable(GL_CULL_FACE);
 
 		// Create GraphicsManager and World
+		glEnable(GL_CLIP_DISTANCE0);
 		graphicsManager = new GraphicsManager();
 		
 		world = new World();
@@ -166,6 +168,7 @@ public class Window implements Runnable {
 		long timer = System.currentTimeMillis();
 		int updates = 0;
 		int frames = 0;
+		
 		while (running) {
 			deltaX = MouseInput.pos()[0] - 1920 / 2;
 			deltaY = MouseInput.pos()[1] - 1080 / 2;
