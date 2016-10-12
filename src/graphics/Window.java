@@ -121,6 +121,8 @@ public class Window implements Runnable {
 		// Hm this looks wrong
 		// glEnable(GL_CULL_FACE);
 
+		waterFBO = new WaterFBO();
+		
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
 
@@ -129,7 +131,6 @@ public class Window implements Runnable {
 		entityManager = new EntityManager();
 
 		water = new Water("src/models/plane.obj");
-		waterFBO = new WaterFBO();
 
 		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();
@@ -191,9 +192,9 @@ public class Window implements Runnable {
 		objectManager.render();
 
 		waterFBO.unbindCurrentFrameBuffer();
+		water.render();
 		world.render(renderClipPlane);
 		objectManager.render();
-		water.render();
 	}
 
 	/**

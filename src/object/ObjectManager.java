@@ -54,8 +54,8 @@ public class ObjectManager {
 	public void render() {
 		for (int i = 0; i < objectList.size(); i++) {
 			GameObject object = objectList.get(i);
-			//object.render();
+		//	object.render();
 		}
-		//	box.render();
+		// box.render();
 	}
 }

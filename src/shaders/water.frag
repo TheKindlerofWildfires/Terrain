@@ -4,7 +4,12 @@ in vec2 texCoord;
 
 out	vec4 fragColor;
 
+uniform sampler2D reflectionTexture;
+uniform sampler2D refractionTexture;
+
 void main(){
-	fragColor = vec4(0,0,1,1);
+	vec4 reflectColour = texture(reflectionTexture,texCoord);
+	vec4 refractColour = texture(refractionTexture,texCoord);
+	fragColor = mix(reflectColour,refractColour,.5);
 } 
 
