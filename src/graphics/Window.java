@@ -25,11 +25,15 @@ import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL31.*;
+
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL30.GL_CLIP_DISTANCE0;
+import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.util.Random;
@@ -81,6 +85,9 @@ public class Window implements Runnable {
 		game.run();
 	}
 
+	static int fbo;
+	public static int textureColorbuffer;
+
 	/**
 	 * Code called at the start of the gameloop
 	 */
@@ -121,8 +128,8 @@ public class Window implements Runnable {
 		// Hm this looks wrong
 		// glEnable(GL_CULL_FACE);
 
-		waterFBO = new WaterFBO();
-		
+		//waterFBO = new WaterFBO();
+
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
 
@@ -138,6 +145,31 @@ public class Window implements Runnable {
 		reflectionClipPlane = new Vector4f(0, 0, 1, -Chunk.WATERLEVEL);
 		refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL);
 		renderClipPlane = new Vector4f(0, 0, 1, 100000);
+
+		fbo = glGenFramebuffers();
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+		textureColorbuffer = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+
+		int rbo = glGenRenderbuffers();
+		glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
+		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
+			System.out.println("HOORAY");
+		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
 	/**
@@ -176,25 +208,40 @@ public class Window implements Runnable {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//move camera to appropriate location and render reflection texture
-		float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
-		float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
-		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, -camDist * 2));
-		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, -targetDist * 2));
-		waterFBO.bindReflectionFrameBuffer();
-		world.render(reflectionClipPlane);
-		objectManager.render();
+		//	float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
+		//	float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
+		//		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, -camDist * 2));
+		//	GraphicsManager.camera.moveTarget(new Vector3f(0, 0, -targetDist * 2));
+		//waterFBO.bindReflectionFrameBuffer();
+		//	world.render(reflectionClipPlane);
+		//	objectManager.render();
 
 		//move camera back and render refraction texture
-		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
-		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
-		waterFBO.bindRefractionFrameBuffer();
-		world.render(refractionClipPlane);
-		objectManager.render();
+		//	GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
+		//	GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
+		//	waterFBO.bindRefractionFrameBuffer();
+		//	world.render(refractionClipPlane);
+		//	objectManager.render();
 
-		waterFBO.unbindCurrentFrameBuffer();
-		water.render();
+		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // We're not using stencil buffer now
+		glEnable(GL_DEPTH_TEST);
 		world.render(renderClipPlane);
-		objectManager.render();
+
+		// Second pass
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		world.render(renderClipPlane);
+		water.render();
+		//	screenShader.Use();  
+		//	glBindVertexArray(quadVAO);
+		//	glDisable(GL_DEPTH_TEST);
+		//	glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		//	glDrawArrays(GL_TRIANGLES, 0, 6);
+		//	glBindVertexArray(0);  
 	}
 
 	/**

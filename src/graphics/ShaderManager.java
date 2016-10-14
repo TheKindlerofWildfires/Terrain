@@ -71,15 +71,6 @@ public class ShaderManager {
 		setUniform3f("ambientLight", new Vector3f(.3f, .3f, .3f));
 		setFog("fog", fog);
 		setUniform1f("fogExponent", fogExponent);
-
-		start(waterShader);
-		setUniform1i("reflectionTexture", 0);
-		setUniform1i("refractionTexture", 1);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, Window.waterFBO.getReflectionTexture());
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, Window.waterFBO.getRefractionTexture());
-		stop();
 	}
 
 	public static void setCamera(Camera camera) {
@@ -109,11 +100,6 @@ public class ShaderManager {
 		start(waterShader);
 		setUniformMatrix4f("projection", camera.projection);
 		setUniformMatrix4f("modelView", camera.view);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, Window.waterFBO.getReflectionTexture());
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, Window.waterFBO.getRefractionTexture());
-		System.out.println("setTextures?");
 		stop();
 		// landShader.setUniform3f("cameraPos", camera.getPos());
 
