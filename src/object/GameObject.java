@@ -122,12 +122,12 @@ public class GameObject {
 		if (textured) {
 			glBindTexture(GL_TEXTURE_2D, texture.getId());
 		}
-		setUniform4f("clipPlane",clipPlane);
+		setUniform4f("clipPlane", clipPlane);
 		glBindVertexArray(vao.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
 		stop();
 	}
-	
+
 	public void render() {
 		start(shader);
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
