@@ -45,7 +45,7 @@ public class ShaderManager {
 
 		fog = new Fog();
 		fog.active = 1;
-		fog.density = .018f;
+		fog.density = .001f; //.018f
 		//fog.colour = new Vector3f(0, (float) Math.random(), (float) Math.random());
 		fog.colour = new Vector3f(0.5f, 0.5f, 0.5f);
 

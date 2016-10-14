@@ -55,6 +55,6 @@ public class ObjectManager {
 			//	object.render();
 		}
 		target.render(clipPlane);
-		//box.render();
+		box.render(clipPlane);
 	}
 }

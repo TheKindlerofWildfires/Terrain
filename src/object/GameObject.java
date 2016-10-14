@@ -9,6 +9,8 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import graphics.Material;
@@ -57,6 +59,7 @@ public class GameObject {
 		material = new Material();
 		if (texturePath != "none") {
 			texture = new Texture(texturePath);
+			System.out.println(texturePath);
 			textured = true;
 		} else {
 			textured = false;
@@ -149,6 +152,7 @@ public class GameObject {
 			setMaterial("material", material);
 		}
 		if (textured) {
+			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture.getId());
 		}
 		setUniform4f("clipPlane", clipPlane);

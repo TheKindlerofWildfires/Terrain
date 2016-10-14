@@ -85,7 +85,7 @@ public class Window implements Runnable {
 
 	private static Vector4f reflectionClipPlane;
 	private static Vector4f refractionClipPlane;
-	private static Vector4f renderClipPlane;
+	public static Vector4f renderClipPlane;
 
 	public static FrameBufferObject refraction;
 	public static FrameBufferObject reflection;
@@ -227,7 +227,7 @@ public class Window implements Runnable {
 		glEnable(GL_DEPTH_TEST);
 		world.render(refractionClipPlane);
 		objectManager.render(refractionClipPlane);
-
+		
 		//render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 		glViewport(0, 0, windowWidth, windowHeight);

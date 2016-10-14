@@ -108,7 +108,7 @@ void main(){
     totalLight += lightColour;
     totalLight += calcDirectionalLight(directionalLight, mvVertexPos, mvVertexNormal);
 
-    fragColor = baseColour * totalLight; 
+    fragColor = baseColour; 
     
 	if ( fog.activeFog == 1 ){ 
 		fragColor = calcFog(mvVertexPos, fragColor, fog);

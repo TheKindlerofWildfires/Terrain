@@ -2,6 +2,7 @@ package world;
 
 import static graphics.Shader.setMaterial;
 import static graphics.Shader.setUniform3f;
+import static graphics.Shader.setUniform4f;
 import static graphics.Shader.setUniformMatrix4f;
 import static graphics.Shader.start;
 import static graphics.Shader.stop;
@@ -9,10 +10,13 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import maths.Matrix4f;
 import maths.Transformation;
 import maths.Vector3f;
+import maths.Vector4f;
 import object.GameObject;
 
 public class Skybox extends GameObject {
@@ -25,18 +29,17 @@ public class Skybox extends GameObject {
 		this.scale(15, 15, 15);
 	}
 
-	public void render() {
-		start(shader);
-		Matrix4f view = graphics.GraphicsManager.camera.view;
-		view.m03 = 0;
-		view.m13 = 0;
-		view.m23 = 0;
-		setUniformMatrix4f("modelView", view.multiply(model.getMatrix()));
-		setMaterial("material", material);
-		setUniform3f("ambientLight", new Vector3f(1, 1, 1));
-		glBindTexture(GL_TEXTURE_2D, texture.getId());
-		glBindVertexArray(vao.getVaoID());
-		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
-		stop();
+	protected void renderPrep(Vector4f clipPlane) {
+		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
+		if (hasMaterial) {
+			setMaterial("material", material);
+		}
+		if (textured) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texture.getId());
+		}
+		setUniform3f("ambientLight", new Vector3f(1f, .5f, .5f));
+		setUniformMatrix4f("model", model.getMatrix());
+		setUniform4f("clipPlane", clipPlane);
 	}
 }
