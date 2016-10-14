@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import graphics.WaterFBO;
 import graphics.Window;
 import maths.Triangle;
 import maths.Vector2i;
@@ -22,7 +21,6 @@ public class World {
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 
 	Water water;
-	WaterFBO waterFBO;
 
 	/**
 	 * Building better worlds

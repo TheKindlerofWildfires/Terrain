@@ -10,6 +10,7 @@ import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
@@ -34,11 +35,11 @@ public class Water extends GameObject {
 	public void render() {
 		start(shader);
 		setUniform1i("reflectionTexture", 0);
-		//setUniform1i("refractionTexture", 1);
+		setUniform1i("refractionTexture", 1);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, Window.textureColorbuffer);
-		//glActiveTexture(GL_TEXTURE1);
-		//glBindTexture(GL_TEXTURE_2D, Window.waterFBO.getRefractionTexture());
+		glBindTexture(GL_TEXTURE_2D, Window.refraction.getTexture());
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, Window.reflection.getTexture());
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
 		if (hasMaterial) {
 			setMaterial("material", material);
@@ -48,7 +49,6 @@ public class Water extends GameObject {
 		}
 		glBindVertexArray(vao.getVaoID());
 		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
-
 		stop();
 	}
 }

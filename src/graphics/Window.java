@@ -10,6 +10,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
 import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetFramebufferSize;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
@@ -25,19 +26,20 @@ import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL31.*;
-
+import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL30.GL_CLIP_DISTANCE0;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
+import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.nio.IntBuffer;
 import java.util.Random;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
@@ -53,9 +55,16 @@ import world.Water;
 import world.World;
 
 public class Window implements Runnable {
+	public static final int REFLECTION_WIDTH = 1920;
+	public static final int REFLECTION_HEIGHT = 1080;
+	public static final int REFRACTION_WIDTH = 1928;
+	public static final int REFRACTION_HEIGHT = 1080;
+
 	public boolean running = true;
 
-	static Long window;
+	private static Long window;
+	private static int windowWidth;
+	private static int windowHeight;
 
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
@@ -66,7 +75,6 @@ public class Window implements Runnable {
 
 	public static World world;
 	public static Water water;
-	public static WaterFBO waterFBO;
 
 	public static ChunkLoader chunkLoader;
 
@@ -79,14 +87,14 @@ public class Window implements Runnable {
 	private static Vector4f refractionClipPlane;
 	private static Vector4f renderClipPlane;
 
+	public static FrameBufferObject refraction;
+	public static FrameBufferObject reflection;
+
 	public static void main(String args[]) {
 		Window game = new Window();
 		chunkLoader = new ChunkLoader();
 		game.run();
 	}
-
-	static int fbo;
-	public static int textureColorbuffer;
 
 	/**
 	 * Code called at the start of the gameloop
@@ -125,14 +133,14 @@ public class Window implements Runnable {
 		// enable depth testing and face culling
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CLIP_DISTANCE0);
-		// Hm this looks wrong
-		// glEnable(GL_CULL_FACE);
 
-		//waterFBO = new WaterFBO();
-
+		IntBuffer width = BufferUtils.createIntBuffer(1);
+		IntBuffer height = BufferUtils.createIntBuffer(1);
+		glfwGetFramebufferSize(Window.window, width, height);
+		windowWidth = width.get(0);
+		windowHeight = height.get(0);
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
-
 		world = new World();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
@@ -146,30 +154,8 @@ public class Window implements Runnable {
 		refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL);
 		renderClipPlane = new Vector4f(0, 0, 1, 100000);
 
-		fbo = glGenFramebuffers();
-		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-
-		textureColorbuffer = glGenTextures();
-		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
-
-		int rbo = glGenRenderbuffers();
-		glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600);
-		glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
-			System.out.println("HOORAY");
-		}
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT);
+		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT);
 	}
 
 	/**
@@ -223,14 +209,21 @@ public class Window implements Runnable {
 		//	world.render(refractionClipPlane);
 		//	objectManager.render();
 
-		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+		glBindFramebuffer(GL_FRAMEBUFFER, reflection.getID());
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // We're not using stencil buffer now
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
-		world.render(renderClipPlane);
+		world.render(reflectionClipPlane);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, refraction.getID());
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+		world.render(refractionClipPlane);
 
 		// Second pass
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+		glViewport(0, 0, windowWidth, windowHeight);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
