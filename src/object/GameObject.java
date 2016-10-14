@@ -110,38 +110,6 @@ public class GameObject {
 		boundingBox.centre.z = z;
 	}
 
-	/**
-	 * Renders the specified object
-	 */
-	public void render(Vector4f clipPlane) {
-		start(shader);
-		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
-		if (hasMaterial) {
-			setMaterial("material", material);
-		}
-		if (textured) {
-			glBindTexture(GL_TEXTURE_2D, texture.getId());
-		}
-		setUniform4f("clipPlane", clipPlane);
-		glBindVertexArray(vao.getVaoID());
-		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
-		stop();
-	}
-
-	public void render() {
-		start(shader);
-		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
-		if (hasMaterial) {
-			setMaterial("material", material);
-		}
-		if (textured) {
-			glBindTexture(GL_TEXTURE_2D, texture.getId());
-		}
-		glBindVertexArray(vao.getVaoID());
-		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
-		stop();
-	}
-
 	public void physic() {
 		fakeFriction = velocity.negate().scale(0.01f);
 		acceleration = force.scale(1 / mass).add(GRAVITY);
@@ -162,7 +130,27 @@ public class GameObject {
 
 	public void setForce(Vector3f force) {
 		this.force = force;
-
 	}
 
+	/**
+	 * Renders the specified object
+	 */
+	public void render(Vector4f clipPlane) {
+		start(shader);
+		renderPrep(clipPlane);
+		glBindVertexArray(vao.getVaoID());
+		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
+		stop();
+	}
+
+	protected void renderPrep(Vector4f clipPlane) {
+		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
+		if (hasMaterial) {
+			setMaterial("material", material);
+		}
+		if (textured) {
+			glBindTexture(GL_TEXTURE_2D, texture.getId());
+		}
+		setUniform4f("clipPlane", clipPlane);
+	}
 }

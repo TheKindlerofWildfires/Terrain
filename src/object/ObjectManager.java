@@ -2,37 +2,35 @@ package object;
 
 import java.util.ArrayList;
 
-import world.Chunk;
+import maths.Vector4f;
 import world.Skybox;
-import world.Water;
-import world.World;
 
 public class ObjectManager {
-	/*	public GameObject target;
-		public static GameObject ball;
-		//private Object test;
-		private Skybox box;
-		float c;
-		public ArrayList<GameObject> objectList = new ArrayList<GameObject>();
-	*/
+	public GameObject target;
+	public static GameObject ball;
+	//private Object test;
+	private Skybox box;
+	float c;
+	public ArrayList<GameObject> objectList = new ArrayList<GameObject>();
+
 	public ObjectManager() {
 		/*
 		 * create a list of all objects
 		 */
-		/*
-				target = new GameObject("src/models/box.obj", "src/textures/wood.png");
-				ball = new GameObject("src/models/torus.obj", "src/textures/wood.png");
-				ball.scale(.25f, .25f, .25f);
-				ball.translate(5, 2, 10);
-				//System.out.println(target.position);
-				target.translate(2, 2, 10);
-				//System.out.println(target.position);
-				objectList.add(target);
-				objectList.add(ball);
-				//ball.rotate(30, 1,0,0);
-				box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
-				box.rotate(90, 1, 0, 0);
-				c = 0;*/
+
+		target = new GameObject("src/models/box.obj", "src/textures/wood.png");
+		ball = new GameObject("src/models/torus.obj", "src/textures/wood.png");
+		ball.scale(.25f, .25f, .25f);
+		ball.translate(5, 2, 10);
+		//System.out.println(target.position);
+		target.translate(2, 2, 10);
+		//System.out.println(target.position);
+		objectList.add(target);
+		objectList.add(ball);
+		//ball.rotate(30, 1,0,0);
+		box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
+		box.rotate(90, 1, 0, 0);
+		c = 0;
 	}
 
 	public void update() {
@@ -51,12 +49,12 @@ public class ObjectManager {
 			ball.velocity.z = -diff * .7f; */
 	}
 
-	public void render() {
-		/*for (int i = 0; i < objectList.size(); i++) {
+	public void render(Vector4f clipPlane) {
+		for (int i = 0; i < objectList.size(); i++) {
 			GameObject object = objectList.get(i);
 			//	object.render();
 		}
-		target.render();
-		//box.render();*/
+		target.render(clipPlane);
+		//box.render();
 	}
 }

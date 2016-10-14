@@ -193,48 +193,49 @@ public class Window implements Runnable {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//move camera to appropriate location and render reflection texture
-		//	float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
-		//	float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
-		//		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, -camDist * 2));
-		//	GraphicsManager.camera.moveTarget(new Vector3f(0, 0, -targetDist * 2));
 		//waterFBO.bindReflectionFrameBuffer();
 		//	world.render(reflectionClipPlane);
 		//	objectManager.render();
 
-		//move camera back and render refraction texture
-		//	GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
-		//	GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
 		//	waterFBO.bindRefractionFrameBuffer();
 		//	world.render(refractionClipPlane);
 		//	objectManager.render();
 
-		glBindFramebuffer(GL_FRAMEBUFFER, reflection.getID());
+		//move camera to appropriate location and render reflection texture
+		float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
+		float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
+
+		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, -camDist * 2));
+		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, -targetDist * 2));
+
+		//bind reflection buffer and render to it
+		reflection.activate();
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 		world.render(reflectionClipPlane);
+		objectManager.render(reflectionClipPlane);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, refraction.getID());
+		//	move camera back and render refraction texture
+		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
+		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
+
+		//bind refraction buffer and render to it
+		refraction.activate();
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 		world.render(refractionClipPlane);
+		objectManager.render(refractionClipPlane);
 
-		// Second pass
+		//render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 		glViewport(0, 0, windowWidth, windowHeight);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
 		world.render(renderClipPlane);
-		water.render();
-		//	screenShader.Use();  
-		//	glBindVertexArray(quadVAO);
-		//	glDisable(GL_DEPTH_TEST);
-		//	glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-		//	glDrawArrays(GL_TRIANGLES, 0, 6);
-		//	glBindVertexArray(0);  
+		objectManager.render(renderClipPlane);
+		water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
 	}
 
 	/**

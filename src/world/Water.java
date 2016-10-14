@@ -17,6 +17,7 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import graphics.ShaderManager;
 import graphics.Texture;
 import graphics.Window;
+import maths.Vector4f;
 import object.GameObject;
 
 public class Water extends GameObject {
@@ -32,8 +33,7 @@ public class Water extends GameObject {
 	}
 
 	@Override
-	public void render() {
-		start(shader);
+	protected void renderPrep(Vector4f clipPlane) {
 		setUniform1i("reflectionTexture", 0);
 		setUniform1i("refractionTexture", 1);
 		glActiveTexture(GL_TEXTURE0);
@@ -41,14 +41,5 @@ public class Water extends GameObject {
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, Window.reflection.getTexture());
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
-		if (hasMaterial) {
-			setMaterial("material", material);
-		}
-		if (textured) {
-			glBindTexture(GL_TEXTURE_2D, texture.getId());
-		}
-		glBindVertexArray(vao.getVaoID());
-		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
-		stop();
 	}
 }

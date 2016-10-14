@@ -93,15 +93,12 @@ public class ShaderManager {
 
 		start(objectShader);
 		setUniformMatrix4f("projection", camera.projection);
-		setUniformMatrix4f("modelView", camera.view);
 		setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
 		setFog("fog", fog);
 
 		start(waterShader);
 		setUniformMatrix4f("projection", camera.projection);
-		setUniformMatrix4f("modelView", camera.view);
 		stop();
-		// landShader.setUniform3f("cameraPos", camera.getPos());
 
 		//lightAngle += .01f;
 		dirLight.direction.y = (float) Math.cos(lightAngle);
@@ -120,6 +117,5 @@ public class ShaderManager {
 			dirLight.colour.y = 1;
 			dirLight.colour.z = 1;
 		}
-
 	}
 }
