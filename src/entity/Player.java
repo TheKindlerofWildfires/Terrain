@@ -41,7 +41,7 @@ public class Player {
 			movePlayer("DOWN");
 		}
 		//force = force.scale(0.9f);
-			//ObjectManager.ball.setForce(force);
+			ObjectManager.ball.setForce(force);
 	}
 	public void movePlayer(String dir){
 

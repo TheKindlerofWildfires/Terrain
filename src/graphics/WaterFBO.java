@@ -54,7 +54,7 @@ public class WaterFBO {
 
 	public WaterFBO() {//call when loading the game
 		initialiseReflectionFrameBuffer();
-		//initialiseRefractionFrameBuffer();
+		initialiseRefractionFrameBuffer();
 	}
 
 	public void cleanUp() {//call when closing the game
