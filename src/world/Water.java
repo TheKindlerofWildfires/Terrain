@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 import graphics.ShaderManager;
@@ -17,7 +18,7 @@ import object.GameObject;
 public class Water extends GameObject {
 
 	public Water(String modelPath) {
-		super(modelPath, "none");
+		super(modelPath, "src/textures/dudv.png");
 		translate(0, 0, Chunk.WATERLEVEL);
 		rotate(90, 1, 0, 0);
 		scale(10, 10, 10);
@@ -30,10 +31,13 @@ public class Water extends GameObject {
 	protected void renderPrep(Vector4f clipPlane) {
 		setUniform1i("reflectionTexture", 0);
 		setUniform1i("refractionTexture", 1);
+		setUniform1i("dudvMap", 2);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, Window.reflection.getTexture());
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, Window.refraction.getTexture());
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, texture.getId());
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
 	}
 }
