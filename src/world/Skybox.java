@@ -38,7 +38,7 @@ public class Skybox extends GameObject {
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture.getId());
 		}
-		setUniform3f("ambientLight", new Vector3f(1f, .5f, .5f));
+		setUniform3f("ambientLight", new Vector3f(.6f, .6f, .6f));
 		setUniformMatrix4f("model", model.getMatrix());
 		setUniform4f("clipPlane", clipPlane);
 	}

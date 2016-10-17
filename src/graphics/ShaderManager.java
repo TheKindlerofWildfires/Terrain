@@ -71,6 +71,13 @@ public class ShaderManager {
 		setUniform3f("ambientLight", new Vector3f(.3f, .3f, .3f));
 		setFog("fog", fog);
 		setUniform1f("fogExponent", fogExponent);
+
+		start(waterShader);
+		setUniform1i("reflectionTexture", 0);
+		setUniform1i("refractionTexture", 1);
+		setUniform1i("dudvMap", 2);
+		setUniform1i("normalMap", 3);
+		stop();
 	}
 
 	public static void setCamera(Camera camera) {
@@ -89,15 +96,18 @@ public class ShaderManager {
 		Vector4f dir = camera.view
 				.multiply(new Vector4f(dirLight.direction.x, dirLight.direction.y, dirLight.direction.z, 0));
 		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
+		//setUniform3f("camera_pos", camera.pos);
 		setFog("fog", fog);
 
 		start(objectShader);
 		setUniformMatrix4f("projection", camera.projection);
 		setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
+		//setUniform3f("camera_pos", camera.pos);
 		setFog("fog", fog);
 
 		start(waterShader);
 		setUniformMatrix4f("projection", camera.projection);
+		setUniform3f("cameraPos", camera.pos);
 		stop();
 
 		//lightAngle += .01f;
