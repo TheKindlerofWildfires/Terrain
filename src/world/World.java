@@ -18,9 +18,8 @@ public class World {
 	public static final int LOAD_DIST = 2;
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
+	
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
-
-	Water water;
 
 	/**
 	 * Building better worlds
@@ -31,18 +30,7 @@ public class World {
 		noise.setFrequency(0.02);
 		noise.setLacunarity(2);
 		noise.setOctaveCount(10);
-		//noise.setPersistence(0.4);
 		noise.setSeed(perlinSeed);
-		//	for (int x = 0; x < chunkX; x++) {
-		//		for (int y = 0; y < chunkY; y++) {
-		//			chunks.add(new Chunk(noise, x, y,true));
-		//		}
-		//	}
-		for (int x = -1; x < 2; x++) {
-			for (int y = -1; y < 2; y++) {
-				loadedChunks.add(new Vector2i(0 + x, 0 + y));
-			}
-		}
 	}
 
 	public boolean setContains(Set<?> set, Object o) {

@@ -145,7 +145,7 @@ public class Window implements Runnable {
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
 
-		water = new Water("src/models/plane.obj");
+		water = new Water();
 
 		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();

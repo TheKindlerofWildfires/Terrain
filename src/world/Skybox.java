@@ -30,7 +30,11 @@ public class Skybox extends GameObject {
 	}
 
 	protected void renderPrep(Vector4f clipPlane) {
-		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
+		Matrix4f view = graphics.GraphicsManager.camera.view.multiply(model.getMatrix());
+		view.m03 = 0;
+		view.m13 = 0;
+		view.m23 = 0;
+		setUniformMatrix4f("modelView", view);
 		if (hasMaterial) {
 			setMaterial("material", material);
 		}
@@ -38,7 +42,7 @@ public class Skybox extends GameObject {
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture.getId());
 		}
-		setUniform3f("ambientLight", new Vector3f(.6f, .6f, .6f));
+		setUniform3f("ambientLight", new Vector3f(1f, 1f, 1f));
 		setUniformMatrix4f("model", model.getMatrix());
 		setUniform4f("clipPlane", clipPlane);
 	}

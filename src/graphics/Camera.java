@@ -56,6 +56,7 @@ public class Camera {
 		target = target.add(displacement);
 		view = Matrix4f.gluLookAt(pos, target, up);
 		pv = projection.multiply(view);
+		Window.water.translate(displacement.x, displacement.y, 0);
 	}
 
 	/**
