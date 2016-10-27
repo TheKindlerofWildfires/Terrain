@@ -278,6 +278,7 @@ public class Window implements Runnable {
 			if (glfwWindowShouldClose(window)) {
 				running = false;
 				chunkLoader.running = false;
+				chunkLoader.interrupt();
 			}
 		}
 		glfwDestroyWindow(window);

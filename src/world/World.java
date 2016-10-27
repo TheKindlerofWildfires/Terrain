@@ -18,7 +18,7 @@ public class World {
 	public static final int LOAD_DIST = 2;
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
-	
+
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 
 	/**
@@ -58,6 +58,12 @@ public class World {
 					loadedChunks.add(xy);
 					Window.chunkLoader.chunksToLoad.add(xy);
 				}
+			}
+		}
+		if (Window.chunkLoader.chunksToLoad.size() != 0) {
+			synchronized (Window.chunkLoader.lock) {
+				Window.chunkLoader.lock.notify();
+				System.out.println("hi");
 			}
 		}
 	}
