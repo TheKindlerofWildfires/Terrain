@@ -69,6 +69,13 @@ public class Vector4f {
 		this.w = w;
 	}
 
+	public Vector4f(Vector3f position, float w) {
+		this.x = position.x;
+		this.y = position.y;
+		this.z = position.z;
+		this.w = w;
+	}
+
 	/**
 	 * Calculates the squared length of the vector.
 	 *
@@ -166,8 +173,7 @@ public class Vector4f {
 	 * @return Dot product of this * other
 	 */
 	public float dot(Vector4f other) {
-		return this.x * other.x + this.y * other.y + this.z * other.z + this.w
-				* other.w;
+		return this.x * other.x + this.y * other.y + this.z * other.z + this.w * other.w;
 	}
 
 	/**

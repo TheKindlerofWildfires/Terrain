@@ -63,7 +63,6 @@ public class World {
 		if (Window.chunkLoader.chunksToLoad.size() != 0) {
 			synchronized (Window.chunkLoader.lock) {
 				Window.chunkLoader.lock.notify();
-				System.out.println("hi");
 			}
 		}
 	}

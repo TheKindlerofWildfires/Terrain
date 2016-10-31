@@ -20,6 +20,7 @@ import maths.BoundingBox;
 import maths.Transformation;
 import maths.Vector3f;
 import maths.Vector4f;
+import md5.MD5Loader;
 
 public class GameObject {
 	private static final Vector3f GRAVITY = new Vector3f(0, 0, 0);
@@ -50,8 +51,15 @@ public class GameObject {
 	public GameObject(String modelPath, String texturePath) {
 		if (modelPath != "none") {
 			try {
-				vao = OBJLoader.loadMesh(modelPath);
-				boundingBox = OBJLoader.loadBox(modelPath);
+				if (modelPath.endsWith(".obj")) {
+					vao = OBJLoader.loadMesh(modelPath);
+					boundingBox = OBJLoader.loadBox(modelPath);
+				} else if (modelPath.endsWith(".md5mesh")) {
+					vao = MD5Loader.loadMesh(modelPath, 0);
+					boundingBox = new BoundingBox(new Vector3f(0, 0, 0), 1, 1, 1);
+				} else {
+					throw new Exception("invalid filetype");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
