@@ -8,6 +8,7 @@ import world.Skybox;
 public class ObjectManager {
 	public GameObject target;
 	public static GameObject ball;
+	public GameObject tree;
 	//private Object test;
 	private Skybox box;
 	float c;
@@ -17,14 +18,14 @@ public class ObjectManager {
 		/*
 		 * create a list of all objects
 		 */
-
+		tree = new GameObject("src/models/torus.obj", "src/textures/wood.png");
 		target = new GameObject("src/models/model.md5mesh", "src/textures/wood.png");
 		ball = new GameObject("src/models/torus.obj", "src/textures/wood.png");
 		ball.scale(.25f, .25f, .25f);
 		ball.translate(5, 2, 10);
 		target.translate(2, 2, 10);
 		//objectList.add(target);
-		//objectList.add(ball);
+		objectList.add(ball);
 		//ball.rotate(30, 1,0,0);
 		box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
 		box.rotate(90, 1, 0, 0);
@@ -50,10 +51,10 @@ public class ObjectManager {
 	public void render(Vector4f clipPlane) {
 		for (int i = 0; i < objectList.size(); i++) {
 			GameObject object = objectList.get(i);
-				//object.render(clipPlane);
+				object.render(clipPlane);
 		}
 		//target.render(clipPlane);
-		ball.render(clipPlane);
+		//ball.render(clipPlane);
 		box.render(clipPlane);
 	}
 }
