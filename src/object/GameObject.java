@@ -75,7 +75,7 @@ public class GameObject {
 		}
 		model = new Transformation();
 		shader = graphics.ShaderManager.objectShader;
-		material.colour = new Vector3f(1, 1, 1);
+		material.colour = new Vector3f(0.13f, 0.54f, 0.13f); //mitchell is super lasy and this is his fault
 		material.reflectance = 1;
 		material.useColour = 1;
 

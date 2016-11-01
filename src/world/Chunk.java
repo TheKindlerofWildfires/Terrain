@@ -113,13 +113,20 @@ public class Chunk extends GameObject {
 				vertices[c++] = terrain.get(i).getNormal().z;
 			}
 		}
-
 		isGL = false;
 		shader = graphics.ShaderManager.landShader;
+		
 	}
 
 	public void makeGL() {
 		this.vao = new VertexArrayObject(vertices, 3);
 		this.isGL = true;
+		foliate();
+		
+	}
+
+	private void foliate() {
+		Foliage f = new Foliage();
+		f.generate(new Vector3f(chunkX*SIZE*2,chunkY*SIZE*2,0));
 	}
 }

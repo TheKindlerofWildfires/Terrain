@@ -150,9 +150,7 @@ public class OBJLoader {
 		float x = max.x - centre.x;
 		float y = max.y - centre.y;
 		float z = max.z - centre.z;
-		//	System.out.println(x + "," + y + "," + z);
 		BoundingBox box = new BoundingBox(centre, x, y, z);
-		//	System.out.println(box.centre.x);
 		return box;
 	}
 }

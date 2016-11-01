@@ -8,7 +8,7 @@ import world.Skybox;
 public class ObjectManager {
 	public GameObject target;
 	public static GameObject ball;
-	public GameObject tree;
+	//public GameObject tree;
 	//private Object test;
 	private Skybox box;
 	float c;
@@ -18,7 +18,7 @@ public class ObjectManager {
 		/*
 		 * create a list of all objects
 		 */
-		tree = new GameObject("src/models/torus.obj", "src/textures/wood.png");
+	
 		target = new GameObject("src/models/model.md5mesh", "src/textures/wood.png");
 		ball = new GameObject("src/models/torus.obj", "src/textures/wood.png");
 		ball.scale(.25f, .25f, .25f);
@@ -26,10 +26,20 @@ public class ObjectManager {
 		target.translate(2, 2, 10);
 		//objectList.add(target);
 		objectList.add(ball);
+		//objectList.add(tree);
 		//ball.rotate(30, 1,0,0);
 		box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
+		right();
 		box.rotate(90, 1, 0, 0);
-		c = 0;
+		
+	}
+
+	private void right() {
+		for (int i = 0; i < objectList.size(); i++) {
+			GameObject object = objectList.get(i);
+				object.rotate(90, 1, 0, 0);
+		}
+		
 	}
 
 	public void update() {
