@@ -1,9 +1,6 @@
 package world;
 
-import static graphics.Shader.setMaterial;
 import static graphics.Shader.setUniform1f;
-import static graphics.Shader.setUniform3f;
-import static graphics.Shader.setUniform4f;
 import static graphics.Shader.setUniformMatrix4f;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
@@ -17,7 +14,6 @@ import graphics.ShaderManager;
 import graphics.Texture;
 import graphics.Window;
 import maths.Matrix4f;
-import maths.Vector3f;
 import maths.Vector4f;
 import object.GameObject;
 

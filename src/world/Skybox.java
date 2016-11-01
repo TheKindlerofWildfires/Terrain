@@ -4,15 +4,11 @@ import static graphics.Shader.setMaterial;
 import static graphics.Shader.setUniform3f;
 import static graphics.Shader.setUniform4f;
 import static graphics.Shader.setUniformMatrix4f;
-import static graphics.Shader.start;
-import static graphics.Shader.stop;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
+
 import maths.Matrix4f;
 import maths.Transformation;
 import maths.Vector3f;

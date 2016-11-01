@@ -26,12 +26,12 @@ public class Chunk extends GameObject {
 
 	public int chunkX;
 	public int chunkY;
-
+/*
 	private ArrayList<Vector3f> mxp;
 	private ArrayList<Vector3f> mxn;
 	private ArrayList<Vector3f> myp;
 	private ArrayList<Vector3f> myn;
-
+*/
 	public boolean isGL = false;
 
 	public Chunk(Perlin noise, int x, int y) {
@@ -52,10 +52,12 @@ public class Chunk extends GameObject {
 
 		// what needs to happen is mirror also takes points from the nearblocks
 		Mirror mirror = new Mirror(points);
+		/*
 		myn = mirror.getSide("yn");
 		mxn = mirror.getSide("xn");
 		myp = mirror.getSide("yp");
 		mxp = mirror.getSide("xp");
+		*/
 		mirror.acc();
 		points = mirror.points();
 

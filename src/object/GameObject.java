@@ -40,6 +40,7 @@ public class GameObject {
 	public Vector3f acceleration = new Vector3f();
 	public Vector3f force = new Vector3f();
 	public BoundingBox boundingBox;
+	public boolean enabled = true;
 
 	/**
 	 * Creates a new object with the model and texture given
@@ -122,21 +123,12 @@ public class GameObject {
 	}
 
 	public void physic() {
+		if(enabled){
 		fakeFriction = velocity.negate().scale(0.01f);
 		acceleration = force.scale(1 / mass).add(GRAVITY);
 		velocity = velocity.add(acceleration).add(fakeFriction);
 		position = boundingBox.centre;
-
-		/* for all objects:
-		calculate acceleration from mass and force
-		calculate velocity from mass,current velocity, acceleration and gravity
-		apply relevant frictions 
-		move them by their velocity
-		check bounding box
-		
-		
-		*/
-
+		}
 	}
 
 	public void setForce(Vector3f force) {

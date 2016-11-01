@@ -22,11 +22,9 @@ public class ObjectManager {
 		ball = new GameObject("src/models/torus.obj", "src/textures/wood.png");
 		ball.scale(.25f, .25f, .25f);
 		ball.translate(5, 2, 10);
-		//System.out.println(target.position);
 		target.translate(2, 2, 10);
-		//System.out.println(target.position);
-		objectList.add(target);
-		objectList.add(ball);
+		//objectList.add(target);
+		//objectList.add(ball);
 		//ball.rotate(30, 1,0,0);
 		box = new Skybox("src/models/skybox.obj", "src/textures/skybox.png");
 		box.rotate(90, 1, 0, 0);
@@ -52,9 +50,10 @@ public class ObjectManager {
 	public void render(Vector4f clipPlane) {
 		for (int i = 0; i < objectList.size(); i++) {
 			GameObject object = objectList.get(i);
-			//	object.render();
+				//object.render(clipPlane);
 		}
-		target.render(clipPlane);
+		//target.render(clipPlane);
+		ball.render(clipPlane);
 		box.render(clipPlane);
 	}
 }
