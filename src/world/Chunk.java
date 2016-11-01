@@ -23,7 +23,7 @@ public class Chunk extends GameObject {
 	
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 	float[] vertices;
-
+	ArrayList<Vector3f> highland = new ArrayList<Vector3f>();
 	public int chunkX;
 	public int chunkY;
 /*
@@ -92,6 +92,9 @@ public class Chunk extends GameObject {
 					b *= 0.5f;
 					r *= 1.4f;
 					g *= 1.1f;
+					if(graphics.Window.worldRandom.nextInt(100)==1 && !(highland.contains(point))){
+						highland.add(point);
+					}
 				}
 
 				//cZ = pZ;
@@ -117,7 +120,6 @@ public class Chunk extends GameObject {
 		shader = graphics.ShaderManager.landShader;
 		
 	}
-
 	public void makeGL() {
 		this.vao = new VertexArrayObject(vertices, 3);
 		this.isGL = true;
@@ -126,7 +128,10 @@ public class Chunk extends GameObject {
 	}
 
 	private void foliate() {
-		Foliage f = new Foliage();
-		f.generate(new Vector3f(chunkX*SIZE*2,chunkY*SIZE*2,0));
+		for(int i = 0; i<highland.size(); i++){
+			Foliage f = new Foliage();
+			Vector3f local = highland.get(i);
+			f.generate(new Vector3f(local.x, local.y, local.z/SIZE));
+		}
 	}
 }
