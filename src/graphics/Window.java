@@ -66,6 +66,7 @@ public class Window implements Runnable {
 	private static int windowWidth;
 	private static int windowHeight;
 
+	@SuppressWarnings("unused")
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
 
