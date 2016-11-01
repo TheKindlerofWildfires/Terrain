@@ -20,7 +20,7 @@ public class Foliage {
 		tree.placeAt(pos.x, pos.y, pos.z);
 		tree.rotate(90, 1, 0, 0);
 		tree.scale((float)(.2+rng.nextDouble()/10), (float)(.2+rng.nextDouble()/10), (float)(.2+rng.nextDouble()/10));
-		
+		//probably should be some kinda linked list thing
 		graphics.Window.objectManager.objectList.add(tree);	
 		
 	}
