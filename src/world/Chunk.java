@@ -24,6 +24,7 @@ public class Chunk extends GameObject {
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 	float[] vertices;
 	ArrayList<Vector3f> treeland = new ArrayList<Vector3f>();
+	ArrayList<GameObject> foliage = new ArrayList<GameObject>();
 	public int chunkX;
 	public int chunkY;
 
@@ -34,7 +35,7 @@ public class Chunk extends GameObject {
 		this.chunkY = y;
 
 		genTerrain();
-		//genFoliage();
+		genFoliage();
 		isGL = false;
 		shader = graphics.ShaderManager.landShader;
 	}
@@ -42,7 +43,7 @@ public class Chunk extends GameObject {
 	public void genFoliage() {
 		for(int i = 0; i<treeland.size(); i++){
 			Vector3f pos = treeland.get(i);
-			Foliage.makeTree(pos);//this is an object
+			foliage.add(Foliage.makeTree(pos));//this is an object
 		}
 	}
 
@@ -98,9 +99,9 @@ public class Chunk extends GameObject {
 					b *= 0.5f;
 					r *= 1.4f;
 					g *= 1.1f;
-					//if (graphics.Window.worldRandom.nextInt(100) == 1 && !(treeland.contains(point))) {
-						//treeland.add(point);
-					//}
+					if (graphics.Window.worldRandom.nextInt(100) == 1 && !(treeland.contains(point))) {
+						treeland.add(point);
+					}
 				}
 
 				//cZ = pZ;

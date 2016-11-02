@@ -87,7 +87,6 @@ public class PoissonGenerator {
 		while (remainingPoints > 0) {
 			iterate();
 			remainingPoints--;
-			System.out.println(remainingPoints);
 		}
 		
 	}
