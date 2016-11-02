@@ -23,8 +23,6 @@ import maths.Vector3f;
 import maths.Vector4f;
 import models.ModelManager;
 import models.VertexArrayObject;
-import models.md5.MD5Loader;
-import models.obj.OBJLoader;
 
 public class GameObject {
 	private static final Vector3f GRAVITY = new Vector3f(0, 0, 0);
@@ -168,5 +166,6 @@ public class GameObject {
 	public void makeGL() {
 		assert !isGL : "its already gl you dumb fuck";
 		vao = new VertexArrayObject(vaoData, 3);
+		this.isGL = true;
 	}
 }

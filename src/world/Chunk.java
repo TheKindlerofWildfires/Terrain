@@ -1,7 +1,5 @@
 package world;
 
-import graphics.Window;
-
 import java.util.ArrayList;
 
 import maths.Delaunay;
@@ -36,13 +34,16 @@ public class Chunk extends GameObject {
 		this.chunkY = y;
 
 		genTerrain();
-		genFoliage();
+		//genFoliage();
 		isGL = false;
 		shader = graphics.ShaderManager.landShader;
 	}
 
 	public void genFoliage() {
-		
+		for(int i = 0; i<treeland.size(); i++){
+			Vector3f pos = treeland.get(i);
+			Foliage.makeTree(pos);//this is an object
+		}
 	}
 
 	public void genTerrain() {
@@ -97,9 +98,9 @@ public class Chunk extends GameObject {
 					b *= 0.5f;
 					r *= 1.4f;
 					g *= 1.1f;
-					if (graphics.Window.worldRandom.nextInt(100) == 1 && !(treeland.contains(point))) {
-						treeland.add(point);
-					}
+					//if (graphics.Window.worldRandom.nextInt(100) == 1 && !(treeland.contains(point))) {
+						//treeland.add(point);
+					//}
 				}
 
 				//cZ = pZ;
@@ -122,8 +123,7 @@ public class Chunk extends GameObject {
 			}
 		}
 	}
-
-	@Override
+	
 	public void makeGL() {
 		this.vao = new VertexArrayObject(vertices, 3);
 		this.isGL = true;
