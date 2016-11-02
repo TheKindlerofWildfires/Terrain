@@ -11,6 +11,7 @@ import maths.Vector2i;
 import maths.Vector3f;
 import maths.Vector4f;
 import noiseLibrary.module.source.Perlin;
+import object.GameObject;
 
 public class World {
 	public static Perlin noise;
@@ -18,6 +19,7 @@ public class World {
 	public static final int LOAD_DIST = 2;
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
+	public static ArrayList<GameObject> foliage = new ArrayList<GameObject>();
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 
@@ -72,6 +74,7 @@ public class World {
 	 */
 	public void render(Vector4f clipPlane) {
 		chunks.stream().forEach(c -> c.render(clipPlane));
+		foliage.stream().forEach(f -> f.render(clipPlane));
 	}
 
 	public void addChunk(Chunk c) {
@@ -79,6 +82,13 @@ public class World {
 			c.makeGL();
 		}
 		chunks.add(c);
+	}
+
+	public void addFoliage(GameObject tree) {
+		if (!tree.isGL) {
+			tree.makeGL();
+		}
+		foliage.add(tree);
 	}
 
 	private static Chunk getChunk(Vector3f position) {

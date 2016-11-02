@@ -1,6 +1,6 @@
 package world;
 
-import graphics.VertexArrayObject;
+import graphics.Window;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,7 @@ import maths.Mirror;
 import maths.PoissonGenerator;
 import maths.Triangle;
 import maths.Vector3f;
+import models.VertexArrayObject;
 import noiseLibrary.module.source.Perlin;
 import object.GameObject;
 
@@ -19,22 +20,32 @@ public class Chunk extends GameObject {
 	public static final float WATERLEVEL = SIZE / 7;
 	public static final float BEACHSIZE = SIZE / 16;
 	public static final float TREELINE = SIZE / 3;
-	
+
 	Perlin noise;
-	
+
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 	float[] vertices;
 	ArrayList<Vector3f> treeland = new ArrayList<Vector3f>();
 	public int chunkX;
 	public int chunkY;
-	
-	public boolean isGL = false;
 
 	public Chunk(Perlin noise, int x, int y) {
-		super("none", "none");
+		super("none", "none", true);
 		this.noise = noise;
 		this.chunkX = x;
 		this.chunkY = y;
+
+		genTerrain();
+		genFoliage();
+		isGL = false;
+		shader = graphics.ShaderManager.landShader;
+	}
+
+	public void genFoliage() {
+		
+	}
+
+	public void genTerrain() {
 		// Generating points is 1/4
 		ArrayList<Vector3f> points = new ArrayList<Vector3f>();
 		PoissonGenerator fish = new PoissonGenerator();
@@ -77,7 +88,7 @@ public class Chunk extends GameObject {
 					r *= 0.1f;
 					g *= 0.2f;
 				}
-				if (pZ >WATERLEVEL && pZ<WATERLEVEL+BEACHSIZE) {
+				if (pZ > WATERLEVEL && pZ < WATERLEVEL + BEACHSIZE) {
 					b *= 0.5f;
 					r *= 1.7f;
 					g *= 1.2f;
@@ -86,7 +97,7 @@ public class Chunk extends GameObject {
 					b *= 0.5f;
 					r *= 1.4f;
 					g *= 1.1f;
-					if(graphics.Window.worldRandom.nextInt(100)==1 && !(treeland.contains(point))){
+					if (graphics.Window.worldRandom.nextInt(100) == 1 && !(treeland.contains(point))) {
 						treeland.add(point);
 					}
 				}
@@ -110,22 +121,11 @@ public class Chunk extends GameObject {
 				vertices[c++] = terrain.get(i).getNormal().z;
 			}
 		}
-		isGL = false;
-		shader = graphics.ShaderManager.landShader;
-		
 	}
+
+	@Override
 	public void makeGL() {
 		this.vao = new VertexArrayObject(vertices, 3);
 		this.isGL = true;
-		foliate();
-		
-	}
-
-	private void foliate() {
-		for(int i = 0; i<treeland.size(); i++){
-			Foliage f = new Foliage();
-			Vector3f local = treeland.get(i);
-			f.generate(new Vector3f(local.x, local.y, local.z/SIZE));
-		}
 	}
 }

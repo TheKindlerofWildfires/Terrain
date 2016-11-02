@@ -18,7 +18,7 @@ import object.GameObject;
 public class Skybox extends GameObject {
 
 	public Skybox(String obj, String texture) {
-		super(obj, texture);
+		super(obj, texture,true);
 		shader = graphics.ShaderManager.objectShader;
 		this.material.useColour = 0;
 		this.model = new Transformation();

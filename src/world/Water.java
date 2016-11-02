@@ -27,14 +27,14 @@ public class Water extends GameObject {
 	Texture normal;
 
 	public Water() {
-		super("src/models/plane.obj", "none");
+		super("resources/models/plane.obj", "none", true);
 		translate(0, 0, Chunk.WATERLEVEL);
 		rotate(90, 1, 0, 0);
 		scale(100, 100, 100);
 		shader = ShaderManager.waterShader;
 		hasMaterial = false;
-		dudv = new Texture("src/textures/dudv.png");
-		normal = new Texture("src/textures/normal.png");
+		dudv = new Texture("resources/textures/dudv.png");
+		normal = new Texture("resources/textures/normal.png");
 	}
 
 	@Override

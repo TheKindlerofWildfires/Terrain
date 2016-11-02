@@ -8,20 +8,17 @@ import maths.Vector3f;
 import object.GameObject;
 
 public class Foliage {
-	Random rng = Window.worldRandom;
-	public Foliage(){	
+	private static Random rng = Window.worldRandom;
+
+	private Foliage() {
 	}
 
-	public void generate(Vector3f pos) {
-		
-		GameObject tree = new GameObject("src/models/tree.obj", "src/textures/wood.png");
-		System.out.println(tree.position);
-		
-		tree.placeAt(pos.x, pos.y, pos.z);
+	public static GameObject makeTree(Vector3f pos) {
+		GameObject tree = new GameObject("resources/models/tree.obj", "resources/textures/wood.png",false);
+		tree.placeAt(pos.x, pos.y, pos.z/Chunk.SIZE);
 		tree.rotate(90, 1, 0, 0);
-		tree.scale((float)(.2+rng.nextDouble()/10), (float)(.2+rng.nextDouble()/10), (float)(.2+rng.nextDouble()/10));
-		//probably should be some kinda linked list thing
-		graphics.Window.objectManager.objectList.add(tree);	
-		
+		tree.scale((float) (.2 + rng.nextDouble() / 10), (float) (.2 + rng.nextDouble() / 10),
+				(float) (.2 + rng.nextDouble() / 10));
+		return tree;
 	}
 }
