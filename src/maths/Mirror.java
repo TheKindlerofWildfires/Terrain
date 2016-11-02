@@ -30,6 +30,7 @@ public class Mirror {
 	 * @return
 	 */
 	public ArrayList<int[]> fish() {
+		
 		ArrayList<int[]> fish = new ArrayList<int[]>();
 		for (int i = 0; i <= PoissonGenerator.width; i += iterator) {
 			fish.add(new int[] { i, 1 });
@@ -37,7 +38,6 @@ public class Mirror {
 			fish.add(new int[] { i, -1 });
 			fish.add(new int[] { -1, i });
 		}
-
 		return fish;
 	}
 

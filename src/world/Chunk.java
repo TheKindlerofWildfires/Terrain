@@ -53,8 +53,8 @@ public class Chunk extends GameObject {
 		fish.generate();
 
 		for (int i = 0; i < fish.points.size(); i++) {
-			float fishX = fish.points.get(i)[0] / 5000f - 1;
-			float fishY = fish.points.get(i)[1] / 5000f - 1;
+			float fishX = (float) (fish.points.get(i)[0] / 5000f - 1);
+			float fishY = (float) (fish.points.get(i)[1] / 5000f - 1);
 			points.add(new Vector3f(fishX, fishY, 0));
 		}
 
