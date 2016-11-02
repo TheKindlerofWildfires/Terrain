@@ -16,8 +16,9 @@ public class Chunk extends GameObject {
 
 	public static final float SIZE = 9;
 
-	public static final float WATERLEVEL = SIZE / 6;
-	public static final float TREELINE = 2 * SIZE / 6;
+	public static final float WATERLEVEL = SIZE / 7;
+	public static final float BEACHSIZE = SIZE / 16;
+	public static final float TREELINE = SIZE / 3;
 	
 	Perlin noise;
 	
@@ -26,12 +27,7 @@ public class Chunk extends GameObject {
 	ArrayList<Vector3f> treeland = new ArrayList<Vector3f>();
 	public int chunkX;
 	public int chunkY;
-/*
-	private ArrayList<Vector3f> mxp;
-	private ArrayList<Vector3f> mxn;
-	private ArrayList<Vector3f> myp;
-	private ArrayList<Vector3f> myn;
-*/
+	
 	public boolean isGL = false;
 
 	public Chunk(Perlin noise, int x, int y) {
@@ -45,19 +41,12 @@ public class Chunk extends GameObject {
 		fish.generate();
 
 		for (int i = 0; i < fish.points.size(); i++) {
-			float fishX = fish.points.get(i)[0] / 500f - 1;
-			float fishY = fish.points.get(i)[1] / 500f - 1;
+			float fishX = fish.points.get(i)[0] / 5000f - 1;
+			float fishY = fish.points.get(i)[1] / 5000f - 1;
 			points.add(new Vector3f(fishX, fishY, 0));
 		}
 
-		// what needs to happen is mirror also takes points from the nearblocks
 		Mirror mirror = new Mirror(points);
-		/*
-		myn = mirror.getSide("yn");
-		mxn = mirror.getSide("xn");
-		myp = mirror.getSide("yp");
-		mxp = mirror.getSide("xp");
-		*/
 		mirror.acc();
 		points = mirror.points();
 
@@ -88,6 +77,11 @@ public class Chunk extends GameObject {
 					r *= 0.1f;
 					g *= 0.2f;
 				}
+				if (pZ >WATERLEVEL && pZ<WATERLEVEL+BEACHSIZE) {
+					b *= 0.5f;
+					r *= 1.7f;
+					g *= 1.2f;
+				}
 				if (pZ > TREELINE) {
 					b *= 0.5f;
 					r *= 1.4f;
@@ -105,7 +99,7 @@ public class Chunk extends GameObject {
 				*/
 				vertices[c++] = point.x;
 				vertices[c++] = point.y;
-				vertices[c++] = pZ;
+				vertices[c++] = pZ; //the z cordinate 
 
 				vertices[c++] = r;
 				vertices[c++] = g;
