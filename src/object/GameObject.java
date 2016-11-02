@@ -30,7 +30,7 @@ public class GameObject {
 	protected Texture texture;
 	protected VertexArrayObject vao;
 	protected float[] vaoData;
-	protected Material material;
+	public Material material;
 	protected Transformation model;
 	public boolean isGL;
 
@@ -81,7 +81,7 @@ public class GameObject {
 		}
 		model = new Transformation();
 		shader = graphics.ShaderManager.objectShader;
-		material.colour = new Vector3f(0.13f, 0.54f, 0.13f); //Mitchell is super lazy and this is his fault
+		material.colour = new Vector3f(1f, 1f, 1f);
 		material.reflectance = 1;
 		material.useColour = 1;
 	}

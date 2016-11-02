@@ -20,10 +20,10 @@ public class Chunk extends GameObject {
 	public static final float TREELINE = SIZE / 3;
 
 	Perlin noise;
-
-	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 	float[] vertices;
+	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 	ArrayList<Vector3f> treeland = new ArrayList<Vector3f>();
+	ArrayList<Vector3f> waterland = new ArrayList<Vector3f>();
 	ArrayList<GameObject> foliage = new ArrayList<GameObject>();
 	public int chunkX;
 	public int chunkY;
@@ -43,8 +43,17 @@ public class Chunk extends GameObject {
 	public void genFoliage() {
 		for(int i = 0; i<treeland.size(); i++){
 			Vector3f pos = treeland.get(i);
-			foliage.add(Foliage.makeTree(pos));//this is an object
+			GameObject f = Foliage.makeTree(pos);
+			f.material.colour = new Vector3f(0.10f, 0.50f, 0.10f);
+			foliage.add(f);
 		}
+		for(int i = 0; i<waterland.size(); i++){
+			Vector3f pos = waterland.get(i);
+			GameObject f = Foliage.makeSeaweed(pos);
+			f.material.colour = new Vector3f(0.06f, 0.25f, 0.06f);
+			foliage.add(f);
+		}
+		
 	}
 
 	public void genTerrain() {
@@ -89,6 +98,9 @@ public class Chunk extends GameObject {
 					b *= 0.6f;
 					r *= 0.1f;
 					g *= 0.2f;
+					if (graphics.Window.worldRandom.nextInt(40) == 1 && !(waterland.contains(point))) {
+						waterland.add(point);
+					}
 				}
 				if (pZ > WATERLEVEL && pZ < WATERLEVEL + BEACHSIZE) {
 					b *= 0.5f;
