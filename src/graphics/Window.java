@@ -233,9 +233,9 @@ public class Window implements Runnable {
 		glViewport(0, 0, windowWidth, windowHeight);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		world.render(renderClipPlane);
+	//	world.render(renderClipPlane);
 		objectManager.render(renderClipPlane);
-		water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
+	//	water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
 	}
 
 	/**

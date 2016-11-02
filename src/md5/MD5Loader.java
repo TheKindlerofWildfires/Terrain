@@ -30,7 +30,7 @@ public class MD5Loader {
 		}
 		return generateMesh(model, model.getMeshes().get(index));
 	}
-	
+
 	/**
 	 * Parses MD5Mesh into a VAO
 	 * @param model the MD5Model
@@ -60,10 +60,11 @@ public class MD5Loader {
 				Vector3f rotatedPos = new Vector3f(
 						Matrix4f.rotate(rot.x, rot.y, rot.z, rot.w).multiply(new Vector4f(weight.position, 1)));
 				Vector3f acumPos = joint.position.add(rotatedPos);
-				acumPos.scale(weight.bias);
-				vertexPos.add(acumPos);
+				acumPos = acumPos.scale(weight.bias);
+				vertexPos = vertexPos.add(acumPos);
 			}
 			positions.add(vertexPos);
+			System.out.println(vertexPos);
 		}
 
 		ArrayList<Vector3f> vaoData = new ArrayList<Vector3f>();

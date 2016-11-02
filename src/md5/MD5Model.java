@@ -85,7 +85,7 @@ public class MD5Model {
 
 	public static void main(String[] args) {
 		try {
-			System.out.println(new MD5Model("src/models/model.md5mesh").meshes.get(0));
+			System.out.println(new MD5Model("src/models/cube.md5mesh").meshes.get(0));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
