@@ -19,13 +19,9 @@ public class ObjectManager {
 		 * create a list of all objects
 		 */
 
-<<<<<<< HEAD
-		target = new GameObject("src/models/dude.md5mesh", "src/textures/wood.png");
-		ball = new GameObject("src/models/torus.obj", "src/textures/wood.png");
-=======
+
 		//target = new GameObject("resources/models/model.md5mesh", "resources/textures/wood.png",true);
 		ball = new GameObject("resources/models/torus.obj", "resources/textures/wood.png", true);
->>>>>>> treeheehee
 		ball.scale(.25f, .25f, .25f);
 		ball.translate(5, 2, 10);
 		//	target.translate(2, 2, 10);
