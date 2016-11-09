@@ -18,11 +18,11 @@ import object.GameObject;
 public class Skybox extends GameObject {
 
 	public Skybox(String obj, String texture) {
-		super(obj, texture,true);
+		super(obj, texture, true);
 		shader = graphics.ShaderManager.objectShader;
 		this.material.useColour = 0;
 		this.model = new Transformation();
-		this.scale(15, 15, 15);
+		this.scale(25, 25, 25);
 	}
 
 	protected void renderPrep(Vector4f clipPlane) {

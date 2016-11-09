@@ -12,7 +12,7 @@ uniform mat4 projection;
 uniform mat4 modelView;
 uniform vec3 cameraPos;
 
-const float tiling = 6;
+const float tiling = 1.0f;
 
 void main(){
     vec4 mvPos = modelView * vec4(position, 1.0);

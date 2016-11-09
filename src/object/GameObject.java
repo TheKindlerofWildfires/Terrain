@@ -74,7 +74,6 @@ public class GameObject {
 		material = new Material();
 		if (texturePath != "none" && isGL) {
 			texture = new Texture(texturePath);
-			System.out.println(texturePath);
 			textured = true;
 		} else {
 			textured = false;

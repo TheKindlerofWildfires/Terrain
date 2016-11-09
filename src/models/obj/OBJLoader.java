@@ -24,6 +24,7 @@ import models.VertexArrayObject;
  */
 public class OBJLoader {
 	public static float[] loadMesh(String fileName) throws IOException {
+		System.out.println("Loading object at " + fileName);
 		Path path = Paths.get(fileName);
 		List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 		List<Vector3f> vertices = new ArrayList<Vector3f>();

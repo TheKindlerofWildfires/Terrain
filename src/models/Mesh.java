@@ -1,6 +1,4 @@
-package object;
-
-import models.VertexArrayObject;
+package models;
 
 public class Mesh {
 

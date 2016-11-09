@@ -19,6 +19,9 @@ public class Chunk extends GameObject {
 	public static final float BEACHSIZE = SIZE / 16;
 	public static final float TREELINE = SIZE / 3;
 
+	public static final int SEAWEED_PROBABILITY = 100; //p=1/x
+	public static final int TREE_PROBABILITY = 100; //p=1/x
+
 	Perlin noise;
 	float[] vertices;
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
@@ -41,19 +44,19 @@ public class Chunk extends GameObject {
 	}
 
 	public void genFoliage() {
-		for(int i = 0; i<treeland.size(); i++){
+		for (int i = 0; i < treeland.size(); i++) {
 			Vector3f pos = treeland.get(i);
 			GameObject f = Foliage.makeTree(pos);
 			f.material.colour = new Vector3f(0.10f, 0.50f, 0.10f);
 			foliage.add(f);
 		}
-		for(int i = 0; i<waterland.size(); i++){
+		for (int i = 0; i < waterland.size(); i++) {
 			Vector3f pos = waterland.get(i);
 			GameObject f = Foliage.makeSeaweed(pos);
 			f.material.colour = new Vector3f(0.06f, 0.25f, 0.06f);
 			foliage.add(f);
 		}
-		
+
 	}
 
 	public void genTerrain() {
@@ -98,7 +101,7 @@ public class Chunk extends GameObject {
 					b *= 0.6f;
 					r *= 0.1f;
 					g *= 0.2f;
-					if (graphics.Window.worldRandom.nextInt(40) == 1 && !(waterland.contains(point))) {
+					if (graphics.Window.worldRandom.nextInt(SEAWEED_PROBABILITY) == 1 && !(waterland.contains(point))) {
 						waterland.add(point);
 					}
 				}
@@ -111,7 +114,7 @@ public class Chunk extends GameObject {
 					b *= 0.5f;
 					r *= 1.4f;
 					g *= 1.1f;
-					if (graphics.Window.worldRandom.nextInt(100) == 1 && !(treeland.contains(point))) {
+					if (graphics.Window.worldRandom.nextInt(TREE_PROBABILITY) == 1 && !(treeland.contains(point))) {
 						treeland.add(point);
 					}
 				}
@@ -136,7 +139,7 @@ public class Chunk extends GameObject {
 			}
 		}
 	}
-	
+
 	public void makeGL() {
 		this.vao = new VertexArrayObject(vertices, 3);
 		this.isGL = true;

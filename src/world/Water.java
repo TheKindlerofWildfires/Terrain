@@ -19,7 +19,7 @@ import object.GameObject;
 
 public class Water extends GameObject {
 
-	public static final float WAVE_SPEED = .00001f;
+	public static final float WAVE_SPEED = .0001f;
 
 	private float moveFactor = 0;
 
@@ -51,9 +51,6 @@ public class Water extends GameObject {
 		glBindTexture(GL_TEXTURE_2D, normal.getId());
 
 		Matrix4f view = graphics.GraphicsManager.camera.view;
-		//view.m03 = 0;
-		//view.m13 = 0;
-		//	view.m23 = 0;
 		setUniformMatrix4f("modelView", view.multiply(model.getMatrix()));
 	}
 }

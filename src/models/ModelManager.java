@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import models.obj.OBJLoader;
-import object.Mesh;
 
 public final class ModelManager {
 
