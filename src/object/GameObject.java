@@ -1,6 +1,7 @@
 package object;
 
 import static graphics.Shader.setMaterial;
+import static graphics.Shader.setUniform4f;
 import static graphics.Shader.setUniformMatrix4f;
 import static graphics.Shader.start;
 import static graphics.Shader.stop;
@@ -8,23 +9,29 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
+
 import graphics.Material;
 import graphics.Texture;
 import graphics.VertexArrayObject;
 import maths.BoundingBox;
 import maths.Transformation;
 import maths.Vector3f;
+import maths.Vector4f;
+import md5.MD5Loader;
 
-public class Object {
-	private static final Vector3f GRAVITY = new Vector3f(0,0,0);
+public class GameObject {
+	private static final Vector3f GRAVITY = new Vector3f(0, 0, 0);
 	private Vector3f fakeFriction = new Vector3f();
 	protected Texture texture;
 	protected VertexArrayObject vao;
 	protected Material material;
 	protected Transformation model;
 
-	private boolean textured;
+	protected boolean textured;
+	protected boolean hasMaterial = true;
 
 	protected int shader;
 	public Vector3f velocity = new Vector3f();
@@ -41,11 +48,18 @@ public class Object {
 	 * @param texturePath path to texture
 	 * @param box Bounding Box
 	 */
-	public Object(String modelPath, String texturePath) {
+	public GameObject(String modelPath, String texturePath) {
 		if (modelPath != "none") {
 			try {
-				vao = OBJLoader.loadMesh(modelPath);
-				boundingBox = OBJLoader.loadBox(modelPath);
+				if (modelPath.endsWith(".obj")) {
+					vao = OBJLoader.loadMesh(modelPath);
+					boundingBox = OBJLoader.loadBox(modelPath);
+				} else if (modelPath.endsWith(".md5mesh")) {
+					vao = MD5Loader.loadMesh(modelPath, 0);
+					boundingBox = new BoundingBox(new Vector3f(0, 0, 0), 1, 1, 1);
+				} else {
+					throw new Exception("invalid filetype");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -53,6 +67,7 @@ public class Object {
 		material = new Material();
 		if (texturePath != "none") {
 			texture = new Texture(texturePath);
+			System.out.println(texturePath);
 			textured = true;
 		} else {
 			textured = false;
@@ -96,7 +111,7 @@ public class Object {
 	}
 
 	public void translate(Vector3f displacement) {
-		translate(displacement.x, displacement.y, displacement.z);	
+		translate(displacement.x, displacement.y, displacement.z);
 	}
 
 	public void placeAt(float x, float y, float z) {
@@ -106,27 +121,12 @@ public class Object {
 		boundingBox.centre.z = z;
 	}
 
-	/**
-	 * Renders the specified object
-	 */
-	public void render() {
-		start(shader);
-		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
-		setMaterial("material", material);
-		if (textured) {
-			glBindTexture(GL_TEXTURE_2D, texture.getId());
-		}
-		glBindVertexArray(vao.getVaoID());
-		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
-		stop();
-	}
-
 	public void physic() {
 		fakeFriction = velocity.negate().scale(0.01f);
-		acceleration= force.scale(1/mass).add(GRAVITY);
+		acceleration = force.scale(1 / mass).add(GRAVITY);
 		velocity = velocity.add(acceleration).add(fakeFriction);
 		position = boundingBox.centre;
-		
+
 		/* for all objects:
 		calculate acceleration from mass and force
 		calculate velocity from mass,current velocity, acceleration and gravity
@@ -136,13 +136,33 @@ public class Object {
 		
 		
 		*/
-		
+
 	}
 
 	public void setForce(Vector3f force) {
 		this.force = force;
-		
 	}
 
+	/**
+	 * Renders the specified object
+	 */
+	public void render(Vector4f clipPlane) {
+		start(shader);
+		renderPrep(clipPlane);
+		glBindVertexArray(vao.getVaoID());
+		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
+		stop();
+	}
 
+	protected void renderPrep(Vector4f clipPlane) {
+		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
+		if (hasMaterial) {
+			setMaterial("material", material);
+		}
+		if (textured) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texture.getId());
+		}
+		setUniform4f("clipPlane", clipPlane);
+	}
 }

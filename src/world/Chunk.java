@@ -10,24 +10,27 @@ import maths.PoissonGenerator;
 import maths.Triangle;
 import maths.Vector3f;
 import noiseLibrary.module.source.Perlin;
-import object.Object;
+import object.GameObject;
 
-public class Chunk extends Object {
+public class Chunk extends GameObject {
 
-	public static final float SIZE =9;
+	public static final float SIZE = 9;
 
-	private static final float WATERLEVEL = SIZE/6;
-	private static final float TREELINE = 2*SIZE/6;
+	public static final float WATERLEVEL = SIZE / 6;
+	public static final float TREELINE = 2 * SIZE / 6;
+	
 	Perlin noise;
+	
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 	float[] vertices;
 
-	private int chunkX;
-	private int chunkY;
-	public ArrayList<Vector3f> mxp;
-	public ArrayList<Vector3f> mxn;
-	public ArrayList<Vector3f> myp;
-	public ArrayList<Vector3f> myn;
+	public int chunkX;
+	public int chunkY;
+
+	private ArrayList<Vector3f> mxp;
+	private ArrayList<Vector3f> mxn;
+	private ArrayList<Vector3f> myp;
+	private ArrayList<Vector3f> myn;
 
 	public boolean isGL = false;
 
@@ -62,30 +65,33 @@ public class Chunk extends Object {
 		int c = 0;
 
 		for (int i = 0; i < terrain.size(); i++) {
-			Vector3f centre = terrain.get(i).getCircumcenter().add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
+			Vector3f centre = terrain.get(i).getCircumcenter().add(new Vector3f(2f * chunkX, 2f * chunkY, 0))
+					.scale(SIZE);
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
 				// each gen takes about 1/4 of build time
-				float pZ = (float) Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE/2;
-				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE/2;
+				float pZ = (float) Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE / 2;
+				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE / 2;
+				//	System.out.println(pZ);
+				terrain.get(i).getPoint(j).z = pZ;
 
 				float g;
 				float r;
 				float b;
-				b = 0.5f/(cZ+1);
-				g = 0.9f/(cZ+1);
-				r = 0.5f/(cZ+1);
-				if(pZ<WATERLEVEL){
-					b *=0.6f;
-					r*=0.1f;
+				b = 0.5f / (cZ + 1);
+				g = 0.9f / (cZ + 1);
+				r = 0.5f / (cZ + 1);
+				if (pZ < WATERLEVEL) {
+					b *= 0.6f;
+					r *= 0.1f;
 					g *= 0.2f;
 				}
-				if(pZ>TREELINE){
-					b *=0.5f;
-					r*=1.4f;
+				if (pZ > TREELINE) {
+					b *= 0.5f;
+					r *= 1.4f;
 					g *= 1.1f;
 				}
-				
+
 				//cZ = pZ;
 				/*
 				g = (float) (cZ - 5) * (-0.1f * cZ) - 0.0f;
@@ -108,22 +114,6 @@ public class Chunk extends Object {
 
 		isGL = false;
 		shader = graphics.ShaderManager.landShader;
-	}
-
-	public ArrayList<Vector3f> getSide(String side) {
-		switch (side) {
-		case "yn":
-			return myn;
-		case "yp":
-			return myp;
-		case "xp":
-			return mxp;
-		case "xn":
-			return mxn;
-		default:
-			System.err.println("invalid type");
-			return null;
-		}
 	}
 
 	public void makeGL() {

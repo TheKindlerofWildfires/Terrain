@@ -11,7 +11,6 @@ public class Vector3f {
 	public float y;
 	public float z;
 
-
 	/**
 	 * Creates a default 3-tuple vector with all values set to 0.
 	 */
@@ -41,6 +40,12 @@ public class Vector3f {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+
+	public Vector3f(Vector4f vec) {
+		this.x = vec.x;
+		this.y = vec.y;
+		this.z = vec.z;
 	}
 
 	/**

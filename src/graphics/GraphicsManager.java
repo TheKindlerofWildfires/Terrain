@@ -56,7 +56,6 @@ public class GraphicsManager {
 	 * Move this to player control
 	 */
 	public void update() {
-
 		double[] mousePos = MouseInput.pos();
 		camera.rotateCamera(mousePos);
 		ShaderManager.setCamera(camera);
@@ -78,6 +77,6 @@ public class GraphicsManager {
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
 			camera.moveCamera("DOWN");
 		}
-		
+
 	}
 }

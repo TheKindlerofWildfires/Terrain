@@ -2,28 +2,28 @@ package object;
 
 import java.util.ArrayList;
 
+import maths.Vector4f;
 import world.Skybox;
 
 public class ObjectManager {
-	public Object target;
-	public static Object ball;
+	public GameObject target;
+	public static GameObject ball;
 	//private Object test;
 	private Skybox box;
 	float c;
-	public ArrayList<Object> objectList = new ArrayList<Object>();
-
+	public ArrayList<GameObject> objectList = new ArrayList<GameObject>();
+	
 	public ObjectManager() {
 		/*
 		 * create a list of all objects
 		 */
 
-		target = new Object("src/models/box.obj", "src/textures/wood.png");
-		ball = new Object("src/models/box.obj", "src/textures/wood.png");
-
+		target = new GameObject("src/models/dude.md5mesh", "src/textures/wood.png");
+		ball = new GameObject("src/models/torus.obj", "src/textures/wood.png");
 		ball.scale(.25f, .25f, .25f);
 		ball.translate(5, 2, 10);
 		//System.out.println(target.position);
-		target.translate(0, 2, 10);
+		target.translate(2, 2, 10);
 		//System.out.println(target.position);
 		objectList.add(target);
 		objectList.add(ball);
@@ -34,24 +34,27 @@ public class ObjectManager {
 	}
 
 	public void update() {
-		//target.force = new Vector3f((float)(-0.1*Math.sin(c)),0,0);
-		//target.force = target.position.subtract(new Vector3f(0, 5, 10)).scale(-0.1f);
-		for (int i = 0; i < objectList.size(); i++) {
-			Object object = objectList.get(i);
-			object.translate(object.velocity);
-			//object.placeAt(object.position.x, object.position.y, object.position.z);
-			object.physic();
-		}
-		maths.BoundingBox.collide(ball, target, ball.velocity, target.velocity);
-
-		c += Math.PI / 500;
+		/*	//target.force = new Vector3f((float)(-0.1*Math.sin(c)),0,0);
+			//target.force = target.position.subtract(new Vector3f(0, 5, 10)).scale(-0.1f);
+			for (int i = 0; i < objectList.size(); i++) {
+				GameObject object = objectList.get(i);
+				object.translate(object.velocity);
+				//object.placeAt(object.position.x, object.position.y, object.position.z);
+				object.physic();
+			}
+			maths.BoundingBox.collide(ball, target, ball.velocity, target.velocity);
+			float cZ = (float) Math.abs(World.noise.getValue(ball.position.x, ball.position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
+			float diff = ball.position.z - cZ;
+			//System.out.println(diff);
+			ball.velocity.z = -diff * .7f; */
 	}
 
-	public void render() {
+	public void render(Vector4f clipPlane) {
 		for (int i = 0; i < objectList.size(); i++) {
-			Object object = objectList.get(i);
-			object.render();
+			GameObject object = objectList.get(i);
+			//	object.render();
 		}
-		box.render();
+		target.render(clipPlane);
+		box.render(clipPlane);
 	}
 }

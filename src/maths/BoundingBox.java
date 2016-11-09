@@ -1,6 +1,6 @@
 package maths;
 
-import object.Object;
+import object.GameObject;
 
 public class BoundingBox {
 
@@ -87,7 +87,7 @@ public class BoundingBox {
 	 * @param vOb0 velocity vector of first object
 	 * @param vOb1 velocity vector of second object
 	 */
-	public static void collide(Object ob0, Object ob1, Vector3f vOb0, Vector3f vOb1) {
+	public static void collide(GameObject ob0, GameObject ob1, Vector3f vOb0, Vector3f vOb1) {
 		BoundingBox b0 = ob0.boundingBox;
 		BoundingBox b1 = ob1.boundingBox;
 

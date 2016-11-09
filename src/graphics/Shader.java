@@ -10,6 +10,7 @@ import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniform1iv;
 import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniform4f;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
@@ -23,6 +24,7 @@ import java.nio.IntBuffer;
 import maths.Matrix4f;
 import maths.Utilities;
 import maths.Vector3f;
+import maths.Vector4f;
 
 public abstract class Shader {
 	private static int currentProgramID;
@@ -44,7 +46,7 @@ public abstract class Shader {
 	private static int getUniform(String name) {
 		int result = glGetUniformLocation(currentProgramID, name);
 		if (result == -1) {
-			System.err.println("Could not find uniform variable " + name);
+			//System.err.println("Could not find uniform variable " + name);
 		}
 		return result;
 	}
@@ -78,6 +80,10 @@ public abstract class Shader {
 		glUniform3f(getUniform(name), position.x, position.y, position.z);
 	}
 
+	public static void setUniform4f(String name, Vector4f position) {
+		glUniform4f(getUniform(name), position.x, position.y, position.z, position.w);
+	}
+
 	public static void start(int id) {
 		currentProgramID = id;
 		glUseProgram(currentProgramID);
@@ -93,11 +99,11 @@ public abstract class Shader {
 
 	public static void setMaterial(String name, Material material) {
 		//this is causing my error
-		if(!(name == "material")){
+
 		setUniform3f(name + ".colour", material.colour);
 		setUniform1i(name + ".useColour", material.useColour);
 		setUniform1f(name + ".reflectance", material.reflectance);
-		}
+
 	}
 
 	public static void setPointLight(String name, PointLight pointlight) {

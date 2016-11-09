@@ -42,11 +42,12 @@ uniform Material material;
 uniform PointLight pointLight;
 uniform vec3 camera_pos;
 uniform Fog fog;
+uniform float fogExponent;
 
 vec4 calcFog(vec3 pos, vec4 colour, Fog fog)
 {
     float distance = length(pos);
-    float fogFactor = 1.0 / exp( (distance * fog.density)* (distance * fog.density));
+    float fogFactor = 1.0 / exp( pow((distance * fog.density),fogExponent));
     fogFactor = clamp( fogFactor, 0.0, 1.0 );
 
     vec3 resultColour = mix(fog.colour, colour.xyz, fogFactor);

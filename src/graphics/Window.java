@@ -10,6 +10,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_PROFILE;
 import static org.lwjgl.glfw.GLFW.GLFW_RESIZABLE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetFramebufferSize;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
@@ -29,37 +30,65 @@ import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL30.GL_CLIP_DISTANCE0;
+import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
+import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.system.MemoryUtil.NULL;
-import input.MouseInput;
 
+import java.nio.IntBuffer;
 import java.util.Random;
 
-import maths.Vector3f;
-import object.ObjectManager;
-
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
-import world.ChunkLoader;
-import world.World;
 import entity.EntityManager;
+import input.MouseInput;
+import maths.Vector3f;
+import maths.Vector4f;
+import object.ObjectManager;
+import world.Chunk;
+import world.ChunkLoader;
+import world.Water;
+import world.World;
 
 public class Window implements Runnable {
+	public static final int REFLECTION_WIDTH = 1920;
+	public static final int REFLECTION_HEIGHT = 1080;
+	public static final int REFRACTION_WIDTH = 1928;
+	public static final int REFRACTION_HEIGHT = 1080;
+
 	public boolean running = true;
 
-	private Long window;
-	@SuppressWarnings("unused")
+	private static Long window;
+	private static int windowWidth;
+	private static int windowHeight;
+
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
+
 	public static GraphicsManager graphicsManager;
 	public static ObjectManager objectManager;
 	public static EntityManager entityManager;
+
 	public static World world;
+	public static Water water;
+
 	public static ChunkLoader chunkLoader;
+
 	public static double deltaX, deltaY;
+
 	public static Random worldRandom = new Random();
 	public static Random mathRandom = new Random();
+
+	private static Vector4f reflectionClipPlane;
+	private static Vector4f refractionClipPlane;
+	public static Vector4f renderClipPlane;
+
+	public static FrameBufferObject refraction;
+	public static FrameBufferObject reflection;
 
 	public static void main(String args[]) {
 		Window game = new Window();
@@ -103,17 +132,30 @@ public class Window implements Runnable {
 		glClearColor(75 / 255f, 10 / 255f, 130 / 255f, 1.0f);
 		// enable depth testing and face culling
 		glEnable(GL_DEPTH_TEST);
-		// Hm this looks wrong
-		// glEnable(GL_CULL_FACE);
+		glEnable(GL_CLIP_DISTANCE0);
 
+		IntBuffer width = BufferUtils.createIntBuffer(1);
+		IntBuffer height = BufferUtils.createIntBuffer(1);
+		glfwGetFramebufferSize(Window.window, width, height);
+		windowWidth = width.get(0);
+		windowHeight = height.get(0);
 		// Create GraphicsManager and World
 		graphicsManager = new GraphicsManager();
-		
 		world = new World();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
+
+		water = new Water();
+
 		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();
+
+		reflectionClipPlane = new Vector4f(0, 0, 1, -Chunk.WATERLEVEL);
+		refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL);
+		renderClipPlane = new Vector4f(0, 0, 1, 100000);
+
+		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT);
+		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT);
 	}
 
 	/**
@@ -122,7 +164,7 @@ public class Window implements Runnable {
 	private void randomize() {
 		// setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
-		// worldRandom.setSeed(120);
+		worldRandom.setSeed(120);
 		mathRandom.setSeed(worldRandom.nextLong());
 		World.perlinSeed = mathRandom.nextInt();
 
@@ -137,7 +179,7 @@ public class Window implements Runnable {
 	public void update() {
 		glfwPollEvents();
 		graphicsManager.update();
-		
+
 		world.update();
 		objectManager.update();
 		entityManager.update();
@@ -150,8 +192,50 @@ public class Window implements Runnable {
 	public void render() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		world.render();
-		objectManager.render();
+
+		//waterFBO.bindReflectionFrameBuffer();
+		//	world.render(reflectionClipPlane);
+		//	objectManager.render();
+
+		//	waterFBO.bindRefractionFrameBuffer();
+		//	world.render(refractionClipPlane);
+		//	objectManager.render();
+
+		//move camera to appropriate location and render reflection texture
+		float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
+		float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
+
+		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, -camDist * 2));
+		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, -targetDist * 2));
+
+		//bind reflection buffer and render to it
+		reflection.activate();
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+		world.render(reflectionClipPlane);
+		objectManager.render(reflectionClipPlane);
+
+		//	move camera back and render refraction texture
+		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
+		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
+
+		//bind refraction buffer and render to it
+		refraction.activate();
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+		world.render(refractionClipPlane);
+		objectManager.render(refractionClipPlane);
+		
+		//render to screen
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+		glViewport(0, 0, windowWidth, windowHeight);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+	//	world.render(renderClipPlane);
+		objectManager.render(renderClipPlane);
+	//	water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
 	}
 
 	/**
@@ -194,6 +278,7 @@ public class Window implements Runnable {
 			if (glfwWindowShouldClose(window)) {
 				running = false;
 				chunkLoader.running = false;
+				chunkLoader.interrupt();
 			}
 		}
 		glfwDestroyWindow(window);
