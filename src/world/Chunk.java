@@ -1,7 +1,5 @@
 package world;
 
-import graphics.VertexArrayObject;
-
 import java.util.ArrayList;
 
 import maths.Delaunay;
@@ -9,6 +7,7 @@ import maths.Mirror;
 import maths.PoissonGenerator;
 import maths.Triangle;
 import maths.Vector3f;
+import models.VertexArrayObject;
 import noiseLibrary.module.source.Perlin;
 import object.GameObject;
 
@@ -16,46 +15,63 @@ public class Chunk extends GameObject {
 
 	public static final float SIZE = 9;
 
-	public static final float WATERLEVEL = SIZE / 6;
-	public static final float TREELINE = 2 * SIZE / 6;
-	
-	Perlin noise;
-	
-	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
-	float[] vertices;
+	public static final float WATERLEVEL = SIZE / 7;
+	public static final float BEACHSIZE = SIZE / 16;
+	public static final float TREELINE = SIZE / 3;
 
+	public static final int SEAWEED_PROBABILITY = 100; //p=1/x
+	public static final int TREE_PROBABILITY = 100; //p=1/x
+
+	Perlin noise;
+	float[] vertices;
+	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
+	ArrayList<Vector3f> treeland = new ArrayList<Vector3f>();
+	ArrayList<Vector3f> waterland = new ArrayList<Vector3f>();
+	ArrayList<GameObject> foliage = new ArrayList<GameObject>();
 	public int chunkX;
 	public int chunkY;
 
-	private ArrayList<Vector3f> mxp;
-	private ArrayList<Vector3f> mxn;
-	private ArrayList<Vector3f> myp;
-	private ArrayList<Vector3f> myn;
-
-	public boolean isGL = false;
-
 	public Chunk(Perlin noise, int x, int y) {
-		super("none", "none");
+		super("none", "none", true);
 		this.noise = noise;
 		this.chunkX = x;
 		this.chunkY = y;
+
+		genTerrain();
+		genFoliage();
+		isGL = false;
+		shader = graphics.ShaderManager.landShader;
+	}
+
+	public void genFoliage() {
+		for (int i = 0; i < treeland.size(); i++) {
+			Vector3f pos = treeland.get(i);
+			GameObject f = Foliage.makeTree(pos);
+			f.material.colour = new Vector3f(0.10f, 0.50f, 0.10f);
+			foliage.add(f);
+		}
+		for (int i = 0; i < waterland.size(); i++) {
+			Vector3f pos = waterland.get(i);
+			GameObject f = Foliage.makeSeaweed(pos);
+			f.material.colour = new Vector3f(0.06f, 0.25f, 0.06f);
+			foliage.add(f);
+		}
+
+	}
+
+	public void genTerrain() {
 		// Generating points is 1/4
 		ArrayList<Vector3f> points = new ArrayList<Vector3f>();
 		PoissonGenerator fish = new PoissonGenerator();
 		fish.generate();
 
 		for (int i = 0; i < fish.points.size(); i++) {
-			float fishX = fish.points.get(i)[0] / 500f - 1;
-			float fishY = fish.points.get(i)[1] / 500f - 1;
+			float fishX = (float) (fish.points.get(i)[0] / 5000f - 1);
+			float fishY = (float) (fish.points.get(i)[1] / 5000f - 1);
 			points.add(new Vector3f(fishX, fishY, 0));
 		}
 
-		// what needs to happen is mirror also takes points from the nearblocks
 		Mirror mirror = new Mirror(points);
-		myn = mirror.getSide("yn");
-		mxn = mirror.getSide("xn");
-		myp = mirror.getSide("yp");
-		mxp = mirror.getSide("xp");
 		mirror.acc();
 		points = mirror.points();
 
@@ -85,11 +101,22 @@ public class Chunk extends GameObject {
 					b *= 0.6f;
 					r *= 0.1f;
 					g *= 0.2f;
+					if (graphics.Window.worldRandom.nextInt(SEAWEED_PROBABILITY) == 1 && !(waterland.contains(point))) {
+						waterland.add(point);
+					}
+				}
+				if (pZ > WATERLEVEL && pZ < WATERLEVEL + BEACHSIZE) {
+					b *= 0.5f;
+					r *= 1.7f;
+					g *= 1.2f;
 				}
 				if (pZ > TREELINE) {
 					b *= 0.5f;
 					r *= 1.4f;
 					g *= 1.1f;
+					if (graphics.Window.worldRandom.nextInt(TREE_PROBABILITY) == 1 && !(treeland.contains(point))) {
+						treeland.add(point);
+					}
 				}
 
 				//cZ = pZ;
@@ -100,7 +127,7 @@ public class Chunk extends GameObject {
 				*/
 				vertices[c++] = point.x;
 				vertices[c++] = point.y;
-				vertices[c++] = pZ;
+				vertices[c++] = pZ; //the z cordinate 
 
 				vertices[c++] = r;
 				vertices[c++] = g;
@@ -111,9 +138,6 @@ public class Chunk extends GameObject {
 				vertices[c++] = terrain.get(i).getNormal().z;
 			}
 		}
-
-		isGL = false;
-		shader = graphics.ShaderManager.landShader;
 	}
 
 	public void makeGL() {

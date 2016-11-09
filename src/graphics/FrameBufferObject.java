@@ -58,8 +58,8 @@ public class FrameBufferObject {
 
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthBufferID);
 
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
-			System.out.println("HOORAY");
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+			System.err.println("fbo error");
 		}
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);

@@ -66,6 +66,7 @@ public class Window implements Runnable {
 	private static int windowWidth;
 	private static int windowHeight;
 
+	@SuppressWarnings("unused")
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
 
@@ -92,7 +93,6 @@ public class Window implements Runnable {
 
 	public static void main(String args[]) {
 		Window game = new Window();
-		chunkLoader = new ChunkLoader();
 		game.run();
 	}
 
@@ -147,6 +147,7 @@ public class Window implements Runnable {
 
 		water = new Water();
 
+		chunkLoader = new ChunkLoader();
 		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();
 
@@ -227,7 +228,7 @@ public class Window implements Runnable {
 		glEnable(GL_DEPTH_TEST);
 		world.render(refractionClipPlane);
 		objectManager.render(refractionClipPlane);
-		
+
 		//render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 		glViewport(0, 0, windowWidth, windowHeight);

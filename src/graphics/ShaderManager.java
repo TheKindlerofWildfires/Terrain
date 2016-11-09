@@ -1,10 +1,19 @@
 package graphics;
 
+import static graphics.Shader.makeShader;
+import static graphics.Shader.setDirectionalLight;
+import static graphics.Shader.setFog;
+import static graphics.Shader.setMaterial;
+import static graphics.Shader.setPointLight;
+import static graphics.Shader.setUniform1f;
+import static graphics.Shader.setUniform1i;
+import static graphics.Shader.setUniform3f;
+import static graphics.Shader.setUniformMatrix4f;
+import static graphics.Shader.start;
+import static graphics.Shader.stop;
+
 import maths.Vector3f;
 import maths.Vector4f;
-import static graphics.Shader.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
 
 public class ShaderManager {
 

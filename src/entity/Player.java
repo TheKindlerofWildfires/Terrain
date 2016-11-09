@@ -10,7 +10,6 @@ import graphics.Camera;
 import graphics.GraphicsManager;
 import input.KeyboardInput;
 import maths.Vector3f;
-import object.ObjectManager;
 
 public class Player {
 	Vector3f target = new Vector3f();

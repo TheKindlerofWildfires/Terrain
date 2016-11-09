@@ -35,6 +35,7 @@ public class Texture {
 	ByteBuffer buf;
 
 	public Texture(String path) {
+		System.out.println("Loading texture at " + path);
 		InputStream in = null;
 		try {
 			in = new FileInputStream(path);

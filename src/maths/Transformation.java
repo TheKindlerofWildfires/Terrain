@@ -35,6 +35,7 @@ public class Transformation {
 	public void placeAt(float x, float y, float z) {
 		translation = Matrix4f.translate(x, y, z);
 		matrix = translation.multiply(rotation).multiply(scale);
+		matrix = Matrix4f.translate(x, y, z);
 	}
 
 	public Matrix4f getMatrix() {

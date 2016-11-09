@@ -11,9 +11,9 @@ public class Mirror {
 	private ArrayList<Vector3f> mxn = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> myp = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> myn = new ArrayList<Vector3f>();
-	float specificity = 0.6f;
-	static int spec = 960; 
-	static int iterator = 125;
+	//float specificity = 0.6f;
+	static int spec = PoissonGenerator.width-500; 
+	static int iterator = 1250;
 	Random rng = Window.mathRandom;
 	public Mirror(ArrayList<Vector3f> points) {
 		this.points = points;
@@ -30,14 +30,14 @@ public class Mirror {
 	 * @return
 	 */
 	public ArrayList<int[]> fish() {
+		
 		ArrayList<int[]> fish = new ArrayList<int[]>();
-		for (int i = 0; i <= 1000; i += iterator) {
+		for (int i = 0; i <= PoissonGenerator.width; i += iterator) {
 			fish.add(new int[] { i, 1 });
 			fish.add(new int[] { 1, i });
 			fish.add(new int[] { i, -1 });
 			fish.add(new int[] { -1, i });
 		}
-
 		return fish;
 	}
 

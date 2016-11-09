@@ -7,14 +7,13 @@ import java.util.ArrayList;
 public class PoissonGenerator {
 	public ArrayList<int[]> points = new ArrayList<int[]>();
 	public int POINTS_PER_ITER = 20;
-	public int width = 1000;
-	public int height = 1000;
-	public int remainingPoints = 250;
+	public static int width = 10000;
+	public int remainingPoints = 200;
 	int freq = 0;
-	public ArrayList<Vector3f> xp = new ArrayList<Vector3f>();
-	public ArrayList<Vector3f> xn = new ArrayList<Vector3f>();
-	public ArrayList<Vector3f> yp = new ArrayList<Vector3f>();
-	public ArrayList<Vector3f> yn = new ArrayList<Vector3f>();
+	//public ArrayList<Vector3f> xp = new ArrayList<Vector3f>();
+	//public ArrayList<Vector3f> xn = new ArrayList<Vector3f>();
+	//public ArrayList<Vector3f> yp = new ArrayList<Vector3f>();
+	//public ArrayList<Vector3f> yn = new ArrayList<Vector3f>();
 
 	public PoissonGenerator() {
 	}
@@ -27,7 +26,7 @@ public class PoissonGenerator {
 		ArrayList<int[]> pts = new ArrayList<int[]>();
 		for (int i = 0; i < POINTS_PER_ITER; i++) {
 			int x = Window.mathRandom.nextInt(width);
-			int y = Window.mathRandom.nextInt(height);
+			int y = Window.mathRandom.nextInt(width);
 			pts.add(new int[] { x, y });
 		}
 
@@ -52,8 +51,8 @@ public class PoissonGenerator {
 	 */
 	private boolean check(int[] bestPoint) {
 		if (bestPoint[0] > Mirror.spec || bestPoint[1] > Mirror.spec
-				|| bestPoint[0] < 1000 - Mirror.spec
-				|| bestPoint[1] < 1000 - Mirror.spec) {
+				|| bestPoint[0] < width - Mirror.spec
+				|| bestPoint[1] < width - Mirror.spec) {
 			return false;
 		} else {
 			return true;
@@ -66,7 +65,7 @@ public class PoissonGenerator {
 	 * 
 	 * @param point
 	 *            The point in question
-	 * @return The distance fromt the nearest point
+	 * @return The distance from the nearest point
 	 */
 	public double getDistFromOthers(int[] point) {
 		double minDist = Double.MAX_VALUE;
@@ -80,7 +79,7 @@ public class PoissonGenerator {
 	}
 
 	/**
-	 * This makes a 100 by 100 grid of Poisson points
+	 * This makes a width by width grid of Poisson points
 	 */
 	public void generate() {
 		Mirror m = new Mirror();
@@ -89,6 +88,7 @@ public class PoissonGenerator {
 			iterate();
 			remainingPoints--;
 		}
+		
 	}
 	public double distance(int[] p1, int[] p2) {
 		int dx = p2[0] - p1[0];

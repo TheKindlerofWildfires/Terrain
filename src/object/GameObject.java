@@ -13,22 +13,26 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
+import java.io.IOException;
+
 import graphics.Material;
 import graphics.Texture;
-import graphics.VertexArrayObject;
 import maths.BoundingBox;
 import maths.Transformation;
 import maths.Vector3f;
 import maths.Vector4f;
-import md5.MD5Loader;
+import models.ModelManager;
+import models.VertexArrayObject;
 
 public class GameObject {
 	private static final Vector3f GRAVITY = new Vector3f(0, 0, 0);
 	private Vector3f fakeFriction = new Vector3f();
 	protected Texture texture;
 	protected VertexArrayObject vao;
-	protected Material material;
+	protected float[] vaoData;
+	public Material material;
 	protected Transformation model;
+	public boolean isGL;
 
 	protected boolean textured;
 	protected boolean hasMaterial = true;
@@ -40,6 +44,7 @@ public class GameObject {
 	public Vector3f acceleration = new Vector3f();
 	public Vector3f force = new Vector3f();
 	public BoundingBox boundingBox;
+	public boolean enabled = true;
 
 	/**
 	 * Creates a new object with the model and texture given
@@ -48,36 +53,36 @@ public class GameObject {
 	 * @param texturePath path to texture
 	 * @param box Bounding Box
 	 */
-	public GameObject(String modelPath, String texturePath) {
+	public GameObject(String modelPath, String texturePath, boolean isGL) {
+		this.isGL = isGL;
 		if (modelPath != "none") {
-			try {
-				if (modelPath.endsWith(".obj")) {
-					vao = OBJLoader.loadMesh(modelPath);
-					boundingBox = OBJLoader.loadBox(modelPath);
-				} else if (modelPath.endsWith(".md5mesh")) {
-					vao = MD5Loader.loadMesh(modelPath, 0);
-					boundingBox = new BoundingBox(new Vector3f(0, 0, 0), 1, 1, 1);
-				} else {
-					throw new Exception("invalid filetype");
+			boundingBox = new BoundingBox(new Vector3f(0, 0, 0), 1, 1, 1);
+			if (isGL) {
+				try {
+					vao = ModelManager.loadGlModel(modelPath).vao;
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			} else {
+				try {
+					vaoData = ModelManager.loadModel(modelPath).vaoData;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		material = new Material();
-		if (texturePath != "none") {
+		if (texturePath != "none" && isGL) {
 			texture = new Texture(texturePath);
-			System.out.println(texturePath);
 			textured = true;
 		} else {
 			textured = false;
 		}
 		model = new Transformation();
 		shader = graphics.ShaderManager.objectShader;
-		material.colour = new Vector3f(1, 1, 1);
+		material.colour = new Vector3f(1f, 1f, 1f);
 		material.reflectance = 1;
 		material.useColour = 1;
-
 	}
 
 	public void scale(float x, float y, float z) {
@@ -122,21 +127,12 @@ public class GameObject {
 	}
 
 	public void physic() {
-		fakeFriction = velocity.negate().scale(0.01f);
-		acceleration = force.scale(1 / mass).add(GRAVITY);
-		velocity = velocity.add(acceleration).add(fakeFriction);
-		position = boundingBox.centre;
-
-		/* for all objects:
-		calculate acceleration from mass and force
-		calculate velocity from mass,current velocity, acceleration and gravity
-		apply relevant frictions 
-		move them by their velocity
-		check bounding box
-		
-		
-		*/
-
+		if (enabled) {
+			fakeFriction = velocity.negate().scale(0.01f);
+			acceleration = force.scale(1 / mass).add(GRAVITY);
+			velocity = velocity.add(acceleration).add(fakeFriction);
+			position = boundingBox.centre;
+		}
 	}
 
 	public void setForce(Vector3f force) {
@@ -164,5 +160,11 @@ public class GameObject {
 			glBindTexture(GL_TEXTURE_2D, texture.getId());
 		}
 		setUniform4f("clipPlane", clipPlane);
+	}
+
+	public void makeGL() {
+		assert !isGL : "its already gl you dumb fuck";
+		vao = new VertexArrayObject(vaoData, 3);
+		this.isGL = true;
 	}
 }

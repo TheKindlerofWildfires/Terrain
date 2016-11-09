@@ -4,15 +4,11 @@ import static graphics.Shader.setMaterial;
 import static graphics.Shader.setUniform3f;
 import static graphics.Shader.setUniform4f;
 import static graphics.Shader.setUniformMatrix4f;
-import static graphics.Shader.start;
-import static graphics.Shader.stop;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
+
 import maths.Matrix4f;
 import maths.Transformation;
 import maths.Vector3f;
@@ -22,11 +18,11 @@ import object.GameObject;
 public class Skybox extends GameObject {
 
 	public Skybox(String obj, String texture) {
-		super(obj, texture);
+		super(obj, texture, true);
 		shader = graphics.ShaderManager.objectShader;
 		this.material.useColour = 0;
 		this.model = new Transformation();
-		this.scale(15, 15, 15);
+		this.scale(25, 25, 25);
 	}
 
 	protected void renderPrep(Vector4f clipPlane) {

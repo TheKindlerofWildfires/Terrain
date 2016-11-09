@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /object/
 /physics/
 /models/
@@ -7,3 +8,13 @@
 /maths/
 /md5/
 /world/
+=======
+/maths/
+/world/
+/graphics/
+/models/
+/entity/
+/md5/
+/object/
+/shaders/
+>>>>>>> treeheehee

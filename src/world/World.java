@@ -1,23 +1,28 @@
 package world;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import graphics.GraphicsManager;
 import graphics.Window;
 import maths.Triangle;
 import maths.Vector2i;
 import maths.Vector3f;
 import maths.Vector4f;
 import noiseLibrary.module.source.Perlin;
+import object.GameObject;
 
 public class World {
 	public static Perlin noise;
 	public static int perlinSeed;
-	public static final int LOAD_DIST = 2;
+	public static final int LOAD_DIST = 5;
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
+	public static ArrayList<Vector3f> treePositions = new ArrayList<Vector3f>();
+	public static ArrayList<Vector3f> seiweedsPositions = new ArrayList<Vector3f>();
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 
@@ -44,8 +49,8 @@ public class World {
 	}
 
 	public void update() {
-		float cameraX = graphics.GraphicsManager.camera.pos.x;
-		float cameraY = graphics.GraphicsManager.camera.pos.y;
+		float cameraX = GraphicsManager.camera.pos.x;
+		float cameraY = GraphicsManager.camera.pos.y;
 
 		int chunkX = Math.round(cameraX / 2 / Chunk.SIZE);
 		int chunkY = Math.round(cameraY / 2 / Chunk.SIZE);
@@ -65,6 +70,10 @@ public class World {
 				Window.chunkLoader.lock.notify();
 			}
 		}
+		chunks.removeIf(c -> c.chunkX > chunkX + LOAD_DIST || c.chunkX < chunkX - LOAD_DIST
+				|| c.chunkY > chunkY + LOAD_DIST || c.chunkY < chunkY - LOAD_DIST);
+		loadedChunks.removeIf(v -> v.x > chunkX + LOAD_DIST || v.x < chunkX - LOAD_DIST || v.y > chunkY + LOAD_DIST
+				|| v.y < chunkY - LOAD_DIST);
 	}
 
 	/**
@@ -72,6 +81,7 @@ public class World {
 	 */
 	public void render(Vector4f clipPlane) {
 		chunks.stream().forEach(c -> c.render(clipPlane));
+		//foliage.stream().forEach(f -> f.render(clipPlane));
 	}
 
 	public void addChunk(Chunk c) {
@@ -79,6 +89,7 @@ public class World {
 			c.makeGL();
 		}
 		chunks.add(c);
+		c.foliage.stream().forEach(f -> f.makeGL());
 	}
 
 	private static Chunk getChunk(Vector3f position) {
