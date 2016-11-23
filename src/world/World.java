@@ -1,19 +1,21 @@
 package world;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 
 import graphics.GraphicsManager;
 import graphics.Window;
-import maths.Triangle;
 import maths.Vector2i;
 import maths.Vector3f;
 import maths.Vector4f;
+import models.ModelManager;
+import models.VertexArrayObject;
 import noiseLibrary.module.source.Perlin;
-import object.GameObject;
 
 public class World {
 	public static Perlin noise;
@@ -22,20 +24,47 @@ public class World {
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 	public static ArrayList<Vector3f> treePositions = new ArrayList<Vector3f>();
-	public static ArrayList<Vector3f> seiweedsPositions = new ArrayList<Vector3f>();
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
+
+	private VertexArrayObject tree;
 
 	/**
 	 * Building better worlds
 	 * 		tl;Dr: Uses poisson disk, delauny and perlin noise to great a cool map
 	 */
 	public World() {
-		noise = new Perlin();
-		noise.setFrequency(0.02);
-		noise.setLacunarity(2);
-		noise.setOctaveCount(10);
+		loadProperties();
 		noise.setSeed(perlinSeed);
+		try {
+			tree = ModelManager.loadGlModel("resources/models/tree.obj").vao;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void loadProperties() {
+		Properties props = new Properties();
+		try {
+			FileReader reader = new FileReader("resources/properties/world.properties");
+			props.load(reader);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		noise = new Perlin();
+		noise.setFrequency(Float.parseFloat(props.getProperty("perlinFrequency")));
+		noise.setLacunarity(Float.parseFloat(props.getProperty("perlinLacunarity")));
+		noise.setOctaveCount(Integer.parseInt(props.getProperty("perlinOctaveCount")));
+
+		Chunk.SIZE = Float.parseFloat(props.getProperty("chunkSize"));
+
+		Chunk.WATERLEVEL = Chunk.SIZE / Float.parseFloat(props.getProperty("waterlevelDivisor"));
+		Chunk.BEACHSIZE = Chunk.SIZE / Float.parseFloat(props.getProperty("beachSizeDivisor"));
+		Chunk.TREELINE = Chunk.SIZE / Float.parseFloat(props.getProperty("treelineDivisor"));
+
+		Chunk.SEAWEED_PROBABILITY = Integer.parseInt(props.getProperty("seeweedProbability"));
+		Chunk.TREE_PROBABILITY = Integer.parseInt(props.getProperty("treeProbability"));
 	}
 
 	public boolean setContains(Set<?> set, Object o) {
@@ -79,9 +108,12 @@ public class World {
 	/**
 	 * Going to assume this drawls
 	 */
-	public void render(Vector4f clipPlane) {
+	public void renderLand(Vector4f clipPlane) {
 		chunks.stream().forEach(c -> c.render(clipPlane));
-		//foliage.stream().forEach(f -> f.render(clipPlane));
+	}
+
+	public void renderTrees(Vector4f clipPlane) {
+
 	}
 
 	public void addChunk(Chunk c) {
@@ -90,38 +122,5 @@ public class World {
 		}
 		chunks.add(c);
 		c.foliage.stream().forEach(f -> f.makeGL());
-	}
-
-	private static Chunk getChunk(Vector3f position) {
-		int chunkX = Math.round(position.x / 2 / Chunk.SIZE);
-		int chunkY = Math.round(position.y / 2 / Chunk.SIZE);
-		for (Chunk chunk : chunks) {
-			if (chunkX == chunk.chunkX && chunkY == chunk.chunkY) {
-				return chunk;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * finds triangle nearest position
-	 * @param position the position we are looking at
-	 * @return nearest triangle
-	 */
-	public static Triangle getTerrainTriangle(Vector3f position) {
-		Chunk chunk = getChunk(position);
-		float minDist = 100;
-		Triangle closestTri = chunk.terrain.get(0);
-		for (Triangle tri : chunk.terrain) {
-			float dist = position.subtract(
-					tri.getCircumcenter().add(new Vector3f(2f * chunk.chunkX, 2f * chunk.chunkY, 0)).scale(Chunk.SIZE))
-					.length();
-			if (dist < minDist) {
-				minDist = dist;
-				closestTri = tri;
-			}
-		}
-		System.out.println(minDist);
-		return closestTri;
 	}
 }

@@ -36,7 +36,10 @@ import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.IntBuffer;
+import java.util.Properties;
 import java.util.Random;
 
 import org.lwjgl.BufferUtils;
@@ -55,10 +58,16 @@ import world.Water;
 import world.World;
 
 public class Window implements Runnable {
-	public static final int REFLECTION_WIDTH = 1920;
-	public static final int REFLECTION_HEIGHT = 1080;
-	public static final int REFRACTION_WIDTH = 1928;
-	public static final int REFRACTION_HEIGHT = 1080;
+	private static int REFLECTION_WIDTH = 1920;
+	private static int REFLECTION_HEIGHT = 1080;
+
+	private static int REFRACTION_WIDTH = 1920;
+	private static int REFRACTION_HEIGHT = 1080;
+
+	private static int WINDOW_WIDTH;
+	private static int WINDOW_HEIGHT;
+
+	private Vector3f CLEAR_COLOUR;
 
 	public boolean running = true;
 
@@ -96,10 +105,32 @@ public class Window implements Runnable {
 		game.run();
 	}
 
+	private void loadProperties() {
+		Properties props = new Properties();
+		try {
+			FileReader reader = new FileReader("resources/properties/window.properties");
+			props.load(reader);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		REFLECTION_WIDTH = Integer.parseInt(props.getProperty("reflectionWidth"));
+		REFLECTION_HEIGHT = Integer.parseInt(props.getProperty("reflectionHeight"));
+
+		REFRACTION_WIDTH = Integer.parseInt(props.getProperty("refractionWidth"));
+		REFRACTION_HEIGHT = Integer.parseInt(props.getProperty("refractionHeight"));
+
+		WINDOW_WIDTH = Integer.parseInt(props.getProperty("windowWidth"));
+		WINDOW_HEIGHT = Integer.parseInt(props.getProperty("windowHeight"));
+
+		CLEAR_COLOUR = Vector3f.parseVector(props.getProperty("clearColour"));
+	}
+
 	/**
 	 * Code called at the start of the gameloop
 	 */
 	public void init() {
+		loadProperties();
 		randomize();
 		// Initialize glfw
 		if (!glfwInit()) {
@@ -113,7 +144,7 @@ public class Window implements Runnable {
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		// create window
-		window = glfwCreateWindow(1920, 1080, "WaterGame", NULL, NULL);
+		window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "WaterGame", NULL, NULL);
 		if (window == NULL) {
 			System.err.println("Could not create window");
 		}
@@ -129,7 +160,7 @@ public class Window implements Runnable {
 		// init gl
 		GL.createCapabilities();
 		// background colour
-		glClearColor(75 / 255f, 10 / 255f, 130 / 255f, 1.0f);
+		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		// enable depth testing and face culling
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CLIP_DISTANCE0);
@@ -140,8 +171,9 @@ public class Window implements Runnable {
 		windowWidth = width.get(0);
 		windowHeight = height.get(0);
 		// Create GraphicsManager and World
-		graphicsManager = new GraphicsManager();
 		world = new World();
+
+		graphicsManager = new GraphicsManager();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
 
@@ -171,20 +203,15 @@ public class Window implements Runnable {
 
 	}
 
-	float speed = .001f;
-	Vector3f vel = new Vector3f();
-
 	/**
 	 * The start of the update call
 	 */
 	public void update() {
 		glfwPollEvents();
 		graphicsManager.update();
-
 		world.update();
 		objectManager.update();
 		entityManager.update();
-
 	}
 
 	/**
@@ -211,11 +238,12 @@ public class Window implements Runnable {
 
 		//bind reflection buffer and render to it
 		reflection.activate();
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
-		world.render(reflectionClipPlane);
+		world.renderLand(reflectionClipPlane);
 		objectManager.render(reflectionClipPlane);
+		entityManager.render(reflectionClipPlane);
 
 		//	move camera back and render refraction texture
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
@@ -223,20 +251,29 @@ public class Window implements Runnable {
 
 		//bind refraction buffer and render to it
 		refraction.activate();
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
-		world.render(refractionClipPlane);
+		world.renderLand(refractionClipPlane);
 		objectManager.render(refractionClipPlane);
+		entityManager.render(refractionClipPlane);
 
 		//render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 		glViewport(0, 0, windowWidth, windowHeight);
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		world.render(renderClipPlane);
+		world.renderLand(renderClipPlane);
 		objectManager.render(renderClipPlane);
 		water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
+		entityManager.render(renderClipPlane);
+	}
+
+	public void testRender() {
+		glfwSwapBuffers(window);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		objectManager.render(renderClipPlane);
+		world.renderLand(renderClipPlane);
 	}
 
 	/**
@@ -245,6 +282,7 @@ public class Window implements Runnable {
 	@Override
 	public void run() {
 		init();
+		//	GraphicsManager.toggleFog();
 		long lastTime = System.nanoTime();
 		double delta = 0.0;
 		double ns = 1000000000.0 / 60.0;
@@ -252,8 +290,8 @@ public class Window implements Runnable {
 		int updates = 0;
 		int frames = 0;
 		while (running) {
-			deltaX = MouseInput.pos()[0] - 1920 / 2;
-			deltaY = MouseInput.pos()[1] - 1080 / 2;
+			deltaX = MouseInput.pos()[0] - WINDOW_WIDTH / 2;
+			deltaY = MouseInput.pos()[1] - WINDOW_HEIGHT / 2;
 			glfwSetCursorPos(window, 1920 / 2, 1080 / 2);
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -263,6 +301,7 @@ public class Window implements Runnable {
 				updates++;
 				delta--;
 			}
+			//testRender();
 			render();
 			frames++;
 			if (System.currentTimeMillis() - timer > 1000) {

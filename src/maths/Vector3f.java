@@ -174,15 +174,27 @@ public class Vector3f {
 		return this.scale(1f - alpha).add(other.scale(alpha));
 	}
 
-	public static Vector3f midpoint(Vector3f a, Vector3f b) {
-		return new Vector3f((a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2);
-	}
-
 	public String toString() {
 		return x + "," + y + "," + z;
 	}
 
+	/**
+	 * @return length of this vector squared
+	 */
 	public float length2() {
 		return (float) Math.pow(this.length(), 2);
+	}
+
+	public static Vector3f parseVector(String input) {
+		String[] data = input.split(",");
+		if (data.length >= 3) {
+			return new Vector3f(Float.parseFloat(data[0]), Float.parseFloat(data[1]), Float.parseFloat(data[2]));
+		} else if (data.length == 2) {
+			return new Vector3f(Float.parseFloat(data[0]), Float.parseFloat(data[1]), 0);
+		} else if (data.length == 1) {
+			return new Vector3f(Float.parseFloat(data[0]), 0, 0);
+		} else {
+			return new Vector3f(0, 0, 0);
+		}
 	}
 }

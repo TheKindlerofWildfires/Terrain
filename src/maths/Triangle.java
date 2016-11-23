@@ -8,11 +8,17 @@ public class Triangle {
 	private Vector3f normal;
 
 	public Triangle(Vector3f... pts) {
-		if (pts.length != 3) {
+		if (pts.length != 3 && pts.length != 0) {
 			System.err.println("Triangles need 3 points!");
 			System.exit(-1);
 		}
-		points = pts;
+		if(pts.length==3){
+			points = pts;
+		} else{
+			points[0] = new Vector3f(0,0,0);
+			points[1] = new Vector3f(0,1,0);
+			points[2] = new Vector3f(1,0,0);
+		}
 		calculateCircumcircle();
 	}
 

@@ -4,17 +4,37 @@ in vec4 clipSpace;
 in vec2 texCoord;
 in vec3 toCamera;
 in vec3 norm;
+in vec3 mvVertexPos;
 
 out	vec4 fragColor;
+
+struct Fog
+{
+    int activeFog;
+    vec3 colour;
+    float density;
+    float exponent;
+};
 
 uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
 uniform sampler2D dudvMap;
 uniform sampler2D normalMap;
+uniform Fog fog;
 
 uniform float moveFactor;
 
 const float waveStrength = 0.02;
+
+vec4 calcFog(vec3 pos, vec4 colour, Fog fog)
+{
+    float distance = length(pos);
+    float fogFactor = 1.0 / exp( pow((distance * fog.density),fog.exponent));
+    fogFactor = clamp( fogFactor, 0.0, 1.0 );
+
+    vec3 resultColour = mix(fog.colour, colour.xyz, fogFactor);
+    return vec4(resultColour.xyz, 1);
+}
 
 void main(){
 	vec2 ndc = (clipSpace.xy/clipSpace.w)/2 + .5;
@@ -45,6 +65,9 @@ void main(){
 	
 	fragColor = mix(reflectColour,refractColour,refractiveFactor);
 	fragColor = mix(fragColor,vec4(0,0.3,.5,1),.1);
-	//fragColor = vec4(totalDistortion,0,1);
+
+	if ( fog.activeFog == 1 ){ 
+		fragColor = calcFog(mvVertexPos, fragColor, fog);
+	}
 } 
 

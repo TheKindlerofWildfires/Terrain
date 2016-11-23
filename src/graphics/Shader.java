@@ -125,5 +125,6 @@ public abstract class Shader {
 		setUniform3f(uniformName + ".colour", fog.colour);
 		setUniform1f(uniformName + ".density", fog.density);
 		setUniform1i(uniformName + ".activeFog", fog.active);
+		setUniform1f(uniformName + ".exponent", fog.exponent);
 	}
 }

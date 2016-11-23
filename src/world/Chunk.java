@@ -13,14 +13,14 @@ import object.GameObject;
 
 public class Chunk extends GameObject {
 
-	public static final float SIZE = 9;
+	public static float SIZE;
 
-	public static final float WATERLEVEL = SIZE / 7;
-	public static final float BEACHSIZE = SIZE / 16;
-	public static final float TREELINE = SIZE / 3;
+	public static float WATERLEVEL;
+	public static float BEACHSIZE;
+	public static float TREELINE;
 
-	public static final int SEAWEED_PROBABILITY = 100; //p=1/x
-	public static final int TREE_PROBABILITY = 100; //p=1/x
+	public static int SEAWEED_PROBABILITY;
+	public static int TREE_PROBABILITY;
 
 	Perlin noise;
 	float[] vertices;

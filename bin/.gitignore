@@ -1,20 +1,6 @@
-<<<<<<< HEAD
-/object/
-/physics/
-/models/
-/shaders/
-/entity/
 /graphics/
 /maths/
-/md5/
 /world/
-=======
-/maths/
-/world/
-/graphics/
-/models/
 /entity/
-/md5/
-/object/
 /shaders/
->>>>>>> treeheehee
+/object/

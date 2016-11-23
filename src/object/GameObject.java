@@ -97,6 +97,8 @@ public class GameObject {
 		boundingBox.centre.x += x;
 		boundingBox.centre.y += y;
 		boundingBox.centre.z += z;
+		position = position.add(new Vector3f(x,y,z));
+		
 	}
 
 	public void rotate(int angle, int x, int y, int z) throws IllegalArgumentException {
