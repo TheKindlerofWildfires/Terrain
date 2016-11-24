@@ -1,16 +1,11 @@
 package graphics;
 
-import static graphics.Shader.makeShader;
-import static graphics.Shader.setDirectionalLight;
 import static graphics.Shader.setFog;
-import static graphics.Shader.setMaterial;
-import static graphics.Shader.setPointLight;
-import static graphics.Shader.setUniform1f;
-import static graphics.Shader.setUniform1i;
 import static graphics.Shader.setUniform3f;
 import static graphics.Shader.setUniformMatrix4f;
 import static graphics.Shader.start;
 import static graphics.Shader.stop;
+import static graphics.Shader.*;
 
 import maths.Vector3f;
 import maths.Vector4f;
@@ -24,40 +19,7 @@ public class ShaderManager {
 	public static int waterShader;
 	//public static int skyboxShader;
 
-	static Attenuation atten;
-	static PointLight light;
-	static Material matt;
-	static DirectionalLight dirLight;
-	static Fog fog;
-	static float lightAngle = 45;
-	static float fogExponent = 4;
-
-	public static void init() {
-		atten = new Attenuation();
-		light = new PointLight();
-		dirLight = new DirectionalLight();
-		atten.constant = 0f;
-		atten.exponent = .1f;
-		atten.linear = .1f;
-		light.att = atten;
-		light.colour = new Vector3f(1, 1, 1);
-		light.intensity = 1f;
-		light.position = new Vector3f(0, 0, 5);
-		dirLight.colour = new Vector3f(1, 1, 1);
-		dirLight.direction = new Vector3f(-10, 0, 5);
-		dirLight.intensity = .8f;
-
-		matt = new Material();
-		matt.colour = new Vector3f(.5f, 1, .4f);
-		matt.useColour = 1;
-		matt.reflectance = .05f;
-
-		fog = new Fog();
-		fog.active = 1;
-		fog.density = .001f; //.018f
-		//fog.colour = new Vector3f(0, (float) Math.random(), (float) Math.random());
-		fog.colour = new Vector3f(0.5f, 0.5f, 0.5f);
-
+	public static void init(DirectionalLight dirLight, Fog fog, Vector3f ambientLight) {
 		initialized = true;
 		landShader = makeShader("src/shaders/land.vert", "src/shaders/land.frag");
 		objectShader = makeShader("src/shaders/object.vert", "src/shaders/object.frag");
@@ -65,31 +27,30 @@ public class ShaderManager {
 		//skyboxShader = makeShader("src/shaders/skybox.vert", "src/shaders/skybox.frag");
 
 		start(objectShader);
-		setPointLight("pointLight", light);
-		setMaterial("material", matt);
 		setUniform1f("specularPower", 1);
-		setUniform3f("ambientLight", new Vector3f(.1f, .1f, .1f));
+		setUniform3f("ambientLight", ambientLight);
 		setFog("fog", fog);
-		setUniform1f("fogExponent", fogExponent);
+		setDirectionalLight("directionalLight", dirLight);
 
 		start(landShader);
-		setPointLight("pointLight", light);
 		setDirectionalLight("directionalLight", dirLight);
 		setUniform1f("specularPower", 1);
 		setUniform1f("material.reflectance", 0);
-		setUniform3f("ambientLight", new Vector3f(.3f, .3f, .3f));
+		setUniform3f("ambientLight", ambientLight);
 		setFog("fog", fog);
-		setUniform1f("fogExponent", fogExponent);
+		setDirectionalLight("directionalLight", dirLight);
 
 		start(waterShader);
 		setUniform1i("reflectionTexture", 0);
 		setUniform1i("refractionTexture", 1);
 		setUniform1i("dudvMap", 2);
 		setUniform1i("normalMap", 3);
+		setFog("fog", fog);
+		setUniform3f("ambientLight", ambientLight);
 		stop();
 	}
 
-	public static void setCamera(Camera camera) {
+	public static void setCamera(Camera camera, DirectionalLight dirLight) {
 		assert initialized : "Shaders must be initialized in order to work";
 
 		//fog.colour.x+=.002f;
@@ -100,41 +61,32 @@ public class ShaderManager {
 		start(landShader);
 		setUniformMatrix4f("projection", camera.projection);
 		setUniformMatrix4f("modelView", camera.view);
-		Vector4f pos = camera.view.multiply(new Vector4f(light.position.x, light.position.y, light.position.z, 1));
-		setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
 		Vector4f dir = camera.view
-				.multiply(new Vector4f(dirLight.direction.x, dirLight.direction.y, dirLight.direction.z, 0));
+				.multiply(new Vector4f(dirLight.direction.x, dirLight.direction.y, dirLight.direction.z, 0))
+				.normalize();
 		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
 		//setUniform3f("camera_pos", camera.pos);
-		setFog("fog", fog);
 
 		start(objectShader);
 		setUniformMatrix4f("projection", camera.projection);
-		setUniform3f("pointLight.position", new Vector3f(pos.x, pos.y, pos.z));
+		dir = camera.view.multiply(new Vector4f(dirLight.direction.x, dirLight.direction.y, dirLight.direction.z, 0))
+				.normalize();
+		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
 		//setUniform3f("camera_pos", camera.pos);
-		setFog("fog", fog);
 
 		start(waterShader);
 		setUniformMatrix4f("projection", camera.projection);
 		setUniform3f("cameraPos", camera.pos);
 		stop();
+	}
 
-		//lightAngle += .01f;
-		dirLight.direction.y = (float) Math.cos(lightAngle);
-		dirLight.direction.z = (float) Math.sin(lightAngle);
-		if (lightAngle >= 360) {
-			lightAngle = 0;
-		}
-		if (lightAngle >= 80 && lightAngle <= 280) {
-			float factor = 1 - (float) (Math.abs(lightAngle) - 80) / 10.0f;
-			dirLight.intensity = factor;
-			dirLight.colour.y = Math.max(factor, 0.9f);
-			dirLight.colour.z = Math.max(factor, 0.5f);
-		} else {
-			dirLight.intensity = 1;
-			dirLight.colour.x = 1;
-			dirLight.colour.y = 1;
-			dirLight.colour.z = 1;
-		}
+	public static void updateFog(Fog fog) {
+		start(objectShader);
+		setFog("fog", fog);
+		start(landShader);
+		setFog("fog", fog);
+		start(waterShader);
+		setFog("fog", fog);
+		stop();
 	}
 }

@@ -2,6 +2,7 @@ package object;
 
 import java.util.ArrayList;
 
+import maths.Vector3f;
 import maths.Vector4f;
 import world.Skybox;
 
@@ -20,9 +21,11 @@ public class ObjectManager {
 		 */
 
 		//target = new GameObject("resources/models/model.md5mesh", "resources/textures/wood.png",true);
-		ball = new GameObject("resources/models/torus.obj", "resources/textures/wood.png", true);
-		ball.scale(.25f, .25f, .25f);
+		ball = new GameObject("resources/models/box.obj", "resources/textures/wood.png", true);
+		ball.scale(4f, 4f, 4f);
 		ball.translate(5, 2, 10);
+		ball.material.colour = new Vector3f(0.2f, 0.1f, 0.6f);
+		ball.material.reflectance = 128;
 		//	target.translate(2, 2, 10);
 		//objectList.add(target);
 		objectList.add(ball);
@@ -65,6 +68,6 @@ public class ObjectManager {
 		}
 		//target.render(clipPlane);
 		//ball.render(clipPlane);
-		box.render(clipPlane);
+		//	box.render(clipPlane);
 	}
 }
