@@ -126,23 +126,15 @@ public class Chunk extends GameObject {
 		double moist = Math.abs(noise.getValue(centre.x, centre.y, 0.1));	
 		double temp = Math.abs(noise.getValue(point.x/4, point.y/4, 0.1));
 		//reminder to self, use actually xy values for deciding something, it might help
-		h = (float) ((elev*SIZE)+temp/2);
-		r = (float) (0.08f/(temp+elev+.1));
-		b = (float) (0.12f / (elev+moist+.1));
-		g = (float) (0.12f / (temp+moist+.1));
+		h = (float) ((elev*SIZE)+temp/2)+WATERLEVEL/2;
+		r = (float) (0.04f/(moist));
+		b = (float) (0.04f / (moist));
+		g = (float) (0.10f / (moist));
 		
 		
-		float bs = (int)(Math.cos(centre.x)+Math.cos(centre.y));
-		
-		if(bs == 0){
-			r =1;
-		}
-		if (bs == 1){
-			b=1;
-		}
-		if (bs == -1){
-			g=1;
-		}
+		float bs = Math.abs((int)((Math.sin(point.x/10)+Math.sin(point.y/10))));
+		//this is not quite right
+		h=h*bs;
 		if (h < WATERLEVEL) {
 			b *= 0.6f;
 			r *= 0.1f;
