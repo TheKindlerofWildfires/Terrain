@@ -36,12 +36,14 @@ public class Chunk extends GameObject {
 		this.noise = noise;
 		this.chunkX = x;
 		this.chunkY = y;
-
 		genTerrain();
 		genFoliage();
 		isGL = false;
 		shader = graphics.ShaderManager.landShader;
 	}
+
+		
+
 
 	public void genFoliage() {
 		for (int i = 0; i < treeland.size(); i++) {
@@ -60,7 +62,6 @@ public class Chunk extends GameObject {
 	}
 
 	public void genTerrain() {
-		// Generating points is 1/4
 		ArrayList<Vector3f> points = new ArrayList<Vector3f>();
 		PoissonGenerator fish = new PoissonGenerator();
 		fish.generate();
@@ -85,23 +86,28 @@ public class Chunk extends GameObject {
 					.scale(SIZE);
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
-				// each gen takes about 1/4 of build time
+				// pZ is the position Z, cZ is the color Z
+				//THIS WILL ALL BE NEEDING TO DO THE CHANGING
 				float pZ = (float) Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE / 2;
-				float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE / 2;
-				//	System.out.println(pZ);
+				//float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE / 2;
 				terrain.get(i).getPoint(j).z = pZ;
-
-				float g;
-				float r;
-				float b;
-				b = 0.5f / (cZ + 1);
-				g = 0.9f / (cZ + 1);
-				r = 0.5f / (cZ + 1);
+				float[] values = getValue(centre,point);
+				float r = values[0];
+				float b = values[1];
+				float g = values[2];
+				//b = 0.5f / (cZ + 1);
+				//g = 0.9f / (cZ + 1);
+				//r = 0.5f / (cZ + 1);
+				float pseudo = Math.abs(pZ-(int)pZ);//remainder
+				pseudo=(int)(pseudo*100);
+				pseudo=pseudo%100;
+				pZ = values[3];
+				/*
 				if (pZ < WATERLEVEL) {
 					b *= 0.6f;
 					r *= 0.1f;
 					g *= 0.2f;
-					if (graphics.Window.worldRandom.nextInt(SEAWEED_PROBABILITY) == 1 && !(waterland.contains(point))) {
+					if (pseudo == 1 && !(waterland.contains(point))) {
 						waterland.add(point);
 					}
 				}
@@ -109,21 +115,17 @@ public class Chunk extends GameObject {
 					b *= 0.5f;
 					r *= 1.7f;
 					g *= 1.2f;
+					
 				}
 				if (pZ > TREELINE) {
 					b *= 0.5f;
 					r *= 1.4f;
 					g *= 1.1f;
-					if (graphics.Window.worldRandom.nextInt(TREE_PROBABILITY) == 1 && !(treeland.contains(point))) {
+					if (pseudo == 1 && !(treeland.contains(point))) {
 						treeland.add(point);
 					}
-				}
 
-				//cZ = pZ;
-				/*
-				g = (float) (cZ - 5) * (-0.1f * cZ) - 0.0f;
-				b = (float) (cZ - 7) * (0.05f * cZ) + 0.5f;
-				r = (float) (cZ - 7) * (-0.26f * cZ) - 2.7f;
+				}
 				*/
 				vertices[c++] = point.x;
 				vertices[c++] = point.y;
@@ -139,6 +141,56 @@ public class Chunk extends GameObject {
 			}
 		}
 	}
+	/**
+	 * 
+	 * @param centre
+	 * @param point
+	 * @return red, blue, green, height
+	 */
+	private float[] getValue(Vector3f centre,Vector3f point) {
+		float r,b,g,h;
+		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1));		
+		double moist = Math.abs(noise.getValue(centre.x, centre.y, 0.1));	
+		double temp = Math.abs(noise.getValue(point.x/4, point.y/4, 0.1));
+		/*From these values (which will be scaled to fix) we will determine how to 
+		paint/elevate the chunk, which if I do this right will blend smoothish
+		*/
+		/*
+		 * Good: Blenty of biome variability
+		 * Bad: Low height variability, colors are wack, need to change perlin regs between uses
+		 */
+		h = (float) ((elev*SIZE)+temp/2);
+		r = (float) (0.08f/(temp+elev+.1));
+		b = (float) (0.12f / (elev+moist+.1));
+		g = (float) (0.12f / (temp+moist+.1));
+		
+		if (h < WATERLEVEL) {
+			b *= 0.6f;
+			r *= 0.1f;
+			g *= 0.2f;
+		}
+		if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
+			b *= 0.5f;
+			r *= 1.5f;
+			g *= 1.2f;		
+		}
+		if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
+			b *= 0.5f;
+			r *= 1.2f;
+			g *= 1.2f;		
+		}
+		if (h > TREELINE) {
+			b *= 0.7f;
+			r *= 1.7f;
+			g *= 1.7f;
+		}
+		
+		float[] returns = {r, b, g, h};
+		return returns;
+	}
+
+
+
 
 	public void makeGL() {
 		this.vao = new VertexArrayObject(vertices, 3);

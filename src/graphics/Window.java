@@ -245,7 +245,7 @@ public class Window implements Runnable {
 		objectManager.render(reflectionClipPlane);
 		entityManager.render(reflectionClipPlane);
 
-		//	move camera back and render refraction texture
+		//move camera back and render refraction texture
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
 
@@ -282,7 +282,7 @@ public class Window implements Runnable {
 	@Override
 	public void run() {
 		init();
-		//	GraphicsManager.toggleFog();
+		GraphicsManager.toggleFog();
 		long lastTime = System.nanoTime();
 		double delta = 0.0;
 		double ns = 1000000000.0 / 60.0;
