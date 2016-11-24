@@ -95,38 +95,10 @@ public class Chunk extends GameObject {
 				float r = values[0];
 				float b = values[1];
 				float g = values[2];
-				//b = 0.5f / (cZ + 1);
-				//g = 0.9f / (cZ + 1);
-				//r = 0.5f / (cZ + 1);
 				float pseudo = Math.abs(pZ-(int)pZ);//remainder
 				pseudo=(int)(pseudo*100);
 				pseudo=pseudo%100;
 				pZ = values[3];
-				/*
-				if (pZ < WATERLEVEL) {
-					b *= 0.6f;
-					r *= 0.1f;
-					g *= 0.2f;
-					if (pseudo == 1 && !(waterland.contains(point))) {
-						waterland.add(point);
-					}
-				}
-				if (pZ > WATERLEVEL && pZ < WATERLEVEL + BEACHSIZE) {
-					b *= 0.5f;
-					r *= 1.7f;
-					g *= 1.2f;
-					
-				}
-				if (pZ > TREELINE) {
-					b *= 0.5f;
-					r *= 1.4f;
-					g *= 1.1f;
-					if (pseudo == 1 && !(treeland.contains(point))) {
-						treeland.add(point);
-					}
-
-				}
-				*/
 				vertices[c++] = point.x;
 				vertices[c++] = point.y;
 				vertices[c++] = pZ; //the z cordinate 
@@ -149,21 +121,28 @@ public class Chunk extends GameObject {
 	 */
 	private float[] getValue(Vector3f centre,Vector3f point) {
 		float r,b,g,h;
+		
 		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1));		
 		double moist = Math.abs(noise.getValue(centre.x, centre.y, 0.1));	
 		double temp = Math.abs(noise.getValue(point.x/4, point.y/4, 0.1));
-		/*From these values (which will be scaled to fix) we will determine how to 
-		paint/elevate the chunk, which if I do this right will blend smoothish
-		*/
-		/*
-		 * Good: Blenty of biome variability
-		 * Bad: Low height variability, colors are wack, need to change perlin regs between uses
-		 */
+		//reminder to self, use actually xy values for deciding something, it might help
 		h = (float) ((elev*SIZE)+temp/2);
 		r = (float) (0.08f/(temp+elev+.1));
 		b = (float) (0.12f / (elev+moist+.1));
 		g = (float) (0.12f / (temp+moist+.1));
 		
+		
+		float bs = (int)(Math.cos(centre.x)+Math.cos(centre.y));
+		
+		if(bs == 0){
+			r =1;
+		}
+		if (bs == 1){
+			b=1;
+		}
+		if (bs == -1){
+			g=1;
+		}
 		if (h < WATERLEVEL) {
 			b *= 0.6f;
 			r *= 0.1f;
