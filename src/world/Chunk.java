@@ -42,9 +42,6 @@ public class Chunk extends GameObject {
 		shader = graphics.ShaderManager.landShader;
 	}
 
-		
-
-
 	public void genFoliage() {
 		for (int i = 0; i < treeland.size(); i++) {
 			Vector3f pos = treeland.get(i);
@@ -87,21 +84,22 @@ public class Chunk extends GameObject {
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
 				// pZ is the position Z, cZ is the color Z
-				//THIS WILL ALL BE NEEDING TO DO THE CHANGING
+				// THIS WILL ALL BE NEEDING TO DO THE CHANGING
 				float pZ = (float) Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE / 2;
-				//float cZ = (float) Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE / 2;
+				// float cZ = (float) Math.abs(noise.getValue(centre.x,
+				// centre.y, 0.1)) * SIZE / 2;
 				terrain.get(i).getPoint(j).z = pZ;
-				float[] values = getValue(centre,point);
+				float[] values = getValue(centre, point);
 				float r = values[0];
 				float b = values[1];
 				float g = values[2];
-				float pseudo = Math.abs(pZ-(int)pZ);//remainder
-				pseudo=(int)(pseudo*100);
-				pseudo=pseudo%100;
+				float pseudo = Math.abs(pZ - (int) pZ);// remainder
+				pseudo = (int) (pseudo * 100);
+				pseudo = pseudo % 100;
 				pZ = values[3];
 				vertices[c++] = point.x;
 				vertices[c++] = point.y;
-				vertices[c++] = pZ; //the z cordinate 
+				vertices[c++] = pZ; // the z cordinate
 
 				vertices[c++] = r;
 				vertices[c++] = g;
@@ -113,60 +111,110 @@ public class Chunk extends GameObject {
 			}
 		}
 	}
+
 	/**
 	 * 
 	 * @param centre
 	 * @param point
 	 * @return red, blue, green, height
 	 */
-	private float[] getValue(Vector3f centre,Vector3f point) {
-		float r,b,g,h;
-		String type;
-		float bs = (int)((Math.sin(point.x/60)+Math.sin(point.y/60)));
-		if(bs==1){
+	private float[] getValue(Vector3f centre, Vector3f point) {
+		float r, b, g, h;
+		r=b=g=h=0;
+		String type = null;
+		float bs = (int) ((Math.sin(point.x / 60) + Math.sin(point.y / 60)));
+		if (bs == 1) {
 			type = "biome1";
 		}
-		if(bs==-1){
+		if (bs == -1) {
 			type = "biome2";
 		}
-		if(bs==0){
+		if (bs == 0) {
 			type = "biome3";
 		}
-		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1));		
-		double moist = Math.abs(noise.getValue(centre.x, centre.y, 0.1))*SIZE/2;	
-		//reminder to self, use actually xy values for deciding something, it might help
-		h = (float) (elev*SIZE/2);
-		r = (float) (0.4f/(moist+1));
-		b = (float) (0.4f / (moist+1));
-		g = (float) (0.9f / (moist+1));
-
-		if (h < WATERLEVEL) {
-			b *= 0.6f;
-			r *= 0.1f;
-			g *= 0.2f;
+		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1));
+		double moist = Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE / 2;	
+		if (type == "biome1") {
+			h = (float) (elev * SIZE / 2);
+			r = (float) (0.3f / (moist + 1));
+			b = (float) (0.3f / (moist + 1));
+			g = (float) (0.65f / (moist + 1));
+			if (h < WATERLEVEL) {
+				b *= 0.6f;
+				r *= 0.1f;
+				g *= 0.2f;
+			}
+			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
+				b *= 0.5f;
+				r *= 1.7f;
+				g *= 1.2f;
+			}
+			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
+				b *= 0.5f;
+				r *= 1.2f;
+				g *= 1.2f;
+			}
+			if (h > TREELINE) {
+				b *= 0.5f;
+				r *= 1.4f;
+				g *= 1.1f;
+			}
 		}
-		if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
-			b *= 0.5f;
-			r *= 1.7f;
-			g *= 1.2f;		
+		if (type == "biome2") {
+			h = (float) (elev * SIZE / 4+31*WATERLEVEL/32);
+			r = (float) (0.3f / (moist + 1));
+			b = (float) (0.2f / (moist + 1));
+			g = (float) (0.5f / (moist + 1));
+			if (h < WATERLEVEL) {
+				b *= 0.6f;
+				r *= 0.1f;
+				g *= 0.2f;
+			}
+			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
+				b *= 0.5f;
+				r *= 1.7f;
+				g *= 1.2f;
+			}
+			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
+				b *= 0.5f;
+				r *= 1.2f;
+				g *= 1.2f;
+			}
+			if (h > TREELINE) {
+				b *= 0.5f;
+				r *= 1.4f;
+				g *= 1.1f;
+			}
 		}
-		if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
-			b *= 0.5f;
-			r *= 1.2f;
-			g *= 1.2f;		
+		if (type == "biome3") {
+			h = (float) (elev * SIZE / 2+7*WATERLEVEL/8);
+			r = (float) (0.3f / (moist + 1));
+			b = (float) (0.3f / (moist + 1));
+			g = (float) (0.6f / (moist + 1));
+			if (h < WATERLEVEL) {
+				b *= 0.6f;
+				r *= 0.1f;
+				g *= 0.2f;
+			}
+			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
+				b *= 0.5f;
+				r *= 1.7f;
+				g *= 1.2f;
+			}
+			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
+				b *= 0.5f;
+				r *= 1.2f;
+				g *= 1.2f;
+			}
+			if (h > TREELINE) {
+				b *= 0.5f;
+				r *= 1.4f;
+				g *= 1.1f;
+			}
 		}
-		if (h > TREELINE) {
-			b *= 0.5f;
-			r *= 1.4f;
-			g *= 1.1f;
-		}
-		
-		float[] returns = {r, b, g, h};
+		float[] returns = { r, b, g, h };
 		return returns;
 	}
-
-
-
 
 	public void makeGL() {
 		this.vao = new VertexArrayObject(vertices, 3);
