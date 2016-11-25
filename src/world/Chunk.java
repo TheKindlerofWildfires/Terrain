@@ -121,20 +121,25 @@ public class Chunk extends GameObject {
 	 */
 	private float[] getValue(Vector3f centre,Vector3f point) {
 		float r,b,g,h;
-		
+		String type;
+		float bs = (int)((Math.sin(point.x/60)+Math.sin(point.y/60)));
+		if(bs==1){
+			type = "biome1";
+		}
+		if(bs==-1){
+			type = "biome2";
+		}
+		if(bs==0){
+			type = "biome3";
+		}
 		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1));		
-		double moist = Math.abs(noise.getValue(centre.x, centre.y, 0.1));	
-		double temp = Math.abs(noise.getValue(point.x/4, point.y/4, 0.1));
+		double moist = Math.abs(noise.getValue(centre.x, centre.y, 0.1))*SIZE/2;	
 		//reminder to self, use actually xy values for deciding something, it might help
-		h = (float) ((elev*SIZE)+temp/2)+WATERLEVEL/2;
-		r = (float) (0.04f/(moist));
-		b = (float) (0.04f / (moist));
-		g = (float) (0.10f / (moist));
-		
-		
-		float bs = Math.abs((int)((Math.sin(point.x/10)+Math.sin(point.y/10))));
-		//this is not quite right
-		h=h*bs;
+		h = (float) (elev*SIZE/2);
+		r = (float) (0.4f/(moist+1));
+		b = (float) (0.4f / (moist+1));
+		g = (float) (0.9f / (moist+1));
+
 		if (h < WATERLEVEL) {
 			b *= 0.6f;
 			r *= 0.1f;
@@ -142,7 +147,7 @@ public class Chunk extends GameObject {
 		}
 		if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
 			b *= 0.5f;
-			r *= 1.5f;
+			r *= 1.7f;
 			g *= 1.2f;		
 		}
 		if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
@@ -151,9 +156,9 @@ public class Chunk extends GameObject {
 			g *= 1.2f;		
 		}
 		if (h > TREELINE) {
-			b *= 0.7f;
-			r *= 1.7f;
-			g *= 1.7f;
+			b *= 0.5f;
+			r *= 1.4f;
+			g *= 1.1f;
 		}
 		
 		float[] returns = {r, b, g, h};
