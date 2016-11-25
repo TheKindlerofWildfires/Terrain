@@ -122,7 +122,7 @@ public class Chunk extends GameObject {
 		float r, b, g, h;
 		r=b=g=h=0;
 		String type = null;
-		float bs = (int) ((Math.sin(point.x / 60) + Math.sin(point.y / 60)));
+		float bs = (int) ((Math.sin(point.x / 60)*Math.sin(point.x / 60) + Math.sin(point.y / 60)));
 		if (bs == 1) {
 			type = "biome1";
 		}
