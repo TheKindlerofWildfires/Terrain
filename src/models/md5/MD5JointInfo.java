@@ -77,7 +77,7 @@ public class MD5JointInfo {
 		}
 
 		public MD5JointData(String line) {
-			MD5JointData result = null;
+			//MD5JointData result = null;
 			Matcher matcher = PATTERN_JOINT.matcher(line);
 			if (matcher.matches()) {
 				this.name = matcher.group(1);

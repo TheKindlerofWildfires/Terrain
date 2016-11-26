@@ -13,8 +13,6 @@ import graphics.Window;
 import maths.Vector2i;
 import maths.Vector3f;
 import maths.Vector4f;
-import models.ModelManager;
-import models.VertexArrayObject;
 import noiseLibrary.module.source.Perlin;
 
 public class World {
@@ -27,7 +25,7 @@ public class World {
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 
-	private VertexArrayObject tree;
+	//private VertexArrayObject tree;
 
 	/**
 	 * Building better worlds
@@ -36,11 +34,12 @@ public class World {
 	public World() {
 		loadProperties();
 		noise.setSeed(perlinSeed);
+		/*
 		try {
 			tree = ModelManager.loadGlModel("resources/models/tree.obj").vao;
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	private void loadProperties() {
