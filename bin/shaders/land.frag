@@ -30,8 +30,8 @@ struct Fog
 
 uniform vec3 ambientLight;
 uniform DirectionalLight directionalLight;
-uniform Material material;
 uniform vec3 camera_pos;
+uniform float reflectance;
 uniform Fog fog;
 
 vec4 calcFog(vec3 pos, vec4 colour, Fog fog)
@@ -57,7 +57,7 @@ vec4 calcLightColour(vec3 light_colour, float light_intensity, vec3 position, ve
     vec3 from_light_dir = -to_light_dir;
     vec3 reflected_light = normalize(reflect(from_light_dir , normal));
     float specularFactor = max( dot(camera_direction, reflected_light), 0.0);
-    specularFactor = pow(specularFactor, material.reflectance);
+    specularFactor = pow(specularFactor, reflectance);
     specColour = light_intensity  * specularFactor * vec4(light_colour, 1.0);
 
     return (diffuseColour + specColour);

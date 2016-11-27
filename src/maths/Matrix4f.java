@@ -590,10 +590,16 @@ public class Matrix4f {
 		return scaling;
 	}
 
-	public static Matrix4f gluLookAt(Vector3f eye, Vector3f center, Vector3f up) {
+	public static Matrix4f gluLookAt(Vector3f eye, Vector3f center, Vector3f up, boolean flipped) {
 		Vector3f forward = center.subtract(eye).normalize();
 		Vector3f side = forward.cross(up).normalize();
+		if(flipped){
+			side = side.negate();
+		}
 		up = side.cross(forward).normalize();
+		if(flipped){
+			up=up.negate();
+		}
 		Matrix4f result = new Matrix4f();
 		result.m00 = side.x;
 		result.m01 = side.y;

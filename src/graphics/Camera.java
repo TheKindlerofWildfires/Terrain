@@ -7,15 +7,23 @@ public class Camera {
 
 	public Vector3f pos;
 	private Vector3f target;
+
 	private Vector3f up;
+	private boolean flipped = false;
+
 	private double degX, degZ;
+
 	public Matrix4f projection;
 	public Matrix4f view;
 	public Matrix4f pv;
-	float lx, ly;
+
+	private float lx, ly;
+
 	private Vector3f upward;
+
 	Vector3f cameraUp = new Vector3f(0, 0, 1);
-	public static float speed = .4f;
+
+	private float speed = .4f;
 	private float sense = 1f;
 
 	/**
@@ -29,14 +37,16 @@ public class Camera {
 	 *            up vector
 	 */
 	public Camera(Vector3f cameraPos, Vector3f cameraTarget, Vector3f cameraUp, float angle, float aspect, float near,
-			float far) {
+			float far, float speed, float sensitivity) {
 		pos = cameraPos;
 		target = cameraTarget;
 		up = cameraUp;
 		projection = Matrix4f.perspective(angle, aspect, near, far);
-		view = Matrix4f.gluLookAt(pos, target, up);
+		view = Matrix4f.gluLookAt(pos, target, up, flipped);
 		pv = projection.multiply(view);
 		upward = new Vector3f(0, 0, speed);
+		this.speed = speed;
+		this.sense = sensitivity;
 	}
 
 	/**
@@ -47,14 +57,14 @@ public class Camera {
 	 */
 	public void moveCamera(Vector3f displacement) {
 		pos = pos.add(displacement);
-		view = Matrix4f.gluLookAt(pos, target, up);
+		view = Matrix4f.gluLookAt(pos, target, up, flipped);
 		pv = projection.multiply(view);
 	}
 
 	private void move(Vector3f displacement) {
 		pos = pos.add(displacement);
 		target = target.add(displacement);
-		view = Matrix4f.gluLookAt(pos, target, up);
+		view = Matrix4f.gluLookAt(pos, target, up, flipped);
 		pv = projection.multiply(view);
 		Window.water.translate(displacement.x, displacement.y, 0);
 	}
@@ -107,8 +117,8 @@ public class Camera {
 	public void rotateCamera(double[] mousePos) {
 		double dx = Window.deltaX;
 		double dy = Window.deltaY;
-		float mouseX = (float) (dx) / -1920f * 2;
-		float mouseY = (float) (dy) / -1080f * 2;
+		float mouseX = (float) (dx) / -Window.WINDOW_WIDTH * 2;
+		float mouseY = (float) (dy) / -Window.WINDOW_HEIGHT * 2;
 		if (!(mouseX == lx)) {
 			degX += mouseX;
 			lx = mouseX;
@@ -140,13 +150,13 @@ public class Camera {
 		target.x += pos.x;
 		target.y += pos.y;
 		target.z += pos.z;
-		view = Matrix4f.gluLookAt(pos, target, up);
+		view = Matrix4f.gluLookAt(pos, target, up, flipped);
 		pv = projection.multiply(view);
 	}
 
 	public void moveTarget(Vector3f displacement) {
 		target = target.add(displacement);
-		view = Matrix4f.gluLookAt(pos, target, up);
+		view = Matrix4f.gluLookAt(pos, target, up, flipped);
 		pv = projection.multiply(view);
 	}
 
@@ -161,8 +171,10 @@ public class Camera {
 	public Vector3f getUp() {
 		return up;
 	}
-
-	// public Frustum getFrustum() {
-	// return frust;
-	// }
+	
+	public void flipCamera(){
+		up = up.negate();
+		flipped = !flipped;
+		view = Matrix4f.gluLookAt(pos, target, up, flipped);
+	}
 }

@@ -36,7 +36,8 @@ public class Chunk extends GameObject {
 		this.noise = noise;
 		this.chunkX = x;
 		this.chunkY = y;
-
+		this.hasMaterial = false;
+		
 		genTerrain();
 		genFoliage();
 		isGL = false;

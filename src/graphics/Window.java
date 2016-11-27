@@ -58,14 +58,14 @@ import world.Water;
 import world.World;
 
 public class Window implements Runnable {
-	private static int REFLECTION_WIDTH = 1920;
-	private static int REFLECTION_HEIGHT = 1080;
+	private static int REFLECTION_WIDTH;
+	private static int REFLECTION_HEIGHT;
 
-	private static int REFRACTION_WIDTH = 1920;
-	private static int REFRACTION_HEIGHT = 1080;
+	private static int REFRACTION_WIDTH;
+	private static int REFRACTION_HEIGHT;
 
-	private static int WINDOW_WIDTH;
-	private static int WINDOW_HEIGHT;
+	public static int WINDOW_WIDTH;
+	public static int WINDOW_HEIGHT;
 
 	private Vector3f CLEAR_COLOUR;
 
@@ -185,10 +185,10 @@ public class Window implements Runnable {
 
 		reflectionClipPlane = new Vector4f(0, 0, 1, -Chunk.WATERLEVEL);
 		refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL);
-		renderClipPlane = new Vector4f(0, 0, 1, 100000);
+		renderClipPlane = new Vector4f(0, 0, -1, 10000);
 
-		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT);
-		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT);
+		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
+		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
 	}
 
 	/**
@@ -233,6 +233,7 @@ public class Window implements Runnable {
 		float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
 		float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
 
+	//	GraphicsManager.camera.flipCamera();
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, -camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, -targetDist * 2));
 
@@ -246,6 +247,7 @@ public class Window implements Runnable {
 		entityManager.render(reflectionClipPlane);
 
 		//	move camera back and render refraction texture
+		//GraphicsManager.camera.flipCamera();
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
 

@@ -107,7 +107,9 @@ public class GraphicsManager {
 		float aspect = Float.parseFloat(props.getProperty("aspect"));
 		float near = Float.parseFloat(props.getProperty("near"));
 		float far = Float.parseFloat(props.getProperty("far"));
-		camera = new Camera(position, target, up, fov, aspect, near, far);
+		float speed = Float.parseFloat(props.getProperty("speed"));
+		float sensitivity = Float.parseFloat(props.getProperty("sensitivity"));
+		camera = new Camera(position, target, up, fov, aspect, near, far, speed, sensitivity);
 
 		sunSpeed = Float.parseFloat(props.getProperty("sunSpeed"));
 

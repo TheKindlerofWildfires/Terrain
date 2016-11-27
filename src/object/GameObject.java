@@ -9,8 +9,10 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL30.GL_CLIP_DISTANCE0;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import java.io.IOException;
@@ -161,6 +163,8 @@ public class GameObject {
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture.getId());
 		}
+		glEnable(GL_CLIP_DISTANCE0);
+		setUniformMatrix4f("model",model.getMatrix());
 		setUniform4f("clipPlane", clipPlane);
 	}
 

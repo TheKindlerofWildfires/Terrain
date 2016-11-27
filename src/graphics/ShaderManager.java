@@ -27,17 +27,15 @@ public class ShaderManager {
 		//skyboxShader = makeShader("src/shaders/skybox.vert", "src/shaders/skybox.frag");
 
 		start(objectShader);
-		setUniform1f("specularPower", 1);
 		setUniform3f("ambientLight", ambientLight);
 		setFog("fog", fog);
 		setDirectionalLight("directionalLight", dirLight);
 
 		start(landShader);
 		setDirectionalLight("directionalLight", dirLight);
-		setUniform1f("specularPower", 1);
-		setUniform1f("material.reflectance", 0);
 		setUniform3f("ambientLight", ambientLight);
 		setFog("fog", fog);
+		setUniform1f("reflectance", 4);
 		setDirectionalLight("directionalLight", dirLight);
 
 		start(waterShader);
@@ -45,38 +43,36 @@ public class ShaderManager {
 		setUniform1i("refractionTexture", 1);
 		setUniform1i("dudvMap", 2);
 		setUniform1i("normalMap", 3);
+		setUniform1i("depthMap", 4);
 		setFog("fog", fog);
 		setUniform3f("ambientLight", ambientLight);
+		setDirectionalLight("directionalLight", dirLight);
+		setUniform1f("reflectance", 1024);
 		stop();
 	}
 
 	public static void setCamera(Camera camera, DirectionalLight dirLight) {
 		assert initialized : "Shaders must be initialized in order to work";
 
-		//fog.colour.x+=.002f;
-		//if(fog.colour.x>1){
-		//	fog.colour.x=0;
-		//}
+		Vector4f dir = camera.view
+				.multiply(new Vector4f(dirLight.direction.x, dirLight.direction.y, dirLight.direction.z, 0))
+				.normalize();
 
 		start(landShader);
 		setUniformMatrix4f("projection", camera.projection);
 		setUniformMatrix4f("modelView", camera.view);
-		Vector4f dir = camera.view
-				.multiply(new Vector4f(dirLight.direction.x, dirLight.direction.y, dirLight.direction.z, 0))
-				.normalize();
 		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
 		//setUniform3f("camera_pos", camera.pos);
 
 		start(objectShader);
 		setUniformMatrix4f("projection", camera.projection);
-		dir = camera.view.multiply(new Vector4f(dirLight.direction.x, dirLight.direction.y, dirLight.direction.z, 0))
-				.normalize();
 		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
 		//setUniform3f("camera_pos", camera.pos);
 
 		start(waterShader);
 		setUniformMatrix4f("projection", camera.projection);
-		setUniform3f("cameraPos", camera.pos);
+		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
+		//setUniform3f("camera_pos", camera.pos);
 		stop();
 	}
 

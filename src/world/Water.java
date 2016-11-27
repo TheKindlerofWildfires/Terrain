@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE3;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE4;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 import graphics.ShaderManager;
@@ -49,6 +50,9 @@ public class Water extends GameObject {
 		glBindTexture(GL_TEXTURE_2D, dudv.getId());
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, normal.getId());
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, Window.refraction.getDepthTexture());
+	//	System.out.println(Window.refraction.getDepthTexture());
 
 		Matrix4f view = graphics.GraphicsManager.camera.view;
 		setUniformMatrix4f("modelView", view.multiply(model.getMatrix()));
