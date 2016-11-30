@@ -1,6 +1,6 @@
 package world;
 
-import static graphics.Shader.setUniform1f;
+import static graphics.Shader.*;
 import static graphics.Shader.setUniformMatrix4f;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
@@ -11,21 +11,38 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE3;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE4;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
+
+import graphics.GraphicsManager;
+import graphics.Shader;
 import graphics.ShaderManager;
 import graphics.Texture;
 import graphics.Window;
 import maths.Matrix4f;
+import maths.Vector3f;
 import maths.Vector4f;
 import object.GameObject;
 
 public class Water extends GameObject {
 
-	public static final float WAVE_SPEED = .0001f;
+	public static float WAVE_SPEED;
+	public static float WAVE_STRENGTH;
+	public static float NORMAL_STRENGTH;
+	public static float FRESNEL_POWER;
+	public static float WATER_CLARITY;
+	public static Vector3f WATER_COLOUR;
+	public static float MAX_DISTORTION;
+	public static float REFLECTANCE;
+	
+	public static String DUDV_PATH;
+	public static String NORMAL_PATH;
 
 	private float moveFactor = 0;
 
-	Texture dudv;
-	Texture normal;
+	private Texture dudv;
+	private Texture normal;
 
 	public Water() {
 		super("resources/models/plane.obj", "none", true);
@@ -34,8 +51,8 @@ public class Water extends GameObject {
 		scale(100, 100, 100);
 		shader = ShaderManager.waterShader;
 		hasMaterial = false;
-		dudv = new Texture("resources/textures/dudv.png");
-		normal = new Texture("resources/textures/normal.png");
+		dudv = new Texture(DUDV_PATH);
+		normal = new Texture(NORMAL_PATH);
 	}
 
 	@Override
@@ -52,7 +69,7 @@ public class Water extends GameObject {
 		glBindTexture(GL_TEXTURE_2D, normal.getId());
 		glActiveTexture(GL_TEXTURE4);
 		glBindTexture(GL_TEXTURE_2D, Window.refraction.getDepthTexture());
-	//	System.out.println(Window.refraction.getDepthTexture());
+		//	System.out.println(Window.refraction.getDepthTexture());
 
 		Matrix4f view = graphics.GraphicsManager.camera.view;
 		setUniformMatrix4f("modelView", view.multiply(model.getMatrix()));

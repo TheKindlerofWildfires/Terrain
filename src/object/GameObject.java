@@ -18,6 +18,7 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import java.io.IOException;
 
 import graphics.Material;
+import graphics.ShaderManager;
 import graphics.Texture;
 import maths.BoundingBox;
 import maths.Transformation;
@@ -99,8 +100,8 @@ public class GameObject {
 		boundingBox.centre.x += x;
 		boundingBox.centre.y += y;
 		boundingBox.centre.z += z;
-		position = position.add(new Vector3f(x,y,z));
-		
+		position = position.add(new Vector3f(x, y, z));
+
 	}
 
 	public void rotate(int angle, int x, int y, int z) throws IllegalArgumentException {
@@ -128,6 +129,9 @@ public class GameObject {
 		boundingBox.centre.x = x;
 		boundingBox.centre.y = y;
 		boundingBox.centre.z = z;
+		position.x = x;
+		position.y = y;
+		position.z = z;
 	}
 
 	public void physic() {
@@ -164,7 +168,9 @@ public class GameObject {
 			glBindTexture(GL_TEXTURE_2D, texture.getId());
 		}
 		glEnable(GL_CLIP_DISTANCE0);
-		setUniformMatrix4f("model",model.getMatrix());
+		if (shader == ShaderManager.objectShader) {
+			setUniformMatrix4f("model", model.getMatrix());
+		}
 		setUniform4f("clipPlane", clipPlane);
 	}
 

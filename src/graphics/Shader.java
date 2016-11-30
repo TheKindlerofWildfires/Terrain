@@ -46,8 +46,8 @@ public abstract class Shader {
 	private static int getUniform(String name) {
 		int result = glGetUniformLocation(currentProgramID, name);
 		if (result == -1) {
-		//	System.err.println("Could not find uniform variable " + name);
-		//	System.err.println(Thread.currentThread().getStackTrace()[3]);
+			System.err.println("Could not find uniform variable " + name);
+			System.err.println(Thread.currentThread().getStackTrace()[3]);
 		}
 		if(name=="camera_pos"){
 			System.err.println("???");

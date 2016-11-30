@@ -1,5 +1,6 @@
 package entity;
 
+import graphics.Camera;
 import maths.Vector3f;
 import object.GameObject;
 import world.Chunk;
@@ -7,22 +8,27 @@ import world.World;
 
 public class Player extends GameObject {
 	private Vector3f target;
-	private float speed = .2f;
+	private float speed;
 	private Vector3f upward;
 
-	public Player() {
+	Camera camera;
+	
+	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
-		this.scale(1, 1, 1);
 		upward = new Vector3f(0, 0, speed);
+		this.camera = camera;
+		this.target = camera.getTarget();
+		//this.position = camera.getPos();
+		this.speed = camera.getSpeed();
 	}
 
 	public void update() {
 		float cZ = (float) Math.abs(World.noise.getValue(position.x, position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
-		//System.out.println(position);
-		//System.out.println(cZ);
 		float diff = position.z - cZ;
-		//System.out.println(diff);
-		this.translate(new Vector3f(0, 0, -diff));
+		diff*=.1;
+		camera.moveCamera(new Vector3f(0,0,-diff));
+		this.placeAt(camera.pos.x, camera.pos.y, camera.pos.z);
+		//this.target = camera.getTarget();
 	}
 
 	public void movePlayer(String dir) {
@@ -56,6 +62,5 @@ public class Player extends GameObject {
 		}
 		displacement = displacement.normalize().scale(speed);
 		this.translate(displacement);
-
 	}
 }

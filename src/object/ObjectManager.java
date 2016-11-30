@@ -68,6 +68,6 @@ public class ObjectManager {
 		}
 		//target.render(clipPlane);
 		//ball.render(clipPlane);
-		//	box.render(clipPlane);
+			box.render(clipPlane);
 	}
 }

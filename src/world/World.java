@@ -20,7 +20,7 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	public static Perlin noise;
 	public static int perlinSeed;
-	public static final int LOAD_DIST = 5;
+	public static final int LOAD_DIST = 6;
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 	public static ArrayList<Vector3f> treePositions = new ArrayList<Vector3f>();
@@ -44,6 +44,7 @@ public class World {
 	}
 
 	private void loadProperties() {
+		System.out.println("Loading properties from resources/properties/world.properties");
 		Properties props = new Properties();
 		try {
 			FileReader reader = new FileReader("resources/properties/world.properties");

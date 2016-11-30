@@ -106,6 +106,7 @@ public class Window implements Runnable {
 	}
 
 	private void loadProperties() {
+		System.out.println("Loading properties from resources/properties/window.properties");
 		Properties props = new Properties();
 		try {
 			FileReader reader = new FileReader("resources/properties/window.properties");
@@ -183,8 +184,8 @@ public class Window implements Runnable {
 		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();
 
-		reflectionClipPlane = new Vector4f(0, 0, 1, -Chunk.WATERLEVEL);
-		refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL);
+		reflectionClipPlane = new Vector4f(0, 0, 1, -Chunk.WATERLEVEL + 0.01f);
+		refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL + 0.01f);
 		renderClipPlane = new Vector4f(0, 0, -1, 10000);
 
 		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
@@ -233,10 +234,10 @@ public class Window implements Runnable {
 		float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
 		float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
 
-	//	GraphicsManager.camera.flipCamera();
+		//	GraphicsManager.camera.flipCamera();
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, -camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, -targetDist * 2));
-
+		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
 		//bind reflection buffer and render to it
 		reflection.activate();
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
@@ -250,6 +251,7 @@ public class Window implements Runnable {
 		//GraphicsManager.camera.flipCamera();
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
+		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
 
 		//bind refraction buffer and render to it
 		refraction.activate();

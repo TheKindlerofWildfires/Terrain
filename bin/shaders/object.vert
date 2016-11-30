@@ -21,5 +21,3 @@ void main(){
     mvVertexPos = mvPos.xyz;
 	texCoord = vec2(textCoord);
 }
-
-

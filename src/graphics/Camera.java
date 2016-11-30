@@ -6,7 +6,7 @@ import maths.Vector3f;
 public class Camera {
 
 	public Vector3f pos;
-	private Vector3f target;
+	public Vector3f target;
 
 	private Vector3f up;
 	private boolean flipped = false;
@@ -26,6 +26,9 @@ public class Camera {
 	private float speed = .4f;
 	private float sense = 1f;
 
+	public float near;
+	public float far;
+	
 	/**
 	 * Initializes camera
 	 * 
@@ -47,6 +50,8 @@ public class Camera {
 		upward = new Vector3f(0, 0, speed);
 		this.speed = speed;
 		this.sense = sensitivity;
+		this.near = near;
+		this.far = far;
 	}
 
 	/**
@@ -176,5 +181,9 @@ public class Camera {
 		up = up.negate();
 		flipped = !flipped;
 		view = Matrix4f.gluLookAt(pos, target, up, flipped);
+	}
+	
+	public float getSpeed(){
+		return speed;
 	}
 }

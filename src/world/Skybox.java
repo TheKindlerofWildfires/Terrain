@@ -22,7 +22,7 @@ public class Skybox extends GameObject {
 		shader = graphics.ShaderManager.objectShader;
 		this.material.useColour = 0;
 		this.model = new Transformation();
-		this.scale(25, 25, 25);
+		this.scale(30, 30, 30);
 	}
 
 	protected void renderPrep(Vector4f clipPlane) {
@@ -38,7 +38,6 @@ public class Skybox extends GameObject {
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture.getId());
 		}
-		setUniform3f("ambientLight", new Vector3f(1f, 1f, 1f));
 		setUniformMatrix4f("model", model.getMatrix());
 		setUniform4f("clipPlane", clipPlane);
 	}

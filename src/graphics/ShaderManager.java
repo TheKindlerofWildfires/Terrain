@@ -9,6 +9,7 @@ import static graphics.Shader.*;
 
 import maths.Vector3f;
 import maths.Vector4f;
+import world.Water;
 
 public class ShaderManager {
 
@@ -47,7 +48,17 @@ public class ShaderManager {
 		setFog("fog", fog);
 		setUniform3f("ambientLight", ambientLight);
 		setDirectionalLight("directionalLight", dirLight);
-		setUniform1f("reflectance", 1024);
+
+		setUniform1f("reflectance", Water.REFLECTANCE);
+		setUniform1f("fresnelPower", Water.FRESNEL_POWER);
+		setUniform1f("waveStrength", Water.WAVE_STRENGTH);
+		setUniform1f("normalStrength", Water.NORMAL_STRENGTH);
+		setUniform1f("near", GraphicsManager.camera.near);
+		setUniform1f("far", GraphicsManager.camera.far);
+		setUniform1f("waterClarity", Water.WATER_CLARITY);
+		setUniform1f("maxDistortion", Water.MAX_DISTORTION);
+		setUniform4f("waterColour", new Vector4f(Water.WATER_COLOUR, 1f));
+
 		stop();
 	}
 
@@ -61,16 +72,19 @@ public class ShaderManager {
 		start(landShader);
 		setUniformMatrix4f("projection", camera.projection);
 		setUniformMatrix4f("modelView", camera.view);
+		setDirectionalLight("directionalLight", dirLight);
 		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
 		//setUniform3f("camera_pos", camera.pos);
 
 		start(objectShader);
 		setUniformMatrix4f("projection", camera.projection);
+		setDirectionalLight("directionalLight", dirLight);
 		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
 		//setUniform3f("camera_pos", camera.pos);
 
 		start(waterShader);
 		setUniformMatrix4f("projection", camera.projection);
+		setDirectionalLight("directionalLight", dirLight);
 		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
 		//setUniform3f("camera_pos", camera.pos);
 		stop();

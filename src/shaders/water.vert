@@ -26,4 +26,3 @@ void main(){
     gl_Position = projection * mvPos;
     texCoord = vec2(textCoord)*tiling;
 }
-

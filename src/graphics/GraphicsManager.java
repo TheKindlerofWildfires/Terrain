@@ -14,6 +14,7 @@ import java.util.Properties;
 import input.KeyboardInput;
 import input.MouseInput;
 import maths.Vector3f;
+import world.Water;
 
 class Attenuation {
 	float constant;
@@ -70,8 +71,8 @@ class Fog {
 public class GraphicsManager {
 
 	public static Camera camera;
+	public static DirectionalLight dirLight;
 
-	private static DirectionalLight dirLight;
 	private static float lightAngle = 0;
 	private static float sunSpeed;
 	private static Vector3f ambientLight;
@@ -82,6 +83,7 @@ public class GraphicsManager {
 
 	private static void loadProperties() {
 		props = new Properties();
+		System.out.println("Loading properties from resources/properties/graphics.properties");
 		try {
 			FileReader reader = new FileReader("resources/properties/graphics.properties");
 			props.load(reader);
@@ -114,6 +116,31 @@ public class GraphicsManager {
 		sunSpeed = Float.parseFloat(props.getProperty("sunSpeed"));
 
 		ambientLight = Vector3f.parseVector(props.getProperty("ambientLight"));
+
+		loadWaterProperties();
+	}
+
+	private static void loadWaterProperties() {
+		System.out.println("Loading properties from resources/properties/water.properties");
+		Properties props = new Properties();
+		try {
+			FileReader reader = new FileReader("resources/properties/water.properties");
+			props.load(reader);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Water.WAVE_SPEED = Float.parseFloat(props.getProperty("waveSpeed"));
+		Water.WAVE_STRENGTH = Float.parseFloat(props.getProperty("waveStrength"));
+		Water.NORMAL_STRENGTH = Float.parseFloat(props.getProperty("normalStrength"));
+		Water.FRESNEL_POWER = Float.parseFloat(props.getProperty("fresnelPower"));
+		Water.WATER_CLARITY = Float.parseFloat(props.getProperty("waterClarity"));
+		Water.WATER_COLOUR = Vector3f.parseVector(props.getProperty("waterColour"));
+		Water.MAX_DISTORTION = Float.parseFloat(props.getProperty("maxDistortion"));
+		Water.REFLECTANCE = Float.parseFloat(props.getProperty("reflectance"));
+
+		Water.DUDV_PATH = props.getProperty("dudvPath");
+		Water.NORMAL_PATH = props.getProperty("normalPath");
 	}
 
 	public GraphicsManager() {
@@ -147,17 +174,32 @@ public class GraphicsManager {
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
 			camera.moveCamera("DOWN");
 		}
-		dayNightCycle();
+	//	dayNightCycle();
 	}
 
 	private static void dayNightCycle() {
-		lightAngle += sunSpeed;
-		float angleRad = (float) Math.toRadians(lightAngle);
-		float x = (float) Math.cos(angleRad);
-		float z = (float) Math.sin(angleRad);
-		dirLight.direction.x = x;
-		dirLight.direction.z = z;
 
+		lightAngle += sunSpeed;
+		if (lightAngle > 90) {
+			dirLight.intensity = 0;
+			if (lightAngle >= 360) {
+				lightAngle = -90;
+			}
+		} else if (lightAngle <= -80 || lightAngle >= 80) {
+			float factor = 1 - (float) (Math.abs(lightAngle) - 80) / 10.0f;
+			dirLight.intensity = factor;
+			dirLight.colour.y = Math.max(factor, 0.9f);
+			dirLight.colour.z = Math.max(factor, 0.5f);
+		} else {
+			dirLight.intensity = 1;
+			dirLight.colour.x = 1;
+			dirLight.colour.x = 1;
+			dirLight.colour.x = 1;
+
+		}
+		double angRad = Math.toRadians(lightAngle);
+		dirLight.direction.x = (float) Math.sin(angRad);
+		dirLight.direction.z = (float) Math.cos(angRad);
 	}
 
 	public static void toggleFog() {

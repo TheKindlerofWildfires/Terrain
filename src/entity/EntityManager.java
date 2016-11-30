@@ -5,14 +5,19 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 
+import graphics.GraphicsManager;
 import input.KeyboardInput;
 import maths.Vector4f;
 
 public class EntityManager {
-	Player player = new Player();
+	Player player;
+
+	public EntityManager() {
+		player = new Player(GraphicsManager.camera);
+	}
 
 	public void render(Vector4f clipPlane) {
-		player.render(clipPlane);
+	//	player.render(clipPlane);
 	}
 
 	public void update() {
