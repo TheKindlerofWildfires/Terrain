@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL20.glCompileShader;
 import static org.lwjgl.opengl.GL20.glCreateShader;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
@@ -19,13 +20,17 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.lwjgl.BufferUtils;
 
 public class Utilities {
 
-	public static float[][][] unflatten(int[] input, int xSize, int ySize,
-			int zSize) {
+	private static final Pattern INCLUDE_PATTERN = Pattern.compile("\\s*#include\\s*(\\S+)");
+	private static final String SHADER_LOCATION = "src/shaders/";
+
+	public static float[][][] unflatten(int[] input, int xSize, int ySize, int zSize) {
 		float[][][] output = new float[xSize][ySize][zSize];
 		for (int i = 0; i < input.length; i++) {
 			int xPos = i % xSize;
@@ -40,8 +45,7 @@ public class Utilities {
 	}
 
 	public static float[] flatten(int[][][] properties) {
-		float[] output = new float[properties.length * properties[0].length
-				* properties[0][0].length];
+		float[] output = new float[properties.length * properties[0].length * properties[0][0].length];
 		int counter = 0;
 		for (int z = 0; z < properties[0][0].length; z++) {
 			for (int y = 0; y < properties[0].length; y++) {
@@ -94,7 +98,19 @@ public class Utilities {
 			reader = new BufferedReader(new FileReader(filepath));
 			String buffer = "";
 			while ((buffer = reader.readLine()) != null) {
-				result.append(buffer);
+				if (buffer.contains("#include")) {
+					Matcher matcher = INCLUDE_PATTERN.matcher(buffer);
+					matcher.matches();
+					String libpath = SHADER_LOCATION + matcher.group(1);
+					BufferedReader libreader = new BufferedReader(new FileReader(libpath));
+					while ((buffer = libreader.readLine()) != null) {
+						result.append(buffer);
+						result.append("\n");
+					}
+					libreader.close();
+				} else {
+					result.append(buffer);
+				}
 				result.append("\n");
 			}
 
@@ -146,7 +162,12 @@ public class Utilities {
 		}
 	}
 
-	public static void main(String[] args) {
-		System.out.println(mod(-1, 3));
+	public static final void main(String[] args) {
+		Matcher matcher = INCLUDE_PATTERN.matcher("#include lighting.lib");
+		matcher.matches();
+		System.out.println(matcher.group(1));
+		
+		int vertexShaderID = Utilities.loadShader("src/shaders/water.frag", GL_VERTEX_SHADER);
+
 	}
 }

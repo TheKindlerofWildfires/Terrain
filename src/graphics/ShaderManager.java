@@ -36,7 +36,7 @@ public class ShaderManager {
 		setDirectionalLight("directionalLight", dirLight);
 		setUniform3f("ambientLight", ambientLight);
 		setFog("fog", fog);
-		setUniform1f("reflectance", 4);
+		setUniform1f("material.reflectance", 4);
 		setDirectionalLight("directionalLight", dirLight);
 
 		start(waterShader);
@@ -49,7 +49,7 @@ public class ShaderManager {
 		setUniform3f("ambientLight", ambientLight);
 		setDirectionalLight("directionalLight", dirLight);
 
-		setUniform1f("reflectance", Water.REFLECTANCE);
+		setUniform1f("material.reflectance", Water.REFLECTANCE);
 		setUniform1f("fresnelPower", Water.FRESNEL_POWER);
 		setUniform1f("waveStrength", Water.WAVE_STRENGTH);
 		setUniform1f("normalStrength", Water.NORMAL_STRENGTH);

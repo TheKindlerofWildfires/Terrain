@@ -25,7 +25,7 @@ public class Player extends GameObject {
 	public void update() {
 		float cZ = (float) Math.abs(World.noise.getValue(position.x, position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
 		float diff = position.z - cZ;
-		diff*=.1;
+		diff*=.2;
 		camera.moveCamera(new Vector3f(0,0,-diff));
 		this.placeAt(camera.pos.x, camera.pos.y, camera.pos.z);
 		//this.target = camera.getTarget();

@@ -1,4 +1,5 @@
 #version 400 core
+#include lighting.lib
 
 in vec4 clipSpace;
 in vec2 texCoord;
@@ -7,31 +8,12 @@ in vec3 mvVertexPos;
 
 out	vec4 fragColor;
 
-struct Fog
-{
-    int activeFog;
-    vec3 colour;
-    float density;
-    float exponent;
-};
-
-struct DirectionalLight
-{
-    vec3 colour;
-    vec3 direction;
-    float intensity;
-};
-
 uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
 uniform sampler2D dudvMap;
 uniform sampler2D normalMap;
 uniform sampler2D depthMap;
 
-uniform Fog fog;
-uniform DirectionalLight directionalLight;
-uniform vec3 ambientLight;
-uniform float reflectance;
 
 uniform float moveFactor;
 
@@ -46,42 +28,6 @@ uniform float far;
 uniform float waterClarity;
 uniform float maxDistortion;
 uniform vec4 waterColour;
-
-vec4 calcFog(vec3 pos, vec4 colour, Fog fog, vec3 ambientLight, DirectionalLight dirLight)
-{
-    vec3 fogColor = fog.colour * (ambientLight + dirLight.colour * dirLight.intensity);
-    float distance = length(pos);
-    float fogFactor = 1.0 / exp( (distance * fog.density)* (distance * fog.density));
-    fogFactor = clamp( fogFactor, 0.0, 1.0 );
-
-    vec3 resultColour = mix(fogColor, colour.xyz, fogFactor);
-    return vec4(resultColour.xyz, 1);
-}
-
-vec4 calcLightColour(vec3 colour, float intensity, vec3 position, vec3 dir, vec3 normal, vec3 distortedNormal) {
-    vec4 diffuseColour = vec4(0);
-    vec4 specColour = vec4(0);
-
-    // Diffuse Light
-    float diffuseFactor = max(dot(normal, dir), 0.0);
-    diffuseColour = vec4(colour, 1.0) * intensity * diffuseFactor;
-
-    // Specular Light DOESN"T FUCKING WORK. Ill return to this at some point
-    vec3 toCamera = normalize(-position);
-    vec3 toLight = -dir;
-    vec3 reflectedLight = normalize(reflect(toLight, distortedNormal));
-    float specularFactor = max(dot(toCamera, reflectedLight), 0.0);
-    specularFactor = pow(specularFactor, reflectance);
-    specColour = vec4(colour, 1.0) * intensity  * specularFactor;
-	
-    return vec4(diffuseColour); //not currently returning specular
-}
-
-vec4 calcDirectionalLight(DirectionalLight light, vec3 position, vec3 normal, vec3 distortedNormal)
-{
-    vec4 light_colour = calcLightColour(light.colour, light.intensity, position, light.direction, normal, distortedNormal);
-    return light_colour;
-}
 
 void main(){
 	vec2 ndc = (clipSpace.xy/clipSpace.w)/2 + .5;
