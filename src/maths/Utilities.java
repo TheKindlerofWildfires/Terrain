@@ -6,7 +6,6 @@ import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 import static org.lwjgl.opengl.GL20.glCompileShader;
 import static org.lwjgl.opengl.GL20.glCreateShader;
 import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
@@ -162,12 +161,4 @@ public class Utilities {
 		}
 	}
 
-	public static final void main(String[] args) {
-		Matcher matcher = INCLUDE_PATTERN.matcher("#include lighting.lib");
-		matcher.matches();
-		System.out.println(matcher.group(1));
-		
-		int vertexShaderID = Utilities.loadShader("src/shaders/water.frag", GL_VERTEX_SHADER);
-
-	}
 }
