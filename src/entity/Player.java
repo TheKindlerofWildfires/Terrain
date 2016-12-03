@@ -24,6 +24,12 @@ public class Player extends GameObject {
 
 	public void update() {
 		float cZ = (float) Math.abs(World.noise.getValue(position.x, position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
+		/*
+		 * Lets replace that takes the x, y points, 
+		 * finds the triangle, 
+		 * and takes the calculated value of the location at the point based on the points h
+		 * this could be some fun math! 
+		 */
 		float diff = position.z - cZ;
 		diff*=.2;
 		camera.moveCamera(new Vector3f(0,0,-diff));

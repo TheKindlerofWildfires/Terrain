@@ -84,23 +84,21 @@ public class Chunk extends GameObject {
 					.scale(SIZE);
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
-				// pZ is the position Z, cZ is the color Z
-				// THIS WILL ALL BE NEEDING TO DO THE CHANGING
-				float pZ = (float) Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE / 2;
-				// float cZ = (float) Math.abs(noise.getValue(centre.x,
-				// centre.y, 0.1)) * SIZE / 2;
-				terrain.get(i).getPoint(j).z = pZ;
 				float[] values = getValue(centre, point);
+				float h = values[3];
 				float r = values[0];
 				float b = values[1];
 				float g = values[2];
-				float pseudo = Math.abs(pZ - (int) pZ);// remainder
+				terrain.get(i).getPoint(j).z = h;
+				
+				
+				float pseudo = Math.abs(h - (int) h);// remainder
 				pseudo = (int) (pseudo * 100);
 				pseudo = pseudo % 100;
-				pZ = values[3];
+				
 				vertices[c++] = point.x;
 				vertices[c++] = point.y;
-				vertices[c++] = pZ; // the z cordinate
+				vertices[c++] = h; // the z cordinate
 
 				vertices[c++] = r;
 				vertices[c++] = g;
@@ -200,7 +198,6 @@ public class Chunk extends GameObject {
 			r = (float) (0.3f / (moist + 1));
 			b = (float) (0.2f / (moist + 1));
 			g = (float) (0.4f / (moist + 1));
-			r=0.8f;
 			if (h < WATERLEVEL) {
 				b *= 0.6f;
 				r *= 0.1f;
