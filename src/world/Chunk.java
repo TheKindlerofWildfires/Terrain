@@ -14,7 +14,6 @@ import object.GameObject;
 public class Chunk extends GameObject {
 
 	public static float SIZE;
-
 	public static float WATERLEVEL;
 	public static float BEACHSIZE;
 	public static float TREELINE;
@@ -84,7 +83,7 @@ public class Chunk extends GameObject {
 					.scale(SIZE);
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
-				float[] values = getValue(centre, point);
+				float[] values = Biome.getValue(centre, point);
 				float h = values[3];
 				float r = values[0];
 				float b = values[1];
@@ -117,173 +116,7 @@ public class Chunk extends GameObject {
 	 * @param point
 	 * @return red, blue, green, height
 	 */
-	private float[] getValue(Vector3f centre, Vector3f point) {
-		/*
-		 * Things should be changed so:
-		 * Ice biomes
-		 * Biomes cluster together in a way 
-		 * So for each set of bs there are two subsets, one inner, one outer, 
-		 * resulting, in more complex arrangements
-		 * and biomes which naturally occur near eachother, 
-		 * ie one is almost always near 0
-		 * are designed to bridge like the way the subsets are 
-		 */
-		float r, b, g, h;
-		r=b=g=h=0;
-		String type = null;
-		double elev = Math.abs(noise.getValue(point.x/2, point.y/2, 0.1));
-		double moist = Math.abs(noise.getValue(centre.x/2, centre.y/2, 0.1)) * SIZE / 2;
-		double temp = Math.abs(noise.getValue(point.x/8, point.y/8, 0.2));
-		float bs = (int)(temp*3.9);
-		if (bs == 0) {
-			type = "swamp";
-		}		
-		if (bs == 1) {
-			type = "hill";
-		}
-		if (bs == 2) {
-			type = "desert";
-		}
-		if (bs == 3) {
-			type = "mountain";
-		}
-		if (bs == 4) {
-			type = "ocean";
-		}
-		if (type == "swamp") {
-			h = (float) (elev * SIZE /16+29*WATERLEVEL/32);
-			r = (float) (0.2f / (moist + 1));
-			b = (float) (0.4f / (moist + 1));
-			g = (float) (0.4f / (moist + 1));
-			if (h < WATERLEVEL) {
-				b *= 0.4f;
-				r *= 0.1f;
-				g *= 0.2f;
-			}
-			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
-				b *= 0.5f;
-				r *= 1.7f;
-				g *= 1.2f;
-			}
-			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
-				b *= 0.5f;
-				r *= 1.2f;
-				g *= 1.2f;
-			}
-			if (h > TREELINE) {
-				b *= 0.5f;
-				r *= 1.4f;
-				g *= 1.1f;
-			}
-		}
-		if (type == "hill") {
-			h = (float) (elev * SIZE / 1.5);
-			r = (float) (0.3f / (moist + 1));
-			b = (float) (0.3f / (moist + 1));
-			g = (float) (0.62f / (moist + 1));
-			if (h < WATERLEVEL) {
-				b *= 0.4f;
-				r *= 0.1f;
-				g *= 0.2f;
-			}
-			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
-				b *= 0.5f;
-				r *= 1.4f;
-				g *= 1.2f;
-			}
-			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
-				b *= 0.5f;
-				r *= 1.2f;
-				g *= 1.2f;
-			}
-			if (h > TREELINE) {
-				b *= 0.5f;
-				r *= 1.4f;
-				g *= 1.1f;
-			}
-		}
-		
-		if (type == "desert") {
-			h = (float) (elev * SIZE / 4+WATERLEVEL);
-			r = (float) (0.3f / (moist + 1));
-			b = (float) (0.2f / (moist + 1));
-			g = (float) (0.4f / (moist + 1));
-			if (h < WATERLEVEL) {
-				b *= 0.3f;
-				r *= 0.3f;
-				g *= 0.2f;
-			}
-			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
-				b *= 0.5f;
-				r *= 1.7f;
-				g *= 1.2f;
-			}
-			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
-				b *= 0.5f;
-				r *= 1.2f;
-				g *= 1.2f;
-			}
-			if (h > TREELINE) {
-				b *= 0.5f;
-				r *= 1.4f;
-				g *= 1.1f;
-			}
-		}
-		if (type == "mountain") {
-			h = (float) (elev * SIZE*1.1+3*WATERLEVEL/8);
-			r = (float) (0.4f / (moist + 1));
-			b = (float) (0.4f / (moist + 1));
-			g = (float) (0.4f / (moist + 1));
-			if (h < WATERLEVEL) {
-				b *= 0.2f;
-				r *= 0.1f;
-				g *= 0.2f;
-			}
-			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
-				b *= 0.5f;
-				r *= 1.0f;
-				g *= 1.2f;
-			}
-			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
-				b *= 0.5f;
-				r *= 1.2f;
-				g *= 1.2f;
-			}
-			if (h > TREELINE) {
-				b *= 0.5f;
-				r *= 1.0f;
-				g *= 1.0f;
-			}
-		}
-		if (type == "ocean") {
-			h = (float) (elev * SIZE / 16+3*WATERLEVEL/8);
-			r = (float) (0.4f / (moist + 1));
-			b = (float) (0.4f / (moist + 1));
-			g = (float) (0.6f / (moist + 1));
-			if (h < WATERLEVEL) {
-				b *= 0.6f;
-				r *= 0.2f;
-				g *= 0.2f;
-			}
-			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
-				b *= 0.5f;
-				r *= 1.1f;
-				g *= 1.2f;
-			}
-			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
-				b *= 0.5f;
-				r *= 1.2f;
-				g *= 1.2f;
-			}
-			if (h > TREELINE) {
-				b *= 0.5f;
-				r *= 1.4f;
-				g *= 1.1f;
-			}
-		}
-		float[] returns = { r, b, g, h };
-		return returns;
-	}
+	
 
 	public void makeGL() {
 		this.vao = new VertexArrayObject(vertices, 3);
@@ -292,7 +125,7 @@ public class Chunk extends GameObject {
 
 	public float getHeight(float x, float y) {
 		Vector3f point = new Vector3f(x, y, 0);
-		float[] h = getValue(point, point);
+		float[] h = Biome.getValue(point, point);
 		return h[3];
 	}
 }

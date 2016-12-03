@@ -68,10 +68,10 @@ public class Player extends GameObject {
 		boolean canMove = true;
 		int chunkX = Math.round(position.x / 2 / Chunk.SIZE);
 		int chunkY = Math.round(position.y / 2 / Chunk.SIZE);
-		this.destination[0] = position.add(displacement.scale(5));
-		this.destination[1] = position.add(displacement.scale(1).negate());
-		this.destination[2] = position.add(displacement.scale(1).cross(upward.normalize()));
-		this.destination[3] = position.add(displacement.scale(1).cross(upward.negate().normalize()));
+		this.destination[0] = position.add(displacement.scale(27/speed));
+		this.destination[1] = position.add(displacement.scale(5/speed).negate());
+		this.destination[2] = position.add(displacement.scale(5/speed).cross(upward.normalize()));
+		this.destination[3] = position.add(displacement.scale(5/speed).cross(upward.negate().normalize()));
 		
 		
 		Chunk location = new Chunk(World.noise, chunkX, chunkY);
