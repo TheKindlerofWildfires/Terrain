@@ -1,6 +1,6 @@
 package world;
 
-import static graphics.Shader.*;
+import static graphics.Shader.setUniform1f;
 import static graphics.Shader.setUniformMatrix4f;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glBindTexture;
@@ -11,12 +11,6 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE3;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE4;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Properties;
-
-import graphics.GraphicsManager;
-import graphics.Shader;
 import graphics.ShaderManager;
 import graphics.Texture;
 import graphics.Window;

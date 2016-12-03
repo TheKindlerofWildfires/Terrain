@@ -27,6 +27,7 @@ public class World {
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 
+
 	private VertexArrayObject tree;
 
 	/**
@@ -36,6 +37,7 @@ public class World {
 	public World() {
 		loadProperties();
 		noise.setSeed(perlinSeed);
+
 		try {
 			tree = ModelManager.loadGlModel("resources/models/tree.obj").vao;
 		} catch (IOException e) {
@@ -45,6 +47,7 @@ public class World {
 
 	private void loadProperties() {
 		System.out.println("Loading properties from resources/properties/world.properties");
+
 		Properties props = new Properties();
 		try {
 			FileReader reader = new FileReader("resources/properties/world.properties");

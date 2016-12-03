@@ -34,6 +34,7 @@ public class ShaderManager {
 
 		start(landShader);
 		setDirectionalLight("directionalLight", dirLight);
+
 		setUniform3f("ambientLight", ambientLight);
 		setFog("fog", fog);
 		setUniform1f("material.reflectance", 4);
@@ -58,7 +59,6 @@ public class ShaderManager {
 		setUniform1f("waterClarity", Water.WATER_CLARITY);
 		setUniform1f("maxDistortion", Water.MAX_DISTORTION);
 		setUniform4f("waterColour", new Vector4f(Water.WATER_COLOUR, 1f));
-
 		stop();
 	}
 

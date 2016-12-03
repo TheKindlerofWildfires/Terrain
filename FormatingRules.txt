@@ -1,8 +1,9 @@
-Formating rules
+Formating rules:
 Classes start with Caps
-Constants are Caps and underscored
+Constants are all capital
 Only one random per package, run through window
-Updates run through an update manager, through window
-CamelCase
+Window is to be kept as clean as possible
+CamelCase is the way we do things
+Comment the code so other people can read it
 Clean up imports
 Unit testing is a thing we should do

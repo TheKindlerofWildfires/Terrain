@@ -7,6 +7,7 @@ in vec3 mvVertexPos;
 
 out	vec4 fragColor;
 
+
 uniform sampler2D texture_sampler;
 
 void main(){

@@ -107,6 +107,7 @@ public class Window implements Runnable {
 
 	private void loadProperties() {
 		System.out.println("Loading properties from resources/properties/window.properties");
+
 		Properties props = new Properties();
 		try {
 			FileReader reader = new FileReader("resources/properties/window.properties");

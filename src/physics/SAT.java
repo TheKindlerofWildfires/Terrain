@@ -1,6 +1,5 @@
 package physics;
 
-import maths.Edge;
 import maths.Vector3f;
 
 public class SAT {

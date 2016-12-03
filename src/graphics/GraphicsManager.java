@@ -71,15 +71,6 @@ class Fog {
 public class GraphicsManager {
 
 	public static Camera camera;
-	public static DirectionalLight dirLight;
-
-	private static float lightAngle = 0;
-	private static float sunSpeed;
-	private static Vector3f ambientLight;
-
-	private static Fog fog;
-
-	public static Properties props;
 
 	private static void loadProperties() {
 		props = new Properties();
@@ -143,6 +134,17 @@ public class GraphicsManager {
 		Water.NORMAL_PATH = props.getProperty("normalPath");
 	}
 
+	static DirectionalLight dirLight;
+	private static float lightAngle = 0;
+	private static float sunSpeed;
+	private static Vector3f ambientLight;
+
+	private static Fog fog;
+
+	public static Properties props;
+
+
+
 	public GraphicsManager() {
 		loadProperties();
 		ShaderManager.init(dirLight, fog, ambientLight);
@@ -200,6 +202,7 @@ public class GraphicsManager {
 		double angRad = Math.toRadians(lightAngle);
 		dirLight.direction.x = (float) Math.sin(angRad);
 		dirLight.direction.z = (float) Math.cos(angRad);
+
 	}
 
 	public static void toggleFog() {
