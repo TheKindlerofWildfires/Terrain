@@ -27,11 +27,8 @@ public class World {
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 
-<<<<<<< HEAD
+
 	private VertexArrayObject tree;
-=======
-	//private VertexArrayObject tree;
->>>>>>> refs/remotes/origin/BiomeBack
 
 	/**
 	 * Building better worlds
@@ -40,26 +37,17 @@ public class World {
 	public World() {
 		loadProperties();
 		noise.setSeed(perlinSeed);
-<<<<<<< HEAD
-=======
-		/*
->>>>>>> refs/remotes/origin/BiomeBack
+
 		try {
 			tree = ModelManager.loadGlModel("resources/models/tree.obj").vao;
 		} catch (IOException e) {
 			e.printStackTrace();
-<<<<<<< HEAD
 		}
 	}
 
 	private void loadProperties() {
 		System.out.println("Loading properties from resources/properties/world.properties");
-=======
-		}*/
-	}
 
-	private void loadProperties() {
->>>>>>> refs/remotes/origin/BiomeBack
 		Properties props = new Properties();
 		try {
 			FileReader reader = new FileReader("resources/properties/world.properties");

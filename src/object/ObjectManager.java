@@ -68,10 +68,6 @@ public class ObjectManager {
 		}
 		//target.render(clipPlane);
 		//ball.render(clipPlane);
-<<<<<<< HEAD
 			box.render(clipPlane);
-=======
-		//	box.render(clipPlane);
->>>>>>> refs/remotes/origin/BiomeBack
 	}
 }

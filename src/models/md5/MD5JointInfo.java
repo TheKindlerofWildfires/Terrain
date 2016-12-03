@@ -77,10 +77,7 @@ public class MD5JointInfo {
 		}
 
 		public MD5JointData(String line) {
-<<<<<<< HEAD
 			//Was giving me aids, looks important
-=======
->>>>>>> refs/remotes/origin/BiomeBack
 			//MD5JointData result = null;
 			Matcher matcher = PATTERN_JOINT.matcher(line);
 			if (matcher.matches()) {

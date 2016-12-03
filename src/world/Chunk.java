@@ -36,11 +36,7 @@ public class Chunk extends GameObject {
 		this.noise = noise;
 		this.chunkX = x;
 		this.chunkY = y;
-<<<<<<< HEAD
 		this.hasMaterial = false;
-		
-=======
->>>>>>> refs/remotes/origin/BiomeBack
 		genTerrain();
 		genFoliage();
 		isGL = false;

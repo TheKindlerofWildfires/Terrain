@@ -58,7 +58,6 @@ import world.Water;
 import world.World;
 
 public class Window implements Runnable {
-<<<<<<< HEAD
 	private static int REFLECTION_WIDTH;
 	private static int REFLECTION_HEIGHT;
 
@@ -67,16 +66,6 @@ public class Window implements Runnable {
 
 	public static int WINDOW_WIDTH;
 	public static int WINDOW_HEIGHT;
-=======
-	private static int REFLECTION_WIDTH = 1920;
-	private static int REFLECTION_HEIGHT = 1080;
-
-	private static int REFRACTION_WIDTH = 1920;
-	private static int REFRACTION_HEIGHT = 1080;
-
-	private static int WINDOW_WIDTH;
-	private static int WINDOW_HEIGHT;
->>>>>>> refs/remotes/origin/BiomeBack
 
 	private Vector3f CLEAR_COLOUR;
 
@@ -117,10 +106,8 @@ public class Window implements Runnable {
 	}
 
 	private void loadProperties() {
-<<<<<<< HEAD
 		System.out.println("Loading properties from resources/properties/window.properties");
-=======
->>>>>>> refs/remotes/origin/BiomeBack
+
 		Properties props = new Properties();
 		try {
 			FileReader reader = new FileReader("resources/properties/window.properties");
@@ -261,12 +248,8 @@ public class Window implements Runnable {
 		objectManager.render(reflectionClipPlane);
 		entityManager.render(reflectionClipPlane);
 
-<<<<<<< HEAD
 		//	move camera back and render refraction texture
 		//GraphicsManager.camera.flipCamera();
-=======
-		//move camera back and render refraction texture
->>>>>>> refs/remotes/origin/BiomeBack
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
 		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
@@ -304,11 +287,7 @@ public class Window implements Runnable {
 	@Override
 	public void run() {
 		init();
-<<<<<<< HEAD
 		//	GraphicsManager.toggleFog();
-=======
-		GraphicsManager.toggleFog();
->>>>>>> refs/remotes/origin/BiomeBack
 		long lastTime = System.nanoTime();
 		double delta = 0.0;
 		double ns = 1000000000.0 / 60.0;

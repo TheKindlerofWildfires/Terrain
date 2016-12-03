@@ -20,12 +20,9 @@ uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
 uniform sampler2D dudvMap;
 uniform sampler2D normalMap;
-<<<<<<< HEAD
 uniform sampler2D depthMap;
 
-=======
-uniform Fog fog;
->>>>>>> refs/remotes/origin/BiomeBack
+
 
 uniform float moveFactor;
 
@@ -98,7 +95,6 @@ void main(){
 	reflectColour = mix(reflectColour,waterColour,1/waterClarity);
 	
 	fragColor = mix(reflectColour,refractColour,refractiveFactor);
-<<<<<<< HEAD
 
  	vec4 lightColour = calcDirectionalLight(directionalLight, mvVertexPos, norm, normal);
 
@@ -112,12 +108,6 @@ void main(){
 	}
 	
 //	fragColor = vec4(refractiveFactor);
-=======
-	fragColor = mix(fragColor,vec4(0,0.3,.5,1),.1);
 
-	if ( fog.activeFog == 1 ){ 
-		fragColor = calcFog(mvVertexPos, fragColor, fog);
-	}
->>>>>>> refs/remotes/origin/BiomeBack
 } 
 
