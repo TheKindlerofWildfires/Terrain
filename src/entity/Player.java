@@ -13,14 +13,14 @@ public class Player extends GameObject {
 	private Vector3f upward;
 	Camera camera;
 	Vector3f displacement = new Vector3f(0, 0, 0);
-	Vector3f destination;
+	Vector3f[] destination = new Vector3f[4];
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
-		this.speed = camera.getSpeed();
+		this.speed = camera.getSpeed()*5;
 		upward = new Vector3f(0, 0, speed);
 		this.camera = camera;
 		this.target = camera.getTarget();
-		this.position = new Vector3f(1,1,1);
+		this.position = new Vector3f(1,1,10);
 		//this.position = camera.getPos();
 		
 		
@@ -42,7 +42,7 @@ public class Player extends GameObject {
 			displacement = upward;
 			break;
 		case "DOWN":
-			displacement = upward.negate();
+			//displacement = upward.negate();
 			break;
 		case "FORWARD":
 			displacement = new Vector3f(-vx, -vy, 0);// backward.negate();
@@ -68,28 +68,37 @@ public class Player extends GameObject {
 		boolean canMove = true;
 		int chunkX = Math.round(position.x / 2 / Chunk.SIZE);
 		int chunkY = Math.round(position.y / 2 / Chunk.SIZE);
+		this.destination[0] = position.add(displacement.scale(5));
+		this.destination[1] = position.add(displacement.scale(1).negate());
+		this.destination[2] = position.add(displacement.scale(1).cross(upward.normalize()));
+		this.destination[3] = position.add(displacement.scale(1).cross(upward.negate().normalize()));
 		
-		//To avoid phasing through walls we need to check a multiple point 2d shape
-		//and have height equal to the highest of its points
-		this.destination = position.add(displacement.scale(10));
 		
 		Chunk location = new Chunk(World.noise, chunkX, chunkY);
-		destination.z =location.getHeight(destination.x, destination.y)+1f;
-		
-		float rise = destination.z-position.z;
+		destination[0].z =location.getHeight(destination[0].x, destination[0].y)+1f;
+		destination[1].z =location.getHeight(destination[1].x, destination[1].y)+1f;
+		destination[2].z =location.getHeight(destination[2].x, destination[2].y)+1f;
+		destination[3].z =location.getHeight(destination[3].x, destination[3].y)+1f;
+		float rise = Math.max(Math.max(destination[0].z, destination[1].z), Math.max(destination[2].z, destination[3].z));
+		rise = rise -position.z;
 		
 		if(rise>CLIMABLE){
-			canMove = false;
-		}else if(rise< -CLIMABLE){
-			displacement = displacement.add(upward.negate());
+			canMove = false;//this part works on at least one side
+		}else if(rise<-CLIMABLE){
+			displacement = displacement.add(upward.negate().scale(1f));
 		}else{
-			float diff = position.z - destination.z;
-			diff = 0.1f*diff;
-			displacement = displacement.add(new Vector3f(0,0,-diff));
+			float[] diff = {position.z - destination[0].z, position.z - destination[1].z};
+			float difference = Math.min(diff[0], diff[1])*0.1f;
+			displacement = displacement.add(new Vector3f(0,0,-difference));
 		}
 		if(canMove){
 			this.translate(displacement);
 			camera.move(displacement);
+		}else{
+			/*
+			this.translate(displacement.negate().scale(0.5f));
+			camera.move(displacement.negate().scale(0.5f));
+			*/
 		}
 	}
 }
