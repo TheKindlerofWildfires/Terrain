@@ -126,21 +126,24 @@ public class Chunk extends GameObject {
 		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1));
 		double moist = Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE / 2;
 		double biome = Math.abs(noise.getValue(point.x/4, point.y/4, 0.2));
-		float bs = (int)(biome*2.9);
+		float bs = (int)(biome*3.9);
 		if (bs == 0) {
-			type = "biome0";//green
+			type = "swamp";//swampc
 		}		
 		if (bs == 1) {
-			type = "biome1";//red
+			type = "hill";//hillc
 		}
 		if (bs == 2) {
-			type = "biome2";//blue
+			type = "desert";//desertn
 		}
 		if (bs == 3) {
-			type = "biome3";//blue
+			type = "mountain";//mountainn
 		}
-		if (type == "biome0") {
-			h = (float) (elev * SIZE /64+60*WATERLEVEL/64);
+		if (bs == 4) {
+			type = "ocean";//oceano
+		}
+		if (type == "swamp") {
+			h = (float) (elev * SIZE /16+29*WATERLEVEL/32);
 			r = (float) (0.2f / (moist + 1));
 			b = (float) (0.4f / (moist + 1));
 			g = (float) (0.4f / (moist + 1));
@@ -165,11 +168,11 @@ public class Chunk extends GameObject {
 				g *= 1.1f;
 			}
 		}
-		if (type == "biome1") {
+		if (type == "hill") {
 			h = (float) (elev * SIZE / 2);
 			r = (float) (0.3f / (moist + 1));
 			b = (float) (0.3f / (moist + 1));
-			g = (float) (0.65f / (moist + 1));
+			g = (float) (0.62f / (moist + 1));
 			if (h < WATERLEVEL) {
 				b *= 0.6f;
 				r *= 0.1f;
@@ -192,11 +195,12 @@ public class Chunk extends GameObject {
 			}
 		}
 		
-		if (type == "biome2") {
-			h = (float) (elev * SIZE / 4+31*WATERLEVEL/32);
+		if (type == "desert") {
+			h = (float) (elev * SIZE / 8+WATERLEVEL);
 			r = (float) (0.3f / (moist + 1));
 			b = (float) (0.2f / (moist + 1));
-			g = (float) (0.5f / (moist + 1));
+			g = (float) (0.4f / (moist + 1));
+			r=0.8f;
 			if (h < WATERLEVEL) {
 				b *= 0.6f;
 				r *= 0.1f;
@@ -218,10 +222,36 @@ public class Chunk extends GameObject {
 				g *= 1.1f;
 			}
 		}
-		if (type == "biome3") {
-			h = (float) (elev * SIZE / 2+7*WATERLEVEL/8);
-			r = (float) (0.3f / (moist + 1));
-			b = (float) (0.3f / (moist + 1));
+		if (type == "mountain") {
+			h = (float) (elev * SIZE+4*WATERLEVEL/8);
+			r = (float) (0.4f / (moist + 1));
+			b = (float) (0.4f / (moist + 1));
+			g = (float) (0.4f / (moist + 1));
+			if (h < WATERLEVEL) {
+				b *= 0.6f;
+				r *= 0.1f;
+				g *= 0.2f;
+			}
+			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
+				b *= 0.5f;
+				r *= 1.7f;
+				g *= 1.2f;
+			}
+			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
+				b *= 0.5f;
+				r *= 1.2f;
+				g *= 1.2f;
+			}
+			if (h > TREELINE) {
+				b *= 0.5f;
+				r *= 1.4f;
+				g *= 1.1f;
+			}
+		}
+		if (type == "ocean") {
+			h = (float) (elev * SIZE / 16+4*WATERLEVEL/8);
+			r = (float) (0.4f / (moist + 1));
+			b = (float) (0.4f / (moist + 1));
 			g = (float) (0.6f / (moist + 1));
 			if (h < WATERLEVEL) {
 				b *= 0.6f;
