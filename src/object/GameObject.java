@@ -88,6 +88,14 @@ public class GameObject {
 		material.useColour = 1;
 	}
 
+	public GameObject() {
+
+	}
+
+	public void setScale(float x, float y, float z) {
+		model.setScale(x, y, z);
+	}
+
 	public void scale(float x, float y, float z) {
 		model.scale(x, y, z);
 		boundingBox.x *= x;

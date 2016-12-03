@@ -161,13 +161,4 @@ public class Utilities {
 			return 0;
 		}
 	}
-
-	public static final void main(String[] args) {
-		Matcher matcher = INCLUDE_PATTERN.matcher("#include lighting.lib");
-		matcher.matches();
-		System.out.println(matcher.group(1));
-		
-		int vertexShaderID = Utilities.loadShader("src/shaders/water.frag", GL_VERTEX_SHADER);
-
-	}
 }

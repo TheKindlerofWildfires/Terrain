@@ -12,21 +12,23 @@ public class Player extends GameObject {
 	private Vector3f upward;
 
 	Camera camera;
-	
-	public Player(Camera camera) {
+
+	public Player() {
 		super("resources/models/box.obj", "none", true);
 		upward = new Vector3f(0, 0, speed);
+	}
+
+	public void slaveCamera(Camera camera) {
 		this.camera = camera;
 		this.target = camera.getTarget();
-		//this.position = camera.getPos();
 		this.speed = camera.getSpeed();
 	}
 
 	public void update() {
 		float cZ = (float) Math.abs(World.noise.getValue(position.x, position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
 		float diff = position.z - cZ;
-		diff*=.2;
-		camera.moveCamera(new Vector3f(0,0,-diff));
+		diff *= .2;
+		camera.moveCamera(new Vector3f(0, 0, -diff));
 		this.placeAt(camera.pos.x, camera.pos.y, camera.pos.z);
 		//this.target = camera.getTarget();
 	}

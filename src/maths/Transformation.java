@@ -22,6 +22,11 @@ public class Transformation {
 		matrix = translation.multiply(rotation).multiply(scale);
 	}
 
+	public void setScale(float x, float y, float z) {
+		scale = (Matrix4f.scale(x, y, z));
+		matrix = translation.multiply(rotation).multiply(scale);
+	}
+
 	public void translate(float x, float y, float z) {
 		translation = translation.multiply(Matrix4f.translate(x, y, z));
 		matrix = translation.multiply(rotation).multiply(scale);
