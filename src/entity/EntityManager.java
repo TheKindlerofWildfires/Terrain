@@ -13,7 +13,7 @@ public class EntityManager {
 
 	public EntityManager() {
 		player = new Player();
-		player.slaveCamera(GraphicsManager.camera);
+		//player.slaveCamera(GraphicsManager.camera);
 	}
 
 	public void render(Vector4f clipPlane) {

@@ -34,7 +34,7 @@ public class GameObject {
 	protected VertexArrayObject vao;
 	protected float[] vaoData;
 	public Material material;
-	protected Transformation model;
+	public Transformation model;
 	public boolean isGL;
 
 	protected boolean textured;
@@ -185,5 +185,13 @@ public class GameObject {
 		assert !isGL : "its already gl you dumb fuck";
 		vao = new VertexArrayObject(vaoData, 3);
 		this.isGL = true;
+	}
+
+	public int getShader() {
+		return shader;
+	}
+
+	public VertexArrayObject getVAO() {
+		return vao;
 	}
 }

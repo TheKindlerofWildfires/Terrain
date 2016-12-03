@@ -17,6 +17,13 @@ public class Transformation {
 
 	}
 
+	public Transformation(Transformation model) {
+		this.matrix = new Matrix4f(model.matrix);
+		this.translation = new Matrix4f(model.translation);
+		this.scale = new Matrix4f(model.scale);
+		this.rotation = new Matrix4f(model.rotation);
+	}
+
 	public void scale(float x, float y, float z) {
 		scale = scale.multiply(Matrix4f.scale(x, y, z));
 		matrix = translation.multiply(rotation).multiply(scale);
