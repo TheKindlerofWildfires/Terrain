@@ -7,44 +7,32 @@ import world.Chunk;
 import world.World;
 
 public class Player extends GameObject {
+	private static final float CLIMABLE = 1.5f;
 	private Vector3f target;
 	private float speed;
 	private Vector3f upward;
-
 	Camera camera;
-	
+	Vector3f displacement = new Vector3f(0, 0, 0);
+	Vector3f destination;
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
+		this.speed = camera.getSpeed();
 		upward = new Vector3f(0, 0, speed);
 		this.camera = camera;
 		this.target = camera.getTarget();
+		this.position = new Vector3f(1,1,1);
 		//this.position = camera.getPos();
-		this.speed = camera.getSpeed();
+		
+		
 	}
 
 	public void update() {
-		int chunkX = Math.round(camera.pos.x / 2 / Chunk.SIZE);
-		int chunkY = Math.round(camera.pos.y / 2 / Chunk.SIZE);
-		//This line exists because I can't get the chunk from the chunklist in world
-		Chunk myChunk = new Chunk(World.noise, chunkX, chunkY);
-		float cZ = myChunk.getHeight(camera.pos.x, camera.pos.y)+1f;
-		//float cZ = (float) Math.abs(World.noise.getValue(position.x, position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
-		/*
-		 * Lets replace that takes the x, y points, 
-		 * finds the triangle, 
-		 * and takes the calculated value of the location at the point based on the points h
-		 * this could be some fun math! 
-		 */
-		float diff = position.z - cZ;
-		diff = (float) (Math.pow(diff,3)*0.03f);
-		camera.moveCamera(new Vector3f(0,0,-diff));
-		this.placeAt(camera.pos.x, camera.pos.y, camera.pos.z);
-		//this.target = camera.getTarget();
+		camera.pos=position;
 	}
 
 	public void movePlayer(String dir) {
-		target = position.add(new Vector3f(0, 1, 0));
-		Vector3f displacement = new Vector3f(0, 0, 0);
+		this.target = camera.target;
+
 		float vx = position.x - target.x;
 		float vy = position.y - target.y;
 		vx *= speed;
@@ -72,6 +60,36 @@ public class Player extends GameObject {
 			System.err.println("wtf");
 		}
 		displacement = displacement.normalize().scale(speed);
-		this.translate(displacement);
+		move();
+		
+	}
+
+	private void move() {
+		boolean canMove = true;
+		int chunkX = Math.round(position.x / 2 / Chunk.SIZE);
+		int chunkY = Math.round(position.y / 2 / Chunk.SIZE);
+		
+		//To avoid phasing through walls we need to check a multiple point 2d shape
+		//and have height equal to the highest of its points
+		this.destination = position.add(displacement.scale(10));
+		
+		Chunk location = new Chunk(World.noise, chunkX, chunkY);
+		destination.z =location.getHeight(destination.x, destination.y)+1f;
+		
+		float rise = destination.z-position.z;
+		
+		if(rise>CLIMABLE){
+			canMove = false;
+		}else if(rise< -CLIMABLE){
+			displacement = displacement.add(upward.negate());
+		}else{
+			float diff = position.z - destination.z;
+			diff = 0.1f*diff;
+			displacement = displacement.add(new Vector3f(0,0,-diff));
+		}
+		if(canMove){
+			this.translate(displacement);
+			camera.move(displacement);
+		}
 	}
 }

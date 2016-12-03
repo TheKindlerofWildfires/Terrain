@@ -146,7 +146,7 @@ public class Chunk extends GameObject {
 			b = (float) (0.4f / (moist + 1));
 			g = (float) (0.4f / (moist + 1));
 			if (h < WATERLEVEL) {
-				b *= 0.6f;
+				b *= 0.4f;
 				r *= 0.1f;
 				g *= 0.2f;
 			}
@@ -172,7 +172,7 @@ public class Chunk extends GameObject {
 			b = (float) (0.3f / (moist + 1));
 			g = (float) (0.62f / (moist + 1));
 			if (h < WATERLEVEL) {
-				b *= 0.6f;
+				b *= 0.4f;
 				r *= 0.1f;
 				g *= 0.2f;
 			}
@@ -199,7 +199,7 @@ public class Chunk extends GameObject {
 			b = (float) (0.2f / (moist + 1));
 			g = (float) (0.4f / (moist + 1));
 			if (h < WATERLEVEL) {
-				b *= 0.6f;
+				b *= 0.3f;
 				r *= 0.1f;
 				g *= 0.2f;
 			}
@@ -225,7 +225,7 @@ public class Chunk extends GameObject {
 			b = (float) (0.4f / (moist + 1));
 			g = (float) (0.4f / (moist + 1));
 			if (h < WATERLEVEL) {
-				b *= 0.6f;
+				b *= 0.2f;
 				r *= 0.1f;
 				g *= 0.2f;
 			}
