@@ -8,12 +8,24 @@ in vec3 mvVertexPos;
 
 out	vec4 fragColor;
 
+struct Fog
+{
+    int activeFog;
+    vec3 colour;
+    float density;
+    float exponent;
+};
+
 uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
 uniform sampler2D dudvMap;
 uniform sampler2D normalMap;
+<<<<<<< HEAD
 uniform sampler2D depthMap;
 
+=======
+uniform Fog fog;
+>>>>>>> refs/remotes/origin/BiomeBack
 
 uniform float moveFactor;
 
@@ -28,6 +40,16 @@ uniform float far;
 uniform float waterClarity;
 uniform float maxDistortion;
 uniform vec4 waterColour;
+
+vec4 calcFog(vec3 pos, vec4 colour, Fog fog)
+{
+    float distance = length(pos);
+    float fogFactor = 1.0 / exp( pow((distance * fog.density),fog.exponent));
+    fogFactor = clamp( fogFactor, 0.0, 1.0 );
+
+    vec3 resultColour = mix(fog.colour, colour.xyz, fogFactor);
+    return vec4(resultColour.xyz, 1);
+}
 
 void main(){
 	vec2 ndc = (clipSpace.xy/clipSpace.w)/2 + .5;
@@ -76,6 +98,7 @@ void main(){
 	reflectColour = mix(reflectColour,waterColour,1/waterClarity);
 	
 	fragColor = mix(reflectColour,refractColour,refractiveFactor);
+<<<<<<< HEAD
 
  	vec4 lightColour = calcDirectionalLight(directionalLight, mvVertexPos, norm, normal);
 
@@ -89,5 +112,12 @@ void main(){
 	}
 	
 //	fragColor = vec4(refractiveFactor);
+=======
+	fragColor = mix(fragColor,vec4(0,0.3,.5,1),.1);
+
+	if ( fog.activeFog == 1 ){ 
+		fragColor = calcFog(mvVertexPos, fragColor, fog);
+	}
+>>>>>>> refs/remotes/origin/BiomeBack
 } 
 

@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 /shaders/
 /graphics/
 /object/
 /world/
 /entity/
 /maths/
+=======
+/world/
+/models/
+>>>>>>> refs/remotes/origin/BiomeBack

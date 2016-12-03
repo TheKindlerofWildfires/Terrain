@@ -1,15 +1,14 @@
 https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/
-
+Return:
+	Fog
+	Day night cycle
 Assigned:
-	Optimization
+	Fix lighting
 	Thickness
 	Caves
 	Have Chunk extend Object
-	Make OBB colliders
-	Load chunks around camera
+	SAT collision 
+	MD5
 Eventual:
-	Water physics
-	Chunks load as move
+	Optimization
 	Weather
-	Colliders
-	Day night cycle

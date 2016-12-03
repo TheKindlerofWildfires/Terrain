@@ -1,6 +1,9 @@
 package entity;
 
+<<<<<<< HEAD
 import graphics.Camera;
+=======
+>>>>>>> refs/remotes/origin/BiomeBack
 import maths.Vector3f;
 import object.GameObject;
 import world.Chunk;
@@ -8,6 +11,7 @@ import world.World;
 
 public class Player extends GameObject {
 	private Vector3f target;
+<<<<<<< HEAD
 	private float speed;
 	private Vector3f upward;
 
@@ -31,6 +35,26 @@ public class Player extends GameObject {
 		//this.target = camera.getTarget();
 	}
 
+=======
+	private float speed = .2f;
+	private Vector3f upward;
+
+	public Player() {
+		super("resources/models/box.obj", "none", true);
+		this.scale(1, 1, 1);
+		upward = new Vector3f(0, 0, speed);
+	}
+
+	public void update() {
+		float cZ = (float) Math.abs(World.noise.getValue(position.x, position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
+		//System.out.println(position);
+		//System.out.println(cZ);
+		float diff = position.z - cZ;
+		//System.out.println(diff);
+		this.translate(new Vector3f(0, 0, -diff));
+	}
+
+>>>>>>> refs/remotes/origin/BiomeBack
 	public void movePlayer(String dir) {
 		target = position.add(new Vector3f(0, 1, 0));
 		Vector3f displacement = new Vector3f(0, 0, 0);
@@ -62,5 +86,9 @@ public class Player extends GameObject {
 		}
 		displacement = displacement.normalize().scale(speed);
 		this.translate(displacement);
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/BiomeBack
 	}
 }

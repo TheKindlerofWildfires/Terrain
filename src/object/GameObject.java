@@ -100,8 +100,13 @@ public class GameObject {
 		boundingBox.centre.x += x;
 		boundingBox.centre.y += y;
 		boundingBox.centre.z += z;
+<<<<<<< HEAD
 		position = position.add(new Vector3f(x, y, z));
 
+=======
+		position = position.add(new Vector3f(x,y,z));
+		
+>>>>>>> refs/remotes/origin/BiomeBack
 	}
 
 	public void rotate(int angle, int x, int y, int z) throws IllegalArgumentException {

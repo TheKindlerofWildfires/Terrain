@@ -20,7 +20,11 @@ void main(){
     gl_ClipDistance[0] = dot(vec4(position,1),clipPlane);
     vec4 mvPos = modelView * vec4(position, 1.0);
     toCamera = normalize(cameraPos-mvPos.xyz);
+<<<<<<< HEAD
     norm = normalize(modelView * vec4(normal, 0.0)).xyz;
+=======
+    norm = normalize(vec3(modelView * vec4(normal,0)));
+>>>>>>> refs/remotes/origin/BiomeBack
     mvVertexPos = vec3(mvPos);
     clipSpace = projection*mvPos;
     gl_Position = projection * mvPos;

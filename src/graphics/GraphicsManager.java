@@ -143,6 +143,49 @@ public class GraphicsManager {
 		Water.NORMAL_PATH = props.getProperty("normalPath");
 	}
 
+	private static DirectionalLight dirLight;
+	private static float lightAngle = 0;
+	private static float sunSpeed;
+	private static Vector3f ambientLight;
+
+	private static Fog fog;
+
+	public static Properties props;
+
+	private static void loadProperties() {
+		props = new Properties();
+		try {
+			FileReader reader = new FileReader("resources/properties/graphics.properties");
+			props.load(reader);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Vector3f colour = Vector3f.parseVector(props.getProperty("directionalLightColour"));
+		Vector3f direction = Vector3f.parseVector(props.getProperty("directionalLightDirection"));
+		float intensity = Float.parseFloat(props.getProperty("directionalLightIntensity"));
+		dirLight = new DirectionalLight(colour, direction, intensity);
+
+		int active = Integer.parseInt(props.getProperty("fogActive"));
+		colour = Vector3f.parseVector(props.getProperty("fogColour"));
+		float density = Float.parseFloat(props.getProperty("fogDensity"));
+		float exponent = Float.parseFloat(props.getProperty("fogExponent"));
+		fog = new Fog(colour, active, density, exponent);
+
+		Vector3f position = Vector3f.parseVector(props.getProperty("cameraStartPosition"));
+		Vector3f target = Vector3f.parseVector(props.getProperty("cameraStartTarget"));
+		Vector3f up = Vector3f.parseVector(props.getProperty("up"));
+		float fov = Float.parseFloat(props.getProperty("fov"));
+		float aspect = Float.parseFloat(props.getProperty("aspect"));
+		float near = Float.parseFloat(props.getProperty("near"));
+		float far = Float.parseFloat(props.getProperty("far"));
+		camera = new Camera(position, target, up, fov, aspect, near, far);
+
+		sunSpeed = Float.parseFloat(props.getProperty("sunSpeed"));
+
+		ambientLight = Vector3f.parseVector(props.getProperty("ambientLight"));
+	}
+
 	public GraphicsManager() {
 		loadProperties();
 		ShaderManager.init(dirLight, fog, ambientLight);
@@ -174,6 +217,7 @@ public class GraphicsManager {
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
 			camera.moveCamera("DOWN");
 		}
+<<<<<<< HEAD
 	//	dayNightCycle();
 	}
 
@@ -200,6 +244,19 @@ public class GraphicsManager {
 		double angRad = Math.toRadians(lightAngle);
 		dirLight.direction.x = (float) Math.sin(angRad);
 		dirLight.direction.z = (float) Math.cos(angRad);
+=======
+		dayNightCycle();
+	}
+
+	private static void dayNightCycle() {
+		lightAngle += sunSpeed;
+		float angleRad = (float) Math.toRadians(lightAngle);
+		float x = (float) Math.cos(angleRad);
+		float z = (float) Math.sin(angleRad);
+		dirLight.direction.x = x;
+		dirLight.direction.z = z;
+
+>>>>>>> refs/remotes/origin/BiomeBack
 	}
 
 	public static void toggleFog() {
