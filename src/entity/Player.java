@@ -36,7 +36,7 @@ public class Player extends GameObject {
 		 * this could be some fun math! 
 		 */
 		float diff = position.z - cZ;
-		diff = (float) (Math.pow(diff,3)*0.04f);
+		diff = (float) (Math.pow(diff,3)*0.03f);
 		camera.moveCamera(new Vector3f(0,0,-diff));
 		this.placeAt(camera.pos.x, camera.pos.y, camera.pos.z);
 		//this.target = camera.getTarget();
