@@ -279,4 +279,10 @@ public class Chunk extends GameObject {
 		this.vao = new VertexArrayObject(vertices, 3);
 		this.isGL = true;
 	}
+
+	public float getHeight(float x, float y) {
+		Vector3f point = new Vector3f(x, y, 0);
+		float[] h = getValue(point, point);
+		return h[3];
+	}
 }

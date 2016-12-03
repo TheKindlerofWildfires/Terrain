@@ -23,7 +23,12 @@ public class Player extends GameObject {
 	}
 
 	public void update() {
-		float cZ = (float) Math.abs(World.noise.getValue(position.x, position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
+		int chunkX = Math.round(camera.pos.x / 2 / Chunk.SIZE);
+		int chunkY = Math.round(camera.pos.y / 2 / Chunk.SIZE);
+		//This line exists because I can't get the chunk from the chunklist in world
+		Chunk myChunk = new Chunk(World.noise, chunkX, chunkY);
+		float cZ = myChunk.getHeight(camera.pos.x, camera.pos.y)+1f;
+		//float cZ = (float) Math.abs(World.noise.getValue(position.x, position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
 		/*
 		 * Lets replace that takes the x, y points, 
 		 * finds the triangle, 
@@ -31,7 +36,7 @@ public class Player extends GameObject {
 		 * this could be some fun math! 
 		 */
 		float diff = position.z - cZ;
-		diff*=.2;
+		diff = (float) (Math.pow(diff,3)*0.04f);
 		camera.moveCamera(new Vector3f(0,0,-diff));
 		this.placeAt(camera.pos.x, camera.pos.y, camera.pos.z);
 		//this.target = camera.getTarget();
