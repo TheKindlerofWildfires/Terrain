@@ -52,11 +52,8 @@ vec4 calcLightColour(vec3 colour, float intensity, vec3 position, vec3 dir, vec3
     specularFactor = pow(specularFactor, material.reflectance);
     specColour = vec4(colour, 1.0) * intensity  * specularFactor;
 	
-<<<<<<< HEAD
-    return vec4(diffuseColour + specColour); //not currently returning specular
-=======
-    return vec4(diffuseColour+specColour); //not currently returning specular
->>>>>>> master
+
+    return vec4(diffuseColour+specColour);
 }
 
 vec4 calcDirectionalLight(DirectionalLight light, vec3 position, vec3 normal, vec3 distortedNormal)

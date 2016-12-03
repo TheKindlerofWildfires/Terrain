@@ -160,8 +160,4 @@ public class Utilities {
 			return 0;
 		}
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 }
