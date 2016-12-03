@@ -4,14 +4,14 @@ import maths.Vector3f;
 import noiseLibrary.module.source.Perlin;
 
 public class Biome {
-	static Perlin noise = World.noise;
-	public static float SIZE;
-	public static float WATERLEVEL;
-	public static float BEACHSIZE;
-	public static float TREELINE;
-	protected static float[] getValue(Vector3f centre, Vector3f point) {
+	public static float SIZE = Chunk.SIZE;
+	public static float WATERLEVEL = Chunk.WATERLEVEL;
+	public static float BEACHSIZE = Chunk.BEACHSIZE;
+	public static float TREELINE = Chunk.TREELINE;
+	static Perlin noise = Chunk.noise;
+	public static float[] getValue(Vector3f centre, Vector3f point) {
 		float r, b, g, h;
-		r=b=g=h=0;
+		r=b=g=h=1;
 		String type = null;
 		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1));
 		double moist = Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE / 2;
@@ -41,60 +41,35 @@ public class Biome {
 		if (bs == 7) {
 			type = "mountainTop";
 		}
-		if (type == "mountainEdge") {
-			h = (float) (elev * SIZE *0.8+31*WATERLEVEL/32);
-			r = (float) (0.3f / (moist + 1));
+		if (type == "ocean") {
+			h = (float) (elev * SIZE / 16+1*WATERLEVEL/2);
+			r = (float) (0.4f / (moist + 1));
 			b = (float) (0.4f / (moist + 1));
-			g = (float) (0.4f / (moist + 1));
+			g = (float) (0.6f / (moist + 1));
 			if (h < WATERLEVEL) {
-				b *= 0.2f;
-				r *= 0.1f;
+				b *= 0.6f;
+				r *= 0.2f;
 				g *= 0.2f;
 			}
 			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
-				b *= 1.0f;
-				r *= 1.2f;
+				b *= 0.5f;
+				r *= 1.1f;
 				g *= 1.2f;
 			}
 			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
-				b *= 1.0f;
-				r *= 1.1f;
-				g *= 1.1f;
+				b *= 0.5f;
+				r *= 1.2f;
+				g *= 1.2f;
 			}
 			if (h > TREELINE) {
-				b *= 1.2f;
-				r *= 1.3f;
+				b *= 0.5f;
+				r *= 1.4f;
 				g *= 1.1f;
 			}
 		}
-		if (type == "mountainTop") {
-			h = (float) (elev * SIZE *1.4+31*WATERLEVEL/32);
-			r = (float) (0.4f / (moist + 1));
-			b = (float) (0.4f / (moist + 1));
-			g = (float) (0.4f / (moist + 1));
-			if (h < WATERLEVEL) {
-				b *= 0.6f;
-				r *= 0.6f;
-				g *= 0.6f;
-			}
-			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
-				b *= 1.1f;
-				r *= 1.1f;
-				g *= 1.1f;
-			}
-			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
-				b *= 1.6f;
-				r *= 1.6f;
-				g *= 1.6f;
-			}
-			if (h > TREELINE) {
-				b *= 2.1f;
-				r *= 2.1f;
-				g *= 2.1f;
-			}
-		}
+		
 		if (type == "beach") {
-			h = (float) (elev * SIZE /8+27*WATERLEVEL/32);
+			h = (float) (elev * SIZE /12+3*WATERLEVEL/4);
 			r = (float) (0.2f / (moist + 1));
 			b = (float) (0.4f / (moist + 1));
 			g = (float) (0.4f / (moist + 1));
@@ -120,7 +95,7 @@ public class Biome {
 			}
 		}
 		if (type == "swamp") {
-			h = (float) (elev * SIZE /16+29*WATERLEVEL/32);
+			h = (float) (elev * SIZE /8+7*WATERLEVEL/8);
 			r = (float) (0.2f / (moist + 1));
 			b = (float) (0.4f / (moist + 1));
 			g = (float) (0.4f / (moist + 1));
@@ -145,34 +120,9 @@ public class Biome {
 				g *= 1.1f;
 			}
 		}
-		if (type == "hill") {
-			h = (float) (elev * SIZE / 1.5);
-			r = (float) (0.3f / (moist + 1));
-			b = (float) (0.3f / (moist + 1));
-			g = (float) (0.62f / (moist + 1));
-			if (h < WATERLEVEL) {
-				b *= 0.4f;
-				r *= 0.1f;
-				g *= 0.2f;
-			}
-			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
-				b *= 0.5f;
-				r *= 1.4f;
-				g *= 1.2f;
-			}
-			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
-				b *= 0.5f;
-				r *= 1.2f;
-				g *= 1.2f;
-			}
-			if (h > TREELINE) {
-				b *= 0.5f;
-				r *= 1.4f;
-				g *= 1.1f;
-			}
-		}	
+			
 		if (type == "desert") {
-			h = (float) (elev * SIZE / 4+WATERLEVEL);
+			h = (float) (elev * SIZE / 6+15*WATERLEVEL/16);
 			r = (float) (0.3f / (moist + 1));
 			b = (float) (0.2f / (moist + 1));
 			g = (float) (0.4f / (moist + 1));
@@ -197,8 +147,60 @@ public class Biome {
 				g *= 1.1f;
 			}
 		}
+		if (type == "hill") {
+			h = (float) (elev * SIZE / 2+31/64*WATERLEVEL);
+			r = (float) (0.3f / (moist + 1));
+			b = (float) (0.3f / (moist + 1));
+			g = (float) (0.62f / (moist + 1));
+			if (h < WATERLEVEL) {
+				b *= 0.4f;
+				r *= 0.1f;
+				g *= 0.2f;
+			}
+			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
+				b *= 0.5f;
+				r *= 1.4f;
+				g *= 1.2f;
+			}
+			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
+				b *= 0.5f;
+				r *= 1.2f;
+				g *= 1.2f;
+			}
+			if (h > TREELINE) {
+				b *= 0.5f;
+				r *= 1.4f;
+				g *= 1.1f;
+			}
+		}
+		if (type == "mountainEdge") {
+			h = (float) (elev * SIZE*1+31*WATERLEVEL/32);
+			r = (float) (0.3f / (moist + 1));
+			b = (float) (0.4f / (moist + 1));
+			g = (float) (0.4f / (moist + 1));
+			if (h < WATERLEVEL) {
+				b *= 0.2f;
+				r *= 0.1f;
+				g *= 0.2f;
+			}
+			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
+				b *= 1.0f;
+				r *= 1.2f;
+				g *= 1.2f;
+			}
+			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
+				b *= 1.0f;
+				r *= 1.1f;
+				g *= 1.1f;
+			}
+			if (h > TREELINE) {
+				b *= 1.2f;
+				r *= 1.3f;
+				g *= 1.1f;
+			}
+		}
 		if (type == "mountain") {
-			h = (float) (elev * SIZE*1.1+3*WATERLEVEL/8);
+			h = (float) (elev * SIZE*1.4+WATERLEVEL);
 			r = (float) (0.4f / (moist + 1));
 			b = (float) (0.4f / (moist + 1));
 			g = (float) (0.4f / (moist + 1));
@@ -223,34 +225,34 @@ public class Biome {
 				g *= 1.0f;
 			}
 		}
-		if (type == "ocean") {
-			h = (float) (elev * SIZE / 16+3*WATERLEVEL/8);
+		
+		if (type == "mountainTop") {
+			h = (float) (elev * SIZE *2+WATERLEVEL);
 			r = (float) (0.4f / (moist + 1));
 			b = (float) (0.4f / (moist + 1));
-			g = (float) (0.6f / (moist + 1));
+			g = (float) (0.4f / (moist + 1));
 			if (h < WATERLEVEL) {
 				b *= 0.6f;
-				r *= 0.2f;
-				g *= 0.2f;
+				r *= 0.6f;
+				g *= 0.6f;
 			}
 			if (h > WATERLEVEL && h < WATERLEVEL + BEACHSIZE) {
-				b *= 0.5f;
+				b *= 1.1f;
 				r *= 1.1f;
-				g *= 1.2f;
+				g *= 1.1f;
 			}
 			if (h > WATERLEVEL + BEACHSIZE && h < TREELINE) {
-				b *= 0.5f;
-				r *= 1.2f;
-				g *= 1.2f;
+				b *= 1.6f;
+				r *= 1.6f;
+				g *= 1.6f;
 			}
 			if (h > TREELINE) {
-				b *= 0.5f;
-				r *= 1.4f;
-				g *= 1.1f;
+				b *= 2.1f;
+				r *= 2.1f;
+				g *= 2.1f;
 			}
 		}
 		float[] returns = { r, b, g, h };
-		//System.out.println(h);
 		return returns;
 	}
 }

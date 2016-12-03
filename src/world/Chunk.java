@@ -21,7 +21,7 @@ public class Chunk extends GameObject {
 	public static int SEAWEED_PROBABILITY;
 	public static int TREE_PROBABILITY;
 
-	Perlin noise;
+	static Perlin noise;
 	float[] vertices;
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 	ArrayList<Vector3f> treeland = new ArrayList<Vector3f>();
@@ -29,10 +29,9 @@ public class Chunk extends GameObject {
 	ArrayList<GameObject> foliage = new ArrayList<GameObject>();
 	public int chunkX;
 	public int chunkY;
-
 	public Chunk(Perlin noise, int x, int y) {
 		super("none", "none", true);
-		this.noise = noise;
+		Chunk.noise = noise;
 		this.chunkX = x;
 		this.chunkY = y;
 		this.hasMaterial = false;
@@ -84,12 +83,12 @@ public class Chunk extends GameObject {
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
 				float[] values = Biome.getValue(centre, point);
-				float h = values[3];
+
 				float r = values[0];
 				float b = values[1];
 				float g = values[2];
+				float h = values[3];
 				terrain.get(i).getPoint(j).z = h;
-				
 				
 				float pseudo = Math.abs(h - (int) h);// remainder
 				pseudo = (int) (pseudo * 100);
@@ -124,6 +123,7 @@ public class Chunk extends GameObject {
 	}
 
 	public float getHeight(float x, float y) {
+		
 		Vector3f point = new Vector3f(x, y, 0);
 		float[] h = Biome.getValue(point, point);
 		return h[3];

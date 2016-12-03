@@ -8,6 +8,7 @@ import world.World;
 
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.5f;
+	private static final float SPEEDSCALER = 5;
 	private Vector3f target;
 	private float speed;
 	private Vector3f upward;
@@ -16,14 +17,11 @@ public class Player extends GameObject {
 	Vector3f[] destination = new Vector3f[4];
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
-		this.speed = camera.getSpeed()*5;
+		this.speed = camera.getSpeed()*SPEEDSCALER;
 		upward = new Vector3f(0, 0, speed);
 		this.camera = camera;
 		this.target = camera.getTarget();
 		this.position = new Vector3f(1,1,10);
-		//this.position = camera.getPos();
-		
-		
 	}
 
 	public void update() {
@@ -68,10 +66,10 @@ public class Player extends GameObject {
 		boolean canMove = true;
 		int chunkX = Math.round(position.x / 2 / Chunk.SIZE);
 		int chunkY = Math.round(position.y / 2 / Chunk.SIZE);
-		this.destination[0] = position.add(displacement.scale(27/speed));
-		this.destination[1] = position.add(displacement.scale(5/speed).negate());
-		this.destination[2] = position.add(displacement.scale(5/speed).cross(upward.normalize()));
-		this.destination[3] = position.add(displacement.scale(5/speed).cross(upward.negate().normalize()));
+		this.destination[0] = position.add(displacement.scale(25/SPEEDSCALER));
+		this.destination[1] = position.add(displacement.scale(5/SPEEDSCALER).negate());
+		this.destination[2] = position.add(displacement.scale(5/SPEEDSCALER).cross(upward.normalize()));
+		this.destination[3] = position.add(displacement.scale(5/SPEEDSCALER).cross(upward.negate().normalize()));
 		
 		
 		Chunk location = new Chunk(World.noise, chunkX, chunkY);
@@ -85,7 +83,7 @@ public class Player extends GameObject {
 		if(rise>CLIMABLE){
 			canMove = false;//this part works on at least one side
 		}else if(rise<-CLIMABLE){
-			displacement = displacement.add(upward.negate().scale(1f));
+			displacement = displacement.add(upward.negate());
 		}else{
 			float[] diff = {position.z - destination[0].z, position.z - destination[1].z};
 			float difference = Math.min(diff[0], diff[1])*0.1f;
@@ -101,4 +99,5 @@ public class Player extends GameObject {
 			*/
 		}
 	}
+	
 }
