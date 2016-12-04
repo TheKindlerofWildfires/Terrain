@@ -82,7 +82,7 @@ public class Chunk extends GameObject {
 					.scale(SIZE);
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
-				float[] values = Biome.getValue(centre, point);
+				float[] values = Biome.getValue(centre, point, false);
 
 				float r = values[0];
 				float b = values[1];
@@ -125,7 +125,11 @@ public class Chunk extends GameObject {
 	public float getHeight(float x, float y) {
 		
 		Vector3f point = new Vector3f(x, y, 0);
-		float[] h = Biome.getValue(point, point);
+		float[] h = Biome.getValue(point, point, false);
 		return h[3];
+	}
+
+	public void getBiome(Vector3f position) {
+		Biome.getValue(position, position, true);
 	}
 }

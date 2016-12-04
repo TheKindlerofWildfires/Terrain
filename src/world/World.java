@@ -66,9 +66,6 @@ public class World {
 		Chunk.WATERLEVEL = Chunk.SIZE / Float.parseFloat(props.getProperty("waterlevelDivisor"));
 		Chunk.BEACHSIZE = Chunk.SIZE / Float.parseFloat(props.getProperty("beachSizeDivisor"));
 		Chunk.TREELINE = Chunk.SIZE / Float.parseFloat(props.getProperty("treelineDivisor"));
-
-		Chunk.SEAWEED_PROBABILITY = Integer.parseInt(props.getProperty("seeweedProbability"));
-		Chunk.TREE_PROBABILITY = Integer.parseInt(props.getProperty("treeProbability"));
 	}
 
 	public boolean setContains(Set<?> set, Object o) {
