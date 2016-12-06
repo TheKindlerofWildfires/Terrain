@@ -1,5 +1,6 @@
 package graphics;
 
+import static graphics.Shader.start;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
@@ -26,14 +27,29 @@ import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.GL_CLIP_DISTANCE0;
-import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
+import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL31.*;
+import static org.lwjgl.opengl.GL32.*;
+import static org.lwjgl.opengl.GL33.*;
+
+
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.FileReader;
@@ -49,8 +65,11 @@ import org.lwjgl.opengl.GL;
 
 import entity.EntityManager;
 import input.MouseInput;
+import maths.Utilities;
 import maths.Vector3f;
 import maths.Vector4f;
+import models.VertexArrayObject;
+import object.GameObject;
 import object.ObjectManager;
 import particles.Particle;
 import particles.ParticleEmitter;
@@ -201,9 +220,58 @@ public class Window implements Runnable {
 		baseParticle.scale(.01f, .01f, .01f);
 		particles = new ParticleEmitter(baseParticle, 1000, 10);
 		particles.activate();
-		
+
 		GraphicsManager.toggleFog();
+
+		float[] positions = { 0,0,1,0,0,1,1,0,0,1,0,1,0,0,1,1,0,0,1,1,1,0,0,1,1,0,0 };
+		float[] instanceData = { 0,0.5f,1 };
+
+		float[] vertices = { 0.0f,-1.0f,0.0f,
+
+				0.0f,0.0f,1.0f,
+
+				0.0f,0.0f,0.0f,
+
+				0.0f,1.0f,0.0f,
+
+				0.0f,0.0f,1.0f,
+
+				0.0f,0.0f,0.0f,
+
+				1.0f,1.0f,0.0f,
+
+				0.0f,0.0f,1.0f,
+
+				0.0f,0.0f,0.0f };
+
+		vao = glGenVertexArrays();
+		glBindVertexArray(vao);
+
+		int vboID = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, vboID);
+		glBufferData(GL_ARRAY_BUFFER, Utilities.createFloatBuffer(vertices), GL_STATIC_DRAW);
+		for (int i = 0; i < 3; i++) {
+			glEnableVertexAttribArray(i);
+			glVertexAttribPointer(i, 3, GL_FLOAT, false, 4 * 3 * 3, i * 3 * 4); // send positions on pipe i
+		}
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		int instanceVboID = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, instanceVboID);
+		glBufferData(GL_ARRAY_BUFFER, Utilities.createFloatBuffer(instanceData), GL_STATIC_DRAW);
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 1, GL_FLOAT, false, 4, 0);
+		glVertexAttribDivisor(3,1);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glBindVertexArray(0);
+		//vao = new VertexArrayObject(vertices,3).getVaoID();
+		obj = new GameObject("resources/models/2d.obj", "none", true);
 	}
+
+	GameObject obj;
+
+	int vao;
 
 	/**
 	 * Sets the seeds for everything
@@ -302,10 +370,16 @@ public class Window implements Runnable {
 	public void testRender() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		if (particles.active) {
+		/*if (particles.active) {
 			particles.render(renderClipPlane);
 			objectManager.render(renderClipPlane);
-		}
+		}*/
+		GameObject object = obj;
+		start(ShaderManager.particleShader);
+		//object.renderPrep(renderClipPlane);
+		glBindVertexArray(vao);
+		glDrawArraysInstanced(GL_TRIANGLES, 0, 3,3);
+
 	}
 
 	/**

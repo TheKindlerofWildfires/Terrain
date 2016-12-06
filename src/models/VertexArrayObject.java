@@ -49,7 +49,7 @@ public class VertexArrayObject {
 	}
 
 	/**
-	 * Create empty VAO object. not really for public usage
+	 * Create empty VAO object; not really for public usage
 	 */
 	protected VertexArrayObject() {
 	}
@@ -125,12 +125,7 @@ public class VertexArrayObject {
 	}
 
 	protected void initRender(Vector4f clipPlane) {
-		glBindVertexArray(getVaoID());
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
-		glEnableVertexAttribArray(3);
-		glEnableVertexAttribArray(4);
+		glBindVertexArray(vaoID);
 		glEnable(GL_CLIP_DISTANCE0);
 		Shader.setUniform4f("clipPlane", clipPlane);
 	}

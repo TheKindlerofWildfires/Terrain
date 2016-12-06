@@ -165,7 +165,7 @@ public class GameObject {
 		stop();
 	}
 
-	protected void renderPrep(Vector4f clipPlane) {
+	public void renderPrep(Vector4f clipPlane) {
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
 		if (hasMaterial) {
 			setMaterial("material", material);
