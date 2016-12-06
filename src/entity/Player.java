@@ -8,7 +8,7 @@ import world.World;
 
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.5f;
-	private static final float SPEEDSCALER = 5;
+	private static final float SPEEDSCALER = 10;
 	private Vector3f target;
 	private float speed;
 	private Vector3f upward;
@@ -69,7 +69,7 @@ public class Player extends GameObject {
 		int chunkX = Math.round(position.x / 2 / Chunk.SIZE);
 		int chunkY = Math.round(position.y / 2 / Chunk.SIZE);
 		Chunk location = new Chunk(World.noise, chunkX, chunkY);
-		location.getBiome(position);
+		//location.getBiome(position);
 		if (!noClip) {
 			
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));

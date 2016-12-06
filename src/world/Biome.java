@@ -10,23 +10,14 @@ public class Biome {
 	public static float TREELINE = Chunk.TREELINE;
 	static Perlin noise = Chunk.noise;
 	public static float[] getValue(Vector3f centre, Vector3f point, boolean print) {
-		/*
-		 * This is mitchell
-		 * Signing off
-		 * Each zone doesn't have enough space to itself
-		 * Which is probably fixable but I'm so tired
-		 * Its like 12:20
-		 * And there is nothing but sad here
-		 * 
-		 */
 		float r, b, g, h;
 		r=b=g=h=1;
 		String type = null;
 		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1));
 		double moist = Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE / 2;
-		double temp = Math.abs(noise.getValue(point.x/8, point.y/8, 0.2));
-		double trace = temp*SIZE;
-		float bs = (int) (temp*4.5);
+		double temp = Math.abs(noise.getValue(point.x/16, point.y/16, 0.2));	
+		double trace = Math.abs(noise.getValue(point.x/64, point.y/64, 0.1)) * SIZE;
+		float bs = (int) (temp*5.1);
 		if (bs == 0) {
 			type = "ocean";//island, shallow, deep
 		}
@@ -34,148 +25,226 @@ public class Biome {
 			type = "wetland"; //swamp --> plains-->hill
 		}
 		if (bs == 2) {
-			type = "mountainLake"; //hill--> mountain --> lake
+			type = "desert"; //hill--> mountain --> lake
+			
 		}
 		if (bs == 3) {
 			type = "mountainPeak"; //hill--> mountain --> peak
 		}
-		if (bs == 4|| bs == 5) {
+		if(bs == 4){
+			type = "mountainLake";
+		}
+		if (bs == 5 || bs == 6) {
 			type = "tundra"; //ice--> tundra --> mountain
 		}
+		if(bs>6){
+			r = 1;
+			g = 1;
+			b = 1;
+		}
+		/*water =2
+		 *beach = 1
+		 *treeline = 6.6
+		 */
 		if (type == "ocean") {
-			if(trace<WATERLEVEL){
-				type = "depth";
-				h = (float)(elev*SIZE/16-WATERLEVEL/2);
-				b = (float) (0.3f/(moist + 1));
-				g = (float) (0.1f/(moist + 1));
-				r = (float) (0.0f/(moist + 1));
-			}else if(trace > WATERLEVEL&& trace<WATERLEVEL+BEACHSIZE){
-				type = "reef";
-				h = (float)(elev*SIZE/8+WATERLEVEL/8);
-				b = (float) (0.5f/(moist + 1));
-				g = (float) (0.2f/(moist + 1));
-				r = (float) (0.2f/(moist + 1));
-			}else if (trace > WATERLEVEL + BEACHSIZE && trace < TREELINE) {
-				type = "shallows";
-				h = (float)(elev*SIZE/8+WATERLEVEL/4);
-				b = (float) (0.4f/(moist + 1));
-				g = (float) (0.3f/(moist + 1));
-				r = (float) (0.1f/(moist + 1));
-			}else if (trace > TREELINE) {
-				type = "island";
-				h = (float)(elev*SIZE/2+WATERLEVEL/2);
-				b = (float) (0.1f/(moist + 1));
-				g = (float) (0.4f/(moist + 1));
-				r = (float) (0.3f/(moist + 1));
+			h = (float) (elev*SIZE/16);
+			b = (float) (0.3/(moist+1));
+			g = (float) (0.2/(moist+1));
+			r = (float) (0.2/(moist+1));
+			if(trace<WATERLEVEL-BEACHSIZE){	
+				type = "ocean:depth";
+				h -= WATERLEVEL/2;
+				b *= (float) 0.4;
+				r *= (float) 0.3;
+				g *= (float) 0.2;
+			}else if(trace > WATERLEVEL-BEACHSIZE&& trace<WATERLEVEL){
+				type = "ocean:reef";
+				h -= WATERLEVEL/4;
+				b *= (float) 0.4;
+				r *= (float) 0.3;
+				g *= (float) 0.2;
+			}else if (trace > WATERLEVEL && trace < WATERLEVEL+0.5*BEACHSIZE) {
+				type = "ocean:shallows";
+				h += WATERLEVEL/4;
+				b *= (float) 0.3;
+				r *= (float) 0.2;
+				g *= (float) 0.5;
+			}else if (trace > WATERLEVEL+0.5*BEACHSIZE) {
+				type = "ocean:island";
+				h += WATERLEVEL/2;
+				b *= (float) 0.5;
+				r *= (float) 0.2;
+				g *= (float) 0.2;
 			}
+			
 		}
 		if (type == "wetland") {
-			if(trace<WATERLEVEL){
-				type = "swamp";
-				h = (float)(elev*SIZE/32+31*WATERLEVEL/32);
-				b = (float) (0.3f/(moist + 1));
-				g = (float) (0.5f/(moist + 1));
-				r = (float) (0.3f/(moist + 1));
-			}else if(trace > WATERLEVEL&& trace<WATERLEVEL+BEACHSIZE){
-				type = "plains";
-				h = (float)(elev*SIZE/16+15*WATERLEVEL/16);
-				b = (float) (0.2f/(moist + 1));
-				g = (float) (0.4f/(moist + 1));
-				r = (float) (0.2f/(moist + 1));
-			}else if (trace > WATERLEVEL + BEACHSIZE && trace < TREELINE) {
-				type = "forest";//run forrest run!
-				h = (float)(elev*SIZE/4+15*WATERLEVEL/16);
-				b = (float) (0.1f/(moist + 1));
-				g = (float) (0.3f/(moist + 1));
-				r = (float) (0.1f/(moist + 1));
-			}else if (trace > TREELINE) {
-				type = "hill";
-				h = (float)(elev*SIZE/2+3*WATERLEVEL/4);
-				b = (float) (0.2f/(moist + 1));
-				g = (float) (0.3f/(moist + 1));
-				r = (float) (0.2f/(moist + 1));
+			h = (float) (elev*SIZE/32);
+			b = (float) (0.2/(moist+1));
+			g = (float) (0.3/(moist+1));
+			r = (float) (0.2/(moist+1));
+			if(trace<WATERLEVEL-BEACHSIZE){
+				type = "wetland:swamp";
+				h += 31*WATERLEVEL/32;
+				b *= (float) 0.4;
+				r *= (float) 0.3;
+				g *= (float) 0.4;
+			}else if(trace > WATERLEVEL-BEACHSIZE&& trace<WATERLEVEL){
+				type = "wetland:plains";
+				h*= 2;
+				h += 15*WATERLEVEL/16;
+				b *= (float) 0.3;
+				r *= (float) 0.3;
+				g *= (float) 0.4;
+			}else if (trace >WATERLEVEL && trace < WATERLEVEL+0.5*BEACHSIZE) {
+				type = "wetland:forest";//run forrest run!
+				h*= 3;
+				h += 7*WATERLEVEL/8;
+				b *= (float) 0.2;
+				r *= (float) 0.2;
+				g *= (float) 0.4;
+			}else if (trace > WATERLEVEL+0.5*BEACHSIZE) {
+				type = "wetland:hill";
+				h*= 4;
+				h += 7*WATERLEVEL/8;
+				b *= (float) 0.2;
+				r *= (float) 0.2;
+				g *= (float) 0.3;
 			}
 		}
 		if (type == "mountainLake") {
-			if(trace<WATERLEVEL){
-				type = "hill";
-				h = (float)(elev*SIZE/2+3*WATERLEVEL/4);
-				b = (float) (0.2f/(moist + 1));
-				g = (float) (0.3f/(moist + 1));
-				r = (float) (0.2f/(moist + 1));
-			}else if(trace > WATERLEVEL&& trace<WATERLEVEL+BEACHSIZE){
-				type = "mountainEdge";
-				h = (float)(elev*SIZE/2+WATERLEVEL);
-				b = (float) (0.2f/(moist + 1));
-				g = (float) (0.3f/(moist + 1));
-				r = (float) (0.3f/(moist + 1));
-			}else if (trace > WATERLEVEL + BEACHSIZE && trace < TREELINE) {
-				type = "mountain";
-				h = (float)(elev*SIZE/2+WATERLEVEL*2);
-				b = (float) (0.1f/(moist + 1));
-				g = (float) (0.2f/(moist + 1));
-				r = (float) (0.2f/(moist + 1));
-			}else if (trace > TREELINE) {
-				type = "lake";
-				h = (float)(elev*SIZE/8);
-				b = (float) (0.2f/(moist + 1));
-				g = (float) (0.1f/(moist + 1));
-				r = (float) (0.1f/(moist + 1));
+			h = (float) (elev*SIZE/4);
+			b = (float) (0.2/(moist+1));
+			g = (float) (0.3/(moist+1));
+			r = (float) (0.3/(moist+1));
+			if(trace<WATERLEVEL-BEACHSIZE){
+				type = "mountainLake:hill";
+				h += 7*WATERLEVEL/8;
+				b *= (float) 0.2;
+				r *= (float) 0.2;
+				g *= (float) 0.2;
+			}else if(trace >  WATERLEVEL-BEACHSIZE&& trace<WATERLEVEL){
+				type = "mountainLake:mountainEdge";
+				h *= (float) 2;
+				h += 3*WATERLEVEL/4;
+				b *= (float) 0.3;
+				r *= (float) 0.2;
+				g *= (float) 0.2;
+			}else if (trace > WATERLEVEL && trace < WATERLEVEL+0.5*BEACHSIZE) {
+				type = "mountainLake:mountain";
+				h *= (float) 4;
+				h += 1*WATERLEVEL/2;
+				b *= (float) 0.3;
+				r *= (float) 0.2;
+				g *= (float) 0.2;
+			}else if (trace > WATERLEVEL+0.5*BEACHSIZE) {
+				type = "mountainLake:lake";
+				b *= (float) 0.3;
+				r *= (float) 0.1;
+				g *= (float) 0.1;
 			}
 		}
 		if (type == "mountainPeak") {
-			if(trace<WATERLEVEL){
-				type = "hill";
-				h = (float)(elev*SIZE/2+3*WATERLEVEL/4);
-				b = (float) (0.2f/(moist + 1));
-				g = (float) (0.3f/(moist + 1));
-				r = (float) (0.2f/(moist + 1));
-			}else if(trace > WATERLEVEL&& trace<WATERLEVEL+BEACHSIZE){
-				type = "mountainEdge";
-				h = (float)(elev*SIZE/2+WATERLEVEL);
-				b = (float) (0.2f/(moist + 1));
-				g = (float) (0.3f/(moist + 1));
-				r = (float) (0.3f/(moist + 1));
-			}else if (trace > WATERLEVEL + BEACHSIZE && trace < TREELINE) {
-				type = "mountain";
-				h = (float)(elev*SIZE/2+WATERLEVEL*2);
-				b = (float) (0.1f/(moist + 1));
-				g = (float) (0.2f/(moist + 1));
-				r = (float) (0.2f/(moist + 1));
-			}else if (trace > TREELINE) {
-				type = "mountainPeak";
-				h = (float)(elev*SIZE+WATERLEVEL*3);
-				b = (float) (0.5f/(moist + 1));
-				g = (float) (0.5f/(moist + 1));
-				r = (float) (0.5f/(moist + 1));
+			h = (float) (elev*SIZE/4);
+			b = (float) (0.2/(moist+1));
+			g = (float) (0.3/(moist+1));
+			r = (float) (0.3/(moist+1));
+			if(trace<WATERLEVEL-BEACHSIZE){
+				type = "mountainPeak:hill";
+				h += 7*WATERLEVEL/8;
+				b *= (float) 0.2;
+				r *= (float) 0.2;
+				g *= (float) 0.2;
+			}else if(trace >  WATERLEVEL-BEACHSIZE&& trace<WATERLEVEL){
+				type = "mountainPeak:mountainEdge";
+				h *= (float) 1.5;
+				h += 7*WATERLEVEL/8;
+				b *= (float) 0.3;
+				r *= (float) 0.2;
+				g *= (float) 0.2;
+			}else if (trace > WATERLEVEL && trace < WATERLEVEL+0.5*BEACHSIZE) {
+				type = "mountainPeak:mountain";
+				h *= (float) 3;
+				h += 7*WATERLEVEL/8;
+				b *= (float) 0.3;
+				r *= (float) 0.2;
+				g *= (float) 0.2;
+			}else if (trace > WATERLEVEL+0.5*BEACHSIZE) {
+				type = "mountainPeak:mountainPeak";
+				h *= (float) 6;
+				h += 7*WATERLEVEL/8;
+				b *= (float) 0.7;
+				r *= (float) 0.6;
+				g *= (float) 0.6;
 			}
 		}
 		if (type == "tundra") {
-			if(trace<WATERLEVEL){
-				type = "ice";
-				h = (float)(elev*SIZE/32+31*WATERLEVEL/32);
-				b = (float) (0.7f/(moist + 1));
-				g = (float) (0.6f/(moist + 1));
-				r = (float) (0.6f/(moist + 1));
-			}else if(trace > WATERLEVEL&& trace<WATERLEVEL+BEACHSIZE){
-				type = "tundra"; //more tunrtdra am I right
-				h = (float)(elev*SIZE/16+WATERLEVEL);
-				b = (float) (0.5f/(moist + 1));
-				g = (float) (0.5f/(moist + 1));
-				r = (float) (0.5f/(moist + 1));
-			}else if (trace > WATERLEVEL + BEACHSIZE && trace < TREELINE) {
-				type = "glacier";
-				h = (float)(elev*SIZE/16+WATERLEVEL*1.5);
-				b = (float) (0.7f/(moist + 1));
-				g = (float) (0.6f/(moist + 1));
-				r = (float) (0.6f/(moist + 1));
-			}else if (trace > TREELINE) {
-				type = "mountainPeak";
-				h = (float)(elev*SIZE+WATERLEVEL*3);
-				b = (float) (0.5f/(moist + 1));
-				g = (float) (0.5f/(moist + 1));
-				r = (float) (0.5f/(moist + 1));
-			}
+			h = (float) (elev*SIZE/8);
+			b = (float) (0.5/(moist+1));
+			g = (float) (0.45/(moist+1));
+			r = (float) (0.45/(moist+1));
+				if(trace<WATERLEVEL-BEACHSIZE){
+					type = "tundra:ice";
+					h += 16*WATERLEVEL/16;
+					b *= (float) 0.2;
+					r *= (float) 0.2;
+					g *= (float) 0.2;
+				}else if(trace >  WATERLEVEL-BEACHSIZE&& trace<WATERLEVEL){
+					type = "tundra:tundra";
+					h *= (float) 1.5;
+					h += 17*WATERLEVEL/16;
+					b *= (float) 0.3;
+					r *= (float) 0.3;
+					g *= (float) 0.3;
+				}else if (trace > WATERLEVEL && trace < WATERLEVEL+0.5*BEACHSIZE) {
+					type = "tundra:glacier";
+					h *= (float) 3;
+					h += 18*WATERLEVEL/16;
+					b *= (float) 0.4;
+					r *= (float) 0.4;
+					g *= (float) 0.4;
+				}else if (trace > WATERLEVEL+0.5*BEACHSIZE) {
+					type = "tundra:mountainPeak";
+					h *= (float) 6;
+					h += 19*WATERLEVEL/16;
+					b *= (float) 0.5;
+					r *= (float) 0.5;
+					g *= (float) 0.5;
+				}
+		}
+		if (type == "desert") {
+			h = (float) (elev*SIZE/8);
+			b = (float) (0.45/(moist+1));
+			g = (float) (0.70/(moist+1));
+			r = (float) (0.85/(moist+1));
+				if(trace<WATERLEVEL-BEACHSIZE){
+					type = "desert:edge";
+					h += WATERLEVEL;
+					b *= (float) 0.2;
+					r *= (float) 0.2;
+					g *= (float) 0.2;
+				}else if(trace >  WATERLEVEL-BEACHSIZE&& trace<WATERLEVEL){
+					type = "desert:centre";
+					h *= (float) 2;
+					h += WATERLEVEL;
+					b *= (float) 0.3;
+					r *= (float) 0.3;
+					g *= (float) 0.3;
+				}else if (trace > WATERLEVEL && trace < WATERLEVEL+0.5*BEACHSIZE) {
+					type = "desert:hill";
+					h *= (float) 4;
+					h += WATERLEVEL;
+					b *= (float) 0.4;
+					r *= (float) 0.4;
+					g *= (float) 0.4;
+				}else if (trace > WATERLEVEL+0.5*BEACHSIZE) {
+					type = "desert:oasis";
+					h *= (float) 0.5;
+					h += WATERLEVEL;
+					b *= (float) 0.6;
+					r *= (float) 0.4;
+					g *= (float) 0.4;
+				}
 		}
 		if(print){
 			System.out.println(type);

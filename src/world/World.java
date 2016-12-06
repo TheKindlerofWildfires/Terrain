@@ -26,6 +26,7 @@ public class World {
 	public static ArrayList<Vector3f> treePositions = new ArrayList<Vector3f>();
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
+	public static double tracker;
 
 
 	private VertexArrayObject tree;
@@ -79,6 +80,7 @@ public class World {
 	}
 
 	public void update() {
+		//System.out.println(tracker);//1.1528
 		float cameraX = GraphicsManager.camera.pos.x;
 		float cameraY = GraphicsManager.camera.pos.y;
 
