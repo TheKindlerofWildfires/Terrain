@@ -49,7 +49,6 @@ import static org.lwjgl.opengl.GL31.*;
 import static org.lwjgl.opengl.GL32.*;
 import static org.lwjgl.opengl.GL33.*;
 
-
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.io.FileReader;
@@ -244,24 +243,15 @@ public class Window implements Runnable {
 
 				0.0f,0.0f,0.0f };
 
-		vao = glGenVertexArrays();
-		glBindVertexArray(vao);
-
-		int vboID = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, vboID);
-		glBufferData(GL_ARRAY_BUFFER, Utilities.createFloatBuffer(vertices), GL_STATIC_DRAW);
-		for (int i = 0; i < 3; i++) {
-			glEnableVertexAttribArray(i);
-			glVertexAttribPointer(i, 3, GL_FLOAT, false, 4 * 3 * 3, i * 3 * 4); // send positions on pipe i
-		}
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		vao = new VertexArrayObject(vertices, 3);
+		glBindVertexArray(vao.getVaoID());
 
 		int instanceVboID = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, instanceVboID);
 		glBufferData(GL_ARRAY_BUFFER, Utilities.createFloatBuffer(instanceData), GL_STATIC_DRAW);
 		glEnableVertexAttribArray(3);
 		glVertexAttribPointer(3, 1, GL_FLOAT, false, 4, 0);
-		glVertexAttribDivisor(3,1);
+		glVertexAttribDivisor(3, 1);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		glBindVertexArray(0);
@@ -271,7 +261,7 @@ public class Window implements Runnable {
 
 	GameObject obj;
 
-	int vao;
+	VertexArrayObject vao;
 
 	/**
 	 * Sets the seeds for everything
@@ -377,8 +367,8 @@ public class Window implements Runnable {
 		GameObject object = obj;
 		start(ShaderManager.particleShader);
 		//object.renderPrep(renderClipPlane);
-		glBindVertexArray(vao);
-		glDrawArraysInstanced(GL_TRIANGLES, 0, 3,3);
+		glBindVertexArray(vao.getVaoID());
+		glDrawArraysInstanced(GL_TRIANGLES, 0, 3, 3);
 
 	}
 
