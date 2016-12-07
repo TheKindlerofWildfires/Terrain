@@ -1,13 +1,17 @@
 package particles;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glBufferSubData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL31.glDrawArraysInstanced;
 import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
 
 import java.nio.FloatBuffer;
@@ -18,11 +22,12 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 
 import graphics.GraphicsManager;
-import graphics.Window;
+import graphics.Shader;
+import graphics.ShaderManager;
 import maths.Matrix4f;
 import maths.Vector3f;
 import maths.Vector4f;
-import models.InstancedVAO;
+import models.VertexArrayObject;
 import object.GameObject;
 
 public class ParticleEmitter {
@@ -36,9 +41,11 @@ public class ParticleEmitter {
 	private float positionRndRange = 0;
 	private float scaleRndRange = .01f;
 	private List<Particle> particles;
-	private List<Matrix4f> models;
-
-	InstancedVAO vao;
+	private Matrix4f[] models;
+	private FloatBuffer matBuffer;
+	private VertexArrayObject vao;
+	private Matrix4f identity = new Matrix4f();
+	private int instanceVboID;
 
 	public ParticleEmitter(Particle baseParticle, int maxParticles, long creationPeriodMillis) {
 		particles = new ArrayList<Particle>();
@@ -47,37 +54,55 @@ public class ParticleEmitter {
 		this.active = false;
 		this.lastCreationTime = 0;
 		this.creationPeriodMillis = creationPeriodMillis;
-		vao = new InstancedVAO(baseParticle.getVAO(), 50);
-		models = new ArrayList<Matrix4f>();
+		vao = baseParticle.getVAO();
+		models = new Matrix4f[maxParticles];
 		for (int i = 0; i < maxParticles; i++) {
-			models.add(new Matrix4f(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1));
+			models[i] = new Matrix4f();
 		}
+		matBuffer = BufferUtils.createFloatBuffer(maxParticles * 4 * 4);
+		fillMatrixBuffer();
 		createInstanceDataBuffer();
 	}
 
-	int instanceDataVBO;
-	FloatBuffer instanceDataBuffer;
+	private void passMatrixBuffer() {
+		glBindVertexArray(vao.getVaoID());
+		glBindBuffer(GL_ARRAY_BUFFER, instanceVboID);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, matBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+	}
+
+	private void fillMatrixBuffer() {
+		matBuffer.clear();
+		for (int i = 0; i < maxParticles; i++) {
+			if (i < particles.size()) {
+				matBuffer.put(particles.get(i).model.getMatrix().getBuffer());
+			} else {
+				matBuffer.put(identity.getBuffer());
+
+			}
+		}
+		matBuffer.flip();
+	}
 
 	private void createInstanceDataBuffer() {
-		instanceDataVBO = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, instanceDataVBO);
-		instanceDataBuffer = BufferUtils.createFloatBuffer(maxParticles * InstancedVAO.INSTANCE_SIZE_FLOATS);
-		for (Matrix4f matrix : models) {
-			Matrix4f modelMatrix = matrix;
-			Matrix4f modelViewMatrix = modelMatrix.multiply(GraphicsManager.camera.view);
-			instanceDataBuffer.put(modelViewMatrix.getBuffer());
-		}
-		glBufferData(GL_ARRAY_BUFFER, instanceDataBuffer, GL_STATIC_DRAW);
-		int index = 2;
+		glBindVertexArray(vao.getVaoID());
+		instanceVboID = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, instanceVboID);
+		glBufferData(GL_ARRAY_BUFFER, matBuffer, GL_STREAM_DRAW);
+		int index = 3;
 		int strideStart = 0;
 		for (int i = 0; i < 4; i++) {
 			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, 4, GL_FLOAT, false, InstancedVAO.INSTANCE_SIZE_BYTES, strideStart);
+			glVertexAttribPointer(index, 4, GL_FLOAT, false, 4 * 4 * 4, strideStart);
 			glVertexAttribDivisor(index, 1);
 			index++;
-			strideStart += InstancedVAO.VECTOR4F_SIZE_BYTES;
+			strideStart += 4 * 4;
 		}
+
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glBindVertexArray(0);
 	}
 
 	public void update(long ellapsedTime) {
@@ -100,16 +125,23 @@ public class ParticleEmitter {
 			createParticle();
 			this.lastCreationTime = now;
 		}
+		fillMatrixBuffer();
+		passMatrixBuffer();
 	}
 
 	public void render(Vector4f clipPlane) {
-		Iterator<? extends GameObject> it = particles.iterator();
-		while (it.hasNext()) {
-			Particle particle = (Particle) it.next();
-			particle.render(clipPlane);
-		}
+		//		Iterator<? extends GameObject> it = particles.iterator();
+		//		while (it.hasNext()) {
+		//			Particle particle = (Particle) it.next();
+		//			particle.render(clipPlane);
+		//		}
 
-		//	vao.renderListInstanced(particles, GraphicsManager.camera.view, clipPlane);
+		Shader.start(ShaderManager.particleShader);
+		Shader.setUniformMatrix4f("view", GraphicsManager.camera.view);
+		glBindVertexArray(vao.getVaoID());
+		glDrawArraysInstanced(GL_TRIANGLES, 0, vao.getSize(), particles.size());
+		glBindVertexArray(0);
+		Shader.stop();
 	}
 
 	private void createParticle() {

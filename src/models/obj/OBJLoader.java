@@ -148,10 +148,6 @@ public class OBJLoader {
 			verts[c++] = vertices.get(i).x;
 			verts[c++] = vertices.get(i).y;
 			verts[c++] = vertices.get(i).z;
-			System.out.println(vertices.get(i).x);
-			System.out.println(vertices.get(i).y);
-			System.out.println(vertices.get(i).z);
-
 		}
 		return verts;
 	}
