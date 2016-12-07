@@ -6,13 +6,13 @@ import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glBufferSubData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL31.glDrawArraysInstanced;
 import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
+import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -44,7 +44,6 @@ public class ParticleEmitter {
 	private Matrix4f[] models;
 	private FloatBuffer matBuffer;
 	private VertexArrayObject vao;
-	private Matrix4f identity = new Matrix4f();
 	private int instanceVboID;
 
 	public ParticleEmitter(Particle baseParticle, int maxParticles, long creationPeriodMillis) {
@@ -64,25 +63,28 @@ public class ParticleEmitter {
 		createInstanceDataBuffer();
 	}
 
+	/**
+	 * this is surprisingly fast
+	 */
 	private void passMatrixBuffer() {
 		glBindVertexArray(vao.getVaoID());
 		glBindBuffer(GL_ARRAY_BUFFER, instanceVboID);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, matBuffer);
+		glBufferData(GL_ARRAY_BUFFER, NULL, GL_STREAM_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, matBuffer, GL_STREAM_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
 
+	/**
+	 * This gets slow at high particle amounts
+	 */
 	private void fillMatrixBuffer() {
 		matBuffer.clear();
-		for (int i = 0; i < maxParticles; i++) {
-			if (i < particles.size()) {
-				matBuffer.put(particles.get(i).model.getMatrix().getBuffer());
-			} else {
-				matBuffer.put(identity.getBuffer());
-
-			}
+		for (int i = 0; i < particles.size(); i++) {
+			matBuffer.put(particles.get(i).model.getMatrix().getBuffer());
 		}
 		matBuffer.flip();
+		//System.out.println(System.nanoTime() - start);
 	}
 
 	private void createInstanceDataBuffer() {

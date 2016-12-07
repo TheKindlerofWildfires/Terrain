@@ -199,7 +199,7 @@ public class Window implements Runnable {
 
 		baseParticle = new Particle("resources/models/box.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		baseParticle.scale(.01f, .01f, .01f);
-		particles = new ParticleEmitter(baseParticle, 1000, 10);
+		particles = new ParticleEmitter(baseParticle, 5000, 10);
 		particles.activate();
 
 		GraphicsManager.toggleFog();
