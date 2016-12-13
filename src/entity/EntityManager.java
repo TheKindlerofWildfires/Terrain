@@ -19,7 +19,7 @@ public class EntityManager {
 	}
 
 	public void render(Vector4f clipPlane) {
-	//	player.render(clipPlane);
+		//	player.render(clipPlane);
 	}
 
 	public void update() {
