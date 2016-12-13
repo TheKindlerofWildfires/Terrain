@@ -28,7 +28,6 @@ public class World {
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 	public static double tracker;
 
-
 	private VertexArrayObject tree;
 
 	/**
@@ -44,6 +43,7 @@ public class World {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	private void loadProperties() {
