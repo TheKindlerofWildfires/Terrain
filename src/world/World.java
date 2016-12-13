@@ -27,7 +27,8 @@ public class World {
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 	public static double tracker;
-
+	public static int rainSeed;
+	public static int tempSeed;
 	private VertexArrayObject tree;
 
 	/**
@@ -36,8 +37,10 @@ public class World {
 	 */
 	public World() {
 		loadProperties();
+		rainSeed = Window.worldRandom.nextInt();
+		tempSeed = Window.worldRandom.nextInt();
 		noise.setSeed(perlinSeed);
-
+		
 		try {
 			tree = ModelManager.loadGlModel("resources/models/tree.obj").vao;
 		} catch (IOException e) {
