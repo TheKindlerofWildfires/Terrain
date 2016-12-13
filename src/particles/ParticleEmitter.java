@@ -41,8 +41,8 @@ public class ParticleEmitter {
 	private float positionRndRange = 0;
 	private float scaleRndRange = .01f;
 	private List<Particle> particles;
-	private Matrix4f[] models;
-	private FloatBuffer matBuffer;
+	private Vector4f[] models;
+	private FloatBuffer modelBuffer;
 	private VertexArrayObject vao;
 	private int instanceVboID;
 
@@ -54,23 +54,23 @@ public class ParticleEmitter {
 		this.lastCreationTime = 0;
 		this.creationPeriodMillis = creationPeriodMillis;
 		vao = baseParticle.getVAO();
-		models = new Matrix4f[maxParticles];
+		models = new Vector4f[maxParticles];
 		for (int i = 0; i < maxParticles; i++) {
-			models[i] = new Matrix4f();
+			models[i] = new Vector4f();
 		}
-		matBuffer = BufferUtils.createFloatBuffer(maxParticles * 4 * 4);
-		fillMatrixBuffer();
-		createInstanceDataBuffer();
+		modelBuffer = BufferUtils.createFloatBuffer(maxParticles * 4);
+		fillModelBuffer();
+		createInstanceDataVBO();
 	}
 
 	/**
 	 * this is surprisingly fast
 	 */
-	private void passMatrixBuffer() {
+	private void passModelBuffer() {
 		glBindVertexArray(vao.getVaoID());
 		glBindBuffer(GL_ARRAY_BUFFER, instanceVboID);
 		glBufferData(GL_ARRAY_BUFFER, NULL, GL_STREAM_DRAW);
-		glBufferData(GL_ARRAY_BUFFER, matBuffer, GL_STREAM_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, modelBuffer, GL_STREAM_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
@@ -78,32 +78,27 @@ public class ParticleEmitter {
 	/**
 	 * This gets slow at high particle amounts
 	 */
-	private void fillMatrixBuffer() {
-		matBuffer.clear();
+	private void fillModelBuffer() {
+		modelBuffer.clear();
 		for (int i = 0; i < particles.size(); i++) {
-			matBuffer.put(particles.get(i).model.getMatrix().getBuffer());
+			Vector3f pos = particles.get(i).position;
+			modelBuffer.put(new Vector4f(pos, particles.get(i).scale.x).getBuffer());
 		}
-		matBuffer.flip();
+		modelBuffer.flip();
 		//System.out.println(System.nanoTime() - start);
 	}
 
-	private void createInstanceDataBuffer() {
+	private void createInstanceDataVBO() {
 		glBindVertexArray(vao.getVaoID());
 		instanceVboID = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, instanceVboID);
-		glBufferData(GL_ARRAY_BUFFER, matBuffer, GL_STREAM_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, modelBuffer, GL_STREAM_DRAW);
 		int index = 3;
-		int strideStart = 0;
-		for (int i = 0; i < 4; i++) {
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, 4, GL_FLOAT, false, 4 * 4 * 4, strideStart);
-			glVertexAttribDivisor(index, 1);
-			index++;
-			strideStart += 4 * 4;
-		}
+		glEnableVertexAttribArray(index);
+		glVertexAttribPointer(index, 4, GL_FLOAT, false, 4 * 4, 0);
+		glVertexAttribDivisor(index, 1);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 		glBindVertexArray(0);
 	}
 
@@ -127,8 +122,8 @@ public class ParticleEmitter {
 			createParticle();
 			this.lastCreationTime = now;
 		}
-		fillMatrixBuffer();
-		passMatrixBuffer();
+		fillModelBuffer();
+		passModelBuffer();
 	}
 
 	public void render(Vector4f clipPlane) {

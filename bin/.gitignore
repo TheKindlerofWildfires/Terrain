@@ -1,20 +1,5 @@
-/LICENSE
-/build.txt
-/entity/
-/graphics/
-/input/
-/maths/
-/models/
-/noiseLibrary/
-/object/
-/physics/
-/shaders/
-/src.zip
-/world/
-<<<<<<< HEAD
-/entity/
-/maths/
 /particles/
-/models/
-=======
->>>>>>> master
+/object/
+/shaders/
+/graphics/
+/entity/

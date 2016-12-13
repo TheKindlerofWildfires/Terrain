@@ -199,7 +199,7 @@ public class Window implements Runnable {
 
 		baseParticle = new Particle("resources/models/box.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		baseParticle.scale(.01f, .01f, .01f);
-		particles = new ParticleEmitter(baseParticle, 5000, 10);
+		particles = new ParticleEmitter(baseParticle, 500, 10);
 		particles.activate();
 
 		GraphicsManager.toggleFog();
@@ -211,7 +211,7 @@ public class Window implements Runnable {
 	private void randomize() {
 		// setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
-		worldRandom.setSeed(120);
+		//worldRandom.setSeed(120);
 		mathRandom.setSeed(worldRandom.nextLong());
 		World.perlinSeed = mathRandom.nextInt();
 
@@ -226,6 +226,11 @@ public class Window implements Runnable {
 		world.update();
 		objectManager.update();
 		entityManager.update();
+		now = System.currentTimeMillis();
+		if (particles.active) {
+			particles.update(now - then);
+		}
+		then = now;
 	}
 
 	private long then = System.currentTimeMillis();
@@ -236,11 +241,6 @@ public class Window implements Runnable {
 	public void testUpdate() {
 		glfwPollEvents();
 		graphicsManager.update();
-		now = System.currentTimeMillis();
-		if (particles.active) {
-			particles.update(now - then);
-		}
-		then = now;
 	}
 
 	/**
@@ -280,6 +280,9 @@ public class Window implements Runnable {
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
 		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
+		if (particles.active) {
+			particles.render(renderClipPlane);
+		}
 
 		//bind refraction buffer and render to it
 		refraction.activate();
@@ -289,6 +292,9 @@ public class Window implements Runnable {
 		world.renderLand(refractionClipPlane);
 		objectManager.render(refractionClipPlane);
 		entityManager.render(refractionClipPlane);
+		if (particles.active) {
+			particles.render(renderClipPlane);
+		}
 
 		//render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
@@ -299,15 +305,17 @@ public class Window implements Runnable {
 		objectManager.render(renderClipPlane);
 		water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
 		entityManager.render(renderClipPlane);
+		if (particles.active) {
+			particles.render(renderClipPlane);
+		}
 	}
 
 	public void testRender() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		if (particles.active) {
-			particles.render(renderClipPlane);
-			objectManager.render(renderClipPlane);
-		}
+
+		objectManager.render(renderClipPlane);
+
 	}
 
 	/**
@@ -317,6 +325,7 @@ public class Window implements Runnable {
 	public void run() {
 		init();
 		//	GraphicsManager.toggleFog();
+		entityManager.player.slaveCamera(GraphicsManager.camera);
 		long lastTime = System.nanoTime();
 		double delta = 0.0;
 		double ns = 1000000000.0 / 60.0;
@@ -331,12 +340,12 @@ public class Window implements Runnable {
 			delta += (now - lastTime) / ns;
 			lastTime = now;
 			if (delta >= 1.0) {
-				testUpdate();
+				update();
 				updates++;
 				delta--;
 			}
 			//testRender();
-			testRender();
+			render();
 			frames++;
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;

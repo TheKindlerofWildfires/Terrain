@@ -9,7 +9,7 @@ import input.KeyboardInput;
 import maths.Vector4f;
 
 public class EntityManager {
-	Player player;
+	public Player player;
 
 	public EntityManager() {
 		player = new Player();

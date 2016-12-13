@@ -36,6 +36,7 @@ public class GameObject {
 	public Material material;
 	public Transformation model;
 	public boolean isGL;
+	public Vector3f scale = new Vector3f(1,1,1);
 
 	protected boolean textured;
 	protected boolean hasMaterial = true;
@@ -94,6 +95,9 @@ public class GameObject {
 
 	public void setScale(float x, float y, float z) {
 		model.setScale(x, y, z);
+		scale.x=x;
+		scale.y=y;
+		scale.z=z;
 	}
 
 	public void scale(float x, float y, float z) {
@@ -101,6 +105,10 @@ public class GameObject {
 		boundingBox.x *= x;
 		boundingBox.y *= y;
 		boundingBox.z *= z;
+		scale.x*=x;
+		scale.y*=y;
+		scale.z*=z;
+
 	}
 
 	public void translate(float x, float y, float z) {

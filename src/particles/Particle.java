@@ -17,6 +17,7 @@ public class Particle extends GameObject {
 	private long ttl; //time remaining to live (milliseconds)
 	float angleX;
 	float angleY;
+	private static final Vector3f gravity = new Vector3f(0, 0, -.002f);
 
 	public Particle(String objectPath, String texturePath, Vector3f velocity, long ttl) {
 		super(objectPath, texturePath, true);
@@ -49,11 +50,12 @@ public class Particle extends GameObject {
 
 	@Override
 	public void physic() {
-		//not effected by physics :P
+		this.velocity = this.velocity.add(gravity);
 	}
 
 	public long updateTtl(long elapsedTime) {
 		ttl -= elapsedTime;
+		physic();
 		return ttl;
 	}
 
