@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+/particles/
+/object/
+/shaders/
+/graphics/
+/entity/
+=======
 /LICENSE
 /build.txt
 /entity/
@@ -11,3 +18,4 @@
 /shaders/
 /src.zip
 /world/
+>>>>>>> master

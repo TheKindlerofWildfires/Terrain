@@ -39,6 +39,8 @@ public class OBJLoader {
 				Vector3f vec3f = new Vector3f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]),
 						Float.parseFloat(tokens[3]));
 				vertices.add(vec3f);
+				if(fileName == "resources/models/2d.obj")
+				System.out.println(vec3f);
 				break;
 			case "vt":
 				// Texture coordinate
@@ -78,6 +80,7 @@ public class OBJLoader {
 				Vector3f vec3f = new Vector3f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]),
 						Float.parseFloat(tokens[3]));
 				vertices.add(vec3f);
+				System.out.println(vec3f);
 				break;
 			case "vt":
 				// Texture coordinate

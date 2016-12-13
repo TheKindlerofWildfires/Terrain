@@ -12,10 +12,11 @@ import input.KeyboardInput;
 import maths.Vector4f;
 
 public class EntityManager {
-	Player player;
+	public Player player;
 
 	public EntityManager() {
-		player = new Player(GraphicsManager.camera);
+		player = new Player();
+		//player.slaveCamera(GraphicsManager.camera);
 	}
 
 	public void render(Vector4f clipPlane) {

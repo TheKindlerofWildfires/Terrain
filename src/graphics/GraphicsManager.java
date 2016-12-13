@@ -147,7 +147,7 @@ public class GraphicsManager {
 
 	public GraphicsManager() {
 		loadProperties();
-		ShaderManager.init(dirLight, fog, ambientLight);
+		ShaderManager.init(camera, dirLight, fog, ambientLight);
 		ShaderManager.setCamera(camera, dirLight);
 	}
 
