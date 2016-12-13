@@ -64,12 +64,11 @@ public class ShaderManager {
 		setUniform1f("waterClarity", Water.WATER_CLARITY);
 		setUniform1f("maxDistortion", Water.MAX_DISTORTION);
 		setUniform4f("waterColour", new Vector4f(Water.WATER_COLOUR, 1f));
-<<<<<<< HEAD
+
 
 		start(particleShader);
 		setUniformMatrix4f("projection", GraphicsManager.camera.projection);
-=======
->>>>>>> master
+
 		stop();
 	}
 
