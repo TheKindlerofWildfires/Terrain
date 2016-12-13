@@ -17,18 +17,12 @@ public class Biome {
 		float r, b, g, h;
 		r = b = g = h = 0;
 		String type = null;
-		noise.setSeed(World.perlinSeed);
 		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE / 2;
-		float RAINSCALER = 1;
-		float TEMPSCALER = 1;
-		noise.setSeed(World.rainSeed);
+		float RAINSCALER = 50;
+		float TEMPSCALER = 100;
 		double rain = Math.abs(noise.getValue(point.x / RAINSCALER, point.y / RAINSCALER, 0.1)) * 100;
-		noise.setSeed(World.tempSeed);
-		double temp = Math.abs(noise.getValue(point.x / TEMPSCALER, point.y / TEMPSCALER, 0.1)) * 100;
-		noise.setSeed(World.perlinSeed);
-		double color = Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE / 2;
-		temp = 26;
-		rain = 26;
+		double temp = Math.abs(noise.getValue(point.x / TEMPSCALER, point.y / TEMPSCALER, 0.2)) * 100;
+		double color = Math.abs(noise.getValue(point.x, point.y, 0.1));
 		if (rain > high && temp > high) {
 			type = "rainForest";
 		}
@@ -48,7 +42,7 @@ public class Biome {
 			type = "forest";
 		}
 		if (rain < med && temp < high && temp > med) {
-			type = "savaana";
+			type = "savanna";
 		}
 		if (temp < med && rain < high && rain > med) {
 			type = "tundra";
@@ -59,60 +53,72 @@ public class Biome {
 		if (type == null) {
 			System.out.println("not a biome");
 		}
-		if (type == "rainForest") {
-			r = (float) (0.6 / (color + 1));
-			g = (float) (0.6 / (color + 1));
-			b = (float) (0.6 / (color + 1));
+		if (type == "rainForest") {// Tall tree me! --> Vines?
+			h = WATERLEVEL*7/8;
+			h += (float) elev; 
+			r = (float) (0.04 * (color + 0.2));
+			g = (float) (0.20 * (color + 0.2));
+			b = (float) (0.05 * (color + 0.2));
 		}
-		if (type == "seasonalForest") {
-			r = (float) (0.4 / (color + 1));
-			g = (float) (0.4 / (color + 1));
-			b = (float) (0.6 / (color + 1));
+		if (type == "seasonalForest") {//Should these change color?
+			h = WATERLEVEL*2/3;
+			h += (float) elev; 
+			r = (float) (0.20 * (color+.1));
+			g = (float) (0.50 * (color+.1));
+			b = (float) (0.04 * (color+.1));
 		}
-		if (type == "forest") {
-			r = (float) (0.6 / (color + 1));
-			g = (float) (0.4 / (color + 1));
-			b = (float) (0.4 / (color + 1));
+		if (type == "forest") {//maybe animal life 
+			h = WATERLEVEL*2/3;
+			h += (float) elev; 
+			r = (float) (0.05 * (color+.1));
+			g = (float) (0.18 * (color+.1));
+			b = (float) (0.07 * (color+.1));
 		}
-		if (type == "swamp") {
-			r = (float) (0.4 / (color + 1));
-			g = (float) (0.6 / (color + 1));
-			b = (float) (0.4 / (color + 1));
+		if (type == "swamp") { //geisers
+			h = WATERLEVEL*7/8;
+			h += (float) elev/8; 
+			r = (float) (0.25 * (color));
+			g = (float) (0.41 * (color));
+			b = (float) (0.11 * (color));
 		}
-		
-		if (type == "desert") {
-			r = (float) (0.6 / (color + 1));
-			g = (float) (0.6 / (color + 1));
-			b = (float) (0.6 / (color + 1));
+		if (type == "desert") { //maybe a sand storm effect
+			h = WATERLEVEL;
+			h += (float) elev; 
+			r = (float) (0.76 * (color+.2));
+			g = (float) (0.69 * (color+.2));
+			b = (float) (0.50 * (color+.2));
 		}
 		if (type == "taiga") {
-			r = (float) (0.4 / (color + 1));
-			g = (float) (0.4 / (color + 1));
-			b = (float) (0.6 / (color + 1));
+			h = WATERLEVEL*7/8;
+			h += (float) elev*2; 
+			r = (float) (0.90 * (color));
+			g = (float) (0.88 * (color));
+			b = (float) (0.83 * (color));
 		}
 		if (type == "snow") {
-			r = (float) (0.6 / (color + 1));
-			g = (float) (0.4 / (color + 1));
-			b = (float) (0.4 / (color + 1));
+			h = WATERLEVEL/2;
+			h += (float) elev;
+			r = (float) (0.88 * (color));
+			g = (float) (0.90 * (color));
+			b = (float) (0.93 * (color));
 		}
 		if (type == "tundra") {
-			r = (float) (0.4 / (color + 1));
-			g = (float) (0.6 / (color + 1));
-			b = (float) (0.4 / (color + 1));
+			h = WATERLEVEL;
+			h += (float) elev/2;
+			r = (float) (0.90 * (color));
+			g = (float) (0.90 * (color));
+			b = (float) (0.90 * (color));
 		}
-		if (type == "savaana") {
-			r = (float) (0.4 / (color + 1));
-			g = (float) (0.6 / (color + 1));
-			b = (float) (0.4 / (color + 1));
+		if (type == "savanna") {
+			h = WATERLEVEL;
+			h += (float) elev/2;
+			r = (float) (0.97 * (color+.1));
+			g = (float) (0.78 * (color+.1));
+			b = (float) (0.08 * (color+.1));
 		}
 		if (print) {
 			System.out.println(type);
 		}
-		//h = (float) elev;
-		r = (float) (0.6 / (color + 1));
-		g = (float) (0.6 / (color + 1));
-		b = (float) (0.6 / (color + 1));
-		h = WATERLEVEL *2;
 		float[] returns = { r, b, g, h };
 		return returns;
 	}
