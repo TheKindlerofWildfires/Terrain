@@ -92,7 +92,7 @@ public class Window implements Runnable {
 
 	public static Random worldRandom = new Random();
 	public static Random mathRandom = new Random();
-
+	public static Random entityRandom = new Random();
 	private static Vector4f reflectionClipPlane;
 	private static Vector4f refractionClipPlane;
 	public static Vector4f renderClipPlane;
@@ -201,6 +201,7 @@ public class Window implements Runnable {
 		worldRandom.setSeed(mathRandom.nextLong());
 		worldRandom.setSeed(120);
 		mathRandom.setSeed(worldRandom.nextLong());
+		entityRandom.setSeed(0);
 		World.perlinSeed = mathRandom.nextInt();
 
 	}

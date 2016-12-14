@@ -88,10 +88,10 @@ public class Biome {
 		}
 		if (type == "desert") { //sand storm effect, with oasis vegetation 
 			h = WATERLEVEL;
-			h += (float) Math.pow(1.6,elev); 
-			r = (float) (0.76 * (color+.2));
-			g = (float) (0.70 * (color+.2));
-			b = (float) (0.50 * (color+.2));
+			h += (float) elev; 
+			r = (float) (0.86 * (color+.2));
+			g = (float) (0.80 * (color+.2));
+			b = (float) (0.60 * (color+.2));
 		}
 		if (type == "taiga") {//some conifers and maybe ice the water
 			h = WATERLEVEL*7/8;
