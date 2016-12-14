@@ -29,7 +29,6 @@ public class Camera {
 	public float near;
 	public float far;
 	
-	public Vector3f displacement = new Vector3f(0, 0, 0);
 	/**
 	 * Initializes camera
 	 * 
@@ -67,7 +66,7 @@ public class Camera {
 		pv = projection.multiply(view);
 	}
 
-	public void move(Vector3f displacement) {
+	private void move(Vector3f displacement) {
 		pos = pos.add(displacement);
 		target = target.add(displacement);
 		view = Matrix4f.gluLookAt(pos, target, up, flipped);
@@ -82,7 +81,7 @@ public class Camera {
 	 *            which way the player has told to move
 	 */
 	public void moveCamera(String dir) {
-		
+		Vector3f displacement = new Vector3f(0, 0, 0);
 		float vx = pos.x - target.x;
 		float vy = pos.y - target.y;
 		vx *= speed;
