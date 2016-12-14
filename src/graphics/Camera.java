@@ -66,7 +66,7 @@ public class Camera {
 		pv = projection.multiply(view);
 	}
 
-	private void move(Vector3f displacement) {
+	public void move(Vector3f displacement) {
 		pos = pos.add(displacement);
 		target = target.add(displacement);
 		view = Matrix4f.gluLookAt(pos, target, up, flipped);

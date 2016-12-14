@@ -4,15 +4,17 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
+
+import graphics.Camera;
 import graphics.GraphicsManager;
 import input.KeyboardInput;
 import maths.Vector4f;
 
 public class EntityManager {
 	public Player player;
-
+	Camera camera = GraphicsManager.camera;
 	public EntityManager() {
-		player = new Player();
+		player = new Player(camera);
 		//player.slaveCamera(GraphicsManager.camera);
 	}
 

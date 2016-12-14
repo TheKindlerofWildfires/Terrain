@@ -326,7 +326,6 @@ public class Window implements Runnable {
 	public void run() {
 		init();
 		//	GraphicsManager.toggleFog();
-		entityManager.player.slaveCamera(GraphicsManager.camera);
 		long lastTime = System.nanoTime();
 		double delta = 0.0;
 		double ns = 1000000000.0 / 60.0;
