@@ -19,6 +19,7 @@ import noiseLibrary.module.source.Perlin;
 
 public class World {
 	public static Perlin noise;
+	public static Perlin noisy;
 	public static int perlinSeed;
 	public static final int LOAD_DIST = 6;
 
@@ -27,8 +28,6 @@ public class World {
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 	public static double tracker;
-	public static int rainSeed;
-	public static int tempSeed;
 	private VertexArrayObject tree;
 
 	/**
@@ -37,9 +36,8 @@ public class World {
 	 */
 	public World() {
 		loadProperties();
-		rainSeed = Window.worldRandom.nextInt();
-		tempSeed = Window.worldRandom.nextInt();
 		noise.setSeed(perlinSeed);
+		noisy.setSeed(perlinSeed+1);
 		
 		try {
 			tree = ModelManager.loadGlModel("resources/models/tree.obj").vao;
@@ -64,6 +62,11 @@ public class World {
 		noise.setFrequency(Float.parseFloat(props.getProperty("perlinFrequency")));
 		noise.setLacunarity(Float.parseFloat(props.getProperty("perlinLacunarity")));
 		noise.setOctaveCount(Integer.parseInt(props.getProperty("perlinOctaveCount")));
+		
+		noisy = new Perlin();
+		noisy.setFrequency(0.008);
+		noisy.setLacunarity(2.5);
+		noisy.setOctaveCount(5);
 
 		Chunk.SIZE = Float.parseFloat(props.getProperty("chunkSize"));
 

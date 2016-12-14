@@ -8,10 +8,11 @@ public class Biome {
 	public static float WATERLEVEL = Chunk.WATERLEVEL;
 	public static float BEACHSIZE = Chunk.BEACHSIZE;
 	public static float TREELINE = Chunk.TREELINE;
-	public static float high = 50;
-	public static float med = 25;
+	public static float high = 40;
+	public static float med = 20;
 	public static float low = 0;
 	static Perlin noise = Chunk.noise;
+	static Perlin noisy = World.noisy;
 
 	public static float[] getValue(Vector3f centre, Vector3f point, boolean print) {
 		float r, b, g, h;
@@ -20,8 +21,8 @@ public class Biome {
 		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE / 2;
 		float RAINSCALER = 50;
 		float TEMPSCALER = 100;
-		double rain = Math.abs(noise.getValue(point.x / RAINSCALER, point.y / RAINSCALER, 0.1)) * 100;
-		double temp = Math.abs(noise.getValue(point.x / TEMPSCALER, point.y / TEMPSCALER, 0.2)) * 100;
+		double rain = Math.abs(noisy.getValue(point.x / RAINSCALER, point.y / RAINSCALER, 0.1)) * 100;
+		double temp = Math.abs(noisy.getValue(point.x / TEMPSCALER, point.y / TEMPSCALER, 0.2)) * 100;
 		double color = Math.abs(noise.getValue(point.x, point.y, 0.1));
 		if (rain > high && temp > high) {
 			type = "rainForest";
