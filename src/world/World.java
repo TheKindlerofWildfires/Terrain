@@ -21,7 +21,7 @@ public class World {
 	public static Perlin noise;
 	public static Perlin noisy;
 	public static int perlinSeed;
-	public static final int LOAD_DIST = 6;
+	public static final int LOAD_DIST = 5;
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 	public static ArrayList<Vector3f> treePositions = new ArrayList<Vector3f>();
@@ -66,7 +66,8 @@ public class World {
 		noisy = new Perlin();
 		noisy.setFrequency(0.008);
 		noisy.setLacunarity(2.5);
-		noisy.setOctaveCount(5);
+		noisy.setOctaveCount(10);
+		noisy.setPersistence(.4);
 
 		Chunk.SIZE = Float.parseFloat(props.getProperty("chunkSize"));
 

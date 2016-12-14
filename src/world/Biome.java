@@ -8,6 +8,9 @@ public class Biome {
 	public static float WATERLEVEL = Chunk.WATERLEVEL;
 	public static float BEACHSIZE = Chunk.BEACHSIZE;
 	public static float TREELINE = Chunk.TREELINE;
+	static float RAINSCALER = 75;
+	static float TEMPSCALER = 100;
+	static float DETAILSCALER = 1;
 	public static float high = 40;
 	public static float med = 20;
 	public static float low = 0;
@@ -19,11 +22,11 @@ public class Biome {
 		r = b = g = h = 0;
 		String type = null;
 		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE / 2;
-		float RAINSCALER = 50;
-		float TEMPSCALER = 100;
+
 		double rain = Math.abs(noisy.getValue(point.x / RAINSCALER, point.y / RAINSCALER, 0.1)) * 100;
 		double temp = Math.abs(noisy.getValue(point.x / TEMPSCALER, point.y / TEMPSCALER, 0.2)) * 100;
-		double color = Math.abs(noise.getValue(point.x, point.y, 0.1));
+		double detail = Math.abs(noise.getValue(Math.pow(point.x / DETAILSCALER,2),Math.pow(point.y / DETAILSCALER,2), 0.2));
+		double color = elev /SIZE*2;
 		if (rain > high && temp > high) {
 			type = "rainForest";
 		}
@@ -46,76 +49,76 @@ public class Biome {
 			type = "savanna";
 		}
 		if (temp < med && rain < high && rain > med) {
-			type = "tundra";
+			type = "mountain";
 		}
 		if (rain < med && temp < med) {
-			type = "snow";
+			type = "ocean";
 		}
 		if (type == null) {
 			System.out.println("not a biome");
 		}
-		if (type == "rainForest") {// Tall tree me! --> Vines?
+		type = "desert";
+		if (type == "rainForest") {// Tall trees and vines?
 			h = WATERLEVEL*7/8;
 			h += (float) elev; 
 			r = (float) (0.04 * (color + 0.2));
 			g = (float) (0.20 * (color + 0.2));
 			b = (float) (0.05 * (color + 0.2));
 		}
-		if (type == "seasonalForest") {//Should these change color?
+		if (type == "seasonalForest") {//After each day night cycle cycle colors, leaf particle from tree
 			h = WATERLEVEL*2/3;
 			h += (float) elev; 
 			r = (float) (0.20 * (color+.1));
 			g = (float) (0.50 * (color+.1));
 			b = (float) (0.04 * (color+.1));
 		}
-		if (type == "forest") {//maybe animal life 
+		if (type == "forest") {//These should have oak tree forests and on hills a single big tree
 			h = WATERLEVEL*2/3;
 			h += (float) elev; 
-			r = (float) (0.05 * (color+.1));
-			g = (float) (0.18 * (color+.1));
-			b = (float) (0.07 * (color+.1));
+			r = (float) (0.10 * (color+.1));
+			g = (float) (0.36 * (color+.1));
+			b = (float) (0.14 * (color+.1));
 		}
-		if (type == "swamp") { //geisers
+		if (type == "swamp") { //This should have fountains and small reeds
 			h = WATERLEVEL*7/8;
 			h += (float) elev/8; 
-			r = (float) (0.25 * (color));
-			g = (float) (0.41 * (color));
-			b = (float) (0.11 * (color));
+			r = (float) (0.25 * (color+.1));
+			g = (float) (0.41 * (color+.1));
+			b = (float) (0.11 * (color+.1));
 		}
-		if (type == "desert") { //maybe a sand storm effect
+		if (type == "desert") { //sand storm effect, with oasis vegetation 
 			h = WATERLEVEL;
-			h += (float) elev; 
-			r = (float) (0.78 * (color+.2));
+			h += (float) Math.pow(1.6,elev); 
+			r = (float) (0.76 * (color+.2));
 			g = (float) (0.70 * (color+.2));
-			b = (float) (0.55 * (color+.2));
+			b = (float) (0.50 * (color+.2));
 		}
-		if (type == "taiga") {
+		if (type == "taiga") {//some conifers and maybe ice the water
 			h = WATERLEVEL*7/8;
-			h += (float) elev*2; 
-			r = (float) (0.90 * (color));
-			g = (float) (0.88 * (color));
-			b = (float) (0.83 * (color));
+			h += (float) elev*1.5; 
+			r = (float) (0.90 * (color+.1));
+			g = (float) (0.88 * (color+.1));
+			b = (float) (0.83 * (color+.1));
 		}
-		if (type == "snow") {
-			h = WATERLEVEL/2;
-			h += (float) elev;
-			r = (float) (0.88 * (color));
-			g = (float) (0.93 * (color));
-			b = (float) (0.95 * (color));
+		if (type == "ocean") { // add a reef or maybe a 
+			h += (float) elev/8;
+			r = (float) (0.10 * (color+.1));
+			g = (float) (0.10 * (color+.1));
+			b = (float) (0.40 * (color+.1));
 		}
-		if (type == "tundra") {
+		if (type == "mountain") { // Caps are either mountain lake, lava spout, or caps  
+			h = WATERLEVEL;
+			h += (float) elev*elev/2;
+			r = (float) (0.90 * (color+.1));
+			g = (float) (0.91 * (color+.1));
+			b = (float) (0.89 * (color+.1));
+		}
+		if (type == "savanna") {// some lonely trees and tall grass with an occasional rock
 			h = WATERLEVEL;
 			h += (float) elev/2;
-			r = (float) (0.90 * (color));
-			g = (float) (0.90 * (color));
-			b = (float) (0.90 * (color));
-		}
-		if (type == "savanna") {
-			h = WATERLEVEL;
-			h += (float) elev/2;
-			r = (float) (0.98 * (color+.1));
-			g = (float) (0.79 * (color+.1));
-			b = (float) (0.09 * (color+.1));
+			r = (float) (0.90 * (color+.1));
+			g = (float) (0.77 * (color+.1));
+			b = (float) (0.10 * (color+.1));
 		}
 		if(h>WATERLEVEL+BEACHSIZE){
 			r*=0.5;
@@ -129,6 +132,11 @@ public class Biome {
 		}
 		if (print) {
 			System.out.println(type);
+		}
+		if(detail>1){
+			r = 1;
+			g = 1;
+			b = 1;
 		}
 		float[] returns = { r, b, g, h };
 		return returns;
