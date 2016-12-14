@@ -84,9 +84,9 @@ public class Biome {
 		if (type == "desert") { //maybe a sand storm effect
 			h = WATERLEVEL;
 			h += (float) elev; 
-			r = (float) (0.76 * (color+.2));
-			g = (float) (0.69 * (color+.2));
-			b = (float) (0.50 * (color+.2));
+			r = (float) (0.78 * (color+.2));
+			g = (float) (0.70 * (color+.2));
+			b = (float) (0.55 * (color+.2));
 		}
 		if (type == "taiga") {
 			h = WATERLEVEL*7/8;
@@ -99,8 +99,8 @@ public class Biome {
 			h = WATERLEVEL/2;
 			h += (float) elev;
 			r = (float) (0.88 * (color));
-			g = (float) (0.90 * (color));
-			b = (float) (0.93 * (color));
+			g = (float) (0.93 * (color));
+			b = (float) (0.95 * (color));
 		}
 		if (type == "tundra") {
 			h = WATERLEVEL;
@@ -112,9 +112,19 @@ public class Biome {
 		if (type == "savanna") {
 			h = WATERLEVEL;
 			h += (float) elev/2;
-			r = (float) (0.97 * (color+.1));
-			g = (float) (0.78 * (color+.1));
-			b = (float) (0.08 * (color+.1));
+			r = (float) (0.98 * (color+.1));
+			g = (float) (0.79 * (color+.1));
+			b = (float) (0.09 * (color+.1));
+		}
+		if(h>WATERLEVEL+BEACHSIZE){
+			r*=0.5;
+			g*=0.5;
+			b*=0.5;
+		}
+		if(h>WATERLEVEL+BEACHSIZE*2){
+			r*=0.5;
+			g*=0.5;
+			b*=0.5;
 		}
 		if (print) {
 			System.out.println(type);

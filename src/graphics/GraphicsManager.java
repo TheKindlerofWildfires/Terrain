@@ -1,17 +1,9 @@
 package graphics;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-import input.KeyboardInput;
 import input.MouseInput;
 import maths.Vector3f;
 import world.Water;
