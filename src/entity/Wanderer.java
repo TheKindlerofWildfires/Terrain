@@ -31,16 +31,16 @@ public class Wanderer extends GameObject {
 	}
 
 	public void direct(int dir) {
-		String direction = "STOP"; 
+		String direction = "FORWARD"; 
 		int r;
 		if (dir == -1) {
 			 r = random.nextInt(20);
 		}else{
 			r = dir;
 		}
-		if (r == 0) {
+		/*if (r == 0) {
 			direction = "STOP";
-		} else if (r == 1) {
+		} else */if (r == 1) {
 			direction = "FORWARD";
 		} else if (r == 2) {
 			direction = "BACK";
@@ -70,14 +70,13 @@ public class Wanderer extends GameObject {
 		case "RIGHT":
 			displacement = new Vector3f(-vy, vx, 0);// left.negate();
 			break;
-		case "STOP":
-			displacement = new Vector3f(0,0,0);
 		default:
-			System.out.println(dir=="STOP");
-			System.err.println("wtf");
+			System.err.println("wtf" + dir);
 		}
 		displacement = displacement.normalize().scale(speed);
-		move();
+		for(int i = 0; i<10; i++){
+			move();
+		}
 
 	}
 

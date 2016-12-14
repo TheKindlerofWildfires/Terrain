@@ -141,6 +141,9 @@ public class Biome {
 			b = 1;
 			*/
 		}
+		r = (float) (r + color/75);
+		b = (float) (b + rain/750);
+		g = (float) (g+ temp/750);
 		float[] returns = { r, b, g, h };
 		return returns;
 	}
