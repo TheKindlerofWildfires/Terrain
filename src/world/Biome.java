@@ -14,7 +14,7 @@ public class Biome {
 	public static float high = 40;
 	public static float med = 20;
 	public static float low = 0;
-	static Perlin noise = Chunk.noise;
+	static Perlin noise = World.noise;
 	static Perlin noisy = World.noisy;
 
 	public static float[] getValue(Vector3f centre, Vector3f point, boolean print) {
