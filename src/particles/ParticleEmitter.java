@@ -135,6 +135,7 @@ public class ParticleEmitter {
 
 		Shader.start(ShaderManager.particleShader);
 		Shader.setUniformMatrix4f("view", GraphicsManager.camera.view);
+		Shader.setUniform4f("clipPlane", clipPlane);
 		glBindVertexArray(vao.getVaoID());
 		glDrawArraysInstanced(GL_TRIANGLES, 0, vao.getSize(), particles.size());
 		glBindVertexArray(0);

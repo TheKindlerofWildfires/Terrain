@@ -59,24 +59,13 @@ void main(){
 	vec3 toCamera = normalize(-mvVertexPos);
 	float refractiveFactor = max(dot(toCamera,norm),0);
 	refractiveFactor = pow(refractiveFactor,fresnelPower);
-	
-	vec3 normal1 = texture(normalMap,vec2(texCoord.x+moveFactor,texCoord.y)).xyz;
-	normal1.x = normal1.x*2-1;
-	normal1.y = normal1.y*2-1;
-	vec3 normal2 = texture(normalMap,vec2(texCoord.x-2*moveFactor,texCoord.y+moveFactor+2)).xyz;
-	normal2.x = normal2.x*2-1;
-	normal2.y = normal2.y*2-1;
-	vec3 normal = normal1 + normal2;
-	normal.x *= normalStrength;
-	normal.y *= normalStrength;
-	normal = normalize(normal);
 
 	refractColour = mix(refractColour,waterColour,waterDepth/waterClarity);
 	reflectColour = mix(reflectColour,waterColour,1/waterClarity);
 	
 	fragColor = mix(reflectColour,refractColour,refractiveFactor);
 
- 	vec4 lightColour = calcDirectionalLight(directionalLight, mvVertexPos, norm, normal);
+ 	vec4 lightColour = calcDirectionalLight(directionalLight, mvVertexPos, norm, norm);
 
     vec4 totalLight = vec4(ambientLight, 1.0);
     totalLight += lightColour;
