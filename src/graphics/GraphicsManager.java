@@ -158,7 +158,6 @@ public class GraphicsManager {
 		double[] mousePos = MouseInput.pos();
 		camera.rotateCamera(mousePos);
 		ShaderManager.setCamera(camera, dirLight);
-		/*
 		if (KeyboardInput.isKeyDown(GLFW_KEY_D)) {
 			camera.moveCamera("LEFT");
 		}
@@ -177,7 +176,6 @@ public class GraphicsManager {
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
 			camera.moveCamera("DOWN");
 		}
-		*/
 	//	dayNightCycle();
 	}
 
