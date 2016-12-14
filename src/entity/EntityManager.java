@@ -15,8 +15,7 @@ public class EntityManager {
 	public Player player;
 
 	public EntityManager() {
-		player = new Player();
-		//player.slaveCamera(GraphicsManager.camera);
+		player = new Player(GraphicsManager.camera);
 	}
 
 	public void render(Vector4f clipPlane) {

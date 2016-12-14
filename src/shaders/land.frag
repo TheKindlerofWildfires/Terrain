@@ -14,6 +14,7 @@ void main(){
 
     vec4 totalLight = vec4(ambientLight, 1.0);
     totalLight += lightColour;
+    totalLight = vec4(20);
 
     fragColor = totalLight*baseColour; 
     

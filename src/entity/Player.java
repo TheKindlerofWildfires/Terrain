@@ -13,55 +13,26 @@ public class Player extends GameObject {
 	private float speed;
 	private Vector3f upward;
 	Camera camera;
-<<<<<<< HEAD
 	Vector3f displacement = new Vector3f(0, 0, 0);
 	Vector3f[] destination = new Vector3f[4];
 
 	public Player(Camera camera) {
-=======
-
-	public Player() {
->>>>>>> i-have-a-branch-now
 		super("resources/models/box.obj", "none", true);
 		this.speed = camera.getSpeed() * SPEEDSCALER;
 		upward = new Vector3f(0, 0, speed);
+		this.target = camera.getTarget();
+		this.position = new Vector3f(1, 1, 10);
+		this.camera = camera;
 	}
 
 	public void slaveCamera(Camera camera) {
 		this.camera = camera;
 		this.target = camera.getTarget();
-<<<<<<< HEAD
 		this.position = new Vector3f(1, 1, 10);
 	}
 
 	public void update() {
 		camera.pos = position;
-=======
-		this.speed = camera.getSpeed();
-	}
-
-	public void update() {
-		int chunkX = Math.round(camera.pos.x / 2 / Chunk.SIZE);
-		int chunkY = Math.round(camera.pos.y / 2 / Chunk.SIZE);
-		//This line exists because I can't get the chunk from the chunklist in world
-		Chunk myChunk = new Chunk(World.noise, chunkX, chunkY);
-		float cZ = myChunk.getHeight(camera.pos.x, camera.pos.y) + 1f;
-
-		//float cZ = (float) Math.abs(World.noise.getValue(position.x, position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
-		/*
-		 * Lets replace that takes the x, y points, 
-		 * finds the triangle, 
-		 * and takes the calculated value of the location at the point based on the points h
-		 * this could be some fun math! 
-		 */
-		float diff = position.z - cZ;
-
-		diff = (float) (Math.pow(diff, 3) * 0.03f);
-		camera.moveCamera(new Vector3f(0, 0, -diff));
-
-		this.placeAt(camera.pos.x, camera.pos.y, camera.pos.z);
-		//this.target = camera.getTarget();
->>>>>>> i-have-a-branch-now
 	}
 
 	public void movePlayer(String dir) {
@@ -106,13 +77,12 @@ public class Player extends GameObject {
 		Chunk location = new Chunk(World.noise, chunkX, chunkY);
 		//location.getBiome(position);
 		if (!noClip) {
-			
+
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));
 			this.destination[1] = position.add(displacement.scale(5 / SPEEDSCALER).negate());
 			this.destination[2] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.normalize()));
 			this.destination[3] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.negate().normalize()));
 
-			
 			destination[0].z = location.getHeight(destination[0].x, destination[0].y) + 1f;
 			destination[1].z = location.getHeight(destination[1].x, destination[1].y) + 1f;
 			destination[2].z = location.getHeight(destination[2].x, destination[2].y) + 1f;
@@ -126,7 +96,7 @@ public class Player extends GameObject {
 			} else if (rise < -CLIMABLE) {
 				displacement = displacement.add(upward.negate());
 			} else {
-				float[] diff = { position.z - destination[0].z, position.z - destination[1].z };
+				float[] diff = { position.z - destination[0].z,position.z - destination[1].z };
 				float difference = Math.min(diff[0], diff[1]) * 0.1f;
 				displacement = displacement.add(new Vector3f(0, 0, -difference));
 			}

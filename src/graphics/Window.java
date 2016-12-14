@@ -202,7 +202,7 @@ public class Window implements Runnable {
 		particles = new ParticleEmitter(baseParticle, 500, 10);
 		particles.activate();
 
-		GraphicsManager.toggleFog();
+		//GraphicsManager.toggleFog();
 	}
 
 	/**
@@ -324,12 +324,9 @@ public class Window implements Runnable {
 	@Override
 	public void run() {
 		init();
-<<<<<<< HEAD
+
 		GraphicsManager.toggleFog();
-=======
-		//	GraphicsManager.toggleFog();
-		entityManager.player.slaveCamera(GraphicsManager.camera);
->>>>>>> i-have-a-branch-now
+
 		long lastTime = System.nanoTime();
 		double delta = 0.0;
 		double ns = 1000000000.0 / 60.0;
