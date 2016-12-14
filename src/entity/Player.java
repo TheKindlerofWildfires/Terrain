@@ -29,8 +29,11 @@ public class Player extends GameObject {
 		int chunkY = Math.round(camera.pos.y / 2 / Chunk.SIZE);
 		//This line exists because I can't get the chunk from the chunklist in world
 		Chunk myChunk = new Chunk(World.noise, chunkX, chunkY);
+<<<<<<< HEAD
 		float cZ = myChunk.getHeight(camera.pos.x, camera.pos.y) + 1f;
-
+=======
+		float cZ = myChunk.getHeight(camera.pos.x, camera.pos.y)+1f;
+>>>>>>> master
 		//float cZ = (float) Math.abs(World.noise.getValue(position.x, position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
 		/*
 		 * Lets replace that takes the x, y points, 
@@ -39,10 +42,13 @@ public class Player extends GameObject {
 		 * this could be some fun math! 
 		 */
 		float diff = position.z - cZ;
-
+<<<<<<< HEAD
 		diff = (float) (Math.pow(diff, 3) * 0.03f);
 		camera.moveCamera(new Vector3f(0, 0, -diff));
-
+=======
+		diff = (float) (Math.pow(diff,3)*0.03f);
+		camera.moveCamera(new Vector3f(0,0,-diff));
+>>>>>>> master
 		this.placeAt(camera.pos.x, camera.pos.y, camera.pos.z);
 		//this.target = camera.getTarget();
 	}

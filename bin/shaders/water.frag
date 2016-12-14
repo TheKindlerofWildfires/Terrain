@@ -8,12 +8,25 @@ in vec3 mvVertexPos;
 
 out	vec4 fragColor;
 
+struct Fog
+{
+    int activeFog;
+    vec3 colour;
+    float density;
+    float exponent;
+};
+
 uniform sampler2D reflectionTexture;
 uniform sampler2D refractionTexture;
 uniform sampler2D dudvMap;
 uniform sampler2D normalMap;
 uniform sampler2D depthMap;
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> master
 uniform float moveFactor;
 
 uniform float waveStrength;
