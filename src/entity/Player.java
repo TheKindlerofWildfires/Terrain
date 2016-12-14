@@ -25,27 +25,8 @@ public class Player extends GameObject {
 	}
 
 	public void update() {
-<<<<<<< HEAD
 		camera.pos = position;
-=======
-		int chunkX = Math.round(camera.pos.x / 2 / Chunk.SIZE);
-		int chunkY = Math.round(camera.pos.y / 2 / Chunk.SIZE);
-		//This line exists because I can't get the chunk from the chunklist in world
-		Chunk myChunk = new Chunk(World.noise, chunkX, chunkY);
-		float cZ = myChunk.getHeight(camera.pos.x, camera.pos.y) + 1f;
-		//float cZ = (float) Math.abs(World.noise.getValue(position.x, position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
-		/*
-		 * Lets replace that takes the x, y points, 
-		 * finds the triangle, 
-		 * and takes the calculated value of the location at the point based on the points h
-		 * this could be some fun math! 
-		 */
-		float diff = position.z - cZ;
-		diff = (float) (Math.pow(diff, 3) * 0.03f);
-		camera.moveCamera(new Vector3f(0, 0, -diff));
-		this.placeAt(camera.pos.x, camera.pos.y, camera.pos.z);
-		//this.target = camera.getTarget();
->>>>>>> parent of 866c07b... Merge branch 'master' into i-have-a-branch-now
+
 	}
 
 	public void movePlayer(String dir) {
