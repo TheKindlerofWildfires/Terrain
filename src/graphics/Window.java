@@ -52,6 +52,8 @@ import input.MouseInput;
 import maths.Vector3f;
 import maths.Vector4f;
 import object.ObjectManager;
+import particles.Particle;
+import particles.ParticleEmitter;
 import world.Chunk;
 import world.ChunkLoader;
 import world.Water;
@@ -99,6 +101,9 @@ public class Window implements Runnable {
 
 	public static FrameBufferObject refraction;
 	public static FrameBufferObject reflection;
+
+	private static ParticleEmitter particles;
+	private static Particle baseParticle;
 
 	public static void main(String args[]) {
 		Window game = new Window();
@@ -191,6 +196,13 @@ public class Window implements Runnable {
 
 		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
+
+		baseParticle = new Particle("resources/models/box.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		baseParticle.scale(.01f, .01f, .01f);
+		particles = new ParticleEmitter(baseParticle, 500, 10);
+		particles.activate();
+
+		GraphicsManager.toggleFog();
 	}
 
 	/**
@@ -199,7 +211,7 @@ public class Window implements Runnable {
 	private void randomize() {
 		// setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
-		worldRandom.setSeed(120);
+		//worldRandom.setSeed(120);
 		mathRandom.setSeed(worldRandom.nextLong());
 		entityRandom.setSeed(0);
 		World.perlinSeed = mathRandom.nextInt();
@@ -215,6 +227,21 @@ public class Window implements Runnable {
 		world.update();
 		objectManager.update();
 		entityManager.update();
+		now = System.currentTimeMillis();
+		if (particles.active) {
+			particles.update(now - then);
+		}
+		then = now;
+	}
+
+	private long then = System.currentTimeMillis();
+	private long now = System.currentTimeMillis();
+
+	float x = 0;
+
+	public void testUpdate() {
+		glfwPollEvents();
+		graphicsManager.update();
 	}
 
 	/**
@@ -248,13 +275,16 @@ public class Window implements Runnable {
 		world.renderLand(reflectionClipPlane);
 		objectManager.render(reflectionClipPlane);
 		entityManager.render(reflectionClipPlane);
-
+		if (particles.active) {
+			particles.render(reflectionClipPlane);
+		}
+		
 		//	move camera back and render refraction texture
 		//GraphicsManager.camera.flipCamera();
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
 		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
-
+		
 		//bind refraction buffer and render to it
 		refraction.activate();
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
@@ -263,6 +293,9 @@ public class Window implements Runnable {
 		world.renderLand(refractionClipPlane);
 		objectManager.render(refractionClipPlane);
 		entityManager.render(refractionClipPlane);
+		if (particles.active) {
+			particles.render(refractionClipPlane);
+		}
 
 		//render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
@@ -273,13 +306,17 @@ public class Window implements Runnable {
 		objectManager.render(renderClipPlane);
 		water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
 		entityManager.render(renderClipPlane);
+		if (particles.active) {
+			particles.render(renderClipPlane);
+		}
 	}
 
 	public void testRender() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		objectManager.render(renderClipPlane);
-		world.renderLand(renderClipPlane);
+
 	}
 
 	/**
@@ -288,7 +325,8 @@ public class Window implements Runnable {
 	@Override
 	public void run() {
 		init();
-		GraphicsManager.toggleFog();
+		//	GraphicsManager.toggleFog();
+		entityManager.player.slaveCamera(GraphicsManager.camera);
 		long lastTime = System.nanoTime();
 		double delta = 0.0;
 		double ns = 1000000000.0 / 60.0;

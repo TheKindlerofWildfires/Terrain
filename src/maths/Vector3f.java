@@ -48,6 +48,12 @@ public class Vector3f {
 		this.z = vec.z;
 	}
 
+	public Vector3f(Vector3f vec) {
+		this.x = vec.x;
+		this.y = vec.y;
+		this.z = vec.z;
+	}
+
 	/**
 	 * Calculates the squared length of the vector.
 	 *

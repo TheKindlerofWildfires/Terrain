@@ -20,6 +20,8 @@ import static org.lwjgl.opengl.GL31.glGetUniformBlockIndex;
 import static org.lwjgl.opengl.GL31.glUniformBlockBinding;
 
 import java.nio.IntBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 import maths.Matrix4f;
 import maths.Utilities;
@@ -28,6 +30,14 @@ import maths.Vector4f;
 
 public abstract class Shader {
 	private static int currentProgramID;
+
+	//KEY Integer: Program ID
+	//VALUE: MAP<String,Integer>
+	//	KEY String: uniform name
+	//	VALUE Integer: uniform location
+	private static Map<Integer, Map<String, Integer>> uniformLocations = new HashMap<Integer, Map<String, Integer>>();
+
+	private static Map<String, Integer> currentUniforms;
 
 	public static int makeShader(String vertexFile, String fragmentFile) {
 		int vertexShaderID = Utilities.loadShader(vertexFile, GL_VERTEX_SHADER);
@@ -40,18 +50,23 @@ public abstract class Shader {
 		glAttachShader(programID, fragmentShaderID);
 		glLinkProgram(programID);
 		glValidateProgram(programID);
+		uniformLocations.put(programID, new HashMap<String, Integer>());
 		return programID;
 	}
 
 	private static int getUniform(String name) {
+		if (currentUniforms.containsKey(name)) {
+			return currentUniforms.get(name);
+		}
 		int result = glGetUniformLocation(currentProgramID, name);
 		if (result == -1) {
 			System.err.println("Could not find uniform variable " + name);
-			System.err.println(Thread.currentThread().getStackTrace()[3]);
+			System.err.println(Thread.currentThread().getStackTrace()[4]);
 		}
-		if(name=="camera_pos"){
+		if (name == "camera_pos") {
 			System.err.println("???");
 		}
+		currentUniforms.put(name, result);
 		return result;
 	}
 
@@ -91,6 +106,8 @@ public abstract class Shader {
 	public static void start(int id) {
 		currentProgramID = id;
 		glUseProgram(currentProgramID);
+		currentUniforms = uniformLocations.get(currentProgramID);
+		assert currentUniforms != null : "i fucked up";
 	}
 
 	public static void stop() {

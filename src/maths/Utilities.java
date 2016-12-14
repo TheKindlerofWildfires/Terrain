@@ -160,5 +160,4 @@ public class Utilities {
 			return 0;
 		}
 	}
-
 }

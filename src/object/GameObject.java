@@ -34,8 +34,9 @@ public class GameObject {
 	protected VertexArrayObject vao;
 	protected float[] vaoData;
 	public Material material;
-	protected Transformation model;
+	public Transformation model;
 	public boolean isGL;
+	public Vector3f scale = new Vector3f(1,1,1);
 
 	protected boolean textured;
 	protected boolean hasMaterial = true;
@@ -88,11 +89,26 @@ public class GameObject {
 		material.useColour = 1;
 	}
 
+	public GameObject() {
+
+	}
+
+	public void setScale(float x, float y, float z) {
+		model.setScale(x, y, z);
+		scale.x=x;
+		scale.y=y;
+		scale.z=z;
+	}
+
 	public void scale(float x, float y, float z) {
 		model.scale(x, y, z);
 		boundingBox.x *= x;
 		boundingBox.y *= y;
 		boundingBox.z *= z;
+		scale.x*=x;
+		scale.y*=y;
+		scale.z*=z;
+
 	}
 
 	public void translate(float x, float y, float z) {
@@ -177,5 +193,13 @@ public class GameObject {
 		assert !isGL : "its already gl you dumb fuck";
 		vao = new VertexArrayObject(vaoData, 3);
 		this.isGL = true;
+	}
+
+	public int getShader() {
+		return shader;
+	}
+
+	public VertexArrayObject getVAO() {
+		return vao;
 	}
 }
