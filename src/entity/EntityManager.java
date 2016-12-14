@@ -10,7 +10,9 @@ import graphics.Camera;
 import graphics.GraphicsManager;
 import input.KeyboardInput;
 import maths.Vector4f;
-
+/**
+ * @author TheKingInYellow
+ */
 public class EntityManager {
 	public Player player;
 	Camera camera = GraphicsManager.camera;

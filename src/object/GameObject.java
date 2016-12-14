@@ -26,7 +26,9 @@ import maths.Vector3f;
 import maths.Vector4f;
 import models.ModelManager;
 import models.VertexArrayObject;
-
+/**
+ * @author TheKingInYellow & HMSRothman
+ */
 public class GameObject {
 	private static final Vector3f GRAVITY = new Vector3f(0, 0, 0);
 	private Vector3f fakeFriction = new Vector3f();

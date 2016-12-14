@@ -57,7 +57,9 @@ import world.Chunk;
 import world.ChunkLoader;
 import world.Water;
 import world.World;
-
+/**
+ * @author TheKingInYellow & HMSRothman
+ */
 public class Window implements Runnable {
 	private static int REFLECTION_WIDTH;
 	private static int REFLECTION_HEIGHT;

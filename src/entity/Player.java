@@ -4,7 +4,9 @@ import graphics.Camera;
 import maths.Vector3f;
 import object.GameObject;
 import world.Biome;
-
+/**
+ * @author TheKingInYellow
+ */
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.5f;
 	private static final float SPEEDSCALER = 10;

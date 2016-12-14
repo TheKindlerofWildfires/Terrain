@@ -10,7 +10,9 @@ import maths.Vector3f;
 import models.VertexArrayObject;
 import noiseLibrary.module.source.Perlin;
 import object.GameObject;
-
+/**
+ * @author TheKingInYellow & HMSRothman
+ */
 public class Chunk extends GameObject {
 
 	public static float SIZE;

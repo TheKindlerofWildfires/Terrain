@@ -4,7 +4,9 @@ import graphics.Window;
 
 import java.util.ArrayList;
 import java.util.Random;
-
+/**
+ * @author TheKingInYellow
+ */
 public class Mirror {
 	private ArrayList<Vector3f> points;
 	private ArrayList<Vector3f> mxp = new ArrayList<Vector3f>();

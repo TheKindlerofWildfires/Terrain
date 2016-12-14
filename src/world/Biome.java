@@ -2,7 +2,9 @@ package world;
 
 import maths.Vector3f;
 import noiseLibrary.module.source.Perlin;
-
+/**
+ * @author TheKingInYellow
+ */
 public class Biome {
 	public static float SIZE = Chunk.SIZE;
 	public static float WATERLEVEL = Chunk.WATERLEVEL;

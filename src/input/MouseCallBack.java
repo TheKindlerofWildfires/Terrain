@@ -1,7 +1,9 @@
 package input;
 
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
-
+/**
+ * @author TheKingInYellow
+ */
 public class MouseCallBack extends GLFWMouseButtonCallback {
 
 	@Override

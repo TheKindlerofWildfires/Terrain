@@ -3,7 +3,9 @@ package entity;
 import java.util.Random;
 
 import graphics.Window;
-
+/**
+ * @author TheKingInYellow
+ */
 public class Wander {
 	Random random = Window.entityRandom;
 	public Wander(){

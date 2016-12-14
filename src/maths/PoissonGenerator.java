@@ -3,7 +3,9 @@ package maths;
 import graphics.Window;
 
 import java.util.ArrayList;
-
+/**
+ * @author xWiffirat
+ */
 public class PoissonGenerator {
 	public ArrayList<int[]> points = new ArrayList<int[]>();
 	public int POINTS_PER_ITER = 20;
