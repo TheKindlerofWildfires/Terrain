@@ -1,9 +1,12 @@
 package entity;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+
 import graphics.GraphicsManager;
 import input.KeyboardInput;
 import maths.Vector4f;
@@ -12,8 +15,7 @@ public class EntityManager {
 	public Player player;
 
 	public EntityManager() {
-		player = new Player();
-		//player.slaveCamera(GraphicsManager.camera);
+		player = new Player(GraphicsManager.camera);
 	}
 
 	public void render(Vector4f clipPlane) {
@@ -21,17 +23,23 @@ public class EntityManager {
 	}
 
 	public void update() {
-		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT)) {
+		if (KeyboardInput.isKeyDown(GLFW_KEY_D)) {
 			player.movePlayer("LEFT");
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_RIGHT)) {
+		if (KeyboardInput.isKeyDown(GLFW_KEY_A)) {
 			player.movePlayer("RIGHT");
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_UP)) {
+		if (KeyboardInput.isKeyDown(GLFW_KEY_W)) {
 			player.movePlayer("FORWARD");
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_DOWN)) {
+		if (KeyboardInput.isKeyDown(GLFW_KEY_S)) {
 			player.movePlayer("BACK");
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_SPACE)) {
+			player.movePlayer("UP");
+		}
+		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
+			player.movePlayer("DOWN");
 		}
 		player.update();
 	}
