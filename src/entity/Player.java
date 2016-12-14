@@ -7,7 +7,7 @@ import world.Biome;
 
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.5f;
-	private static final float SPEEDSCALER = 10;
+	private static final float SPEEDSCALER = 50;
 	private Vector3f target;
 	private float speed;
 	private Vector3f upward;
@@ -64,7 +64,7 @@ public class Player extends GameObject {
 
 	private void move() {
 		boolean canMove = true;
-		boolean noClip = false;
+		boolean noClip = true;
 		if (!noClip) {
 			
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));

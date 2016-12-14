@@ -15,13 +15,14 @@ import maths.Vector3f;
 import maths.Vector4f;
 import models.ModelManager;
 import models.VertexArrayObject;
+import noiseLibrary.NoiseQuality;
 import noiseLibrary.module.source.Perlin;
 
 public class World {
 	public static Perlin noise;
 	public static Perlin noisy;
 	public static int perlinSeed;
-	public static final int LOAD_DIST = 5;
+	public static final int LOAD_DIST = 9;
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 	public static ArrayList<Vector3f> treePositions = new ArrayList<Vector3f>();
@@ -38,7 +39,11 @@ public class World {
 		loadProperties();
 		noise.setSeed(perlinSeed);
 		noisy.setSeed(perlinSeed+1);
-		
+		System.out.println(perlinSeed);
+
+		noise.setNoiseQuality(NoiseQuality.FAST);
+		noisy.setNoiseQuality(NoiseQuality.FAST);
+
 		try {
 			tree = ModelManager.loadGlModel("resources/models/tree.obj").vao;
 		} catch (IOException e) {

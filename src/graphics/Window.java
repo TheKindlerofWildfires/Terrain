@@ -214,7 +214,6 @@ public class Window implements Runnable {
 		mathRandom.setSeed(worldRandom.nextLong());
 		entityRandom.setSeed(0);
 		World.perlinSeed = mathRandom.nextInt();
-
 	}
 
 	/**
