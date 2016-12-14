@@ -4,8 +4,6 @@ import graphics.Camera;
 import maths.Vector3f;
 import object.GameObject;
 import world.Biome;
-import world.Chunk;
-import world.World;
 
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.5f;
@@ -51,10 +49,10 @@ public class Player extends GameObject {
 			displacement = new Vector3f(vx, vy, 0);// backward;
 			break;
 		case "LEFT":
-			displacement = new Vector3f(-vy, vx, 0);// left;
+			displacement = new Vector3f(vy, -vx, 0);// left;
 			break;
 		case "RIGHT":
-			displacement = new Vector3f(vy, -vx, 0);// left.negate();
+			displacement = new Vector3f(-vy, vx, 0);// left.negate();
 			break;
 		default:
 			System.err.println("wtf");
@@ -67,9 +65,6 @@ public class Player extends GameObject {
 	private void move() {
 		boolean canMove = true;
 		boolean noClip = true;
-		int chunkX = Math.round(position.x / 2 / Chunk.SIZE);
-		int chunkY = Math.round(position.y / 2 / Chunk.SIZE);
-		//Chunk location = new Chunk(World.noise, chunkX, chunkY);
 		if (!noClip) {
 			
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));

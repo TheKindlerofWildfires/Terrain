@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-import input.KeyboardInput;
 import input.MouseInput;
 import maths.Vector3f;
 import world.Water;
