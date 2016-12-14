@@ -66,7 +66,7 @@ public class Player extends GameObject {
 
 	private void move() {
 		boolean canMove = true;
-		boolean noClip = false;
+		boolean noClip = true;
 		if (!noClip) {
 			
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));

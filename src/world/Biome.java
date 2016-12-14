@@ -10,8 +10,8 @@ public class Biome {
 	public static float WATERLEVEL = Chunk.WATERLEVEL;
 	public static float BEACHSIZE = Chunk.BEACHSIZE;
 	public static float TREELINE = Chunk.TREELINE;
-	static float RAINSCALER = 75;
-	static float TEMPSCALER = 100;
+	static float RAINSCALER = 20;
+	static float TEMPSCALER = 20;
 	static float DETAILSCALER = 1;
 	public static float high = 40;
 	public static float med = 20;
@@ -25,15 +25,15 @@ public class Biome {
 		String type = null;
 		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE / 2;
 
-		double rain = Math.abs(noisy.getValue(point.x / RAINSCALER, point.y / RAINSCALER, 0.1)) * 100;
-		double temp = Math.abs(noisy.getValue(point.x / TEMPSCALER, point.y / TEMPSCALER, 0.2)) * 100;
+		double rain = Math.abs(noise.getValue(point.x / RAINSCALER, point.y / RAINSCALER, elev)) * 100;
+		double temp = Math.abs(noisy.getValue(point.x / TEMPSCALER, point.y / TEMPSCALER, elev)) * 100;
 		double detail = Math.abs(noise.getValue(Math.pow(point.x / DETAILSCALER,2),Math.pow(point.y / DETAILSCALER,2), 0.2));
 		double color = elev /SIZE*2;
 		if (rain > high && temp > high) {
-			type = "rainForest";
+			type = "rainForest";	
 		}
 		if (rain > med && rain < high && temp > med && temp < high) {
-			type = "seasonalForest";
+			type = "seasonalForest";	
 		}
 		if (rain < med && temp > high) {
 			type = "desert";
