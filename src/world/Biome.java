@@ -57,7 +57,6 @@ public class Biome {
 		if (type == null) {
 			System.out.println("not a biome");
 		}
-		type = "desert";
 		if (type == "rainForest") {// Tall trees and vines?
 			h = WATERLEVEL*7/8;
 			h += (float) elev; 
@@ -134,9 +133,11 @@ public class Biome {
 			System.out.println(type);
 		}
 		if(detail>1){
+			/*
 			r = 1;
 			g = 1;
 			b = 1;
+			*/
 		}
 		float[] returns = { r, b, g, h };
 		return returns;

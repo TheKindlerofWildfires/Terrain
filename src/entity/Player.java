@@ -64,7 +64,7 @@ public class Player extends GameObject {
 
 	private void move() {
 		boolean canMove = true;
-		boolean noClip = true;
+		boolean noClip = false;
 		if (!noClip) {
 			
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));
@@ -73,10 +73,10 @@ public class Player extends GameObject {
 			this.destination[3] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.negate().normalize()));
 
 			
-			destination[0].z = Biome.getValue(destination[0], destination[0],false)[3] + 1f;
-			destination[1].z = Biome.getValue(destination[1], destination[1],false)[3] + 1f;
-			destination[2].z = Biome.getValue(destination[2], destination[2],false)[3] + 1f;
-			destination[3].z = Biome.getValue(destination[3], destination[3],false)[3] + 1f;
+			destination[0].z = Biome.getValue(destination[0], destination[0],false)[3] + 1.5f;
+			destination[1].z = Biome.getValue(destination[1], destination[1],false)[3] + 1.5f;
+			destination[2].z = Biome.getValue(destination[2], destination[2],false)[3] + 1.5f;
+			destination[3].z = Biome.getValue(destination[3], destination[3],false)[3] + 1.5f;
 			float rise = Math.max(Math.max(destination[0].z, destination[1].z),
 					Math.max(destination[2].z, destination[3].z));
 			rise = rise - position.z;
