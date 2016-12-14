@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-import input.KeyboardInput;
 import input.MouseInput;
 import maths.Vector3f;
 import world.Water;
@@ -151,7 +150,6 @@ public class GraphicsManager {
 		double[] mousePos = MouseInput.pos();
 		camera.rotateCamera(mousePos);
 		ShaderManager.setCamera(camera, dirLight);
-		/*
 		if (KeyboardInput.isKeyDown(GLFW_KEY_D)) {
 			camera.moveCamera("LEFT");
 		}
@@ -169,7 +167,7 @@ public class GraphicsManager {
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
 			camera.moveCamera("DOWN");
-		}*/
+		}
 	//	dayNightCycle();
 	}
 
