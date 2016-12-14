@@ -64,7 +64,7 @@ public class ObjectManager {
 	public void render(Vector4f clipPlane) {
 		for (int i = 0; i < objectList.size(); i++) {
 			GameObject object = objectList.get(i);
-			object.render(clipPlane);
+			//object.render(clipPlane);
 		}
 		//target.render(clipPlane);
 		//ball.render(clipPlane);

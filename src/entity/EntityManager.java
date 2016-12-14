@@ -15,18 +15,21 @@ import maths.Vector4f;
  */
 public class EntityManager {
 	public Player player;
+	public Wanderer m;
 	Camera camera = GraphicsManager.camera;
 	public EntityManager() {
 		
 		player = new Player(camera);
-		//player.slaveCamera(GraphicsManager.camera);
+		m = new Wanderer("resources/models/box.obj");
 	}
 
 	public void render(Vector4f clipPlane) {
+		m.render(clipPlane);
 		//	player.render(clipPlane);
 	}
 
 	public void update() {
+		m.update();
 		if (KeyboardInput.isKeyDown(GLFW_KEY_A)) {
 			player.movePlayer("LEFT");
 		}
