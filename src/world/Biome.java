@@ -19,15 +19,15 @@ public abstract class Biome {
 	static Perlin noisy = World.noisy;
 	static float maxSize = 0;
 	
-	static int RAINFOREST = 0;
-	static int SEASONALFOREST = 1;
-	static int DESERT = 2;
-	static int TAIGA = 3;
-	static int SWAMP = 4;
-	static int FOREST = 5;
-	static int OCEAN = 6;
-	static int MOUNTAIN = 7;
-	static int SAVANNA = 8;
+	public static final int RAINFOREST = 0;
+	public static final int SEASONALFOREST = 1;
+	public static final int DESERT = 2;
+	public static final int TAIGA = 3;
+	public static final int SWAMP = 4;
+	public static final int FOREST = 5;
+	public static final int OCEAN = 6;
+	public static final int MOUNTAIN = 7;
+	public static final int SAVANNA = 8;
 	public static float[] getValue(Vector3f centre, Vector3f point, boolean print) {
 		float r, b, g, h;
 		r = b = g = h = 0;

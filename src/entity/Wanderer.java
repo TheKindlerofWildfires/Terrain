@@ -41,7 +41,7 @@ public class Wanderer extends GameObject {
 			move();
 			lastMove = Time.getUpdateTick();
 		}
-		System.out.println(dx + " " + dy);
+		//System.out.println(dx + " " + dy);
 		/*
 		System.out.println(dx + " " + dy);
 		if(Float.isNaN(position.x)||Float.isNaN(position.y)){
