@@ -12,90 +12,85 @@ import world.Biome;
  */
 public class Wanderer extends GameObject {
 	private static final float CLIMABLE = 10f;
-	private static final float speed = 0.4f;
-	private static final int SPEEDSCALER = 10;
+	private static final float speed = .2f;
+	private static final int SPEEDSCALER = 100;
 	Vector3f upward = new Vector3f(0, 0, speed);
 	Random random = Window.entityRandom;
 	private Vector3f target;
 	private Vector3f displacement;
-	private Vector3f[] destination;
+	private Vector3f[] destination = new Vector3f[5];
+	int lastMove;
+	int lastChoice;
+	int dy, dx = 0;
+	String direction = "FORWARD";
 
 	public Wanderer(String model) {
 		super(model, "none", true);
-		target = this.position.add(new Vector3f(1,0,0));
+		lastMove = Time.getSecTick();
+		target = this.position.add(new Vector3f(1, 0, 0));
 	}
 
 	public void update() {
-		direct(-1);
-		System.out.println(position.x);
+		if (lastChoice - Time.getUpdateTick() < -random.nextInt(120)) {
+			direct(-1);
+			lastChoice = Time.getUpdateTick();
+		}
+		if (lastMove - Time.getUpdateTick() < -0) {
+			//moveObject(direction);
+			displacement = new Vector3f(dx, dy,0).normalize().scale(speed);
+			move();
+			lastMove = Time.getUpdateTick();
+		}
+		System.out.println(dx + " " + dy);
+		/*
+		System.out.println(dx + " " + dy);
+		if(Float.isNaN(position.x)||Float.isNaN(position.y)){
+			System.exit(-1);
+		}*/
 	}
 
 	public void direct(int dir) {
-		String direction = "FORWARD"; 
+		direction = "FORWARD";
 		int r;
 		if (dir == -1) {
-			 r = random.nextInt(20);
-		}else{
+			r = random.nextInt(4);
+		} else {
 			r = dir;
 		}
-		/*if (r == 0) {
-			direction = "STOP";
-		} else */if (r == 1) {
-			direction = "FORWARD";
-		} else if (r == 2) {
-			direction = "BACK";
-		} else if (r == 3) {
-			direction = "RIGHT";
-		} else if (r == 4) {
+		if (r == 0) {
 			direction = "LEFT";
+			dy--;
+		} else if (r == 1) {
+			direction = "BACK";
+			dx--;
+		} else if (r == 2) {
+			direction = "RIGHT";
+			dy++;
+		} else if (r == 3) {
+			direction = "FORWARD";
+			dx++;
+		} else {
+			dy = 0;
+			dx = 0;
+			direction = "STOP";
 		}
-		moveObject(direction);
-	}
-	public void moveObject(String dir) {
-		displacement = new Vector3f(0,0,0);
-		float vx = position.x - target.x;
-		float vy = position.y - target.y;
-		vx *= speed;
-		vy *= speed;
-		switch (dir) {
-		case "FORWARD":
-			displacement = new Vector3f(-vx, -vy, 0);// backward.negate();
-			break;
-		case "BACK":
-			displacement = new Vector3f(vx, vy, 0);// backward;
-			break;
-		case "LEFT":
-			displacement = new Vector3f(vy, -vx, 0);// left;
-			break;
-		case "RIGHT":
-			displacement = new Vector3f(-vy, vx, 0);// left.negate();
-			break;
-		default:
-			System.err.println("wtf" + dir);
-		}
-		displacement = displacement.normalize().scale(speed);
-		for(int i = 0; i<10; i++){
-			move();
-		}
-
+			
 	}
 
 	private void move() {
 		boolean canMove = true;
-		boolean noClip = true;
+		boolean noClip = false;
 		if (!noClip) {
-			
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));
 			this.destination[1] = position.add(displacement.scale(5 / SPEEDSCALER).negate());
-			
+
 			this.destination[2] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.normalize()));
 			this.destination[3] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.negate().normalize()));
 
-			
-			destination[0].z = Biome.getValue(destination[0], destination[0],false)[3] + 1.5f;
-			destination[1].z = Biome.getValue(destination[1], destination[1],false)[3] + 1.5f;
-			destination[2].z = Biome.getValue(destination[2], destination[2],false)[3] + 1.5f;
-			destination[3].z = Biome.getValue(destination[3], destination[3],false)[3] + 1.5f;
+			destination[0].z = Biome.getValue(destination[0], destination[0], false)[3] + 1f;
+			destination[1].z = Biome.getValue(destination[1], destination[1], false)[3] + 1f;
+			destination[2].z = Biome.getValue(destination[2], destination[2], false)[3] + 1f;
+			destination[3].z = Biome.getValue(destination[3], destination[3], false)[3] + 1f;
 			float rise = Math.max(Math.max(destination[0].z, destination[1].z),
 					Math.max(destination[2].z, destination[3].z));
 			rise = rise - position.z;
@@ -111,7 +106,11 @@ public class Wanderer extends GameObject {
 			}
 		}
 		if (canMove) {
+
 			this.translate(displacement);
+			this.target.add(displacement);
+		}else{
+			dx = dy = 0;
 		}
 	}
 }

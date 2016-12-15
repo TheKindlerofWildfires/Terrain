@@ -47,6 +47,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
 import entity.EntityManager;
+import entity.Time;
 import input.MouseInput;
 import maths.Vector3f;
 import maths.Vector4f;
@@ -85,7 +86,7 @@ public class Window implements Runnable {
 	public static GraphicsManager graphicsManager;
 	public static ObjectManager objectManager;
 	public static EntityManager entityManager;
-
+	
 	public static World world;
 	public static Water water;
 
@@ -180,7 +181,6 @@ public class Window implements Runnable {
 		windowHeight = height.get(0);
 		// Create GraphicsManager and World
 		world = new World();
-
 		graphicsManager = new GraphicsManager();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
@@ -226,6 +226,7 @@ public class Window implements Runnable {
 		glfwPollEvents();
 		graphicsManager.update();
 		world.update();
+		Time.updateTick();
 		objectManager.update();
 		entityManager.update();
 		now = System.currentTimeMillis();
