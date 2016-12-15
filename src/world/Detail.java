@@ -15,11 +15,7 @@ public abstract class Detail {
 	 * @param type "exp, norm"
 	 * @param position
 	 */
-	public static float[] detail(float frequency,float lacun,float pert, int size, String type, Vector3f position) {
-		det = new Perlin();
-		det.setFrequency(frequency);
-		det.setLacunarity(lacun);
-		det.setPersistence(pert);
+	public static float[] detail(float frequency, int size, String type, Vector3f position, float biome) {
 		DETAILSCALER = size;
 		double detail;
 		if(type == "exp"){
@@ -31,7 +27,7 @@ public abstract class Detail {
 		}else{
 			detail = 0;
 		}
-		//detail = detail*frequency;
+		detail = detail*frequency;
 		int r, g, b;
 		r = g = b = 0;
 		if (detail > 1) {

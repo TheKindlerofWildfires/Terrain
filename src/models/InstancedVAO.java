@@ -3,7 +3,6 @@ package models;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
@@ -23,7 +22,6 @@ import graphics.Shader;
 import graphics.ShaderManager;
 import graphics.Window;
 import maths.Matrix4f;
-import maths.Utilities;
 import maths.Vector4f;
 import object.GameObject;
 
