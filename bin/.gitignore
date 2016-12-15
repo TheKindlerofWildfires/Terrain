@@ -1,4 +1,9 @@
-/particles/
-/shaders/
-/graphics/
 /entity/
+/graphics/
+/input/
+/maths/
+/object/
+/particles/
+/physics/
+/world/
+/shaders/

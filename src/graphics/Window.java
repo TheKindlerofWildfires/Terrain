@@ -305,7 +305,7 @@ public class Window implements Runnable {
 		objectManager.render(renderClipPlane);
 		water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
 		entityManager.render(renderClipPlane);
-		particles.render(renderClipPlane);
+		particles.render(refractionClipPlane);
 	}
 
 	public void testRender() {
