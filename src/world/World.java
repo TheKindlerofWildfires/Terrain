@@ -20,6 +20,7 @@ import noiseLibrary.module.source.Perlin;
 public class World {
 	public static Perlin noise;
 	public static Perlin noisy;
+	public static Perlin detail;
 	public static int perlinSeed;
 	public static final int LOAD_DIST = 5;
 
@@ -37,7 +38,8 @@ public class World {
 	public World() {
 		loadProperties();
 		noise.setSeed(perlinSeed);
-		noisy.setSeed(perlinSeed+1);
+		noisy.setSeed(perlinSeed*perlinSeed);
+		detail.setSeed(perlinSeed/2);
 		
 		try {
 			tree = ModelManager.loadGlModel("resources/models/tree.obj").vao;
@@ -68,6 +70,8 @@ public class World {
 		noisy.setLacunarity(2.5);
 		noisy.setOctaveCount(10);
 		noisy.setPersistence(.4);
+		
+		detail = new Perlin();
 
 		Chunk.SIZE = Float.parseFloat(props.getProperty("chunkSize"));
 

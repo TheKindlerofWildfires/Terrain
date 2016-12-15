@@ -91,6 +91,14 @@ public class Chunk extends GameObject {
 				float r = values[0];
 				float b = values[1];
 				float g = values[2];
+				point.add(new Vector3f(0,0,h));
+				
+				values = Detail.detail(0.01f, 1, 1, 1, "norm", point);
+				if(values[0]!=-1){
+				r = values[0];
+				b = values[1];
+				g = values[2];
+				}
 				terrain.get(i).getPoint(j).z = h;
 				
 				
