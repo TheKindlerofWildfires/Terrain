@@ -2,6 +2,7 @@ package particles;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
@@ -9,6 +10,7 @@ import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.GL_CLIP_DISTANCE0;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL31.glDrawArraysInstanced;
 import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
@@ -24,28 +26,32 @@ import org.lwjgl.BufferUtils;
 import graphics.GraphicsManager;
 import graphics.Shader;
 import graphics.ShaderManager;
-import maths.Matrix4f;
 import maths.Vector3f;
 import maths.Vector4f;
 import models.VertexArrayObject;
 import object.GameObject;
 
-public class ParticleEmitter {
+public abstract class ParticleEmitter {
 
-	private int maxParticles;
-	public boolean active;
-	private final Particle baseParticle;
-	private long creationPeriodMillis;
-	private long lastCreationTime;
-	private float speedRndRange = 10;
-	private float positionRndRange = 0;
-	private float scaleRndRange = .01f;
-	private List<Particle> particles;
+	protected int maxParticles;
+	private boolean active;
+	public List<Particle> particles;
+
+	protected final Particle baseParticle;
 	private Vector4f[] models;
 	private FloatBuffer modelBuffer;
 	private VertexArrayObject vao;
 	private int instanceVboID;
 
+	protected long creationPeriodMillis;
+	protected long lastCreationTime;
+
+	/**
+	 * makes a new particle emitter
+	 * @param baseParticle the particle all particles emitted will be based on
+	 * @param maxParticles the max number of particles existing at any time
+	 * @param creationPeriodMillis the time between particle creation calls in ms
+	 */
 	public ParticleEmitter(Particle baseParticle, int maxParticles, long creationPeriodMillis) {
 		particles = new ArrayList<Particle>();
 		this.baseParticle = baseParticle;
@@ -64,9 +70,9 @@ public class ParticleEmitter {
 	}
 
 	/**
-	 * this is surprisingly fast
+	 * passes the modelBuffer to opengl
 	 */
-	private void passModelBuffer() {
+	private final void passModelBuffer() {
 		glBindVertexArray(vao.getVaoID());
 		glBindBuffer(GL_ARRAY_BUFFER, instanceVboID);
 		glBufferData(GL_ARRAY_BUFFER, NULL, GL_STREAM_DRAW);
@@ -76,19 +82,21 @@ public class ParticleEmitter {
 	}
 
 	/**
-	 * This gets slow at high particle amounts
+	 * fills the model buffer with data from the array
 	 */
-	private void fillModelBuffer() {
+	private final void fillModelBuffer() {
 		modelBuffer.clear();
 		for (int i = 0; i < particles.size(); i++) {
 			Vector3f pos = particles.get(i).position;
 			modelBuffer.put(new Vector4f(pos, particles.get(i).scale.x).getBuffer());
 		}
 		modelBuffer.flip();
-		//System.out.println(System.nanoTime() - start);
 	}
 
-	private void createInstanceDataVBO() {
+	/**
+	 * creates the vbo on which the per-instance data will be stored
+	 */
+	private final void createInstanceDataVBO() {
 		glBindVertexArray(vao.getVaoID());
 		instanceVboID = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, instanceVboID);
@@ -102,7 +110,14 @@ public class ParticleEmitter {
 		glBindVertexArray(0);
 	}
 
-	public void update(long ellapsedTime) {
+	/**
+	 * updates the particles, should be called once per tick
+	 * @param ellapsedTime time since last update call in ms
+	 */
+	public final void update(long ellapsedTime) {
+		if(!active){
+			return;
+		}
 		long now = System.currentTimeMillis();
 		if (lastCreationTime == 0) {
 			lastCreationTime = now;
@@ -126,71 +141,49 @@ public class ParticleEmitter {
 		passModelBuffer();
 	}
 
-	public void render(Vector4f clipPlane) {
-		//		Iterator<? extends GameObject> it = particles.iterator();
-		//		while (it.hasNext()) {
-		//			Particle particle = (Particle) it.next();
-		//			particle.render(clipPlane);
-		//		}
-
+	/**
+	 * renders all the particles
+	 * @param clipPlane the clipping plane to be used
+	 */
+	public final void render(Vector4f clipPlane) {
+		if(!active){
+			return;
+		}
 		Shader.start(ShaderManager.particleShader);
 		Shader.setUniformMatrix4f("view", GraphicsManager.camera.view);
 		Shader.setUniform4f("clipPlane", clipPlane);
+		glEnable(GL_CLIP_DISTANCE0);
 		glBindVertexArray(vao.getVaoID());
 		glDrawArraysInstanced(GL_TRIANGLES, 0, vao.getSize(), particles.size());
 		glBindVertexArray(0);
 		Shader.stop();
 	}
 
-	private void createParticle() {
-		Particle particle = new Particle(baseParticle);
-
-		//randomize velocity
-		float sign = Math.random() > 0.5d ? -1.0f : 1.0f;
-		float xAngleInc = sign * (float) Math.random() * this.speedRndRange;
-		sign = Math.random() > 0.5d ? -1.0f : 1.0f;
-		float yAngleInc = sign * (float) Math.random() * this.speedRndRange;
-		float z = particle.velocity.z;
-		float y = z * (float) (Math.sin(Math.toRadians(particle.angleY + yAngleInc)));
-		float x = z * (float) (Math.sin(Math.toRadians(particle.angleX + xAngleInc)));
-		particle.velocity = new Vector3f(x, y, z);
-
-		//randomize position
-		sign = Math.random() > 0.5d ? -1.0f : 1.0f;
-		float posIncX = sign * (float) Math.random() * this.positionRndRange;
-		sign = Math.random() > 0.5d ? -1.0f : 1.0f;
-		float posIncY = sign * (float) Math.random() * this.positionRndRange;
-		sign = Math.random() > 0.5d ? -1.0f : 1.0f;
-		float posIncZ = sign * (float) Math.random() * this.positionRndRange;
-		particle.translate(posIncX, posIncY, posIncZ);
-
-		//randomize scale
-		float scaleInc = sign * (float) Math.random() * this.scaleRndRange;
-		particle.setScale(.1f + scaleInc, .1f + scaleInc, .1f + scaleInc);
-
-		particles.add(particle);
-	}
+	/**
+	 * used to create a new particle
+	 * must be overridden by subclasses
+	 */
+	protected abstract void createParticle();
 
 	/**
-	 * Updates a particle position
-	 * @param particle The particle to update
-	 * @param elapsedTime Elapsed time in milliseconds
+	 * used to update individual particles
+	 * must be overridden by subclasses
+	 * @param particle the particle to be updated
+	 * @param elapsedTime time since last update call
 	 */
-	private void updatePosition(Particle particle, long elapsedTime) {
-		Vector3f speed = particle.velocity;
-		float delta = elapsedTime / 1000f;
-		float dx = speed.x * delta;
-		float dy = speed.y * delta;
-		float dz = speed.z * delta;
-		//System.out.println(dz);
-		particle.translate(dx, dy, dz);
-	}
+	protected abstract void updatePosition(Particle particle, long elapsedTime);
 
-	public void activate() {
+	/**
+	 * turns on the particle emitter
+	 */
+	public final void activate() {
 		this.active = true;
 	}
 
-	public void deactivate() {
+	/**
+	 * turns off the particle emitter
+	 */
+	public final void deactivate() {
 		this.active = false;
 	}
 }

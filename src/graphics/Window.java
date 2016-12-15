@@ -1,4 +1,5 @@
 package graphics;
+
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
@@ -51,12 +52,14 @@ import input.MouseInput;
 import maths.Vector3f;
 import maths.Vector4f;
 import object.ObjectManager;
+import particles.Geyser;
 import particles.Particle;
 import particles.ParticleEmitter;
 import world.Chunk;
 import world.ChunkLoader;
 import world.Water;
 import world.World;
+
 /**
  * @author TheKingInYellow & HMSRothman
  */
@@ -200,7 +203,7 @@ public class Window implements Runnable {
 
 		baseParticle = new Particle("resources/models/box.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		baseParticle.scale(.01f, .01f, .01f);
-		particles = new ParticleEmitter(baseParticle, 500, 10);
+		particles = new Geyser(baseParticle, 500, 10);
 		particles.activate();
 
 		GraphicsManager.toggleFog();
@@ -229,9 +232,8 @@ public class Window implements Runnable {
 		objectManager.update();
 		entityManager.update();
 		now = System.currentTimeMillis();
-		if (particles.active) {
-			particles.update(now - then);
-		}
+
+		particles.update(now - then);
 		then = now;
 	}
 
@@ -276,16 +278,14 @@ public class Window implements Runnable {
 		world.renderLand(reflectionClipPlane);
 		objectManager.render(reflectionClipPlane);
 		entityManager.render(reflectionClipPlane);
-		if (particles.active) {
-			particles.render(reflectionClipPlane);
-		}
-		
+		particles.render(reflectionClipPlane);
+
 		//	move camera back and render refraction texture
 		//GraphicsManager.camera.flipCamera();
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
 		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
-		
+
 		//bind refraction buffer and render to it
 		refraction.activate();
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
@@ -294,9 +294,7 @@ public class Window implements Runnable {
 		world.renderLand(refractionClipPlane);
 		objectManager.render(refractionClipPlane);
 		entityManager.render(refractionClipPlane);
-		if (particles.active) {
-			particles.render(refractionClipPlane);
-		}
+		particles.render(refractionClipPlane);
 
 		//render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
@@ -307,9 +305,7 @@ public class Window implements Runnable {
 		objectManager.render(renderClipPlane);
 		water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
 		entityManager.render(renderClipPlane);
-		if (particles.active) {
-			particles.render(renderClipPlane);
-		}
+		particles.render(renderClipPlane);
 	}
 
 	public void testRender() {

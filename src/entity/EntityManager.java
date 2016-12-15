@@ -10,26 +10,28 @@ import graphics.Camera;
 import graphics.GraphicsManager;
 import input.KeyboardInput;
 import maths.Vector4f;
+
 /**
  * @author TheKingInYellow
  */
 public class EntityManager {
 	public Player player;
-	public Wanderer m;
+	//public Wanderer m;
 	Camera camera = GraphicsManager.camera;
+
 	public EntityManager() {
-		
+
 		player = new Player(camera);
-		m = new Wanderer("resources/models/box.obj");
+		//	m = new Wanderer("resources/models/box.obj");
 	}
 
 	public void render(Vector4f clipPlane) {
-		m.render(clipPlane);
+		//	m.render(clipPlane);
 		//	player.render(clipPlane);
 	}
 
 	public void update() {
-		m.update();
+		//	m.update();
 		if (KeyboardInput.isKeyDown(GLFW_KEY_A)) {
 			player.movePlayer("LEFT");
 		}
@@ -42,7 +44,7 @@ public class EntityManager {
 		if (KeyboardInput.isKeyDown(GLFW_KEY_S)) {
 			player.movePlayer("BACK");
 		}
-		if(KeyboardInput.isKeyDown(GLFW_KEY_SPACE)){
+		if (KeyboardInput.isKeyDown(GLFW_KEY_SPACE)) {
 			player.movePlayer("UP");
 		}
 		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {

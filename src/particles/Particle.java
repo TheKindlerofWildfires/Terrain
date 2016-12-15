@@ -17,8 +17,14 @@ public class Particle extends GameObject {
 	private long ttl; //time remaining to live (milliseconds)
 	float angleX;
 	float angleY;
-	private static final Vector3f gravity = new Vector3f(0, 0, -.002f);
 
+	/**
+	 * Makes a new base particle
+	 * @param objectPath path to obj file
+	 * @param texturePath path to texture file
+	 * @param velocity velocity of particle
+	 * @param ttl lifetime of partilcle
+	 */
 	public Particle(String objectPath, String texturePath, Vector3f velocity, long ttl) {
 		super(objectPath, texturePath, true);
 		this.velocity = velocity;
@@ -28,6 +34,10 @@ public class Particle extends GameObject {
 		this.shader = ShaderManager.particleShader;
 	}
 
+	/**
+	 * makes a new particle based on the base particle
+	 * @param baseParticle particle on which new particle will be based
+	 */
 	public Particle(Particle baseParticle) {
 		super();
 		this.ttl = baseParticle.ttl;
@@ -47,25 +57,22 @@ public class Particle extends GameObject {
 		this.shader = ShaderManager.particleShader;
 		this.placeAt(0, 0, 0);
 	}
-
+	
+	/**
+	 * particles dont get physic'd
+	 */
 	@Override
 	public void physic() {
-		this.velocity = this.velocity.add(gravity);
+
 	}
 
+	/**
+	 * updates time to live
+	 * @param elapsedTime time since last update tick
+	 * @return new time to live
+	 */
 	public long updateTtl(long elapsedTime) {
 		ttl -= elapsedTime;
-		physic();
 		return ttl;
-	}
-
-	@Override
-	public void render(Vector4f clipPlane) {
-		start(shader);
-		renderPrep(clipPlane);
-		glBindVertexArray(vao.getVaoID());
-		System.out.println();
-		glDrawArraysInstanced(GL_TRIANGLES, 0, vao.getSize(), 5);
-		stop();
 	}
 }
