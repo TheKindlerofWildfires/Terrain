@@ -11,10 +11,7 @@ import java.util.Set;
 import graphics.GraphicsManager;
 import graphics.Window;
 import maths.Vector2i;
-import maths.Vector3f;
 import maths.Vector4f;
-import models.ModelManager;
-import models.VertexArrayObject;
 import noiseLibrary.module.source.Perlin;
 
 public class World {
@@ -25,11 +22,9 @@ public class World {
 	public static final int LOAD_DIST = 5;
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
-	public static ArrayList<Vector3f> treePositions = new ArrayList<Vector3f>();
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 	public static double tracker;
-	private VertexArrayObject tree;
 
 	/**
 	 * Building better worlds
@@ -41,11 +36,6 @@ public class World {
 		noisy.setSeed(perlinSeed*perlinSeed);
 		detail.setSeed(perlinSeed/2);
 		
-		try {
-			tree = ModelManager.loadGlModel("resources/models/tree.obj").vao;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		
 	}
 
@@ -91,7 +81,6 @@ public class World {
 	}
 
 	public void update() {
-		//System.out.println(tracker);//1.1528
 		float cameraX = GraphicsManager.camera.pos.x;
 		float cameraY = GraphicsManager.camera.pos.y;
 
@@ -124,17 +113,16 @@ public class World {
 	 */
 	public void renderLand(Vector4f clipPlane) {
 		chunks.stream().forEach(c -> c.render(clipPlane));
+		//chunks.stream().forEach(c->c.details.stream().forEach(d -> d.render(clipPlane)));
 	}
 
-	public void renderTrees(Vector4f clipPlane) {
-
-	}
 
 	public void addChunk(Chunk c) {
 		if (!c.isGL) {
 			c.makeGL();
+			c.details.stream().forEach(d -> d.makeGL());
 		}
 		chunks.add(c);
-		c.foliage.stream().forEach(f -> f.makeGL());
+		
 	}
 }

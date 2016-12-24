@@ -68,6 +68,7 @@ public abstract class Biome {
 		if (type == -1) {
 			System.out.println("not a biome");
 		}
+		type = TAIGA;
 		if (type == RAINFOREST) {// Tall trees and vines?
 			
 			h = WATERLEVEL*7/8;

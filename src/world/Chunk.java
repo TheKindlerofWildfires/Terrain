@@ -29,7 +29,7 @@ public class Chunk extends GameObject {
 	ArrayList<Triangle> terrain = new ArrayList<Triangle>();
 	ArrayList<Vector3f> treeland = new ArrayList<Vector3f>();
 	ArrayList<Vector3f> waterland = new ArrayList<Vector3f>();
-	ArrayList<GameObject> foliage = new ArrayList<GameObject>();
+	ArrayList<GameObject> details = new ArrayList<GameObject>();
 	public int chunkX;
 	public int chunkY;
 
@@ -40,26 +40,10 @@ public class Chunk extends GameObject {
 		this.chunkY = y;
 		this.hasMaterial = false;
 		genTerrain();
-		genFoliage();
 		isGL = false;
 		shader = graphics.ShaderManager.landShader;
 	}
 
-	public void genFoliage() {
-		for (int i = 0; i < treeland.size(); i++) {
-			Vector3f pos = treeland.get(i);
-			GameObject f = Foliage.makeTree(pos);
-			f.material.colour = new Vector3f(0.10f, 0.50f, 0.10f);
-			foliage.add(f);
-		}
-		for (int i = 0; i < waterland.size(); i++) {
-			Vector3f pos = waterland.get(i);
-			GameObject f = Foliage.makeSeaweed(pos);
-			f.material.colour = new Vector3f(0.06f, 0.25f, 0.06f);
-			foliage.add(f);
-		}
-
-	}
 
 	public void genTerrain() {
 		ArrayList<Vector3f> points = new ArrayList<Vector3f>();
@@ -93,7 +77,7 @@ public class Chunk extends GameObject {
 				float g = values[2];
 				point.add(new Vector3f(0,0,h));
 				
-				Detail.detail(point, values[4]);
+				details = Detail.detail(point, values[4]);
 				terrain.get(i).getPoint(j).z = h;
 				
 				
