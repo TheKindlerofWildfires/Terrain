@@ -5,6 +5,9 @@ import maths.Vector3f;
 import object.GameObject;
 import world.Biome;
 
+/**
+ * @author TheKingInYellow
+ */
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.5f;
 	private static final float SPEEDSCALER = 50;
@@ -66,17 +69,16 @@ public class Player extends GameObject {
 		boolean canMove = true;
 		boolean noClip = true;
 		if (!noClip) {
-			
+
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));
 			this.destination[1] = position.add(displacement.scale(5 / SPEEDSCALER).negate());
 			this.destination[2] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.normalize()));
 			this.destination[3] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.negate().normalize()));
 
-			
-			destination[0].z = Biome.getValue(destination[0], destination[0],false)[3] + 1.5f;
-			destination[1].z = Biome.getValue(destination[1], destination[1],false)[3] + 1.5f;
-			destination[2].z = Biome.getValue(destination[2], destination[2],false)[3] + 1.5f;
-			destination[3].z = Biome.getValue(destination[3], destination[3],false)[3] + 1.5f;
+			destination[0].z = Biome.getValue(destination[0], destination[0], false)[3] + 1.5f;
+			destination[1].z = Biome.getValue(destination[1], destination[1], false)[3] + 1.5f;
+			destination[2].z = Biome.getValue(destination[2], destination[2], false)[3] + 1.5f;
+			destination[3].z = Biome.getValue(destination[3], destination[3], false)[3] + 1.5f;
 			float rise = Math.max(Math.max(destination[0].z, destination[1].z),
 					Math.max(destination[2].z, destination[3].z));
 			rise = rise - position.z;

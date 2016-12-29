@@ -13,8 +13,7 @@ public class Delaunay {
 	public static Vector3f startingTriPt1 = new Vector3f(xOf, -yOf, 0);
 	public static Vector3f startingTriPt2 = new Vector3f(0, yOf, 0);
 
-	public static Triangle startingTri = new Triangle(startingTriPt0,
-			startingTriPt1, startingTriPt2);
+	public static Triangle startingTri = new Triangle(startingTriPt0, startingTriPt1, startingTriPt2);
 
 	private ArrayList<Triangle> triangles;
 	private boolean calculated = false;
@@ -75,8 +74,7 @@ public class Delaunay {
 		for (int i = 0; i < triangles.size(); i++) {
 			Triangle tri = triangles.get(i);
 			for (int j = 0; j < 3; j++) {
-				if (tri.getPoint(j) == startingTriPt0
-						|| tri.getPoint(j) == startingTriPt1
+				if (tri.getPoint(j) == startingTriPt0 || tri.getPoint(j) == startingTriPt1
 						|| tri.getPoint(j) == startingTriPt2) {
 					triangles.set(i, startingTri);
 					break;

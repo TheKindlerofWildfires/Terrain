@@ -1,20 +1,24 @@
 package maths;
 
-import graphics.Window;
-
 import java.util.ArrayList;
 import java.util.Random;
 
+import graphics.Window;
+
+/**
+ * @author TheKingInYellow
+ */
 public class Mirror {
 	private ArrayList<Vector3f> points;
 	private ArrayList<Vector3f> mxp = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> mxn = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> myp = new ArrayList<Vector3f>();
 	private ArrayList<Vector3f> myn = new ArrayList<Vector3f>();
-	//float specificity = 0.6f;
-	static int spec = PoissonGenerator.width-500; 
+	// float specificity = 0.6f;
+	static int spec = PoissonGenerator.width - 500;
 	static int iterator = 1250;
 	Random rng = Window.mathRandom;
+
 	public Mirror(ArrayList<Vector3f> points) {
 		this.points = points;
 		standard();
@@ -25,12 +29,13 @@ public class Mirror {
 	}
 
 	/**
-	 * I can't remember what this does, but when you take it away the wholes come back
+	 * I can't remember what this does, but when you take it away the wholes
+	 * come back
 	 * 
 	 * @return
 	 */
 	public ArrayList<int[]> fish() {
-		
+
 		ArrayList<int[]> fish = new ArrayList<int[]>();
 		for (int i = 0; i <= PoissonGenerator.width; i += iterator) {
 			fish.add(new int[] { i, 1 });
@@ -53,6 +58,7 @@ public class Mirror {
 		}
 
 	}
+
 	public void acc() {
 		points.addAll(mxp);
 		points.addAll(myp);
@@ -60,10 +66,11 @@ public class Mirror {
 		points.addAll(myn);
 
 	}
-	
+
 	public ArrayList<Vector3f> points() {
 		return points;
 	}
+
 	public ArrayList<Vector3f> getSide(String side) {
 		switch (side) {
 		case "yn":

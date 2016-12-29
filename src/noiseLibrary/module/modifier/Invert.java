@@ -29,20 +29,20 @@ import noiseLibrary.exception.NoModuleException;
 import noiseLibrary.module.Module;
 
 public class Invert extends Module {
-    public Invert() {
-        super(1);
-    }
+	public Invert() {
+		super(1);
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 1;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 1;
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        if (sourceModule[0] == null) {
-            throw new NoModuleException();
-        }
-        return -(sourceModule[0].getValue(x, y, z));
-    }
+	@Override
+	public double getValue(double x, double y, double z) {
+		if (sourceModule[0] == null) {
+			throw new NoModuleException();
+		}
+		return -(sourceModule[0].getValue(x, y, z));
+	}
 }

@@ -12,12 +12,12 @@ public class Triangle {
 			System.err.println("Triangles need 3 points!");
 			System.exit(-1);
 		}
-		if(pts.length==3){
+		if (pts.length == 3) {
 			points = pts;
-		} else{
-			points[0] = new Vector3f(0,0,0);
-			points[1] = new Vector3f(0,1,0);
-			points[2] = new Vector3f(1,0,0);
+		} else {
+			points[0] = new Vector3f(0, 0, 0);
+			points[1] = new Vector3f(0, 1, 0);
+			points[2] = new Vector3f(1, 0, 0);
 		}
 		calculateCircumcircle();
 	}

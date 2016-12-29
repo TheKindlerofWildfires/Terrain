@@ -29,32 +29,32 @@ import noiseLibrary.exception.NoModuleException;
 import noiseLibrary.module.Module;
 
 public class Exponent extends Module {
-    public static final double DEFAULT_EXPONENT = 1.0;
-    private double exponent = DEFAULT_EXPONENT;
+	public static final double DEFAULT_EXPONENT = 1.0;
+	private double exponent = DEFAULT_EXPONENT;
 
-    public Exponent() {
-        super(1);
-    }
+	public Exponent() {
+		super(1);
+	}
 
-    public double getExponent() {
-        return exponent;
-    }
+	public double getExponent() {
+		return exponent;
+	}
 
-    public void setExponent(double exponent) {
-        this.exponent = exponent;
-    }
+	public void setExponent(double exponent) {
+		this.exponent = exponent;
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 1;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 1;
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        if (sourceModule[0] == null) {
-            throw new NoModuleException();
-        }
-        double value = sourceModule[0].getValue(x, y, z);
-        return (Math.pow(Math.abs((value + 1.0) / 2.0), exponent) * 2.0 - 1.0);
-    }
+	@Override
+	public double getValue(double x, double y, double z) {
+		if (sourceModule[0] == null) {
+			throw new NoModuleException();
+		}
+		double value = sourceModule[0].getValue(x, y, z);
+		return (Math.pow(Math.abs((value + 1.0) / 2.0), exponent) * 2.0 - 1.0);
+	}
 }

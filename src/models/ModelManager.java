@@ -17,11 +17,13 @@ public final class ModelManager {
 	}
 
 	/**
-	 * Loads a non-gl model
-	 * Can be called from anywhere
-	 * @param path to model file
+	 * Loads a non-gl model Can be called from anywhere
+	 * 
+	 * @param path
+	 *            to model file
 	 * @return the mesh with ONLY float array or null if invalid filetype
-	 * @throws IOException if you're bad at files
+	 * @throws IOException
+	 *             if you're bad at files
 	 */
 	public static Mesh loadModel(String path) throws IOException {
 		if (models.containsKey(path)) {
@@ -33,8 +35,8 @@ public final class ModelManager {
 				return mesh;
 			} else if (path.endsWith(".md5")) {
 				System.err.println("Probably should be able to load md5s :(");
-				//float[] mesh = MD5Loader.loadMesh(path, 0);
-				//nonGlModels.put(path, mesh);
+				// float[] mesh = MD5Loader.loadMesh(path, 0);
+				// nonGlModels.put(path, mesh);
 				return null;
 			} else {
 				System.out.println("Sad");
@@ -44,11 +46,14 @@ public final class ModelManager {
 	}
 
 	/**
-	 * Loads a GL model
-	 * Can only be called from graphics thread
-	 * @param path to model file
-	 * @return the mesh w/ vao and not guaranteed float array or null if invalid filetype
-	 * @throws IOException if you're bad at files
+	 * Loads a GL model Can only be called from graphics thread
+	 * 
+	 * @param path
+	 *            to model file
+	 * @return the mesh w/ vao and not guaranteed float array or null if invalid
+	 *         filetype
+	 * @throws IOException
+	 *             if you're bad at files
 	 */
 	public static Mesh loadGlModel(String path) throws IOException {
 		if (models.containsKey(path)) {
@@ -67,8 +72,8 @@ public final class ModelManager {
 				return mesh;
 			} else if (path.endsWith(".md5")) {
 				System.err.println("Probably should be able to load md5s :(");
-				//float[] mesh = MD5Loader.loadMesh(path, 0);
-				//nonGlModels.put(path, mesh);
+				// float[] mesh = MD5Loader.loadMesh(path, 0);
+				// nonGlModels.put(path, mesh);
 				return null;
 			} else {
 				System.out.println("Sadder");

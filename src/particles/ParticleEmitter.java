@@ -24,7 +24,6 @@ import org.lwjgl.BufferUtils;
 import graphics.GraphicsManager;
 import graphics.Shader;
 import graphics.ShaderManager;
-import maths.Matrix4f;
 import maths.Vector3f;
 import maths.Vector4f;
 import models.VertexArrayObject;
@@ -85,7 +84,7 @@ public class ParticleEmitter {
 			modelBuffer.put(new Vector4f(pos, particles.get(i).scale.x).getBuffer());
 		}
 		modelBuffer.flip();
-		//System.out.println(System.nanoTime() - start);
+		// System.out.println(System.nanoTime() - start);
 	}
 
 	private void createInstanceDataVBO() {
@@ -127,11 +126,11 @@ public class ParticleEmitter {
 	}
 
 	public void render(Vector4f clipPlane) {
-		//		Iterator<? extends GameObject> it = particles.iterator();
-		//		while (it.hasNext()) {
-		//			Particle particle = (Particle) it.next();
-		//			particle.render(clipPlane);
-		//		}
+		// Iterator<? extends GameObject> it = particles.iterator();
+		// while (it.hasNext()) {
+		// Particle particle = (Particle) it.next();
+		// particle.render(clipPlane);
+		// }
 
 		Shader.start(ShaderManager.particleShader);
 		Shader.setUniformMatrix4f("view", GraphicsManager.camera.view);
@@ -145,7 +144,7 @@ public class ParticleEmitter {
 	private void createParticle() {
 		Particle particle = new Particle(baseParticle);
 
-		//randomize velocity
+		// randomize velocity
 		float sign = Math.random() > 0.5d ? -1.0f : 1.0f;
 		float xAngleInc = sign * (float) Math.random() * this.speedRndRange;
 		sign = Math.random() > 0.5d ? -1.0f : 1.0f;
@@ -155,7 +154,7 @@ public class ParticleEmitter {
 		float x = z * (float) (Math.sin(Math.toRadians(particle.angleX + xAngleInc)));
 		particle.velocity = new Vector3f(x, y, z);
 
-		//randomize position
+		// randomize position
 		sign = Math.random() > 0.5d ? -1.0f : 1.0f;
 		float posIncX = sign * (float) Math.random() * this.positionRndRange;
 		sign = Math.random() > 0.5d ? -1.0f : 1.0f;
@@ -164,7 +163,7 @@ public class ParticleEmitter {
 		float posIncZ = sign * (float) Math.random() * this.positionRndRange;
 		particle.translate(posIncX, posIncY, posIncZ);
 
-		//randomize scale
+		// randomize scale
 		float scaleInc = sign * (float) Math.random() * this.scaleRndRange;
 		particle.setScale(.1f + scaleInc, .1f + scaleInc, .1f + scaleInc);
 
@@ -173,8 +172,11 @@ public class ParticleEmitter {
 
 	/**
 	 * Updates a particle position
-	 * @param particle The particle to update
-	 * @param elapsedTime Elapsed time in milliseconds
+	 * 
+	 * @param particle
+	 *            The particle to update
+	 * @param elapsedTime
+	 *            Elapsed time in milliseconds
 	 */
 	private void updatePosition(Particle particle, long elapsedTime) {
 		Vector3f speed = particle.velocity;
@@ -182,7 +184,7 @@ public class ParticleEmitter {
 		float dx = speed.x * delta;
 		float dy = speed.y * delta;
 		float dz = speed.z * delta;
-		//System.out.println(dz);
+		// System.out.println(dz);
 		particle.translate(dx, dy, dz);
 	}
 

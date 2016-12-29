@@ -29,23 +29,23 @@ import noiseLibrary.exception.NoModuleException;
 import noiseLibrary.module.Module;
 
 public class Add extends Module {
-    public Add() {
-        super(2);
-    }
+	public Add() {
+		super(2);
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 2;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 2;
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        if (sourceModule[0] == null) {
-            throw new NoModuleException();
-        }
-        if (sourceModule[1] == null) {
-            throw new NoModuleException();
-        }
-        return sourceModule[0].getValue(x, y, z) + sourceModule[1].getValue(x, y, z);
-    }
+	@Override
+	public double getValue(double x, double y, double z) {
+		if (sourceModule[0] == null) {
+			throw new NoModuleException();
+		}
+		if (sourceModule[1] == null) {
+			throw new NoModuleException();
+		}
+		return sourceModule[0].getValue(x, y, z) + sourceModule[1].getValue(x, y, z);
+	}
 }

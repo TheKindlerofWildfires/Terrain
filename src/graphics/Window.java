@@ -1,4 +1,5 @@
 package graphics;
+
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MINOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
@@ -47,6 +48,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
 import entity.EntityManager;
+import entity.Time;
 import input.MouseInput;
 import maths.Vector3f;
 import maths.Vector4f;
@@ -58,6 +60,9 @@ import world.ChunkLoader;
 import world.Water;
 import world.World;
 
+/**
+ * @author TheKingInYellow & HMSRothman
+ */
 public class Window implements Runnable {
 	private static int REFLECTION_WIDTH;
 	private static int REFLECTION_HEIGHT;
@@ -178,7 +183,6 @@ public class Window implements Runnable {
 		windowHeight = height.get(0);
 		// Create GraphicsManager and World
 		world = new World();
-
 		graphicsManager = new GraphicsManager();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
@@ -210,7 +214,7 @@ public class Window implements Runnable {
 	private void randomize() {
 		// setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
-		//worldRandom.setSeed(120);
+		// worldRandom.setSeed(120);
 		mathRandom.setSeed(worldRandom.nextLong());
 		entityRandom.setSeed(0);
 		World.perlinSeed = mathRandom.nextInt();
@@ -223,6 +227,7 @@ public class Window implements Runnable {
 		glfwPollEvents();
 		graphicsManager.update();
 		world.update();
+		Time.updateTick();
 		objectManager.update();
 		entityManager.update();
 		now = System.currentTimeMillis();
@@ -249,23 +254,23 @@ public class Window implements Runnable {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//waterFBO.bindReflectionFrameBuffer();
-		//	world.render(reflectionClipPlane);
-		//	objectManager.render();
+		// waterFBO.bindReflectionFrameBuffer();
+		// world.render(reflectionClipPlane);
+		// objectManager.render();
 
-		//	waterFBO.bindRefractionFrameBuffer();
-		//	world.render(refractionClipPlane);
-		//	objectManager.render();
+		// waterFBO.bindRefractionFrameBuffer();
+		// world.render(refractionClipPlane);
+		// objectManager.render();
 
-		//move camera to appropriate location and render reflection texture
+		// move camera to appropriate location and render reflection texture
 		float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
 		float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
 
-		//	GraphicsManager.camera.flipCamera();
+		// GraphicsManager.camera.flipCamera();
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, -camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, -targetDist * 2));
 		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
-		//bind reflection buffer and render to it
+		// bind reflection buffer and render to it
 		reflection.activate();
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -276,14 +281,14 @@ public class Window implements Runnable {
 		if (particles.active) {
 			particles.render(reflectionClipPlane);
 		}
-		
-		//	move camera back and render refraction texture
-		//GraphicsManager.camera.flipCamera();
+
+		// move camera back and render refraction texture
+		// GraphicsManager.camera.flipCamera();
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
 		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
-		
-		//bind refraction buffer and render to it
+
+		// bind refraction buffer and render to it
 		refraction.activate();
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -295,14 +300,15 @@ public class Window implements Runnable {
 			particles.render(refractionClipPlane);
 		}
 
-		//render to screen
+		// render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 		glViewport(0, 0, windowWidth, windowHeight);
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		world.renderLand(renderClipPlane);
 		objectManager.render(renderClipPlane);
-		water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
+		water.render(renderClipPlane); // do NOT attempt to render water
+										// anywhere other than to screen
 		entityManager.render(renderClipPlane);
 		if (particles.active) {
 			particles.render(renderClipPlane);
@@ -323,7 +329,7 @@ public class Window implements Runnable {
 	@Override
 	public void run() {
 		init();
-		//	GraphicsManager.toggleFog();
+		GraphicsManager.toggleFog();
 		long lastTime = System.nanoTime();
 		double delta = 0.0;
 		double ns = 1000000000.0 / 60.0;
@@ -342,7 +348,7 @@ public class Window implements Runnable {
 				updates++;
 				delta--;
 			}
-			//testRender();
+			// testRender();
 			render();
 			frames++;
 			if (System.currentTimeMillis() - timer > 1000) {

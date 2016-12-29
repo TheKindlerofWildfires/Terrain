@@ -34,8 +34,11 @@ public class MD5ModelHeader {
 
 	/**
 	 * Parses MD5ModelHeader from header block
-	 * @param lines header block
-	 * @throws IOException if you try to parse an empty file
+	 * 
+	 * @param lines
+	 *            header block
+	 * @throws IOException
+	 *             if you try to parse an empty file
 	 */
 	public MD5ModelHeader(List<String> lines) throws IOException {
 		int numLines = lines != null ? lines.size() : 0;

@@ -33,100 +33,107 @@ import noiseLibrary.exception.NoModuleException;
 import noiseLibrary.module.Module;
 
 public class Curve extends Module {
-    private final List<ControlPoint> controlPoints = new ArrayList<>();
+	private final List<ControlPoint> controlPoints = new ArrayList<>();
 
-    public Curve() {
-        super(1);
-    }
+	public Curve() {
+		super(1);
+	}
 
-    public void addControlPoint(double inputValue, double outputValue) {
-        int index = findInsertionPos(inputValue);
-        insertAtPos(index, inputValue, outputValue);
-    }
+	public void addControlPoint(double inputValue, double outputValue) {
+		int index = findInsertionPos(inputValue);
+		insertAtPos(index, inputValue, outputValue);
+	}
 
-    public ControlPoint[] getControlPoints() {
-        return (ControlPoint[]) controlPoints.toArray();
-    }
+	public ControlPoint[] getControlPoints() {
+		return (ControlPoint[]) controlPoints.toArray();
+	}
 
-    public void clearAllControlPoints() {
-        controlPoints.clear();
-    }
+	public void clearAllControlPoints() {
+		controlPoints.clear();
+	}
 
-    private int findInsertionPos(double inputValue) {
-        int insertionPos;
-        for (insertionPos = 0; insertionPos < controlPoints.size(); insertionPos++) {
-            if (inputValue < controlPoints.get(insertionPos).inputValue) {
-                // We found the array index in which to insert the new control point.
-                // Exit now.
-                break;
-            } else if (inputValue == controlPoints.get(insertionPos).inputValue) {
-                // Each control point is required to contain a unique input value, so
-                // throw an exception.
-                throw new IllegalArgumentException("inputValue must be unique");
-            }
-        }
-        return insertionPos;
-    }
+	private int findInsertionPos(double inputValue) {
+		int insertionPos;
+		for (insertionPos = 0; insertionPos < controlPoints.size(); insertionPos++) {
+			if (inputValue < controlPoints.get(insertionPos).inputValue) {
+				// We found the array index in which to insert the new control
+				// point.
+				// Exit now.
+				break;
+			} else if (inputValue == controlPoints.get(insertionPos).inputValue) {
+				// Each control point is required to contain a unique input
+				// value, so
+				// throw an exception.
+				throw new IllegalArgumentException("inputValue must be unique");
+			}
+		}
+		return insertionPos;
+	}
 
-    private void insertAtPos(int insertionPos, double inputValue, double outputValue) {
-        ControlPoint newPoint = new ControlPoint();
-        newPoint.inputValue = inputValue;
-        newPoint.outputValue = outputValue;
-        controlPoints.add(insertionPos, newPoint);
-    }
+	private void insertAtPos(int insertionPos, double inputValue, double outputValue) {
+		ControlPoint newPoint = new ControlPoint();
+		newPoint.inputValue = inputValue;
+		newPoint.outputValue = outputValue;
+		controlPoints.add(insertionPos, newPoint);
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 1;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 1;
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        if (sourceModule[0] == null) {
-            throw new NoModuleException();
-        }
-        if (controlPoints.size() < 4) {
-            throw new RuntimeException("Curve module must have at least 4 control points");
-        }
+	@Override
+	public double getValue(double x, double y, double z) {
+		if (sourceModule[0] == null) {
+			throw new NoModuleException();
+		}
+		if (controlPoints.size() < 4) {
+			throw new RuntimeException("Curve module must have at least 4 control points");
+		}
 
-        // Get the output value from the source module.
-        double sourceModuleValue = sourceModule[0].getValue(x, y, z);
+		// Get the output value from the source module.
+		double sourceModuleValue = sourceModule[0].getValue(x, y, z);
 
-        // Find the first element in the control point array that has an input value
-        // larger than the output value from the source module.
-        int indexPos;
-        for (indexPos = 0; indexPos < controlPoints.size(); indexPos++) {
-            if (sourceModuleValue < controlPoints.get(indexPos).inputValue) {
-                break;
-            }
-        }
+		// Find the first element in the control point array that has an input
+		// value
+		// larger than the output value from the source module.
+		int indexPos;
+		for (indexPos = 0; indexPos < controlPoints.size(); indexPos++) {
+			if (sourceModuleValue < controlPoints.get(indexPos).inputValue) {
+				break;
+			}
+		}
 
-        // Find the four nearest control points so that we can perform cubic
-        // interpolation.
-        int index0 = Utils.clamp(indexPos - 2, 0, controlPoints.size() - 1);
-        int index1 = Utils.clamp(indexPos - 1, 0, controlPoints.size() - 1);
-        int index2 = Utils.clamp(indexPos, 0, controlPoints.size() - 1);
-        int index3 = Utils.clamp(indexPos + 1, 0, controlPoints.size() - 1);
+		// Find the four nearest control points so that we can perform cubic
+		// interpolation.
+		int index0 = Utils.clamp(indexPos - 2, 0, controlPoints.size() - 1);
+		int index1 = Utils.clamp(indexPos - 1, 0, controlPoints.size() - 1);
+		int index2 = Utils.clamp(indexPos, 0, controlPoints.size() - 1);
+		int index3 = Utils.clamp(indexPos + 1, 0, controlPoints.size() - 1);
 
-        // If some control points are missing (which occurs if the value from the
-        // source module is greater than the largest input value or less than the
-        // smallest input value of the control point array), get the corresponding
-        // output value of the nearest control point and exit now.
-        if (index1 == index2) {
-            return controlPoints.get(indexPos).outputValue;
-        }
+		// If some control points are missing (which occurs if the value from
+		// the
+		// source module is greater than the largest input value or less than
+		// the
+		// smallest input value of the control point array), get the
+		// corresponding
+		// output value of the nearest control point and exit now.
+		if (index1 == index2) {
+			return controlPoints.get(indexPos).outputValue;
+		}
 
-        // Compute the alpha value used for cubic interpolation.
-        double input0 = controlPoints.get(indexPos).inputValue;
-        double input1 = controlPoints.get(indexPos).inputValue;
-        double alpha = (sourceModuleValue - input0) / (input1 - input0);
+		// Compute the alpha value used for cubic interpolation.
+		double input0 = controlPoints.get(indexPos).inputValue;
+		double input1 = controlPoints.get(indexPos).inputValue;
+		double alpha = (sourceModuleValue - input0) / (input1 - input0);
 
-        // Now perform the cubic interpolation given the alpha value.
-        return Utils.cubicInterp(controlPoints.get(index0).outputValue, controlPoints.get(index1).outputValue, controlPoints.get(index2).outputValue, controlPoints.get(index3).outputValue, alpha);
-    }
+		// Now perform the cubic interpolation given the alpha value.
+		return Utils.cubicInterp(controlPoints.get(index0).outputValue, controlPoints.get(index1).outputValue,
+				controlPoints.get(index2).outputValue, controlPoints.get(index3).outputValue, alpha);
+	}
 
-    public static class ControlPoint {
-        private double inputValue;
-        private double outputValue;
-    }
+	public static class ControlPoint {
+		private double inputValue;
+		private double outputValue;
+	}
 }

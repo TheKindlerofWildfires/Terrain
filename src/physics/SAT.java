@@ -2,6 +2,9 @@ package physics;
 
 import maths.Vector3f;
 
+/**
+ * @author Nope
+ */
 public class SAT {
 
 	private SAT() {

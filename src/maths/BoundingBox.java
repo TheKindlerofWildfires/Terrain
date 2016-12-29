@@ -15,10 +15,14 @@ public class BoundingBox {
 	/**
 	 * aabb bounding box
 	 * 
-	 * @param centre centre of box
-	 * @param x dist from centre to side along x
-	 * @param y dist from centre to side along y
-	 * @param z dist from centre to side along z
+	 * @param centre
+	 *            centre of box
+	 * @param x
+	 *            dist from centre to side along x
+	 * @param y
+	 *            dist from centre to side along y
+	 * @param z
+	 *            dist from centre to side along z
 	 */
 	public BoundingBox(Vector3f centre, float x, float y, float z) {
 		this.centre = centre;
@@ -30,36 +34,42 @@ public class BoundingBox {
 	/**
 	 * rotates kinda
 	 *
-	 * @param x the number of 90 degree rotations to be performed in the x axis
-	 * @param y the number of 90 degree rotations to be performed in the y axis
-	 * @param z the number of 90 degree rotations to be performed in the z axis
+	 * @param x
+	 *            the number of 90 degree rotations to be performed in the x
+	 *            axis
+	 * @param y
+	 *            the number of 90 degree rotations to be performed in the y
+	 *            axis
+	 * @param z
+	 *            the number of 90 degree rotations to be performed in the z
+	 *            axis
 	 */
 	public void rotate(int x, int y, int z) {
-		if (x == 0 && y == 0 && z == 0) { //no rotation
+		if (x == 0 && y == 0 && z == 0) { // no rotation
 			return;
-		} else if (x == 0 && y == 0 && z == 1) { //rotate once in z
+		} else if (x == 0 && y == 0 && z == 1) { // rotate once in z
 			float oldX = this.x;
 			float oldY = this.y;
 			this.x = oldY;
 			this.y = oldX;
-		} else if (x == 0 && y == 1 && z == 0) { //rotate once in y
+		} else if (x == 0 && y == 1 && z == 0) { // rotate once in y
 			float oldX = this.x;
 			float oldZ = this.z;
 			this.x = oldZ;
 			this.z = oldX;
-		} else if (x == 1 && y == 0 && z == 0) { //rotate once in x
+		} else if (x == 1 && y == 0 && z == 0) { // rotate once in x
 			float oldZ = this.z;
 			float oldY = this.y;
 			this.z = oldY;
 			this.y = oldZ;
 		} else {
-			for (int i = 0; i < z; i++) {//do the right number of z rotations
+			for (int i = 0; i < z; i++) {// do the right number of z rotations
 				this.rotate(0, 0, 1);
 			}
-			for (int i = 0; i < y; i++) {//do the right number of y rotations
+			for (int i = 0; i < y; i++) {// do the right number of y rotations
 				this.rotate(0, 1, 0);
 			}
-			for (int i = 0; i < x; i++) {//do the right number of x rotations
+			for (int i = 0; i < x; i++) {// do the right number of x rotations
 				this.rotate(1, 0, 0);
 			}
 		}
@@ -68,8 +78,10 @@ public class BoundingBox {
 	/**
 	 * Determines whether two aabb bounding boxes are colliding
 	 * 
-	 * @param b0 first box
-	 * @param b1 second box
+	 * @param b0
+	 *            first box
+	 * @param b1
+	 *            second box
 	 * @return whether or not they are colliding
 	 */
 	private static boolean aabbCollides(BoundingBox b0, BoundingBox b1) {
@@ -79,13 +91,17 @@ public class BoundingBox {
 		return xIntersect && yIntersect && zIntersect;
 	}
 
-	/** 
+	/**
 	 * If two objects are colliding, it moves them back until they are not
 	 * 
-	 * @param ob0 first object
-	 * @param ob1 second object
-	 * @param vOb0 velocity vector of first object
-	 * @param vOb1 velocity vector of second object
+	 * @param ob0
+	 *            first object
+	 * @param ob1
+	 *            second object
+	 * @param vOb0
+	 *            velocity vector of first object
+	 * @param vOb1
+	 *            velocity vector of second object
 	 */
 	public static void collide(GameObject ob0, GameObject ob1, Vector3f vOb0, Vector3f vOb1) {
 		BoundingBox b0 = ob0.boundingBox;
@@ -113,10 +129,12 @@ public class BoundingBox {
 				colliding = aabbCollides(b0, b1);
 			}
 
-		 //Vector3f momentum = ob0.velocity.scale(ob0.mass).add(ob1.velocity.scale(ob1.mass));
-		// Float kin = (float) (0.5*(ob0.velocity.length2()*ob0.mass+ob1.velocity.length2()*ob1.mass));
-		 ob0.velocity = ob0.velocity.negate();
-		 ob1.velocity = ob1.velocity.negate();
+			// Vector3f momentum =
+			// ob0.velocity.scale(ob0.mass).add(ob1.velocity.scale(ob1.mass));
+			// Float kin = (float)
+			// (0.5*(ob0.velocity.length2()*ob0.mass+ob1.velocity.length2()*ob1.mass));
+			ob0.velocity = ob0.velocity.negate();
+			ob1.velocity = ob1.velocity.negate();
 		}
 	}
 }

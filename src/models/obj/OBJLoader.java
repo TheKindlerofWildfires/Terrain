@@ -16,11 +16,8 @@ import models.VertexArrayObject;
 /**
  * TO DO BEFORE UPLOADING MODEL
  * 
- * Did you:
- * 	Write normals
- * 	Triangulate faces
- * 	Set origin to geometry (bounds center)
- * 	Set origin to 0,0,0
+ * Did you: Write normals Triangulate faces Set origin to geometry (bounds
+ * center) Set origin to 0,0,0
  */
 public class OBJLoader {
 	public static float[] loadMesh(String fileName) throws IOException {
@@ -39,8 +36,8 @@ public class OBJLoader {
 				Vector3f vec3f = new Vector3f(Float.parseFloat(tokens[1]), Float.parseFloat(tokens[2]),
 						Float.parseFloat(tokens[3]));
 				vertices.add(vec3f);
-				if(fileName == "resources/models/2d.obj")
-				System.out.println(vec3f);
+				if (fileName == "resources/models/2d.obj")
+					System.out.println(vec3f);
 				break;
 			case "vt":
 				// Texture coordinate
@@ -107,7 +104,7 @@ public class OBJLoader {
 
 	private static float[] reorderLists(List<Vector3f> posList, List<Vector2f> textCoordList, List<Vector3f> normList,
 			List<Face> facesList) {
-		//List<Integer> indices = new ArrayList<Integer>();
+		// List<Integer> indices = new ArrayList<Integer>();
 		float[] posArr = new float[posList.size() * 3];
 		int i = 0;
 		for (Vector3f pos : posList) {
@@ -119,14 +116,14 @@ public class OBJLoader {
 
 		List<Vector3f> vertices = new ArrayList<Vector3f>();
 
-		//System.out.println(facesList.size());
-		//int x = 1;
+		// System.out.println(facesList.size());
+		// int x = 1;
 		for (Face face : facesList) {
 			IdxGroup[] faceVertexIndices = face.getFaceVertexIndices();
-			//System.out.println(x++);
-			//	int y = 0;
+			// System.out.println(x++);
+			// int y = 0;
 			for (IdxGroup indValue : faceVertexIndices) {
-				//System.out.println(y++);
+				// System.out.println(y++);
 				int pos = indValue.idxPos;
 				int norm = indValue.idxVecNormal;
 				int textCoord = indValue.idxTextCoord;
@@ -139,9 +136,9 @@ public class OBJLoader {
 				}
 			}
 		}
-		//System.out.println(vertices.size());
-		//int[] indicesArr = new int[indices.size()];
-		//indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
+		// System.out.println(vertices.size());
+		// int[] indicesArr = new int[indices.size()];
+		// indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
 		float[] verts = new float[vertices.size() * 3];
 		int c = 0;
 		for (i = 0; i < vertices.size(); i++) {
@@ -154,7 +151,7 @@ public class OBJLoader {
 
 	private static VertexArrayObject reorderGLLists(List<Vector3f> posList, List<Vector2f> textCoordList,
 			List<Vector3f> normList, List<Face> facesList) {
-		//List<Integer> indices = new ArrayList<Integer>();
+		// List<Integer> indices = new ArrayList<Integer>();
 		float[] posArr = new float[posList.size() * 3];
 		int i = 0;
 		for (Vector3f pos : posList) {
@@ -166,14 +163,14 @@ public class OBJLoader {
 
 		List<Vector3f> vertices = new ArrayList<Vector3f>();
 
-		//System.out.println(facesList.size());
-		//int x = 1;
+		// System.out.println(facesList.size());
+		// int x = 1;
 		for (Face face : facesList) {
 			IdxGroup[] faceVertexIndices = face.getFaceVertexIndices();
-			//System.out.println(x++);
-			//	int y = 0;
+			// System.out.println(x++);
+			// int y = 0;
 			for (IdxGroup indValue : faceVertexIndices) {
-				//System.out.println(y++);
+				// System.out.println(y++);
 				int pos = indValue.idxPos;
 				int norm = indValue.idxVecNormal;
 				int textCoord = indValue.idxTextCoord;
@@ -186,9 +183,9 @@ public class OBJLoader {
 				}
 			}
 		}
-		//System.out.println(vertices.size());
-		//int[] indicesArr = new int[indices.size()];
-		//indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
+		// System.out.println(vertices.size());
+		// int[] indicesArr = new int[indices.size()];
+		// indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
 		float[] verts = new float[vertices.size() * 3];
 		int c = 0;
 		for (i = 0; i < vertices.size(); i++) {

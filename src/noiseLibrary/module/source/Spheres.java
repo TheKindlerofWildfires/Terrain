@@ -29,41 +29,41 @@ import noiseLibrary.Utils;
 import noiseLibrary.module.Module;
 
 public class Spheres extends Module {
-    // Default frequency value for the noise::module::Spheres noise module.
-    public static final double DEFAULT_SPHERES_FREQUENCY = 1.0;
-    // Frequency of the concentric spheres.
-    private double frequency = DEFAULT_SPHERES_FREQUENCY;
+	// Default frequency value for the noise::module::Spheres noise module.
+	public static final double DEFAULT_SPHERES_FREQUENCY = 1.0;
+	// Frequency of the concentric spheres.
+	private double frequency = DEFAULT_SPHERES_FREQUENCY;
 
-    public Spheres() {
-        super(0);
-    }
+	public Spheres() {
+		super(0);
+	}
 
-    public double getFrequency() {
-        return frequency;
-    }
+	public double getFrequency() {
+		return frequency;
+	}
 
-    public void setFrequency(double frequency) {
-        this.frequency = frequency;
-    }
+	public void setFrequency(double frequency) {
+		this.frequency = frequency;
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 0;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 0;
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        double x1 = x;
-        double y1 = y;
-        double z1 = z;
-        x1 *= frequency;
-        y1 *= frequency;
-        z1 *= frequency;
+	@Override
+	public double getValue(double x, double y, double z) {
+		double x1 = x;
+		double y1 = y;
+		double z1 = z;
+		x1 *= frequency;
+		y1 *= frequency;
+		z1 *= frequency;
 
-        double distFromCenter = Math.sqrt(x1 * x1 + y1 * y1 + z1 * z1);
-        double distFromSmallerSphere = distFromCenter - Utils.floor(distFromCenter);
-        double distFromLargerSphere = 1.0 - distFromSmallerSphere;
-        double nearestDist = Math.min(distFromSmallerSphere, distFromLargerSphere);
-        return 1.0 - (nearestDist * 4.0); // Puts it in the -1.0 to +1.0 range.
-    }
+		double distFromCenter = Math.sqrt(x1 * x1 + y1 * y1 + z1 * z1);
+		double distFromSmallerSphere = distFromCenter - Utils.floor(distFromCenter);
+		double distFromLargerSphere = 1.0 - distFromSmallerSphere;
+		double nearestDist = Math.min(distFromSmallerSphere, distFromLargerSphere);
+		return 1.0 - (nearestDist * 4.0); // Puts it in the -1.0 to +1.0 range.
+	}
 }

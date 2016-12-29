@@ -54,7 +54,7 @@ public class MD5Mesh {
 		vertices = new ArrayList<MD5Vertex>();
 		triangles = new ArrayList<MD5Triangle>();
 		weights = new ArrayList<MD5Weight>();
-		
+
 		for (String line : meshBlock) {
 			if (line.contains("shader")) {
 				Matcher textureMatcher = PATTERN_SHADER.matcher(line);

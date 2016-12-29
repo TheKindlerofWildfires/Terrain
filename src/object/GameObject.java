@@ -27,6 +27,9 @@ import maths.Vector4f;
 import models.ModelManager;
 import models.VertexArrayObject;
 
+/**
+ * @author TheKingInYellow & HMSRothman
+ */
 public class GameObject {
 	private static final Vector3f GRAVITY = new Vector3f(0, 0, 0);
 	private Vector3f fakeFriction = new Vector3f();
@@ -36,7 +39,7 @@ public class GameObject {
 	public Material material;
 	public Transformation model;
 	public boolean isGL;
-	public Vector3f scale = new Vector3f(1,1,1);
+	public Vector3f scale = new Vector3f(1, 1, 1);
 
 	protected boolean textured;
 	protected boolean hasMaterial = true;
@@ -53,9 +56,12 @@ public class GameObject {
 	/**
 	 * Creates a new object with the model and texture given
 	 * 
-	 * @param modelPath path to model
-	 * @param texturePath path to texture
-	 * @param box Bounding Box
+	 * @param modelPath
+	 *            path to model
+	 * @param texturePath
+	 *            path to texture
+	 * @param box
+	 *            Bounding Box
 	 */
 	public GameObject(String modelPath, String texturePath, boolean isGL) {
 		this.isGL = isGL;
@@ -95,9 +101,9 @@ public class GameObject {
 
 	public void setScale(float x, float y, float z) {
 		model.setScale(x, y, z);
-		scale.x=x;
-		scale.y=y;
-		scale.z=z;
+		scale.x = x;
+		scale.y = y;
+		scale.z = z;
 	}
 
 	public void scale(float x, float y, float z) {
@@ -105,9 +111,9 @@ public class GameObject {
 		boundingBox.x *= x;
 		boundingBox.y *= y;
 		boundingBox.z *= z;
-		scale.x*=x;
-		scale.y*=y;
-		scale.z*=z;
+		scale.x *= x;
+		scale.y *= y;
+		scale.z *= z;
 
 	}
 
@@ -132,7 +138,7 @@ public class GameObject {
 		model.rotate(angle, x, y, z);
 		int a = angle / 90;
 		boundingBox.rotate(a * x, a * y, a * z);
-		//at some point the bounding box should rotate too
+		// at some point the bounding box should rotate too
 	}
 
 	public void translate(Vector3f displacement) {

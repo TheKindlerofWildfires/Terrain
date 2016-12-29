@@ -28,7 +28,7 @@ public class Camera {
 
 	public float near;
 	public float far;
-	
+
 	/**
 	 * Initializes camera
 	 * 
@@ -109,7 +109,7 @@ public class Camera {
 			System.err.println("wtf");
 		}
 		displacement = displacement.normalize().scale(speed);
-		//displacement.scale(speed*0.1f);
+		// displacement.scale(speed*0.1f);
 		move(displacement);
 	}
 
@@ -144,10 +144,9 @@ public class Camera {
 		float z = (float) Math.sin(degZ * sense);
 		float h = (float) Math.cos(degZ * sense);
 		/*
-		target.x = x * h + pos.x;
-		target.y = y * h + pos.y;
-		target.z = z + pos.z;
-		*/
+		 * target.x = x * h + pos.x; target.y = y * h + pos.y; target.z = z +
+		 * pos.z;
+		 */
 		target.x = x * h;
 		target.y = y * h;
 		target.z = z;
@@ -176,14 +175,14 @@ public class Camera {
 	public Vector3f getUp() {
 		return up;
 	}
-	
-	public void flipCamera(){
+
+	public void flipCamera() {
 		up = up.negate();
 		flipped = !flipped;
 		view = Matrix4f.gluLookAt(pos, target, up, flipped);
 	}
-	
-	public float getSpeed(){
+
+	public float getSpeed() {
 		return speed;
 	}
 }

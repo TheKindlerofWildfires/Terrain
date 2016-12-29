@@ -2,6 +2,9 @@ package input;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 
+/**
+ * @author TheKingInYellow
+ */
 public class MouseInput extends GLFWCursorPosCallback {
 	static double xpos;
 	static double ypos;

@@ -60,9 +60,8 @@ public class Matrix4f {
 	 *            Vector with values of the fourth column
 	 */
 
-	public Matrix4f(float i00, float i01, float i02, float i03, float i10,
-			float i11, float i12, float i13, float i20, float i21, float i22,
-			float i23, float i30, float i31, float i32, float i33) {
+	public Matrix4f(float i00, float i01, float i02, float i03, float i10, float i11, float i12, float i13, float i20,
+			float i21, float i22, float i23, float i30, float i31, float i32, float i33) {
 		m00 = i00;
 		m01 = i01;
 		m02 = i02;
@@ -108,17 +107,17 @@ public class Matrix4f {
 		this.m01 = mat.m01;
 		this.m02 = mat.m02;
 		this.m03 = mat.m03;
-		
+
 		this.m10 = mat.m10;
 		this.m11 = mat.m11;
 		this.m12 = mat.m12;
 		this.m13 = mat.m13;
-		
+
 		this.m20 = mat.m20;
 		this.m21 = mat.m21;
 		this.m22 = mat.m22;
 		this.m23 = mat.m23;
-		
+
 		this.m30 = mat.m30;
 		this.m31 = mat.m31;
 		this.m32 = mat.m32;
@@ -243,14 +242,10 @@ public class Matrix4f {
 	 * @return Vector product of this * other
 	 */
 	public Vector4f multiply(Vector4f vector) {
-		float x = this.m00 * vector.x + this.m01 * vector.y + this.m02
-				* vector.z + this.m03 * vector.w;
-		float y = this.m10 * vector.x + this.m11 * vector.y + this.m12
-				* vector.z + this.m13 * vector.w;
-		float z = this.m20 * vector.x + this.m21 * vector.y + this.m22
-				* vector.z + this.m23 * vector.w;
-		float w = this.m30 * vector.x + this.m31 * vector.y + this.m32
-				* vector.z + this.m33 * vector.w;
+		float x = this.m00 * vector.x + this.m01 * vector.y + this.m02 * vector.z + this.m03 * vector.w;
+		float y = this.m10 * vector.x + this.m11 * vector.y + this.m12 * vector.z + this.m13 * vector.w;
+		float z = this.m20 * vector.x + this.m21 * vector.y + this.m22 * vector.z + this.m23 * vector.w;
+		float w = this.m30 * vector.x + this.m31 * vector.y + this.m32 * vector.z + this.m33 * vector.w;
 		return new Vector4f(x, y, z, w);
 	}
 
@@ -264,41 +259,25 @@ public class Matrix4f {
 	public Matrix4f multiply(Matrix4f other) {
 		Matrix4f result = new Matrix4f();
 
-		result.m00 = this.m00 * other.m00 + this.m01 * other.m10 + this.m02
-				* other.m20 + this.m03 * other.m30;
-		result.m10 = this.m10 * other.m00 + this.m11 * other.m10 + this.m12
-				* other.m20 + this.m13 * other.m30;
-		result.m20 = this.m20 * other.m00 + this.m21 * other.m10 + this.m22
-				* other.m20 + this.m23 * other.m30;
-		result.m30 = this.m30 * other.m00 + this.m31 * other.m10 + this.m32
-				* other.m20 + this.m33 * other.m30;
+		result.m00 = this.m00 * other.m00 + this.m01 * other.m10 + this.m02 * other.m20 + this.m03 * other.m30;
+		result.m10 = this.m10 * other.m00 + this.m11 * other.m10 + this.m12 * other.m20 + this.m13 * other.m30;
+		result.m20 = this.m20 * other.m00 + this.m21 * other.m10 + this.m22 * other.m20 + this.m23 * other.m30;
+		result.m30 = this.m30 * other.m00 + this.m31 * other.m10 + this.m32 * other.m20 + this.m33 * other.m30;
 
-		result.m01 = this.m00 * other.m01 + this.m01 * other.m11 + this.m02
-				* other.m21 + this.m03 * other.m31;
-		result.m11 = this.m10 * other.m01 + this.m11 * other.m11 + this.m12
-				* other.m21 + this.m13 * other.m31;
-		result.m21 = this.m20 * other.m01 + this.m21 * other.m11 + this.m22
-				* other.m21 + this.m23 * other.m31;
-		result.m31 = this.m30 * other.m01 + this.m31 * other.m11 + this.m32
-				* other.m21 + this.m33 * other.m31;
+		result.m01 = this.m00 * other.m01 + this.m01 * other.m11 + this.m02 * other.m21 + this.m03 * other.m31;
+		result.m11 = this.m10 * other.m01 + this.m11 * other.m11 + this.m12 * other.m21 + this.m13 * other.m31;
+		result.m21 = this.m20 * other.m01 + this.m21 * other.m11 + this.m22 * other.m21 + this.m23 * other.m31;
+		result.m31 = this.m30 * other.m01 + this.m31 * other.m11 + this.m32 * other.m21 + this.m33 * other.m31;
 
-		result.m02 = this.m00 * other.m02 + this.m01 * other.m12 + this.m02
-				* other.m22 + this.m03 * other.m32;
-		result.m12 = this.m10 * other.m02 + this.m11 * other.m12 + this.m12
-				* other.m22 + this.m13 * other.m32;
-		result.m22 = this.m20 * other.m02 + this.m21 * other.m12 + this.m22
-				* other.m22 + this.m23 * other.m32;
-		result.m32 = this.m30 * other.m02 + this.m31 * other.m12 + this.m32
-				* other.m22 + this.m33 * other.m32;
+		result.m02 = this.m00 * other.m02 + this.m01 * other.m12 + this.m02 * other.m22 + this.m03 * other.m32;
+		result.m12 = this.m10 * other.m02 + this.m11 * other.m12 + this.m12 * other.m22 + this.m13 * other.m32;
+		result.m22 = this.m20 * other.m02 + this.m21 * other.m12 + this.m22 * other.m22 + this.m23 * other.m32;
+		result.m32 = this.m30 * other.m02 + this.m31 * other.m12 + this.m32 * other.m22 + this.m33 * other.m32;
 
-		result.m03 = this.m00 * other.m03 + this.m01 * other.m13 + this.m02
-				* other.m23 + this.m03 * other.m33;
-		result.m13 = this.m10 * other.m03 + this.m11 * other.m13 + this.m12
-				* other.m23 + this.m13 * other.m33;
-		result.m23 = this.m20 * other.m03 + this.m21 * other.m13 + this.m22
-				* other.m23 + this.m23 * other.m33;
-		result.m33 = this.m30 * other.m03 + this.m31 * other.m13 + this.m32
-				* other.m23 + this.m33 * other.m33;
+		result.m03 = this.m00 * other.m03 + this.m01 * other.m13 + this.m02 * other.m23 + this.m03 * other.m33;
+		result.m13 = this.m10 * other.m03 + this.m11 * other.m13 + this.m12 * other.m23 + this.m13 * other.m33;
+		result.m23 = this.m20 * other.m03 + this.m21 * other.m13 + this.m22 * other.m23 + this.m23 * other.m33;
+		result.m33 = this.m30 * other.m03 + this.m31 * other.m13 + this.m32 * other.m23 + this.m33 * other.m33;
 
 		return result;
 	}
@@ -367,8 +346,7 @@ public class Matrix4f {
 	 *            Coordinate for the far depth clipping pane
 	 * @return Orthographic matrix
 	 */
-	public static Matrix4f orthographic(float left, float right, float bottom,
-			float top, float near, float far) {
+	public static Matrix4f orthographic(float left, float right, float bottom, float top, float near, float far) {
 		Matrix4f ortho = new Matrix4f();
 
 		float tx = -(right + left) / (right - left);
@@ -403,8 +381,7 @@ public class Matrix4f {
 	 *            Coordinate for the far depth clipping pane, must be positive
 	 * @return Perspective matrix
 	 */
-	public static Matrix4f frustum(float left, float right, float bottom,
-			float top, float near, float far) {
+	public static Matrix4f frustum(float left, float right, float bottom, float top, float near, float far) {
 		Matrix4f frustum = new Matrix4f();
 
 		float a = (right + left) / (right - left);
@@ -440,8 +417,7 @@ public class Matrix4f {
 	 *            positive
 	 * @return Perspective matrix
 	 */
-	public static Matrix4f perspective(float fovy, float aspect, float near,
-			float far) {
+	public static Matrix4f perspective(float fovy, float aspect, float near, float far) {
 		Matrix4f perspective = new Matrix4f();
 
 		float f = (float) (1f / Math.tan(Math.toRadians(fovy) / 2f));
@@ -485,58 +461,42 @@ public class Matrix4f {
 
 		s = 1 / s;
 
-		Matrix4f result = new Matrix4f(mat.m11
-				* (mat.m22 * mat.m33 - mat.m23 * mat.m32) + mat.m12
-				* (mat.m23 * mat.m31 - mat.m21 * mat.m33) + mat.m13
-				* (mat.m21 * mat.m32 - mat.m22 * mat.m31), mat.m21
-				* (mat.m02 * mat.m33 - mat.m03 * mat.m32) + mat.m22
-				* (mat.m03 * mat.m31 - mat.m01 * mat.m33) + mat.m23
-				* (mat.m01 * mat.m32 - mat.m02 * mat.m31), mat.m31
-				* (mat.m02 * mat.m13 - mat.m03 * mat.m12) + mat.m32
-				* (mat.m03 * mat.m11 - mat.m01 * mat.m13) + mat.m33
-				* (mat.m01 * mat.m12 - mat.m02 * mat.m11), mat.m01
-				* (mat.m13 * mat.m22 - mat.m12 * mat.m23) + mat.m02
-				* (mat.m11 * mat.m23 - mat.m13 * mat.m21) + mat.m03
-				* (mat.m12 * mat.m21 - mat.m11 * mat.m22),
+		Matrix4f result = new Matrix4f(
+				mat.m11 * (mat.m22 * mat.m33 - mat.m23 * mat.m32) + mat.m12 * (mat.m23 * mat.m31 - mat.m21 * mat.m33)
+						+ mat.m13 * (mat.m21 * mat.m32 - mat.m22 * mat.m31),
+				mat.m21 * (mat.m02 * mat.m33 - mat.m03 * mat.m32) + mat.m22 * (mat.m03 * mat.m31 - mat.m01 * mat.m33)
+						+ mat.m23 * (mat.m01 * mat.m32 - mat.m02 * mat.m31),
+				mat.m31 * (mat.m02 * mat.m13 - mat.m03 * mat.m12) + mat.m32 * (mat.m03 * mat.m11 - mat.m01 * mat.m13)
+						+ mat.m33 * (mat.m01 * mat.m12 - mat.m02 * mat.m11),
+				mat.m01 * (mat.m13 * mat.m22 - mat.m12 * mat.m23) + mat.m02 * (mat.m11 * mat.m23 - mat.m13 * mat.m21)
+						+ mat.m03 * (mat.m12 * mat.m21 - mat.m11 * mat.m22),
 
-		mat.m12 * (mat.m20 * mat.m33 - mat.m23 * mat.m30) + mat.m13
-				* (mat.m22 * mat.m30 - mat.m20 * mat.m32) + mat.m10
-				* (mat.m23 * mat.m32 - mat.m22 * mat.m33), mat.m22
-				* (mat.m00 * mat.m33 - mat.m03 * mat.m30) + mat.m23
-				* (mat.m02 * mat.m30 - mat.m00 * mat.m32) + mat.m20
-				* (mat.m03 * mat.m32 - mat.m02 * mat.m33), mat.m32
-				* (mat.m00 * mat.m13 - mat.m03 * mat.m10) + mat.m33
-				* (mat.m02 * mat.m10 - mat.m00 * mat.m12) + mat.m30
-				* (mat.m03 * mat.m12 - mat.m02 * mat.m13), mat.m02
-				* (mat.m13 * mat.m20 - mat.m10 * mat.m23) + mat.m03
-				* (mat.m10 * mat.m22 - mat.m12 * mat.m20) + mat.m00
-				* (mat.m12 * mat.m23 - mat.m13 * mat.m22),
+				mat.m12 * (mat.m20 * mat.m33 - mat.m23 * mat.m30) + mat.m13 * (mat.m22 * mat.m30 - mat.m20 * mat.m32)
+						+ mat.m10 * (mat.m23 * mat.m32 - mat.m22 * mat.m33),
+				mat.m22 * (mat.m00 * mat.m33 - mat.m03 * mat.m30) + mat.m23 * (mat.m02 * mat.m30 - mat.m00 * mat.m32)
+						+ mat.m20 * (mat.m03 * mat.m32 - mat.m02 * mat.m33),
+				mat.m32 * (mat.m00 * mat.m13 - mat.m03 * mat.m10) + mat.m33 * (mat.m02 * mat.m10 - mat.m00 * mat.m12)
+						+ mat.m30 * (mat.m03 * mat.m12 - mat.m02 * mat.m13),
+				mat.m02 * (mat.m13 * mat.m20 - mat.m10 * mat.m23) + mat.m03 * (mat.m10 * mat.m22 - mat.m12 * mat.m20)
+						+ mat.m00 * (mat.m12 * mat.m23 - mat.m13 * mat.m22),
 
-		mat.m13 * (mat.m20 * mat.m31 - mat.m21 * mat.m30) + mat.m10
-				* (mat.m21 * mat.m33 - mat.m23 * mat.m31) + mat.m11
-				* (mat.m23 * mat.m30 - mat.m20 * mat.m33), mat.m23
-				* (mat.m00 * mat.m31 - mat.m01 * mat.m30) + mat.m20
-				* (mat.m01 * mat.m33 - mat.m03 * mat.m31) + mat.m21
-				* (mat.m03 * mat.m30 - mat.m00 * mat.m33), mat.m33
-				* (mat.m00 * mat.m11 - mat.m01 * mat.m10) + mat.m30
-				* (mat.m01 * mat.m13 - mat.m03 * mat.m11) + mat.m31
-				* (mat.m03 * mat.m10 - mat.m00 * mat.m13), mat.m03
-				* (mat.m11 * mat.m20 - mat.m10 * mat.m21) + mat.m00
-				* (mat.m13 * mat.m21 - mat.m11 * mat.m23) + mat.m01
-				* (mat.m10 * mat.m23 - mat.m13 * mat.m20),
+				mat.m13 * (mat.m20 * mat.m31 - mat.m21 * mat.m30) + mat.m10 * (mat.m21 * mat.m33 - mat.m23 * mat.m31)
+						+ mat.m11 * (mat.m23 * mat.m30 - mat.m20 * mat.m33),
+				mat.m23 * (mat.m00 * mat.m31 - mat.m01 * mat.m30) + mat.m20 * (mat.m01 * mat.m33 - mat.m03 * mat.m31)
+						+ mat.m21 * (mat.m03 * mat.m30 - mat.m00 * mat.m33),
+				mat.m33 * (mat.m00 * mat.m11 - mat.m01 * mat.m10) + mat.m30 * (mat.m01 * mat.m13 - mat.m03 * mat.m11)
+						+ mat.m31 * (mat.m03 * mat.m10 - mat.m00 * mat.m13),
+				mat.m03 * (mat.m11 * mat.m20 - mat.m10 * mat.m21) + mat.m00 * (mat.m13 * mat.m21 - mat.m11 * mat.m23)
+						+ mat.m01 * (mat.m10 * mat.m23 - mat.m13 * mat.m20),
 
-		mat.m10 * (mat.m22 * mat.m31 - mat.m21 * mat.m32) + mat.m11
-				* (mat.m20 * mat.m32 - mat.m22 * mat.m30) + mat.m12
-				* (mat.m21 * mat.m30 - mat.m20 * mat.m31), mat.m20
-				* (mat.m02 * mat.m31 - mat.m01 * mat.m32) + mat.m21
-				* (mat.m00 * mat.m32 - mat.m02 * mat.m30) + mat.m22
-				* (mat.m01 * mat.m30 - mat.m00 * mat.m31), mat.m30
-				* (mat.m02 * mat.m11 - mat.m01 * mat.m12) + mat.m31
-				* (mat.m00 * mat.m12 - mat.m02 * mat.m10) + mat.m32
-				* (mat.m01 * mat.m10 - mat.m00 * mat.m11), mat.m00
-				* (mat.m11 * mat.m22 - mat.m12 * mat.m21) + mat.m01
-				* (mat.m12 * mat.m20 - mat.m10 * mat.m22) + mat.m02
-				* (mat.m10 * mat.m21 - mat.m11 * mat.m20));
+				mat.m10 * (mat.m22 * mat.m31 - mat.m21 * mat.m32) + mat.m11 * (mat.m20 * mat.m32 - mat.m22 * mat.m30)
+						+ mat.m12 * (mat.m21 * mat.m30 - mat.m20 * mat.m31),
+				mat.m20 * (mat.m02 * mat.m31 - mat.m01 * mat.m32) + mat.m21 * (mat.m00 * mat.m32 - mat.m02 * mat.m30)
+						+ mat.m22 * (mat.m01 * mat.m30 - mat.m00 * mat.m31),
+				mat.m30 * (mat.m02 * mat.m11 - mat.m01 * mat.m12) + mat.m31 * (mat.m00 * mat.m12 - mat.m02 * mat.m10)
+						+ mat.m32 * (mat.m01 * mat.m10 - mat.m00 * mat.m11),
+				mat.m00 * (mat.m11 * mat.m22 - mat.m12 * mat.m21) + mat.m01 * (mat.m12 * mat.m20 - mat.m10 * mat.m22)
+						+ mat.m02 * (mat.m10 * mat.m21 - mat.m11 * mat.m20));
 
 		result.multiply(s);
 		return result;
@@ -544,12 +504,9 @@ public class Matrix4f {
 
 	public float determinant() {
 		// less *,+,- calculation than expanded expression.
-		return (m00 * m11 - m01 * m10) * (m22 * m33 - m23 * m32)
-				- (m00 * m12 - m02 * m10) * (m21 * m33 - m23 * m31)
-				+ (m00 * m13 - m03 * m10) * (m21 * m32 - m22 * m31)
-				+ (m01 * m12 - m02 * m11) * (m20 * m33 - m23 * m30)
-				- (m01 * m13 - m03 * m11) * (m20 * m32 - m22 * m30)
-				+ (m02 * m13 - m03 * m12) * (m20 * m31 - m21 * m30);
+		return (m00 * m11 - m01 * m10) * (m22 * m33 - m23 * m32) - (m00 * m12 - m02 * m10) * (m21 * m33 - m23 * m31)
+				+ (m00 * m13 - m03 * m10) * (m21 * m32 - m22 * m31) + (m01 * m12 - m02 * m11) * (m20 * m33 - m23 * m30)
+				- (m01 * m13 - m03 * m11) * (m20 * m32 - m22 * m30) + (m02 * m13 - m03 * m12) * (m20 * m31 - m21 * m30);
 	}
 
 	/**
@@ -616,12 +573,12 @@ public class Matrix4f {
 	public static Matrix4f gluLookAt(Vector3f eye, Vector3f center, Vector3f up, boolean flipped) {
 		Vector3f forward = center.subtract(eye).normalize();
 		Vector3f side = forward.cross(up).normalize();
-		if(flipped){
+		if (flipped) {
 			side = side.negate();
 		}
 		up = side.cross(forward).normalize();
-		if(flipped){
-			up=up.negate();
+		if (flipped) {
+			up = up.negate();
 		}
 		Matrix4f result = new Matrix4f();
 		result.m00 = side.x;
@@ -637,9 +594,7 @@ public class Matrix4f {
 	}
 
 	public String toString() {
-		return (m00 + "," + m01 + "," + m02 + "," + m03 + "\n" + m10 + ","
-				+ m11 + "," + m12 + "," + m13 + "\n" + m20 + "," + m21 + ","
-				+ m22 + "," + m23 + "\n" + m30 + "," + m31 + "," + m32 + ","
-				+ m33 + "\n");
+		return (m00 + "," + m01 + "," + m02 + "," + m03 + "\n" + m10 + "," + m11 + "," + m12 + "," + m13 + "\n" + m20
+				+ "," + m21 + "," + m22 + "," + m23 + "\n" + m30 + "," + m31 + "," + m32 + "," + m33 + "\n");
 	}
 }

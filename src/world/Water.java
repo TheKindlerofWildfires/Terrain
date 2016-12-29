@@ -29,7 +29,7 @@ public class Water extends GameObject {
 	public static Vector3f WATER_COLOUR;
 	public static float MAX_DISTORTION;
 	public static float REFLECTANCE;
-	
+
 	public static String DUDV_PATH;
 	public static String NORMAL_PATH;
 
@@ -63,7 +63,7 @@ public class Water extends GameObject {
 		glBindTexture(GL_TEXTURE_2D, normal.getId());
 		glActiveTexture(GL_TEXTURE4);
 		glBindTexture(GL_TEXTURE_2D, Window.refraction.getDepthTexture());
-		//	System.out.println(Window.refraction.getDepthTexture());
+		// System.out.println(Window.refraction.getDepthTexture());
 
 		Matrix4f view = graphics.GraphicsManager.camera.view;
 		setUniformMatrix4f("modelView", view.multiply(model.getMatrix()));

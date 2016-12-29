@@ -29,47 +29,47 @@ import noiseLibrary.exception.NoModuleException;
 import noiseLibrary.module.Module;
 
 public class ScaleBias extends Module {
-    // Default bias for the noise::module::ScaleBias noise module.
-    public static final double DEFAULT_BIAS = 0.0;
-    // Default scale for the noise::module::ScaleBias noise module.
-    public static final double DEFAULT_SCALE = 1.0;
-    // Bias to apply to the scaled output value from the source module.
-    private double bias = DEFAULT_BIAS;
-    // Scaling factor to apply to the output value from the source
-    // module.
-    private double scale = DEFAULT_SCALE;
+	// Default bias for the noise::module::ScaleBias noise module.
+	public static final double DEFAULT_BIAS = 0.0;
+	// Default scale for the noise::module::ScaleBias noise module.
+	public static final double DEFAULT_SCALE = 1.0;
+	// Bias to apply to the scaled output value from the source module.
+	private double bias = DEFAULT_BIAS;
+	// Scaling factor to apply to the output value from the source
+	// module.
+	private double scale = DEFAULT_SCALE;
 
-    public ScaleBias() {
-        super(1);
-    }
+	public ScaleBias() {
+		super(1);
+	}
 
-    public double getBias() {
-        return bias;
-    }
+	public double getBias() {
+		return bias;
+	}
 
-    public void setBias(double bias) {
-        this.bias = bias;
-    }
+	public void setBias(double bias) {
+		this.bias = bias;
+	}
 
-    public double getScale() {
-        return scale;
-    }
+	public double getScale() {
+		return scale;
+	}
 
-    public void setScale(double scale) {
-        this.scale = scale;
-    }
+	public void setScale(double scale) {
+		this.scale = scale;
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 1;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 1;
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        if (sourceModule[0] == null) {
-            throw new NoModuleException();
-        }
+	@Override
+	public double getValue(double x, double y, double z) {
+		if (sourceModule[0] == null) {
+			throw new NoModuleException();
+		}
 
-        return sourceModule[0].getValue(x, y, z) * scale + bias;
-    }
+		return sourceModule[0].getValue(x, y, z) * scale + bias;
+	}
 }

@@ -29,61 +29,61 @@ import noiseLibrary.exception.NoModuleException;
 import noiseLibrary.module.Module;
 
 public class ScalePoint extends Module {
-    // Default scaling factor applied to the @a x coordinate for the
-    // noise::module::ScalePoint noise module.
-    public static final double DEFAULT_SCALE_POINT_X = 1.0;
-    // Default scaling factor applied to the @a y coordinate for the
-    // noise::module::ScalePoint noise module.
-    public static final double DEFAULT_SCALE_POINT_Y = 1.0;
-    // Default scaling factor applied to the @a z coordinate for the
-    // noise::module::ScalePoint noise module.
-    public static final double DEFAULT_SCALE_POINT_Z = 1.0;
-    // Scaling factor applied to the @a x coordinate of the input value.
-    private double xScale = DEFAULT_SCALE_POINT_X;
-    // Scaling factor applied to the @a y coordinate of the input value.
-    private double yScale = DEFAULT_SCALE_POINT_Y;
-    // Scaling factor applied to the @a z coordinate of the input value.
-    private double zScale = DEFAULT_SCALE_POINT_Z;
+	// Default scaling factor applied to the @a x coordinate for the
+	// noise::module::ScalePoint noise module.
+	public static final double DEFAULT_SCALE_POINT_X = 1.0;
+	// Default scaling factor applied to the @a y coordinate for the
+	// noise::module::ScalePoint noise module.
+	public static final double DEFAULT_SCALE_POINT_Y = 1.0;
+	// Default scaling factor applied to the @a z coordinate for the
+	// noise::module::ScalePoint noise module.
+	public static final double DEFAULT_SCALE_POINT_Z = 1.0;
+	// Scaling factor applied to the @a x coordinate of the input value.
+	private double xScale = DEFAULT_SCALE_POINT_X;
+	// Scaling factor applied to the @a y coordinate of the input value.
+	private double yScale = DEFAULT_SCALE_POINT_Y;
+	// Scaling factor applied to the @a z coordinate of the input value.
+	private double zScale = DEFAULT_SCALE_POINT_Z;
 
-    public ScalePoint() {
-        super(1);
-    }
+	public ScalePoint() {
+		super(1);
+	}
 
-    public double getXScale() {
-        return xScale;
-    }
+	public double getXScale() {
+		return xScale;
+	}
 
-    public void setXScale(double xScale) {
-        this.xScale = xScale;
-    }
+	public void setXScale(double xScale) {
+		this.xScale = xScale;
+	}
 
-    public double getYScale() {
-        return yScale;
-    }
+	public double getYScale() {
+		return yScale;
+	}
 
-    public void setYScale(double yScale) {
-        this.yScale = yScale;
-    }
+	public void setYScale(double yScale) {
+		this.yScale = yScale;
+	}
 
-    public double getZScale() {
-        return zScale;
-    }
+	public double getZScale() {
+		return zScale;
+	}
 
-    public void setZScale(double zScale) {
-        this.zScale = zScale;
-    }
+	public void setZScale(double zScale) {
+		this.zScale = zScale;
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 1;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 1;
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        if (sourceModule[0] == null) {
-            throw new NoModuleException();
-        }
+	@Override
+	public double getValue(double x, double y, double z) {
+		if (sourceModule[0] == null) {
+			throw new NoModuleException();
+		}
 
-        return sourceModule[0].getValue(x * xScale, y * yScale, z * zScale);
-    }
+		return sourceModule[0].getValue(x * xScale, y * yScale, z * zScale);
+	}
 }

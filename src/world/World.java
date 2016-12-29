@@ -11,33 +11,43 @@ import java.util.Set;
 import graphics.GraphicsManager;
 import graphics.Window;
 import maths.Vector2i;
-import maths.Vector3f;
 import maths.Vector4f;
+<<<<<<< HEAD
+=======
 import models.ModelManager;
 import models.VertexArrayObject;
 import noiseLibrary.NoiseQuality;
+>>>>>>> master
 import noiseLibrary.module.source.Perlin;
 
 public class World {
 	public static Perlin noise;
 	public static Perlin noisy;
+	public static Perlin detail;
 	public static int perlinSeed;
+<<<<<<< HEAD
+	public static final int LOAD_DIST = 6;
+=======
 	public static final int LOAD_DIST = 9;
+>>>>>>> master
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
-	public static ArrayList<Vector3f> treePositions = new ArrayList<Vector3f>();
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 	public static double tracker;
-	private VertexArrayObject tree;
 
 	/**
-	 * Building better worlds
-	 * 		tl;Dr: Uses poisson disk, delauny and perlin noise to great a cool map
+	 * Building better worlds tl;Dr: Uses poisson disk, delauny and perlin noise
+	 * to great a cool map
 	 */
 	public World() {
 		loadProperties();
 		noise.setSeed(perlinSeed);
+<<<<<<< HEAD
+		noisy.setSeed(perlinSeed * perlinSeed);
+		detail.setSeed(perlinSeed / 2);
+
+=======
 		noisy.setSeed(perlinSeed+1);
 		System.out.println(perlinSeed);
 
@@ -50,6 +60,7 @@ public class World {
 			e.printStackTrace();
 		}
 		
+>>>>>>> master
 	}
 
 	private void loadProperties() {
@@ -67,12 +78,14 @@ public class World {
 		noise.setFrequency(Float.parseFloat(props.getProperty("perlinFrequency")));
 		noise.setLacunarity(Float.parseFloat(props.getProperty("perlinLacunarity")));
 		noise.setOctaveCount(Integer.parseInt(props.getProperty("perlinOctaveCount")));
-		
+
 		noisy = new Perlin();
 		noisy.setFrequency(0.008);
 		noisy.setLacunarity(2.5);
 		noisy.setOctaveCount(10);
 		noisy.setPersistence(.4);
+
+		detail = new Perlin();
 
 		Chunk.SIZE = Float.parseFloat(props.getProperty("chunkSize"));
 
@@ -92,7 +105,6 @@ public class World {
 	}
 
 	public void update() {
-		//System.out.println(tracker);//1.1528
 		float cameraX = GraphicsManager.camera.pos.x;
 		float cameraY = GraphicsManager.camera.pos.y;
 
@@ -125,17 +137,16 @@ public class World {
 	 */
 	public void renderLand(Vector4f clipPlane) {
 		chunks.stream().forEach(c -> c.render(clipPlane));
-	}
-
-	public void renderTrees(Vector4f clipPlane) {
-
+		// chunks.stream().forEach(c->c.details.stream().forEach(d ->
+		// d.render(clipPlane)));
 	}
 
 	public void addChunk(Chunk c) {
 		if (!c.isGL) {
 			c.makeGL();
+			// c.details.stream().forEach(d -> d.makeGL());
 		}
 		chunks.add(c);
-		c.foliage.stream().forEach(f -> f.makeGL());
+
 	}
 }

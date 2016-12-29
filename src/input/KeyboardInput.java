@@ -4,6 +4,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 import org.lwjgl.glfw.GLFWKeyCallback;
 
+/**
+ * @author TheKingInYellow
+ */
 public class KeyboardInput extends GLFWKeyCallback {
 
 	public static boolean[] keys = new boolean[65535];

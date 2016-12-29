@@ -38,7 +38,7 @@ public class MD5Model {
 			throw new IOException("File is empty");
 		}
 
-		//parse header
+		// parse header
 		boolean headerEnd = false;
 		int start = 0;
 		for (int i = 0; i < numLines && !headerEnd; i++) {
@@ -52,17 +52,17 @@ public class MD5Model {
 		List<String> headerBlock = lines.subList(0, start);
 		this.header = new MD5ModelHeader(headerBlock);
 
-		//parse rest of file
+		// parse rest of file
 		int blockStart = 0;
 		boolean inBlock = false;
 		String blockId = "";
 		for (int i = start; i < numLines; i++) {
 			String line = lines.get(i);
-			if (line.endsWith("{")) { //we enter a block
+			if (line.endsWith("{")) { // we enter a block
 				blockStart = i;
 				blockId = line.substring(0, line.lastIndexOf(" "));
 				inBlock = true;
-			} else if (inBlock && line.endsWith("}")) { //we leave a block
+			} else if (inBlock && line.endsWith("}")) { // we leave a block
 				List<String> blockBody = lines.subList(blockStart + 1, i);
 				parseBlock(blockId, blockBody);
 				inBlock = false;

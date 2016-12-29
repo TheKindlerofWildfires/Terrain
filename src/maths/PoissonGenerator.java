@@ -1,19 +1,22 @@
 package maths;
 
-import graphics.Window;
-
 import java.util.ArrayList;
 
+import graphics.Window;
+
+/**
+ * @author xWiffirat
+ */
 public class PoissonGenerator {
 	public ArrayList<int[]> points = new ArrayList<int[]>();
 	public int POINTS_PER_ITER = 20;
 	public static int width = 10000;
 	public int remainingPoints = 200;
 	int freq = 0;
-	//public ArrayList<Vector3f> xp = new ArrayList<Vector3f>();
-	//public ArrayList<Vector3f> xn = new ArrayList<Vector3f>();
-	//public ArrayList<Vector3f> yp = new ArrayList<Vector3f>();
-	//public ArrayList<Vector3f> yn = new ArrayList<Vector3f>();
+	// public ArrayList<Vector3f> xp = new ArrayList<Vector3f>();
+	// public ArrayList<Vector3f> xn = new ArrayList<Vector3f>();
+	// public ArrayList<Vector3f> yp = new ArrayList<Vector3f>();
+	// public ArrayList<Vector3f> yn = new ArrayList<Vector3f>();
 
 	public PoissonGenerator() {
 	}
@@ -50,8 +53,7 @@ public class PoissonGenerator {
 	 * Makes sure that point is not about to mess up the sides
 	 */
 	private boolean check(int[] bestPoint) {
-		if (bestPoint[0] > Mirror.spec || bestPoint[1] > Mirror.spec
-				|| bestPoint[0] < width - Mirror.spec
+		if (bestPoint[0] > Mirror.spec || bestPoint[1] > Mirror.spec || bestPoint[0] < width - Mirror.spec
 				|| bestPoint[1] < width - Mirror.spec) {
 			return false;
 		} else {
@@ -88,8 +90,9 @@ public class PoissonGenerator {
 			iterate();
 			remainingPoints--;
 		}
-		
+
 	}
+
 	public double distance(int[] p1, int[] p2) {
 		int dx = p2[0] - p1[0];
 		int dy = p2[1] - p1[1];

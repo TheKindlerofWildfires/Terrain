@@ -32,54 +32,61 @@ import noiseLibrary.module.Module;
  * Model that defines the surface of a cylinder.
  */
 public class Cylinder {
-    private Module module;
+	private Module module;
 
-    /**
-     * @param mod The noise module that is used to generate the output values.
-     */
-    public Cylinder(Module mod) {
-        this.module = mod;
-    }
+	/**
+	 * @param mod
+	 *            The noise module that is used to generate the output values.
+	 */
+	public Cylinder(Module mod) {
+		this.module = mod;
+	}
 
-    /**
-     * Returns the noise module that is used to generate the output values.
-     *
-     * @return A reference to the noise module.
-     */
-    public Module getModule() {
-        return this.module;
-    }
+	/**
+	 * Returns the noise module that is used to generate the output values.
+	 *
+	 * @return A reference to the noise module.
+	 */
+	public Module getModule() {
+		return this.module;
+	}
 
-    /**
-     * Sets the noise module that is used to generate the output values.
-     *
-     * @param mod The noise module that is used to generate the output values.
-     * <p/>
-     * This noise module must exist for the lifetime of this object, until you pass a new noise module to this method.
-     */
-    public void setModule(Module mod) {
-        if (mod == null) {
-            throw new IllegalArgumentException("Mod cannot be null");
-        }
-        this.module = mod;
-    }
+	/**
+	 * Sets the noise module that is used to generate the output values.
+	 *
+	 * @param mod
+	 *            The noise module that is used to generate the output values.
+	 *            <p/>
+	 *            This noise module must exist for the lifetime of this object,
+	 *            until you pass a new noise module to this method.
+	 */
+	public void setModule(Module mod) {
+		if (mod == null) {
+			throw new IllegalArgumentException("Mod cannot be null");
+		}
+		this.module = mod;
+	}
 
-    /**
-     * Returns the output value from the noise module given the (angle, height) coordinates of the specified input value located on the surface of the cylinder.
-     *
-     * @param angle The angle around the cylinder's center, in degrees.
-     * @param height The height along the @a y axis.
-     * @return The output value from the noise module.
-     */
-    public double getValue(double angle, double height) {
-        if (module == null) {
-            throw new NoModuleException();
-        }
+	/**
+	 * Returns the output value from the noise module given the (angle, height)
+	 * coordinates of the specified input value located on the surface of the
+	 * cylinder.
+	 *
+	 * @param angle
+	 *            The angle around the cylinder's center, in degrees.
+	 * @param height
+	 *            The height along the @a y axis.
+	 * @return The output value from the noise module.
+	 */
+	public double getValue(double angle, double height) {
+		if (module == null) {
+			throw new NoModuleException();
+		}
 
-        double x, y, z;
-        x = Math.cos(Math.toRadians(angle));
-        y = height;
-        z = Math.sin(Math.toRadians(angle));
-        return module.getValue(x, y, z);
-    }
+		double x, y, z;
+		x = Math.cos(Math.toRadians(angle));
+		y = height;
+		z = Math.sin(Math.toRadians(angle));
+		return module.getValue(x, y, z);
+	}
 }
