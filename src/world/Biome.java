@@ -68,7 +68,7 @@ public abstract class Biome {
 		if (type == -1) {
 			System.out.println("not a biome");
 		}
-		type = MOUNTAIN;
+		//type = MOUNTAIN;
 		if (type == RAINFOREST) {
 			
 			h = WATERLEVEL*7/8;

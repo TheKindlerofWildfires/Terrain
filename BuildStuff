@@ -1,18 +1,18 @@
 Models:
 pineTree - []
-savannaTree -
-rock-
+savannaTree - []
+rock-[]
 lillyPad - []
-tree -
-bigTree-
-vineTree-
+tree - []
+bigTree- []
+vineTree-[]
 
 
 
 Animations:
 sandStorm -
 spout lava/water-[]
-seasonalTree - 
+seasonalTree - modelDone
 
 Water:
 LAVA -

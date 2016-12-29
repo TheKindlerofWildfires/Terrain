@@ -327,7 +327,7 @@ public class Window implements Runnable {
 	@Override
 	public void run() {
 		init();
-		//	GraphicsManager.toggleFog();
+		GraphicsManager.toggleFog();
 		long lastTime = System.nanoTime();
 		double delta = 0.0;
 		double ns = 1000000000.0 / 60.0;

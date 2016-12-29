@@ -1,15 +1,14 @@
 https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/
-Return:
-	Fog
-	Day night cycle
+
 Assigned:
 	Fix lighting
+	sync water/land/skybox
+	(skybox<land = water)
+	place biome items
+Eventual:
 	Thickness
 	Caves
-	Have Chunk extend Object
-	SAT collision 
-	MD5
-Eventual:
 	Optimization
 	Weather
-	THIS IS SO I CAN COMMIT!
+	SAT collision 
+	MD5

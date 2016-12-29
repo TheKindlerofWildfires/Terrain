@@ -19,7 +19,7 @@ public class World {
 	public static Perlin noisy;
 	public static Perlin detail;
 	public static int perlinSeed;
-	public static final int LOAD_DIST = 5;
+	public static final int LOAD_DIST = 6;
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 

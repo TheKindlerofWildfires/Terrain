@@ -150,26 +150,7 @@ public class GraphicsManager {
 		double[] mousePos = MouseInput.pos();
 		camera.rotateCamera(mousePos);
 		ShaderManager.setCamera(camera, dirLight);
-		/*
-		if (KeyboardInput.isKeyDown(GLFW_KEY_D)) {
-			camera.moveCamera("LEFT");
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_A)) {
-			camera.moveCamera("RIGHT");
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_W)) {
-			camera.moveCamera("FORWARD");
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_S)) {
-			camera.moveCamera("BACK");
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_SPACE)) {
-			camera.moveCamera("UP");
-		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
-			camera.moveCamera("DOWN");
-		}*/
-	//	dayNightCycle();
+	    dayNightCycle();
 	}
 
 	private static void dayNightCycle() {
