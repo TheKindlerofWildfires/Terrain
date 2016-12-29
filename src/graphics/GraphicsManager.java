@@ -135,8 +135,6 @@ public class GraphicsManager {
 
 	public static Properties props;
 
-
-
 	public GraphicsManager() {
 		loadProperties();
 		ShaderManager.init(camera, dirLight, fog, ambientLight);
@@ -150,7 +148,7 @@ public class GraphicsManager {
 		double[] mousePos = MouseInput.pos();
 		camera.rotateCamera(mousePos);
 		ShaderManager.setCamera(camera, dirLight);
-	    dayNightCycle();
+		dayNightCycle();
 	}
 
 	private static void dayNightCycle() {

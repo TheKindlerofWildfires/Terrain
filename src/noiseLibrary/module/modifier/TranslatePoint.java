@@ -29,70 +29,70 @@ import noiseLibrary.exception.NoModuleException;
 import noiseLibrary.module.Module;
 
 public class TranslatePoint extends Module {
-    // Default translation factor applied to the @a x coordinate for the
-    // noise::module::TranslatePoint noise module.
-    public static final double DEFAULT_TRANSLATE_POINT_X = 0.0;
-    // Default translation factor applied to the @a y coordinate for the
-    // noise::module::TranslatePoint noise module.
-    public static final double DEFAULT_TRANSLATE_POINT_Y = 0.0;
-    // Default translation factor applied to the @a z coordinate for the
-    // noise::module::TranslatePoint noise module.
-    public static final double DEFAULT_TRANSLATE_POINT_Z = 0.0;
-    // Translation amount applied to the @a x coordinate of the input
-    // value.
-    private double xTranslation = DEFAULT_TRANSLATE_POINT_X;
-    // Translation amount applied to the @a y coordinate of the input
-    // value.
-    private double yTranslation = DEFAULT_TRANSLATE_POINT_Y;
-    // Translation amount applied to the @a z coordinate of the input
-    // value.
-    private double zTranslation = DEFAULT_TRANSLATE_POINT_Z;
+	// Default translation factor applied to the @a x coordinate for the
+	// noise::module::TranslatePoint noise module.
+	public static final double DEFAULT_TRANSLATE_POINT_X = 0.0;
+	// Default translation factor applied to the @a y coordinate for the
+	// noise::module::TranslatePoint noise module.
+	public static final double DEFAULT_TRANSLATE_POINT_Y = 0.0;
+	// Default translation factor applied to the @a z coordinate for the
+	// noise::module::TranslatePoint noise module.
+	public static final double DEFAULT_TRANSLATE_POINT_Z = 0.0;
+	// Translation amount applied to the @a x coordinate of the input
+	// value.
+	private double xTranslation = DEFAULT_TRANSLATE_POINT_X;
+	// Translation amount applied to the @a y coordinate of the input
+	// value.
+	private double yTranslation = DEFAULT_TRANSLATE_POINT_Y;
+	// Translation amount applied to the @a z coordinate of the input
+	// value.
+	private double zTranslation = DEFAULT_TRANSLATE_POINT_Z;
 
-    public TranslatePoint() {
-        super(1);
-    }
+	public TranslatePoint() {
+		super(1);
+	}
 
-    public double getXTranslation() {
-        return xTranslation;
-    }
+	public double getXTranslation() {
+		return xTranslation;
+	}
 
-    public void setXTranslation(double xTranslation) {
-        this.xTranslation = xTranslation;
-    }
+	public void setXTranslation(double xTranslation) {
+		this.xTranslation = xTranslation;
+	}
 
-    public double getYTranslation() {
-        return yTranslation;
-    }
+	public double getYTranslation() {
+		return yTranslation;
+	}
 
-    public void setYTranslation(double yTranslation) {
-        this.yTranslation = yTranslation;
-    }
+	public void setYTranslation(double yTranslation) {
+		this.yTranslation = yTranslation;
+	}
 
-    public double getZTranslation() {
-        return zTranslation;
-    }
+	public double getZTranslation() {
+		return zTranslation;
+	}
 
-    public void setZTranslation(double zTranslation) {
-        this.zTranslation = zTranslation;
-    }
+	public void setZTranslation(double zTranslation) {
+		this.zTranslation = zTranslation;
+	}
 
-    public void setTranslations(double x, double y, double z) {
-        setXTranslation(x);
-        setYTranslation(y);
-        setZTranslation(z);
-    }
+	public void setTranslations(double x, double y, double z) {
+		setXTranslation(x);
+		setYTranslation(y);
+		setZTranslation(z);
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 1;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 1;
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        if (sourceModule[0] == null) {
-            throw new NoModuleException();
-        }
+	@Override
+	public double getValue(double x, double y, double z) {
+		if (sourceModule[0] == null) {
+			throw new NoModuleException();
+		}
 
-        return sourceModule[0].getValue(x + xTranslation, y + yTranslation, z + zTranslation);
-    }
+		return sourceModule[0].getValue(x + xTranslation, y + yTranslation, z + zTranslation);
+	}
 }

@@ -1,11 +1,15 @@
 package graphics;
 
+import static graphics.Shader.makeShader;
+import static graphics.Shader.setDirectionalLight;
 import static graphics.Shader.setFog;
+import static graphics.Shader.setUniform1f;
+import static graphics.Shader.setUniform1i;
 import static graphics.Shader.setUniform3f;
+import static graphics.Shader.setUniform4f;
 import static graphics.Shader.setUniformMatrix4f;
 import static graphics.Shader.start;
 import static graphics.Shader.stop;
-import static graphics.Shader.*;
 
 import maths.Vector3f;
 import maths.Vector4f;
@@ -19,7 +23,7 @@ public class ShaderManager {
 	public static int landShader;
 	public static int waterShader;
 	public static int particleShader;
-	//public static int skyboxShader;
+	// public static int skyboxShader;
 
 	public static void init(Camera camera, DirectionalLight dirLight, Fog fog, Vector3f ambientLight) {
 		initialized = true;
@@ -28,7 +32,8 @@ public class ShaderManager {
 		waterShader = makeShader("src/shaders/water.vert", "src/shaders/water.frag");
 		particleShader = makeShader("src/shaders/particle.vert", "src/shaders/particle.frag");
 
-		//skyboxShader = makeShader("src/shaders/skybox.vert", "src/shaders/skybox.frag");
+		// skyboxShader = makeShader("src/shaders/skybox.vert",
+		// "src/shaders/skybox.frag");
 
 		start(objectShader);
 		setUniformMatrix4f("projection", camera.projection);
@@ -81,17 +86,17 @@ public class ShaderManager {
 		setUniformMatrix4f("modelView", camera.view);
 		setDirectionalLight("directionalLight", dirLight);
 		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
-		//setUniform3f("camera_pos", camera.pos);
+		// setUniform3f("camera_pos", camera.pos);
 
 		start(objectShader);
 		setDirectionalLight("directionalLight", dirLight);
 		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
-		//setUniform3f("camera_pos", camera.pos);
+		// setUniform3f("camera_pos", camera.pos);
 
 		start(waterShader);
 		setDirectionalLight("directionalLight", dirLight);
 		setUniform3f("directionalLight.direction", new Vector3f(dir.x, dir.y, dir.z));
-		//setUniform3f("camera_pos", camera.pos);
+		// setUniform3f("camera_pos", camera.pos);
 		stop();
 	}
 

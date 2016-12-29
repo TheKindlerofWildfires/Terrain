@@ -14,7 +14,7 @@ import object.GameObject;
 
 public class Particle extends GameObject {
 
-	private long ttl; //time remaining to live (milliseconds)
+	private long ttl; // time remaining to live (milliseconds)
 	float angleX;
 	float angleY;
 	private static final Vector3f gravity = new Vector3f(0, 0, -.002f);

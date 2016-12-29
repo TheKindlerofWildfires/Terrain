@@ -29,26 +29,26 @@ import noiseLibrary.exception.NoModuleException;
 import noiseLibrary.module.Module;
 
 public class Min extends Module {
-    public Min() {
-        super(2);
-    }
+	public Min() {
+		super(2);
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 2;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 2;
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        if (sourceModule[0] == null) {
-            throw new NoModuleException();
-        }
-        if (sourceModule[1] == null) {
-            throw new NoModuleException();
-        }
+	@Override
+	public double getValue(double x, double y, double z) {
+		if (sourceModule[0] == null) {
+			throw new NoModuleException();
+		}
+		if (sourceModule[1] == null) {
+			throw new NoModuleException();
+		}
 
-        double v0 = sourceModule[0].getValue(x, y, z);
-        double v1 = sourceModule[1].getValue(x, y, z);
-        return Math.min(v0, v1);
-    }
+		double v0 = sourceModule[0].getValue(x, y, z);
+		double v1 = sourceModule[1].getValue(x, y, z);
+		return Math.min(v0, v1);
+	}
 }

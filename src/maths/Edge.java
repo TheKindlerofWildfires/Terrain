@@ -1,6 +1,5 @@
 package maths;
 
-
 public class Edge {
 
 	public Vector3f[] points = new Vector3f[2];
@@ -26,8 +25,8 @@ public class Edge {
 			return false;
 		}
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return points[0] + " ; " + points[1];
 	}
 }

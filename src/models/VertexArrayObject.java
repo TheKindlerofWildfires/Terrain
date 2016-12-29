@@ -27,9 +27,13 @@ public class VertexArrayObject {
 
 	/**
 	 * Create VAO with vertices and indices
-	 * @param vertices vertex array
-	 * @param indices indices array
-	 * @param numberOfVec3s number of vector3fs per vertex (x,y,z,etc) 
+	 * 
+	 * @param vertices
+	 *            vertex array
+	 * @param indices
+	 *            indices array
+	 * @param numberOfVec3s
+	 *            number of vector3fs per vertex (x,y,z,etc)
 	 */
 	public VertexArrayObject(float[] vertices, byte[] indices, int numberOfVec3s) {
 		numberOfVAOS++;
@@ -39,8 +43,11 @@ public class VertexArrayObject {
 
 	/**
 	 * Create VAO with vertices
-	 * @param vertices vertex array
-	 * @param numberOfVec3s number of vector3fs per vertex (x,y,z,etc) 
+	 * 
+	 * @param vertices
+	 *            vertex array
+	 * @param numberOfVec3s
+	 *            number of vector3fs per vertex (x,y,z,etc)
 	 */
 	public VertexArrayObject(float[] vertices, int numberOfVec3s) {
 		numberOfVAOS++;
@@ -56,9 +63,13 @@ public class VertexArrayObject {
 
 	/**
 	 * Creates Array Object with vertices and indices
-	 * @param positions data array
-	 * @param indices indices array
-	 * @param numberOfVec3s number of vector4fs per vertex (x,y,z,etc) 
+	 * 
+	 * @param positions
+	 *            data array
+	 * @param indices
+	 *            indices array
+	 * @param numberOfVec3s
+	 *            number of vector4fs per vertex (x,y,z,etc)
 	 */
 	public void createArrayObject(float[] positions, byte[] indices, int numberOfVec3s) {
 		vaoID = glGenVertexArrays();
@@ -72,8 +83,11 @@ public class VertexArrayObject {
 
 	/**
 	 * Create Array Object with vertices
-	 * @param positions data array
-	 * @param numberOfVec3s number of vector4fs per vertex (x,y,z,etc) 
+	 * 
+	 * @param positions
+	 *            data array
+	 * @param numberOfVec3s
+	 *            number of vector4fs per vertex (x,y,z,etc)
 	 */
 	public void createArrayObject(float[] positions, int numberOfVec3s) {
 		vaoID = glGenVertexArrays();
@@ -84,8 +98,11 @@ public class VertexArrayObject {
 
 	/**
 	 * creates vertex buffer
-	 * @param positions data array
-	 * @param numberOfVec3s number of vector4fs per vertex (x,y,z,etc) 
+	 * 
+	 * @param positions
+	 *            data array
+	 * @param numberOfVec3s
+	 *            number of vector4fs per vertex (x,y,z,etc)
 	 */
 	private void createVerticesBuffer(float[] positions, int numberOfVec3s) {
 		int vboID = glGenBuffers();
@@ -93,14 +110,20 @@ public class VertexArrayObject {
 		glBufferData(GL_ARRAY_BUFFER, Utilities.createFloatBuffer(positions), GL_STATIC_DRAW);
 		for (int i = 0; i < numberOfVec3s; i++) {
 			glEnableVertexAttribArray(i);
-			glVertexAttribPointer(i, 3, GL_FLOAT, false, 4 * 3 * numberOfVec3s, i * 3 * 4); // send positions on pipe i
+			glVertexAttribPointer(i, 3, GL_FLOAT, false, 4 * 3 * numberOfVec3s, i * 3 * 4); // send
+																							// positions
+																							// on
+																							// pipe
+																							// i
 		}
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	/**
 	 * Creates Index Buffer
-	 * @param indices indices
+	 * 
+	 * @param indices
+	 *            indices
 	 */
 	private void createIndicesBuffer(byte[] indices) {
 		int ibo = glGenBuffers();
@@ -110,6 +133,7 @@ public class VertexArrayObject {
 
 	/**
 	 * returns the ID of the VAO, used for rendering
+	 * 
 	 * @return
 	 */
 	public int getVaoID() {
@@ -118,6 +142,7 @@ public class VertexArrayObject {
 
 	/**
 	 * returns the size of the VAO, used for rendering
+	 * 
 	 * @return
 	 */
 	public int getSize() {

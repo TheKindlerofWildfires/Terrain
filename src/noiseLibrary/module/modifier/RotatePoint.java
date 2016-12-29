@@ -29,113 +29,113 @@ import noiseLibrary.exception.NoModuleException;
 import noiseLibrary.module.Module;
 
 public class RotatePoint extends Module {
-    // Default @a x rotation angle for the noise::module::RotatePoint noise
-    // module.
-    public static final double DEFAULT_ROTATE_X = 0.0;
-    // Default @a y rotation angle for the noise::module::RotatePoint noise
-    // module.
-    public static final double DEFAULT_ROTATE_Y = 0.0;
-    // Default @a z rotation angle for the noise::module::RotatePoint noise
-    // module.
-    public static final double DEFAULT_ROTATE_Z = 0.0;
-    private double xAngle = DEFAULT_ROTATE_X;
-    private double yAngle = DEFAULT_ROTATE_Y;
-    private double zAngle = DEFAULT_ROTATE_Z;
-    // An entry within the 3x3 rotation matrix used for rotating the
-    // input value.
-    private double x1Matrix;
-    // An entry within the 3x3 rotation matrix used for rotating the
-    // input value.
-    private double x2Matrix;
-    // An entry within the 3x3 rotation matrix used for rotating the
-    // input value.
-    private double x3Matrix;
-    // An entry within the 3x3 rotation matrix used for rotating the
-    // input value.
-    private double y1Matrix;
-    // An entry within the 3x3 rotation matrix used for rotating the
-    // input value.
-    private double y2Matrix;
-    // An entry within the 3x3 rotation matrix used for rotating the
-    // input value.
-    private double y3Matrix;
-    // An entry within the 3x3 rotation matrix used for rotating the
-    // input value.
-    private double z1Matrix;
-    // An entry within the 3x3 rotation matrix used for rotating the
-    // input value.
-    private double z2Matrix;
-    // An entry within the 3x3 rotation matrix used for rotating the
-    // input value.
-    private double z3Matrix;
+	// Default @a x rotation angle for the noise::module::RotatePoint noise
+	// module.
+	public static final double DEFAULT_ROTATE_X = 0.0;
+	// Default @a y rotation angle for the noise::module::RotatePoint noise
+	// module.
+	public static final double DEFAULT_ROTATE_Y = 0.0;
+	// Default @a z rotation angle for the noise::module::RotatePoint noise
+	// module.
+	public static final double DEFAULT_ROTATE_Z = 0.0;
+	private double xAngle = DEFAULT_ROTATE_X;
+	private double yAngle = DEFAULT_ROTATE_Y;
+	private double zAngle = DEFAULT_ROTATE_Z;
+	// An entry within the 3x3 rotation matrix used for rotating the
+	// input value.
+	private double x1Matrix;
+	// An entry within the 3x3 rotation matrix used for rotating the
+	// input value.
+	private double x2Matrix;
+	// An entry within the 3x3 rotation matrix used for rotating the
+	// input value.
+	private double x3Matrix;
+	// An entry within the 3x3 rotation matrix used for rotating the
+	// input value.
+	private double y1Matrix;
+	// An entry within the 3x3 rotation matrix used for rotating the
+	// input value.
+	private double y2Matrix;
+	// An entry within the 3x3 rotation matrix used for rotating the
+	// input value.
+	private double y3Matrix;
+	// An entry within the 3x3 rotation matrix used for rotating the
+	// input value.
+	private double z1Matrix;
+	// An entry within the 3x3 rotation matrix used for rotating the
+	// input value.
+	private double z2Matrix;
+	// An entry within the 3x3 rotation matrix used for rotating the
+	// input value.
+	private double z3Matrix;
 
-    public RotatePoint() {
-        super(1);
-        setAngles(DEFAULT_ROTATE_X, DEFAULT_ROTATE_Y, DEFAULT_ROTATE_Z);
-    }
+	public RotatePoint() {
+		super(1);
+		setAngles(DEFAULT_ROTATE_X, DEFAULT_ROTATE_Y, DEFAULT_ROTATE_Z);
+	}
 
-    public void setAngles(double x, double y, double z) {
-        double xCos, yCos, zCos, xSin, ySin, zSin;
-        xCos = Math.cos(Math.toRadians(x));
-        yCos = Math.cos(Math.toRadians(y));
-        zCos = Math.cos(Math.toRadians(z));
-        xSin = Math.sin(Math.toRadians(x));
-        ySin = Math.sin(Math.toRadians(y));
-        zSin = Math.sin(Math.toRadians(z));
+	public void setAngles(double x, double y, double z) {
+		double xCos, yCos, zCos, xSin, ySin, zSin;
+		xCos = Math.cos(Math.toRadians(x));
+		yCos = Math.cos(Math.toRadians(y));
+		zCos = Math.cos(Math.toRadians(z));
+		xSin = Math.sin(Math.toRadians(x));
+		ySin = Math.sin(Math.toRadians(y));
+		zSin = Math.sin(Math.toRadians(z));
 
-        x1Matrix = ySin * xSin * zSin + yCos * zCos;
-        y1Matrix = xCos * zSin;
-        z1Matrix = ySin * zCos - yCos * xSin * zSin;
-        x2Matrix = ySin * xSin * zCos - yCos * zSin;
-        y2Matrix = xCos * zCos;
-        z2Matrix = -yCos * xSin * zCos - ySin * zSin;
-        x3Matrix = -ySin * xCos;
-        y3Matrix = xSin;
-        z3Matrix = yCos * xCos;
+		x1Matrix = ySin * xSin * zSin + yCos * zCos;
+		y1Matrix = xCos * zSin;
+		z1Matrix = ySin * zCos - yCos * xSin * zSin;
+		x2Matrix = ySin * xSin * zCos - yCos * zSin;
+		y2Matrix = xCos * zCos;
+		z2Matrix = -yCos * xSin * zCos - ySin * zSin;
+		x3Matrix = -ySin * xCos;
+		y3Matrix = xSin;
+		z3Matrix = yCos * xCos;
 
-        this.xAngle = x;
-        this.yAngle = y;
-        this.zAngle = z;
-    }
+		this.xAngle = x;
+		this.yAngle = y;
+		this.zAngle = z;
+	}
 
-    public double getXAngle() {
-        return xAngle;
-    }
+	public double getXAngle() {
+		return xAngle;
+	}
 
-    public void setXAngle(double xAngle) {
-        setAngles(xAngle, yAngle, zAngle);
-    }
+	public void setXAngle(double xAngle) {
+		setAngles(xAngle, yAngle, zAngle);
+	}
 
-    public double getYAngle() {
-        return yAngle;
-    }
+	public double getYAngle() {
+		return yAngle;
+	}
 
-    public void setYAngle(double yAngle) {
-        setAngles(xAngle, yAngle, zAngle);
-    }
+	public void setYAngle(double yAngle) {
+		setAngles(xAngle, yAngle, zAngle);
+	}
 
-    public double getZAngle() {
-        return zAngle;
-    }
+	public double getZAngle() {
+		return zAngle;
+	}
 
-    public void setZAngle(double zAngle) {
-        setAngles(xAngle, yAngle, zAngle);
-    }
+	public void setZAngle(double zAngle) {
+		setAngles(xAngle, yAngle, zAngle);
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 1;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 1;
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        if (sourceModule[0] == null) {
-            throw new NoModuleException();
-        }
+	@Override
+	public double getValue(double x, double y, double z) {
+		if (sourceModule[0] == null) {
+			throw new NoModuleException();
+		}
 
-        double nx = (x1Matrix * x) + (y1Matrix * y) + (z1Matrix * z);
-        double ny = (x2Matrix * x) + (y2Matrix * y) + (z2Matrix * z);
-        double nz = (x3Matrix * x) + (y3Matrix * y) + (z3Matrix * z);
-        return sourceModule[0].getValue(nx, ny, nz);
-    }
+		double nx = (x1Matrix * x) + (y1Matrix * y) + (z1Matrix * z);
+		double ny = (x2Matrix * x) + (y2Matrix * y) + (z2Matrix * z);
+		double nz = (x3Matrix * x) + (y3Matrix * y) + (z3Matrix * z);
+		return sourceModule[0].getValue(nx, ny, nz);
+	}
 }

@@ -10,6 +10,7 @@ import maths.Vector3f;
 import models.VertexArrayObject;
 import noiseLibrary.module.source.Perlin;
 import object.GameObject;
+
 /**
  * @author TheKingInYellow & HMSRothman
  */
@@ -44,7 +45,6 @@ public class Chunk extends GameObject {
 		shader = graphics.ShaderManager.landShader;
 	}
 
-
 	public void genTerrain() {
 		ArrayList<Vector3f> points = new ArrayList<Vector3f>();
 		PoissonGenerator fish = new PoissonGenerator();
@@ -75,16 +75,15 @@ public class Chunk extends GameObject {
 				float r = values[0];
 				float b = values[1];
 				float g = values[2];
-				point.add(new Vector3f(0,0,h));
-				
+				point.add(new Vector3f(0, 0, h));
+
 				details = Detail.detail(point, values[4]);
 				terrain.get(i).getPoint(j).z = h;
-				
-				
+
 				float pseudo = Math.abs(h - (int) h);// remainder
 				pseudo = (int) (pseudo * 100);
 				pseudo = pseudo % 100;
-				
+
 				vertices[c++] = point.x;
 				vertices[c++] = point.y;
 				vertices[c++] = h; // the z cordinate

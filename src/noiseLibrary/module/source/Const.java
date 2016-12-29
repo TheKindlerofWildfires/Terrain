@@ -28,28 +28,28 @@ package noiseLibrary.module.source;
 import noiseLibrary.module.Module;
 
 public class Const extends Module {
-    public static final double DEFAULT_VALUE = 0;
-    private double value = DEFAULT_VALUE;
+	public static final double DEFAULT_VALUE = 0;
+	private double value = DEFAULT_VALUE;
 
-    public Const() {
-        super(0);
-    }
+	public Const() {
+		super(0);
+	}
 
-    public double getValue() {
-        return value;
-    }
+	public double getValue() {
+		return value;
+	}
 
-    public void setValue(double value) {
-        this.value = value;
-    }
+	public void setValue(double value) {
+		this.value = value;
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 0;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 0;
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        return value;
-    }
+	@Override
+	public double getValue(double x, double y, double z) {
+		return value;
+	}
 }

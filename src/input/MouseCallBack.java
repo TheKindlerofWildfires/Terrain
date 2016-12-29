@@ -1,6 +1,7 @@
 package input;
 
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
+
 /**
  * @author TheKingInYellow
  */

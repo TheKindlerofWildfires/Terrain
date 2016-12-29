@@ -183,6 +183,7 @@ public class Vector3f {
 	public String toString() {
 		return x + "," + y + "," + z;
 	}
+
 	/**
 	 * @return length of this vector squared
 	 */

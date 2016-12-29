@@ -17,9 +17,13 @@ public class MD5Loader {
 
 	/**
 	 * Loads the index'th mesh out of the md5 mesh file in fileName
-	 * @param fileName the path to the md5mesh file
-	 * @param index the index of the mesh to be loaded. usually 0
-	 * @return a VertexArrayObject with all the necessary info abt the mesh so it can be rendered
+	 * 
+	 * @param fileName
+	 *            the path to the md5mesh file
+	 * @param index
+	 *            the index of the mesh to be loaded. usually 0
+	 * @return a VertexArrayObject with all the necessary info abt the mesh so
+	 *         it can be rendered
 	 */
 	public static VertexArrayObject loadMesh(String fileName, int index) {
 		MD5Model model = null;
@@ -33,8 +37,11 @@ public class MD5Loader {
 
 	/**
 	 * Parses MD5Mesh into a VAO
-	 * @param model the MD5Model
-	 * @param mesh the MD5Mesh
+	 * 
+	 * @param model
+	 *            the MD5Model
+	 * @param mesh
+	 *            the MD5Mesh
 	 * @return the VAO corresponding to the MD5Mesh
 	 */
 	private static VertexArrayObject generateMesh(MD5Model model, MD5Mesh mesh) {

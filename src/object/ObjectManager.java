@@ -2,36 +2,15 @@ package object;
 
 import java.util.ArrayList;
 
-import maths.Vector3f;
 import maths.Vector4f;
 import world.Skybox;
 
 public class ObjectManager {
-	public GameObject target;
-	public static GameObject ball;
-	//public GameObject tree;
-	//private Object test;
 	private Skybox box;
 	float c;
 	public ArrayList<GameObject> objectList = new ArrayList<GameObject>();
 
 	public ObjectManager() {
-		/*
-		 * create a list of all objects
-		 */
-
-		//target = new GameObject("resources/models/model.md5mesh", "resources/textures/wood.png",true);
-		ball = new GameObject("resources/models/tree.obj", "resources/textures/wood.png", true);
-		
-		ball.scale(4f, 4f, 4f);
-		ball.translate(5, 2, 10);
-		ball.material.colour = new Vector3f(0.2f, 0.1f, 0.6f);
-		ball.material.reflectance = 128;
-		//	target.translate(2, 2, 10);
-		//objectList.add(target);
-		objectList.add(ball);
-		//objectList.add(tree);
-		//ball.rotate(30, 1,0,0);
 		box = new Skybox("resources/models/skybox.obj", "resources/textures/skybox.png");
 		right();
 		box.rotate(90, 1, 0, 0);
@@ -47,28 +26,29 @@ public class ObjectManager {
 	}
 
 	public void update() {
-		/*	//target.force = new Vector3f((float)(-0.1*Math.sin(c)),0,0);
-			//target.force = target.position.subtract(new Vector3f(0, 5, 10)).scale(-0.1f);
-			for (int i = 0; i < objectList.size(); i++) {
-				GameObject object = objectList.get(i);
-				object.translate(object.velocity);
-				//object.placeAt(object.position.x, object.position.y, object.position.z);
-				object.physic();
-			}
-			maths.BoundingBox.collide(ball, target, ball.velocity, target.velocity);
-			float cZ = (float) Math.abs(World.noise.getValue(ball.position.x, ball.position.y, 0.1)) * Chunk.SIZE / 2 + .5f;
-			float diff = ball.position.z - cZ;
-			//System.out.println(diff);
-			ball.velocity.z = -diff * .7f; */
+		/*
+		 * //target.force = new Vector3f((float)(-0.1*Math.sin(c)),0,0);
+		 * //target.force = target.position.subtract(new Vector3f(0, 5,
+		 * 10)).scale(-0.1f); for (int i = 0; i < objectList.size(); i++) {
+		 * GameObject object = objectList.get(i);
+		 * object.translate(object.velocity);
+		 * //object.placeAt(object.position.x, object.position.y,
+		 * object.position.z); object.physic(); }
+		 * maths.BoundingBox.collide(ball, target, ball.velocity,
+		 * target.velocity); float cZ = (float)
+		 * Math.abs(World.noise.getValue(ball.position.x, ball.position.y, 0.1))
+		 * * Chunk.SIZE / 2 + .5f; float diff = ball.position.z - cZ;
+		 * //System.out.println(diff); ball.velocity.z = -diff * .7f;
+		 */
 	}
 
 	public void render(Vector4f clipPlane) {
 		for (int i = 0; i < objectList.size(); i++) {
-			GameObject object = objectList.get(i);
-			//object.render(clipPlane);
+			// GameObject object = objectList.get(i);
+			// object.render(clipPlane);
 		}
-		//target.render(clipPlane);
-		//ball.render(clipPlane);
+		// target.render(clipPlane);
+		// ball.render(clipPlane);
 		box.render(clipPlane);
 	}
 }

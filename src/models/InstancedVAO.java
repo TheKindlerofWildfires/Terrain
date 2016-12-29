@@ -68,7 +68,7 @@ public class InstancedVAO extends VertexArrayObject {
 		this.vaoID = vao.vaoID;
 
 		glBindVertexArray(vaoID);
-		//	createInstanceDataBuffer();
+		// createInstanceDataBuffer();
 
 		glBindVertexArray(0);
 	}
@@ -115,17 +115,17 @@ public class InstancedVAO extends VertexArrayObject {
 	}
 
 	private void renderChunkInstanced(List<? extends GameObject> gameObjects, Matrix4f viewMatrix) {
-		//	this.instanceDataBuffer.clear();
+		// this.instanceDataBuffer.clear();
 
 		for (GameObject gameObject : gameObjects) {
-			Matrix4f modelMatrix = gameObject.model.getMatrix();
-			Matrix4f modelViewMatrix = modelMatrix.multiply(viewMatrix);
-			//instanceDataBuffer.put(modelViewMatrix.getBuffer());
+			//Matrix4f modelMatrix = gameObject.model.getMatrix();
+			//Matrix4f modelViewMatrix = modelMatrix.multiply(viewMatrix);
+			// instanceDataBuffer.put(modelViewMatrix.getBuffer());
 			gameObject.render(Window.renderClipPlane);
 		}
 
-		//glBindBuffer(GL_ARRAY_BUFFER, instanceDataVBO);
-		//glBufferData(GL_ARRAY_BUFFER, instanceDataBuffer, GL_DYNAMIC_DRAW);
+		// glBindBuffer(GL_ARRAY_BUFFER, instanceDataVBO);
+		// glBufferData(GL_ARRAY_BUFFER, instanceDataBuffer, GL_DYNAMIC_DRAW);
 
 		glDrawArraysInstanced(GL_TRIANGLES, getSize(), 0, 1);
 

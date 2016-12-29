@@ -29,86 +29,86 @@ import noiseLibrary.exception.NoModuleException;
 import noiseLibrary.module.Module;
 
 public class Displace extends Module {
-    public Displace() {
-        super(4);
-    }
+	public Displace() {
+		super(4);
+	}
 
-    @Override
-    public int getSourceModuleCount() {
-        return 4;
-    }
+	@Override
+	public int getSourceModuleCount() {
+		return 4;
+	}
 
-    public Module getXDisplaceModule() {
-        if (sourceModule == null || sourceModule[1] == null) {
-            throw new NoModuleException();
-        }
-        return sourceModule[1];
-    }
+	public Module getXDisplaceModule() {
+		if (sourceModule == null || sourceModule[1] == null) {
+			throw new NoModuleException();
+		}
+		return sourceModule[1];
+	}
 
-    public Module getYDisplaceModule() {
-        if (sourceModule == null || sourceModule[2] == null) {
-            throw new NoModuleException();
-        }
-        return sourceModule[2];
-    }
+	public Module getYDisplaceModule() {
+		if (sourceModule == null || sourceModule[2] == null) {
+			throw new NoModuleException();
+		}
+		return sourceModule[2];
+	}
 
-    public Module getZDisplaceModule() {
-        if (sourceModule == null || sourceModule[3] == null) {
-            throw new NoModuleException();
-        }
-        return sourceModule[3];
-    }
+	public Module getZDisplaceModule() {
+		if (sourceModule == null || sourceModule[3] == null) {
+			throw new NoModuleException();
+		}
+		return sourceModule[3];
+	}
 
-    public void setXDisplaceModule(Module x) {
-        if (x == null) {
-            throw new IllegalArgumentException("x cannot be null");
-        }
-        sourceModule[1] = x;
-    }
+	public void setXDisplaceModule(Module x) {
+		if (x == null) {
+			throw new IllegalArgumentException("x cannot be null");
+		}
+		sourceModule[1] = x;
+	}
 
-    public void setYDisplaceModule(Module y) {
-        if (y == null) {
-            throw new IllegalArgumentException("y cannot be null");
-        }
-        sourceModule[2] = y;
-    }
+	public void setYDisplaceModule(Module y) {
+		if (y == null) {
+			throw new IllegalArgumentException("y cannot be null");
+		}
+		sourceModule[2] = y;
+	}
 
-    public void setZDisplaceModule(Module z) {
-        if (z == null) {
-            throw new IllegalArgumentException("z cannot be null");
-        }
-        sourceModule[3] = z;
-    }
+	public void setZDisplaceModule(Module z) {
+		if (z == null) {
+			throw new IllegalArgumentException("z cannot be null");
+		}
+		sourceModule[3] = z;
+	}
 
-    public void setDisplaceModules(Module x, Module y, Module z) {
-        setXDisplaceModule(x);
-        setYDisplaceModule(y);
-        setZDisplaceModule(z);
-    }
+	public void setDisplaceModules(Module x, Module y, Module z) {
+		setXDisplaceModule(x);
+		setYDisplaceModule(y);
+		setZDisplaceModule(z);
+	}
 
-    @Override
-    public double getValue(double x, double y, double z) {
-        if (sourceModule[0] == null) {
-            throw new NoModuleException();
-        }
-        if (sourceModule[1] == null) {
-            throw new NoModuleException();
-        }
-        if (sourceModule[2] == null) {
-            throw new NoModuleException();
-        }
-        if (sourceModule[3] == null) {
-            throw new NoModuleException();
-        }
+	@Override
+	public double getValue(double x, double y, double z) {
+		if (sourceModule[0] == null) {
+			throw new NoModuleException();
+		}
+		if (sourceModule[1] == null) {
+			throw new NoModuleException();
+		}
+		if (sourceModule[2] == null) {
+			throw new NoModuleException();
+		}
+		if (sourceModule[3] == null) {
+			throw new NoModuleException();
+		}
 
-        // Get the output values from the three displacement modules.  Add each
-        // value to the corresponding coordinate in the input value.
-        double xDisplace = x + (sourceModule[1].getValue(x, y, z));
-        double yDisplace = y + (sourceModule[2].getValue(x, y, z));
-        double zDisplace = z + (sourceModule[3].getValue(x, y, z));
+		// Get the output values from the three displacement modules. Add each
+		// value to the corresponding coordinate in the input value.
+		double xDisplace = x + (sourceModule[1].getValue(x, y, z));
+		double yDisplace = y + (sourceModule[2].getValue(x, y, z));
+		double zDisplace = z + (sourceModule[3].getValue(x, y, z));
 
-        // Retrieve the output value using the offset input value instead of
-        // the original input value.
-        return sourceModule[0].getValue(xDisplace, yDisplace, zDisplace);
-    }
+		// Retrieve the output value using the offset input value instead of
+		// the original input value.
+		return sourceModule[0].getValue(xDisplace, yDisplace, zDisplace);
+	}
 }

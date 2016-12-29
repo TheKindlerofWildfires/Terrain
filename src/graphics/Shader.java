@@ -31,10 +31,10 @@ import maths.Vector4f;
 public abstract class Shader {
 	private static int currentProgramID;
 
-	//KEY Integer: Program ID
-	//VALUE: MAP<String,Integer>
-	//	KEY String: uniform name
-	//	VALUE Integer: uniform location
+	// KEY Integer: Program ID
+	// VALUE: MAP<String,Integer>
+	// KEY String: uniform name
+	// VALUE Integer: uniform location
 	private static Map<Integer, Map<String, Integer>> uniformLocations = new HashMap<Integer, Map<String, Integer>>();
 
 	private static Map<String, Integer> currentUniforms;
@@ -119,7 +119,7 @@ public abstract class Shader {
 	}
 
 	public static void setMaterial(String name, Material material) {
-		//this is causing my error
+		// this is causing my error
 
 		setUniform3f(name + ".colour", material.colour);
 		setUniform1i(name + ".useColour", material.useColour);

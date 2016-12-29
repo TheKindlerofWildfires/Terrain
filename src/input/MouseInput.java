@@ -1,6 +1,7 @@
 package input;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
+
 /**
  * @author TheKingInYellow
  */

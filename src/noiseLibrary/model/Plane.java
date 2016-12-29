@@ -31,55 +31,63 @@ import noiseLibrary.module.Module;
 /**
  * Model that defines the surface of a plane.
  * <p/>
- * This model returns an output value from a noise module given the coordinates of an input value located on the surface of an ( @a x,
+ * This model returns an output value from a noise module given the coordinates
+ * of an input value located on the surface of an ( @a x,
  */
 public class Plane {
-    private Module module;
+	private Module module;
 
-    /**
-     * Constructor
-     *
-     * @param module The noise module that is used to generate the output values.
-     */
-    public Plane(Module module) {
-        if (module == null) {
-            throw new IllegalArgumentException("module cannot be null");
-        }
-        this.module = module;
-    }
+	/**
+	 * Constructor
+	 *
+	 * @param module
+	 *            The noise module that is used to generate the output values.
+	 */
+	public Plane(Module module) {
+		if (module == null) {
+			throw new IllegalArgumentException("module cannot be null");
+		}
+		this.module = module;
+	}
 
-    /**
-     * Returns the noise module that is used to generate the output values.
-     */
-    public Module getModule() {
-        return module;
-    }
+	/**
+	 * Returns the noise module that is used to generate the output values.
+	 */
+	public Module getModule() {
+		return module;
+	}
 
-    /**
-     * Sets the noise module that is used to generate the output values.
-     *
-     * @param module The noise module that is used to generate the output values.
-     * <p/>
-     * This noise module must exist for the lifetime of this object, until you pass a new noise module to this method.
-     */
-    public void setModule(Module module) {
-        if (module == null) {
-            throw new IllegalArgumentException("module cannot be null");
-        }
-        this.module = module;
-    }
+	/**
+	 * Sets the noise module that is used to generate the output values.
+	 *
+	 * @param module
+	 *            The noise module that is used to generate the output values.
+	 *            <p/>
+	 *            This noise module must exist for the lifetime of this object,
+	 *            until you pass a new noise module to this method.
+	 */
+	public void setModule(Module module) {
+		if (module == null) {
+			throw new IllegalArgumentException("module cannot be null");
+		}
+		this.module = module;
+	}
 
-    /**
-     * Returns the output value from the noise module given the ( @a x, @a z ) coordinates of the specified input value located on the surface of the plane.
-     *
-     * @param x The @a x coordinate of the input value.
-     * @param z The @a z coordinate of the input value.
-     * @return The output value from the noise module.
-     */
-    public double getValue(double x, double z) {
-        if (module == null) {
-            throw new NoModuleException();
-        }
-        return module.getValue(x, 0, z);
-    }
+	/**
+	 * Returns the output value from the noise module given the ( @a x, @a z )
+	 * coordinates of the specified input value located on the surface of the
+	 * plane.
+	 *
+	 * @param x
+	 *            The @a x coordinate of the input value.
+	 * @param z
+	 *            The @a z coordinate of the input value.
+	 * @return The output value from the noise module.
+	 */
+	public double getValue(double x, double z) {
+		if (module == null) {
+			throw new NoModuleException();
+		}
+		return module.getValue(x, 0, z);
+	}
 }

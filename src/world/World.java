@@ -27,16 +27,15 @@ public class World {
 	public static double tracker;
 
 	/**
-	 * Building better worlds
-	 * 		tl;Dr: Uses poisson disk, delauny and perlin noise to great a cool map
+	 * Building better worlds tl;Dr: Uses poisson disk, delauny and perlin noise
+	 * to great a cool map
 	 */
 	public World() {
 		loadProperties();
 		noise.setSeed(perlinSeed);
-		noisy.setSeed(perlinSeed*perlinSeed);
-		detail.setSeed(perlinSeed/2);
-		
-		
+		noisy.setSeed(perlinSeed * perlinSeed);
+		detail.setSeed(perlinSeed / 2);
+
 	}
 
 	private void loadProperties() {
@@ -54,13 +53,13 @@ public class World {
 		noise.setFrequency(Float.parseFloat(props.getProperty("perlinFrequency")));
 		noise.setLacunarity(Float.parseFloat(props.getProperty("perlinLacunarity")));
 		noise.setOctaveCount(Integer.parseInt(props.getProperty("perlinOctaveCount")));
-		
+
 		noisy = new Perlin();
 		noisy.setFrequency(0.008);
 		noisy.setLacunarity(2.5);
 		noisy.setOctaveCount(10);
 		noisy.setPersistence(.4);
-		
+
 		detail = new Perlin();
 
 		Chunk.SIZE = Float.parseFloat(props.getProperty("chunkSize"));
@@ -113,16 +112,16 @@ public class World {
 	 */
 	public void renderLand(Vector4f clipPlane) {
 		chunks.stream().forEach(c -> c.render(clipPlane));
-		//chunks.stream().forEach(c->c.details.stream().forEach(d -> d.render(clipPlane)));
+		// chunks.stream().forEach(c->c.details.stream().forEach(d ->
+		// d.render(clipPlane)));
 	}
-
 
 	public void addChunk(Chunk c) {
 		if (!c.isGL) {
 			c.makeGL();
-			//c.details.stream().forEach(d -> d.makeGL());
+			// c.details.stream().forEach(d -> d.makeGL());
 		}
 		chunks.add(c);
-		
+
 	}
 }
