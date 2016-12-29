@@ -51,6 +51,7 @@ import entity.EntityManager;
 import input.MouseInput;
 import maths.Vector3f;
 import maths.Vector4f;
+import object.GameObject;
 import object.ObjectManager;
 import particles.Geyser;
 import particles.Particle;
@@ -108,6 +109,9 @@ public class Window implements Runnable {
 
 	private static ParticleEmitter particles;
 	private static Particle baseParticle;
+
+	private static TreeManager trees;
+	private static Particle baseTree;
 
 	public static void main(String args[]) {
 		Window game = new Window();
@@ -203,8 +207,14 @@ public class Window implements Runnable {
 
 		baseParticle = new Particle("resources/models/box.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		baseParticle.scale(.01f, .01f, .01f);
-		particles = new Geyser(baseParticle, 500, 10);
+		particles = new Geyser(baseParticle, 1000, 10);
 		particles.activate();
+
+		baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1), 100);
+		trees = new TreeManager(baseTree, 100);
+		trees.addTree(new Vector3f(0, 0, 0));
+		trees.addTree(new Vector3f(10, 0, 0));
+		trees.addTree(new Vector3f(0, 10, 0));
 
 		GraphicsManager.toggleFog();
 	}
@@ -232,7 +242,7 @@ public class Window implements Runnable {
 		objectManager.update();
 		entityManager.update();
 		now = System.currentTimeMillis();
-
+		trees.update(now - then);
 		particles.update(now - then);
 		then = now;
 	}
@@ -305,7 +315,8 @@ public class Window implements Runnable {
 		objectManager.render(renderClipPlane);
 		water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
 		entityManager.render(renderClipPlane);
-		particles.render(refractionClipPlane);
+		particles.render(reflectionClipPlane);
+		trees.render(renderClipPlane);
 	}
 
 	public void testRender() {

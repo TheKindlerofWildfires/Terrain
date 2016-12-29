@@ -10,7 +10,7 @@ uniform mat4 projection;
 
 void main(){
    	vec3 pos = position*model.w + model.xyz;
-    gl_ClipDistance[0] = dot(model * vec4(pos,1),clipPlane);
+    gl_ClipDistance[0] = dot(vec4(pos,1),clipPlane);
     gl_Position = projection * view * vec4(pos,1);
 	colour = vec4(.2,.5,1,1);
 }

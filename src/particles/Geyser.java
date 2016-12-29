@@ -15,7 +15,7 @@ public class Geyser extends ParticleEmitter {
 	private float scaleRndRange = .01f;
 
 	protected void createParticle() {
-		Particle particle = new Particle(baseParticle);
+		Particle particle = new Particle((Particle) baseObject);
 
 		//randomize velocity
 		float sign = Math.random() > 0.5d ? -1.0f : 1.0f;
@@ -40,7 +40,7 @@ public class Geyser extends ParticleEmitter {
 		float scaleInc = sign * (float) Math.random() * this.scaleRndRange;
 		particle.setScale(.1f + scaleInc, .1f + scaleInc, .1f + scaleInc);
 
-		particles.add(particle);
+		objects.add(particle);
 	}
 
 	/**
