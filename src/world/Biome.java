@@ -68,8 +68,8 @@ public abstract class Biome {
 		if (type == -1) {
 			System.out.println("not a biome");
 		}
-		type = TAIGA;
-		if (type == RAINFOREST) {// Tall trees and vines?
+		type = MOUNTAIN;
+		if (type == RAINFOREST) {
 			
 			h = WATERLEVEL*7/8;
 			maxSize = h+ SIZE/2;
@@ -78,7 +78,7 @@ public abstract class Biome {
 			g = (float) (0.20 * (color + 0.2));
 			b = (float) (0.05 * (color + 0.2));
 		}
-		if (type == SEASONALFOREST) {//After each day night cycle cycle colors, leaf particle from tree
+		if (type == SEASONALFOREST) {
 			h = WATERLEVEL*2/3;
 			maxSize = h+ SIZE/2;
 			h += (float) elev; 
@@ -86,7 +86,7 @@ public abstract class Biome {
 			g = (float) (0.50 * (color+.1));
 			b = (float) (0.04 * (color+.1));
 		}
-		if (type == FOREST) {//These should have oak tree forests and on hills a single big tree
+		if (type == FOREST) {
 			h = WATERLEVEL*2/3;
 			maxSize = h+ SIZE/2;
 			h += (float) elev; 
@@ -94,7 +94,7 @@ public abstract class Biome {
 			g = (float) (0.36 * (color+.1));
 			b = (float) (0.14 * (color+.1));
 		}
-		if (type == SWAMP) { //This should have fountains and small reeds
+		if (type == SWAMP) {
 			h = WATERLEVEL*7/8;
 			maxSize = h+ SIZE/16;
 			h += (float) elev/8; 
@@ -102,7 +102,7 @@ public abstract class Biome {
 			g = (float) (0.41 * (color+.1));
 			b = (float) (0.11 * (color+.1));
 		}
-		if (type == DESERT) { //sand storm effect, with oasis vegetation 
+		if (type == DESERT) { 
 			h = WATERLEVEL;
 			maxSize = h+ SIZE/2;
 			h += (float) elev; 
@@ -110,7 +110,7 @@ public abstract class Biome {
 			g = (float) (0.80 * (color+.2));
 			b = (float) (0.60 * (color+.2));
 		}
-		if (type == TAIGA) {//some conifers and maybe ice the water
+		if (type == TAIGA) {
 			h = WATERLEVEL*7/8;
 			maxSize = h+ SIZE/2*1.5f;
 			h += (float) elev*1.5; 
@@ -118,22 +118,22 @@ public abstract class Biome {
 			g = (float) (0.88 * (color+.1));
 			b = (float) (0.83 * (color+.1));
 		}
-		if (type == OCEAN) { // add a reef or maybe a 
+		if (type == OCEAN) { 
 			maxSize = h+ SIZE/16;
 			h += (float) elev/8;
 			r = (float) (0.10 * (color+.1));
 			g = (float) (0.10 * (color+.1));
 			b = (float) (0.40 * (color+.1));
 		}
-		if (type == MOUNTAIN) { // Caps are either mountain lake, lava spout, or caps  
+		if (type == MOUNTAIN) {   
 			h = WATERLEVEL;
 			maxSize = h+ SIZE*SIZE/4;
 			h += (float) elev*elev/2;
-			r = (float) (0.90 * (color+.1));
-			g = (float) (0.91 * (color+.1));
-			b = (float) (0.89 * (color+.1));
+			r = (float) (0.11 * (color+.1));
+			g = (float) (0.12 * (color+.1));
+			b = (float) (0.10 * (color+.1));
 		}
-		if (type == SAVANNA) {// some lonely trees and tall grass with an occasional rock
+		if (type == SAVANNA) {
 			h = WATERLEVEL;
 			maxSize = h+ SIZE/2;
 			h += (float) elev/2;
@@ -142,14 +142,14 @@ public abstract class Biome {
 			b = (float) (0.10 * (color+.1));
 		}
 		if(h>maxSize/3){
-			r*=0.5;
-			g*=0.5;
-			b*=0.5;
+			r*=0.65;
+			g*=0.65;
+			b*=0.65;
 		}
 		if(h>maxSize/1.5){
-			r*=0.5;
-			g*=0.5;
-			b*=0.5;
+			r*=0.65;
+			g*=0.65;
+			b*=0.65;
 		}
 		if(h>maxSize){
 			h = maxSize;
@@ -157,10 +157,6 @@ public abstract class Biome {
 		if (print) {
 			System.out.println(type);
 		}		
-		
-		r = (float) (r + color/75);
-		b = (float) (b + rain/750);
-		g = (float) (g+ temp/750);
 		float[] returns = { r, b, g, h,type };
 		return returns;
 	}

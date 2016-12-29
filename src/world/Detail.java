@@ -53,12 +53,11 @@ public abstract class Detail {
 	}
 
 	private static void taiga(Vector3f position) {
-		//cover water in ice
+		//iceWater
 		double detail = Math.abs(det.getValue(position.x / DETAILSCALER,
 				position.y / DETAILSCALER, position.z));
-		if(detail>1){
-			//place scattering of conif trees at location
-			place("resources/models/tree.obj","resources/textures/wood.png", position);
+		if(detail>1 && position.z>Chunk.WATERLEVEL){
+			//place("resources/models/pineTree.obj",pineTree, position);
 		}
 		
 	}
@@ -66,66 +65,52 @@ public abstract class Detail {
 	private static void savanna(Vector3f position) {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER*2, 2),
 				Math.pow(position.y / DETAILSCALER*2, 2), position.z));
-		if(detail>1){
-			//place lonely tree at location
+		if(detail>1&& position.z>Chunk.WATERLEVEL){
+			//place(savannaTree,savannaTree, position);
 		}
 		detail = Math.abs(det.getValue(position.x / DETAILSCALER,
 				position.y / DETAILSCALER, position.z));
 		if(detail>1){
-			//place rock formation at location
+			//place(rock,rock, position);
 		}
 		
 	}
 
 	private static void mountain(Vector3f position) {
-		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
-				Math.pow(position.y / DETAILSCALER, 2), position.z));
-		if(detail>1){
-			//place a bolder 
-		}
-		detail = Math.abs(det.getValue(position.x / DETAILSCALER,
+		//lavaWater
+		double detail = Math.abs(World.noise.getValue(position.x / DETAILSCALER,
 				position.y / DETAILSCALER, position.z));
 		if(detail>1){
-			//place lava spout at location
+			//placeAnimation(spout,lavaSpout, position);
 		}
-		
 	}
 
 	private static void desert(Vector3f position) {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
 				Math.pow(position.y / DETAILSCALER, 2), position.z));
-		if(detail>1){
-			//place sandstorm particles
+		if(detail>1.1){
+			//placeAnimation(sandStorm,sandStorm, position);
 		}
 		detail = Math.abs(det.getValue(position.x / DETAILSCALER,
 				position.y / DETAILSCALER, position.z));
-		if(detail>1){
-			//place oasis at location
-		}
 		
 	}
 
 	private static void ocean(Vector3f position) {
-		double detail = Math.abs(det.getValue(position.x / DETAILSCALER,
-				position.y / DETAILSCALER, position.z));
-		if(detail>1){
-			//place reef at location
-		}
-		
+		//strongWater
 	}
 
 	private static void swamp(Vector3f position) {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
 				Math.pow(position.y / DETAILSCALER, 2), position.z));
 		if(detail>1){
-			//place lillypad in water only
+			//place("resources/models/lillyPad.obj",lillyPad, position);
 		}
 		detail = Math.abs(det.getValue(position.x / DETAILSCALER,
 				position.y / DETAILSCALER, position.z));
-		if(detail>1){
-			//place geiser at location
+		if(detail>1&& position.z<Chunk.WATERLEVEL){
+			////placeAnimation(spout,waterSpout, position);
 		}
-		//place reeds around edges
 		
 	}
 
@@ -133,12 +118,23 @@ public abstract class Detail {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
 				Math.pow(position.y / DETAILSCALER, 2), position.z));
 		if(detail>1){
-			//place tree at location
+			//place(tree.obj,tree, position);
 		}
-		detail = Math.abs(det.getValue(position.x / DETAILSCALER,
+		detail = Math.abs(World.noise.getValue(position.x / DETAILSCALER,
 				position.y / DETAILSCALER, position.z));
 		if(detail>1){
-			//place single tree/hill at location, clear nearby
+			//place(bigTree,bigTree, position);
+		   /*breaker = True
+			*while(breaker){
+			*for(int i = 0; i<details.size();i++){
+			*if(details.get(i).position.subtract(position).length < 2 || details.get(i).position.add(position).length < 2){
+			*details.remove(i)
+			*}else{
+			*breaker = false
+			*}
+			*}
+			*}
+			*/
 		}
 		
 	}
@@ -147,26 +143,15 @@ public abstract class Detail {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
 				Math.pow(position.y / DETAILSCALER, 2), position.z));
 		if(detail>1){
-			//place seasonal tree at location, changes color each daynight cycle
-		}
-		detail = Math.abs(det.getValue(position.x / DETAILSCALER,
-				position.y / DETAILSCALER, position.z));
-		if(detail>1){
-			//place lake at location
-		}
-		
+			//placeAnimation(seasonalTree,seasonalTree, position);
+		}	
 	}
 
 	private static void rainForest(Vector3f position) {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
 				Math.pow(position.y / DETAILSCALER, 2), position.z));
 		if(detail>1){
-			//place tall tree at location, they should have vines
-		}
-		detail = Math.abs(det.getValue(position.x / DETAILSCALER,
-				position.y / DETAILSCALER, position.z));
-		if(detail>1){
-			//place lake at location
+			//place(vineTree,vineTree, position);
 		}
 	}
 	private static void place(String model,String texture, Vector3f position){

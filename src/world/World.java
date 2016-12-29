@@ -120,7 +120,7 @@ public class World {
 	public void addChunk(Chunk c) {
 		if (!c.isGL) {
 			c.makeGL();
-			c.details.stream().forEach(d -> d.makeGL());
+			//c.details.stream().forEach(d -> d.makeGL());
 		}
 		chunks.add(c);
 		
