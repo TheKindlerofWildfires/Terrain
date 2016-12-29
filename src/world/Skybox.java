@@ -20,7 +20,7 @@ public class Skybox extends GameObject {
 		shader = graphics.ShaderManager.objectShader;
 		this.material.useColour = 0;
 		this.model = new Transformation();
-		this.scale(15, 15, 15);
+		this.scale(18, 18, 18);
 	}
 
 	protected void renderPrep(Vector4f clipPlane) {

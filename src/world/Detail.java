@@ -161,4 +161,9 @@ public abstract class Detail {
 		//make sure! that the object is removed when the chunk is!
 		//have a render models function
 	}
+	private static void placeAnimation(String type,Vector3f color, Vector3f position){
+		//details.add(animation);
+		//make sure! that the object is removed when the chunk is!
+		//have a render models function
+	}
 }
