@@ -12,6 +12,12 @@ import graphics.GraphicsManager;
 import graphics.Window;
 import maths.Vector2i;
 import maths.Vector4f;
+<<<<<<< HEAD
+=======
+import models.ModelManager;
+import models.VertexArrayObject;
+import noiseLibrary.NoiseQuality;
+>>>>>>> master
 import noiseLibrary.module.source.Perlin;
 
 public class World {
@@ -19,7 +25,11 @@ public class World {
 	public static Perlin noisy;
 	public static Perlin detail;
 	public static int perlinSeed;
+<<<<<<< HEAD
 	public static final int LOAD_DIST = 6;
+=======
+	public static final int LOAD_DIST = 9;
+>>>>>>> master
 
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 
@@ -33,9 +43,24 @@ public class World {
 	public World() {
 		loadProperties();
 		noise.setSeed(perlinSeed);
+<<<<<<< HEAD
 		noisy.setSeed(perlinSeed * perlinSeed);
 		detail.setSeed(perlinSeed / 2);
 
+=======
+		noisy.setSeed(perlinSeed+1);
+		System.out.println(perlinSeed);
+
+		noise.setNoiseQuality(NoiseQuality.FAST);
+		noisy.setNoiseQuality(NoiseQuality.FAST);
+
+		try {
+			tree = ModelManager.loadGlModel("resources/models/tree.obj").vao;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+>>>>>>> master
 	}
 
 	private void loadProperties() {
