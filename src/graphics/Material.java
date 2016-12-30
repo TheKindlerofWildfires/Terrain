@@ -12,4 +12,10 @@ public class Material {
 		useColour = 0;
 		reflectance = 0;
 	}
+
+	public Material(Material material) {
+		colour = material.colour;
+		useColour = material.useColour;
+		reflectance = material.reflectance;
+	}
 };

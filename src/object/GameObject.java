@@ -44,7 +44,7 @@ public class GameObject {
 	protected boolean textured;
 	protected boolean hasMaterial = true;
 
-	protected int shader;
+	public int shader;
 	public Vector3f velocity = new Vector3f();
 	public Vector3f position = new Vector3f();
 	public float mass = 10;
@@ -93,6 +93,34 @@ public class GameObject {
 		material.colour = new Vector3f(1f, 1f, 1f);
 		material.reflectance = 1;
 		material.useColour = 1;
+	}
+
+	/**
+	 * copy constructor
+	 * @param baseObject base object
+	 */
+	public GameObject(GameObject baseObject) {
+		this.texture = baseObject.texture;
+		this.vao = baseObject.vao;
+		this.vaoData = baseObject.vaoData;
+		this.isGL = baseObject.isGL;
+
+		this.material = new Material(baseObject.material);
+		this.textured = baseObject.textured;
+		this.hasMaterial = baseObject.hasMaterial;
+		this.shader = baseObject.shader;
+
+		this.model = new Transformation(baseObject.model);
+		this.scale = new Vector3f(baseObject.scale);
+
+		this.velocity = new Vector3f(baseObject.velocity);
+		this.position = new Vector3f(baseObject.position);
+		this.mass = baseObject.mass;
+		this.acceleration = new Vector3f(baseObject.acceleration);
+		this.force = new Vector3f(baseObject.force);
+
+		this.boundingBox = baseObject.boundingBox;
+		this.enabled = baseObject.enabled;
 	}
 
 	public GameObject() {

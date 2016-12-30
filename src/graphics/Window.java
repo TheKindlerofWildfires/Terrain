@@ -39,6 +39,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 
@@ -53,6 +54,7 @@ import input.MouseInput;
 import maths.Vector3f;
 import maths.Vector4f;
 import object.ObjectManager;
+import particles.Geyser;
 import particles.Particle;
 import particles.ParticleEmitter;
 import world.Chunk;
@@ -108,6 +110,9 @@ public class Window implements Runnable {
 
 	private static ParticleEmitter particles;
 	private static Particle baseParticle;
+
+	private static TreeManager trees;
+	private static Particle baseTree;
 
 	public static void main(String args[]) {
 		Window game = new Window();
@@ -200,10 +205,28 @@ public class Window implements Runnable {
 		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
 
-		baseParticle = new Particle("resources/models/box.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		baseParticle = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		baseParticle.scale(.01f, .01f, .01f);
-		particles = new ParticleEmitter(baseParticle, 500, 10);
+		particles = new Geyser(baseParticle, 1000, 10);
 		particles.activate();
+
+		baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		baseTree.rotate(90, 1, 0, 0);
+		trees = new TreeManager(baseTree, 1000, 10);
+		trees.activate();
+
+		ArrayList<Particle> treeees = new ArrayList<Particle>();
+
+		for (int i = 0; i < 1000; i++) {
+			Particle newTree = new Particle(baseTree);
+			newTree.rotate(90, 1, 0, 0);
+			Vector3f displacement = new Vector3f((float) Math.random() * 1000, (float) Math.random() * 1000, 4);
+			newTree.translate(displacement);
+			treeees.add(newTree);
+		}
+
+		trees.treesToAdd.addAll(treeees);
+		//particles = new Geyser(baseTree, 1000, 10);
 
 		GraphicsManager.toggleFog();
 	}
@@ -231,9 +254,8 @@ public class Window implements Runnable {
 		objectManager.update();
 		entityManager.update();
 		now = System.currentTimeMillis();
-		if (particles.active) {
-			particles.update(now - then);
-		}
+		trees.update(now - then);
+		particles.update(now - then);
 		then = now;
 	}
 
@@ -278,17 +300,28 @@ public class Window implements Runnable {
 		world.renderLand(reflectionClipPlane);
 		objectManager.render(reflectionClipPlane);
 		entityManager.render(reflectionClipPlane);
+<<<<<<< HEAD
 		if (particles.active) {
 			particles.render(reflectionClipPlane);
 		}
 
 		// move camera back and render refraction texture
 		// GraphicsManager.camera.flipCamera();
+=======
+		particles.render(reflectionClipPlane);
+
+		//	move camera back and render refraction texture
+		//GraphicsManager.camera.flipCamera();
+>>>>>>> refs/remotes/origin/particle-wrap-up
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
 		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
 
+<<<<<<< HEAD
 		// bind refraction buffer and render to it
+=======
+		//bind refraction buffer and render to it
+>>>>>>> refs/remotes/origin/particle-wrap-up
 		refraction.activate();
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -296,9 +329,7 @@ public class Window implements Runnable {
 		world.renderLand(refractionClipPlane);
 		objectManager.render(refractionClipPlane);
 		entityManager.render(refractionClipPlane);
-		if (particles.active) {
-			particles.render(refractionClipPlane);
-		}
+		particles.render(refractionClipPlane);
 
 		// render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
@@ -310,9 +341,8 @@ public class Window implements Runnable {
 		water.render(renderClipPlane); // do NOT attempt to render water
 										// anywhere other than to screen
 		entityManager.render(renderClipPlane);
-		if (particles.active) {
-			particles.render(renderClipPlane);
-		}
+		//particles.render(renderClipPlane);
+		trees.render(renderClipPlane);
 	}
 
 	public void testRender() {
