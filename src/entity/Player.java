@@ -10,7 +10,7 @@ import world.Biome;
  */
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.5f;
-	private static final float SPEEDSCALER = 50;
+	private static final float SPEEDSCALER = 25;
 	private Vector3f target;
 	private float speed;
 	private Vector3f upward;
