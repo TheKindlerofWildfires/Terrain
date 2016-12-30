@@ -27,13 +27,9 @@ public class EntityManager {
 	}
 
 	public void render(Vector4f clipPlane) {
-<<<<<<< HEAD
-		m.render(clipPlane);
+		//m.render(clipPlane);
 		// player.render(clipPlane);
-=======
-		//	m.render(clipPlane);
-		//	player.render(clipPlane);
->>>>>>> refs/remotes/origin/particle-wrap-up
+
 	}
 
 	public void update() {

@@ -300,28 +300,15 @@ public class Window implements Runnable {
 		world.renderLand(reflectionClipPlane);
 		objectManager.render(reflectionClipPlane);
 		entityManager.render(reflectionClipPlane);
-<<<<<<< HEAD
-		if (particles.active) {
-			particles.render(reflectionClipPlane);
-		}
-
-		// move camera back and render refraction texture
-		// GraphicsManager.camera.flipCamera();
-=======
 		particles.render(reflectionClipPlane);
 
 		//	move camera back and render refraction texture
 		//GraphicsManager.camera.flipCamera();
->>>>>>> refs/remotes/origin/particle-wrap-up
+
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
 		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
-
-<<<<<<< HEAD
 		// bind refraction buffer and render to it
-=======
-		//bind refraction buffer and render to it
->>>>>>> refs/remotes/origin/particle-wrap-up
 		refraction.activate();
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -1,29 +1,16 @@
 package particles;
 
-import static graphics.Shader.start;
-import static graphics.Shader.stop;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL31.glDrawArraysInstanced;
-
 import graphics.ShaderManager;
 import maths.Transformation;
 import maths.Vector3f;
-import maths.Vector4f;
 import object.GameObject;
 
 public class Particle extends GameObject {
 
-<<<<<<< HEAD
-	private long ttl; // time remaining to live (milliseconds)
-	float angleX;
-	float angleY;
-	private static final Vector3f gravity = new Vector3f(0, 0, -.002f);
-=======
+
 	private long ttl; //time remaining to live (milliseconds)
 	public float angleX;
 	public float angleY;
->>>>>>> refs/remotes/origin/particle-wrap-up
 
 	/**
 	 * Makes a new base particle

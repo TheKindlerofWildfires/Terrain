@@ -9,12 +9,9 @@ import java.util.Properties;
 import java.util.Set;
 
 import graphics.GraphicsManager;
-import graphics.Shader;
-import graphics.ShaderManager;
 import graphics.Window;
 import maths.Vector2i;
 import maths.Vector4f;
-
 import noiseLibrary.module.source.Perlin;
 
 public class World {
@@ -113,10 +110,7 @@ public class World {
 	 */
 	public void renderLand(Vector4f clipPlane) {
 		chunks.stream().forEach(c -> c.render(clipPlane));
-<<<<<<< HEAD
-		// chunks.stream().forEach(c->c.details.stream().forEach(d ->
-		// d.render(clipPlane)));
-=======
+
 	}
 
 	public void renderTrees(Vector4f clipPlane) {
@@ -126,7 +120,6 @@ public class World {
 		
 		//sunrise change tree colour
 		//trees.colour = new colour;
->>>>>>> refs/remotes/origin/particle-wrap-up
 	}
 
 	public void addChunk(Chunk c) {
