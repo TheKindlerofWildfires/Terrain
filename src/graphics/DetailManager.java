@@ -11,13 +11,13 @@ import particles.Particle;
 import world.Chunk;
 import world.World;
 
-public class TreeManager extends Geyser {
+public class DetailManager extends Geyser {
 
-	public Queue<Particle> treesToAdd = new LinkedList<Particle>();
+	public Queue<Particle> detailsToAdd = new LinkedList<Particle>();
 
-	public TreeManager(Particle baseParticle, int maxParticles, long creationPeriodMillis) {
+	public DetailManager(Particle baseParticle, int maxParticles, long creationPeriodMillis, Vector4f colour) {
 		super(baseParticle, maxParticles, creationPeriodMillis);
-		colour = new Vector4f(.2f, 1, .2f, 1);
+		this.colour = colour;//new Vector4f(.2f, 1, .2f, 1);
 	}
 
 	@Override
@@ -45,8 +45,8 @@ public class TreeManager extends Geyser {
 				it.remove();
 			}
 		}
-		if (!treesToAdd.isEmpty()) {
-			objects.add(treesToAdd.poll());
+		if (!detailsToAdd.isEmpty()) {
+			objects.add(detailsToAdd.poll());
 		}
 	}
 }

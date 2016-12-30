@@ -2,16 +2,78 @@ package world;
 
 import java.util.ArrayList;
 
+import graphics.DetailManager;
 import maths.Vector3f;
+import maths.Vector4f;
 import noiseLibrary.module.source.Perlin;
 import object.GameObject;
+import particles.Particle;
 
 public abstract class Detail {
 	static float DETAILSCALER = 1;
 	static Perlin det = World.detail;
 	private static GameObject object;
 	private static ArrayList<GameObject> details = new ArrayList<GameObject>();
+	private static Particle bigTree;
+	private static Particle forestTree;
+	private static Particle jungleTree;
+	private static Particle lillyPad;
+	private static Particle pineTree;
+	private static Particle rock;
+	private static Particle savannaTree;
+	private static Particle seasonalTree;
+	public static DetailManager bigTrees;
+	public static DetailManager forestTrees;
+	public static DetailManager jungleTrees;
+	public static DetailManager lillyPads;
+	public static DetailManager pineTrees;
+	public static DetailManager rocks;
+	public static DetailManager savannaTrees;
+	public static DetailManager seasonalTrees;
+	public static ArrayList<DetailManager> man = new ArrayList<DetailManager>();
+	
+	public static void init(){
+		bigTree = new Particle("resources/models/detail/bigTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		forestTree = new Particle("resources/models/detail/forestTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		jungleTree = new Particle("resources/models/detail/jungleTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		lillyPad = new Particle("resources/models/detail/lillyPad.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		pineTree = new Particle("resources/models/detail/pineTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		rock = new Particle("resources/models/detail/rock.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		savannaTree = new Particle("resources/models/detail/savannaTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		seasonalTree = new Particle("resources/models/detail/seasonalTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		
+		bigTrees = new DetailManager(bigTree, 1000, 10, new Vector4f(1,1,1,1));
+		forestTrees = new DetailManager(forestTree, 1000, 10, new Vector4f(1,1,1,1));
+		jungleTrees = new DetailManager(jungleTree, 1000, 10, new Vector4f(1,1,1,1));
+		lillyPads = new DetailManager(lillyPad, 1000, 10, new Vector4f(1,1,1,1));
+		pineTrees = new DetailManager(pineTree, 1000, 10, new Vector4f(1,1,1,1));
+		rocks = new DetailManager(rock, 1000, 10, new Vector4f(1,1,1,1));
+		savannaTrees = new DetailManager(savannaTree, 1000, 10, new Vector4f(1,1,1,1));
+		seasonalTrees = new DetailManager(seasonalTree, 1000, 10, new Vector4f(1,1,1,1));
+		
+		man.add(bigTrees);
+		man.add(forestTrees);
+		man.add(jungleTrees);
+		man.add(lillyPads);
+		man.add(pineTrees);
+		man.add(rocks);
+		man.add(savannaTrees);
+		man.add(seasonalTrees);
+		
+		man.stream().forEach(m->m.activate());
+		
+		ArrayList<Particle> treeees = new ArrayList<Particle>();
 
+		for (int i = 0; i < 10; i++) {
+			Particle newTree = new Particle(pineTree);
+			Vector3f displacement = new Vector3f((float) Math.random() * 100, (float) Math.random() * 100, 4);
+			newTree.translate(displacement);
+			treeees.add(newTree);
+		}
+
+		pineTrees.detailsToAdd.addAll(treeees);
+		
+	}
 	/**
 	 * 
 	 * @param position
@@ -89,7 +151,6 @@ public abstract class Detail {
 		if (detail > 1.1) {
 			// placeAnimation(sandStorm,sandStorm, position);
 		}
-		detail = Math.abs(det.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 
 	}
 
@@ -158,5 +219,14 @@ public abstract class Detail {
 		// details.add(animation);
 		// make sure! that the object is removed when the chunk is!
 		// have a render models function
+	}
+	public static void update(long l) {
+		//pineTrees.update(l);
+		man.stream().forEach(m->m.update(l));
+		
+	}
+	public static void render(Vector4f renderClipPlane) {
+		//pineTrees.render(renderClipPlane)
+		man.stream().forEach(m->m.render(renderClipPlane));
 	}
 }

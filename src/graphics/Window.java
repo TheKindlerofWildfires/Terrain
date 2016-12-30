@@ -39,7 +39,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.IntBuffer;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 
@@ -59,6 +58,7 @@ import particles.Particle;
 import particles.ParticleEmitter;
 import world.Chunk;
 import world.ChunkLoader;
+import world.Detail;
 import world.Water;
 import world.World;
 
@@ -111,8 +111,8 @@ public class Window implements Runnable {
 	private static ParticleEmitter particles;
 	private static Particle baseParticle;
 
-	private static TreeManager trees;
-	private static Particle baseTree;
+	//private static DetailManager trees;
+	//private static Particle baseTree;
 
 	public static void main(String args[]) {
 		Window game = new Window();
@@ -146,6 +146,7 @@ public class Window implements Runnable {
 	 * Code called at the start of the gameloop
 	 */
 	public void init() {
+		
 		loadProperties();
 		randomize();
 		// Initialize glfw
@@ -210,22 +211,22 @@ public class Window implements Runnable {
 		particles = new Geyser(baseParticle, 1000, 10);
 		particles.activate();
 
-		baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
-		baseTree.rotate(90, 1, 0, 0);
-		trees = new TreeManager(baseTree, 1000, 10);
-		trees.activate();
+		//baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		Detail.init();
+		//trees = new DetailManager(baseTree, 1000, 10, new Vector4f(1,1,1,1));
+		//trees.activate();
+		
+		//ArrayList<Particle> treeees = new ArrayList<Particle>();
 
-		ArrayList<Particle> treeees = new ArrayList<Particle>();
-
-		for (int i = 0; i < 1000; i++) {
+		/*for (int i = 0; i < 1000; i++) {
 			Particle newTree = new Particle(baseTree);
 			newTree.rotate(90, 1, 0, 0);
 			Vector3f displacement = new Vector3f((float) Math.random() * 1000, (float) Math.random() * 1000, 4);
 			newTree.translate(displacement);
 			treeees.add(newTree);
-		}
+		}*/
 
-		trees.treesToAdd.addAll(treeees);
+		//trees.detailsToAdd.addAll(treeees);
 		//particles = new Geyser(baseTree, 1000, 10);
 
 		GraphicsManager.toggleFog();
@@ -254,7 +255,7 @@ public class Window implements Runnable {
 		objectManager.update();
 		entityManager.update();
 		now = System.currentTimeMillis();
-		trees.update(now - then);
+		Detail.update(now - then);
 		particles.update(now - then);
 		then = now;
 	}
@@ -329,7 +330,8 @@ public class Window implements Runnable {
 										// anywhere other than to screen
 		entityManager.render(renderClipPlane);
 		//particles.render(renderClipPlane);
-		trees.render(renderClipPlane);
+		//trees.render(renderClipPlane);
+		Detail.render(renderClipPlane);
 	}
 
 	public void testRender() {
