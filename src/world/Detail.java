@@ -6,14 +6,11 @@ import graphics.DetailManager;
 import maths.Vector3f;
 import maths.Vector4f;
 import noiseLibrary.module.source.Perlin;
-import object.GameObject;
 import particles.Particle;
 
 public abstract class Detail {
 	static float DETAILSCALER = 1;
 	static Perlin det = World.detail;
-	private static GameObject object;
-	private static ArrayList<GameObject> details = new ArrayList<GameObject>();
 	private static Particle bigTree;
 	private static Particle forestTree;
 	private static Particle jungleTree;
@@ -61,7 +58,7 @@ public abstract class Detail {
 		man.add(seasonalTrees);
 		
 		man.stream().forEach(m->m.activate());
-		
+		/*
 		ArrayList<Particle> treeees = new ArrayList<Particle>();
 
 		for (int i = 0; i < 10; i++) {
@@ -71,15 +68,15 @@ public abstract class Detail {
 			treeees.add(newTree);
 		}
 
-		pineTrees.detailsToAdd.addAll(treeees);
-		
+		//pineTrees.detailsToAdd.addAll(treeees);
+		*/
 	}
 	/**
 	 * 
 	 * @param position
 	 * @param biome
 	 */
-	public static ArrayList<GameObject> detail(Vector3f position, float biome) {
+	public static void detail(Vector3f position, float biome) {
 		int tech = (int) biome;
 		switch (tech) {
 		case Biome.RAINFOREST:
@@ -110,8 +107,6 @@ public abstract class Detail {
 			taiga(position);
 			break;
 		}
-
-		return details;
 	}
 
 	private static void taiga(Vector3f position) {
@@ -203,23 +198,15 @@ public abstract class Detail {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
 				Math.pow(position.y / DETAILSCALER, 2), position.z));
 		if (detail > 1) {
-			// place(vineTree,vineTree, position);
+			Particle newDetail = new Particle(jungleTree);
+			newDetail.translate(position);
+			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
+			jungleTrees.detailsToAdd.add(newDetail);
+			System.out.println(position.z);
 		}
 	}
 
-	private static void place(String model, String texture, Vector3f position) {
-		object = new GameObject(model, texture, false);
-		object.placeAt(position.x, position.x, position.z);
-		details.add(object);
-		// make sure! that the object is removed when the chunk is!
-		// have a render models function
-	}
 
-	private static void placeAnimation(String type, Vector3f color, Vector3f position) {
-		// details.add(animation);
-		// make sure! that the object is removed when the chunk is!
-		// have a render models function
-	}
 	public static void update(long l) {
 		//pineTrees.update(l);
 		man.stream().forEach(m->m.update(l));

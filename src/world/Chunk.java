@@ -77,7 +77,7 @@ public class Chunk extends GameObject {
 				float g = values[2];
 				point.add(new Vector3f(0, 0, h));
 
-				details = Detail.detail(point, values[4]);
+				Detail.detail(point, values[4]);
 				terrain.get(i).getPoint(j).z = h;
 
 				float pseudo = Math.abs(h - (int) h);// remainder
