@@ -19,13 +19,13 @@ public abstract class Detail {
 	private static Particle rock;
 	private static Particle savannaTree;
 	private static Particle seasonalTree;
-	
+
 	private static Particle yellowBush;
 	private static Particle reed;
 	private static Particle deadTree;
-	private static Particle normalBush;
+	private static Particle tallBush;
 	private static Particle thornBush;
-	
+
 	public static DetailManager bigTrees;
 	public static DetailManager forestTrees;
 	public static DetailManager jungleTrees;
@@ -34,15 +34,15 @@ public abstract class Detail {
 	public static DetailManager rocks;
 	public static DetailManager savannaTrees;
 	public static DetailManager seasonalTrees;
-	
+
 	public static DetailManager yellowBushs;
 	public static DetailManager reeds;
 	public static DetailManager deadTrees;
-	public static DetailManager normalBushs;
+	public static DetailManager tallBushs;
 	public static DetailManager thornBushs;
 	public static ArrayList<DetailManager> man = new ArrayList<DetailManager>();
-	
-	public static void init(){
+
+	public static void init() {
 		bigTree = new Particle("resources/models/detail/bigTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		forestTree = new Particle("resources/models/detail/forestTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		jungleTree = new Particle("resources/models/detail/jungleTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
@@ -50,28 +50,30 @@ public abstract class Detail {
 		pineTree = new Particle("resources/models/detail/pineTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		rock = new Particle("resources/models/detail/rock.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		savannaTree = new Particle("resources/models/detail/savannaTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
-		
+		seasonalTree = new Particle("resources/models/detail/seasonalTree.obj", "none", new Vector3f(0, 0, 1f),
+				100000l);
+
 		yellowBush = new Particle("resources/models/detail/yellowBush.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		reed = new Particle("resources/models/detail/reed.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		deadTree = new Particle("resources/models/detail/deadTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
-		normalBush = new Particle("resources/models/detail/normalBush.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		tallBush = new Particle("resources/models/detail/tallBush.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		thornBush = new Particle("resources/models/detail/thornBush.obj", "none", new Vector3f(0, 0, 1f), 100000l);
-		
-		bigTrees = new DetailManager(bigTree, 1000, 10, new Vector4f(1,0,0,1));
-		forestTrees = new DetailManager(forestTree, 1000, 10, new Vector4f(0,0,1,1));
-		jungleTrees = new DetailManager(jungleTree, 1000, 10, new Vector4f(0,1,0,1));
-		lillyPads = new DetailManager(lillyPad, 1000, 10, new Vector4f(0,1,1,1));
-		pineTrees = new DetailManager(pineTree, 1000, 10, new Vector4f(1,0,1,1));
-		rocks = new DetailManager(rock, 1000, 10, new Vector4f(1,1,0,1));
-		savannaTrees = new DetailManager(savannaTree, 1000, 10, new Vector4f(1,1,1,1));
-		seasonalTrees = new DetailManager(seasonalTree, 1000, 10, new Vector4f(0,0,0,1));
-		
-		yellowBushs = new DetailManager(yellowBush, 1000, 10, new Vector4f(0,1,1,1));
-		reeds = new DetailManager(reed, 1000, 10, new Vector4f(1,0,1,1));
-		deadTrees = new DetailManager(deadTree, 1000, 10, new Vector4f(1,1,0,1));
-		normalBushs = new DetailManager(normalBush, 1000, 10, new Vector4f(1,1,1,1));
-		thornBushs = new DetailManager(thornBush, 1000, 10, new Vector4f(0,0,0,1));
-		
+
+		bigTrees = new DetailManager(bigTree, 1000, 10, new Vector4f(1, 0, 0, 1));
+		forestTrees = new DetailManager(forestTree, 1000, 10, new Vector4f(0, 0, 1, 1));
+		jungleTrees = new DetailManager(jungleTree, 1000, 10, new Vector4f(0, 1, 0, 1));
+		lillyPads = new DetailManager(lillyPad, 1000, 10, new Vector4f(0, 1, 1, 1));
+		pineTrees = new DetailManager(pineTree, 1000, 10, new Vector4f(1, 0, 1, 1));
+		rocks = new DetailManager(rock, 1000, 10, new Vector4f(1, 1, 0, 1));
+		savannaTrees = new DetailManager(savannaTree, 1000, 10, new Vector4f(1, 1, 1, 1));
+		seasonalTrees = new DetailManager(seasonalTree, 1000, 10, new Vector4f(0, 0, 0, 1));
+
+		yellowBushs = new DetailManager(yellowBush, 1000, 10, new Vector4f(0, 1, 1, 1));
+		reeds = new DetailManager(reed, 1000, 10, new Vector4f(1, 0, 1, 1));
+		deadTrees = new DetailManager(deadTree, 1000, 10, new Vector4f(1, 1, 0, 1));
+		tallBushs = new DetailManager(tallBush, 1000, 10, new Vector4f(1, 1, 1, 1));
+		thornBushs = new DetailManager(thornBush, 1000, 10, new Vector4f(0, 0, 0, 1));
+
 		man.add(bigTrees);
 		man.add(forestTrees);
 		man.add(jungleTrees);
@@ -83,10 +85,11 @@ public abstract class Detail {
 		man.add(yellowBushs);
 		man.add(reeds);
 		man.add(deadTrees);
-		man.add(normalBushs);
+		man.add(tallBushs);
 		man.add(thornBushs);
-		man.stream().forEach(m->m.activate());
+		man.stream().forEach(m -> m.activate());
 	}
+
 	/**
 	 * 
 	 * @param position
@@ -129,17 +132,21 @@ public abstract class Detail {
 		// iceWater
 		double detail = Math.abs(det.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1 && position.z > Chunk.WATERLEVEL) {
+			if (check(position.z, 50)) {
 			Particle newDetail = new Particle(pineTree);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 			pineTrees.detailsToAdd.add(newDetail);
+			}
 		}
 		detail = Math.abs(World.noise.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
-		if (detail > 1 && position.z>Chunk.WATERLEVEL) {
-			Particle newDetail = new Particle(thornBush);
-			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
-			thornBushs.detailsToAdd.add(newDetail);
+		if (detail > 1 && position.z > Chunk.WATERLEVEL) {
+			if (check(position.z, 10)) {
+				Particle newDetail = new Particle(thornBush);
+				newDetail.translate(position);
+				newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
+				thornBushs.detailsToAdd.add(newDetail);
+			}
 		}
 
 	}
@@ -148,17 +155,21 @@ public abstract class Detail {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER * 2, 2),
 				Math.pow(position.y / DETAILSCALER * 2, 2), position.z));
 		if (detail > 1 && position.z > Chunk.WATERLEVEL) {
+			if (check(position.z, 50)) {
 			Particle newDetail = new Particle(savannaTree);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 			savannaTrees.detailsToAdd.add(newDetail);
+			}
 		}
 		detail = Math.abs(det.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1) {
+			if (check(position.z, 30)) {
 			Particle newDetail = new Particle(rock);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 			rocks.detailsToAdd.add(newDetail);
+			}
 		}
 
 	}
@@ -180,10 +191,12 @@ public abstract class Detail {
 		}
 		detail = Math.abs(det.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1) {
+			if (check(position.z, 10)) {
 			Particle newDetail = new Particle(yellowBush);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 			yellowBushs.detailsToAdd.add(newDetail);
+			}
 		}
 
 	}
@@ -195,11 +208,13 @@ public abstract class Detail {
 	private static void swamp(Vector3f position) {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
 				Math.pow(position.y / DETAILSCALER, 2), position.z));
-		if (detail > 0.4 && position.x<Chunk.WATERLEVEL) {
+		if (detail > 0.4 && position.x < Chunk.WATERLEVEL) {
+			if (check(position.z, 1)) {
 			Particle newDetail = new Particle(lillyPad);
 			newDetail.translate(position);
 			newDetail.placeAt(position.x, position.y, Chunk.WATERLEVEL);
 			lillyPads.detailsToAdd.add(newDetail);
+			}
 		}
 		detail = Math.abs(det.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1 && position.z < Chunk.WATERLEVEL) {
@@ -207,10 +222,12 @@ public abstract class Detail {
 		}
 		detail = Math.abs(World.noise.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1) {
+			if (check(position.z, 5)) {
 			Particle newDetail = new Particle(reed);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 			reeds.detailsToAdd.add(newDetail);
+			}
 		}
 
 	}
@@ -218,18 +235,22 @@ public abstract class Detail {
 	private static void forest(Vector3f position) {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
 				Math.pow(position.y / DETAILSCALER, 2), position.z));
-		if (detail > 1&& position.z>Chunk.WATERLEVEL) {
+		if (detail > 1 && position.z > Chunk.WATERLEVEL) {
+			if (check(position.z, 10)) {
 			Particle newDetail = new Particle(forestTree);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 			forestTrees.detailsToAdd.add(newDetail);
+			}
 		}
 		detail = Math.abs(World.noise.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1.2) {
+			if (check(position.z, 1)) {
 			Particle newDetail = new Particle(bigTree);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 			bigTrees.detailsToAdd.add(newDetail);
+			}
 		}
 
 	}
@@ -237,45 +258,70 @@ public abstract class Detail {
 	private static void seasonalForest(Vector3f position) {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
 				Math.pow(position.y / DETAILSCALER, 2), position.z));
-		if (detail > 1&& position.z>Chunk.WATERLEVEL) {
+		if (detail > 1 && position.z > Chunk.WATERLEVEL) {
+			if (check(position.z, 70)) {
 			Particle newDetail = new Particle(seasonalTree);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 			seasonalTrees.detailsToAdd.add(newDetail);
+			}
 		}
 		detail = Math.abs(det.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1) {
+			if (check(position.z, 1)) {
 			Particle newDetail = new Particle(deadTree);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 			deadTrees.detailsToAdd.add(newDetail);
+			}
 		}
 	}
 
 	private static void rainForest(Vector3f position) {
 		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
 				Math.pow(position.y / DETAILSCALER, 2), position.z));
-		if (detail > 1&& position.z>Chunk.WATERLEVEL) {
+		if (detail > 1 && position.z > Chunk.WATERLEVEL) {
+			if (check(position.z, 90)) {
 			Particle newDetail = new Particle(jungleTree);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 			jungleTrees.detailsToAdd.add(newDetail);
+			}
 		}
 		detail = Math.abs(det.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1) {
-			Particle newDetail = new Particle(normalBush);
+			if (check(position.z, 60)) {
+			Particle newDetail = new Particle(tallBush);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z/Chunk.SIZE);
-			normalBushs.detailsToAdd.add(newDetail);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
+			tallBushs.detailsToAdd.add(newDetail);
+			}
 		}
 	}
 
-
 	public static void update(long l) {
-		man.stream().forEach(m->m.update(l));
-		
+		man.stream().forEach(m -> m.update(l));
+
 	}
+
 	public static void render(Vector4f renderClipPlane) {
-		man.stream().forEach(m->m.render(renderClipPlane));
+		man.stream().forEach(m -> m.render(renderClipPlane));
+	}
+
+	/**
+	 * 
+	 * @param height
+	 * @param chance
+	 *            0-100 plz
+	 * @return
+	 */
+	public static boolean check(float height, float chance) {
+		float h = Math.abs(Math.round(height) - height) * 100;
+		if (h > chance) {
+			return false;
+		} else {
+			return true;
+		}
+
 	}
 }
