@@ -9,6 +9,8 @@ import java.util.Properties;
 import java.util.Set;
 
 import graphics.GraphicsManager;
+import graphics.Shader;
+import graphics.ShaderManager;
 import graphics.Window;
 import maths.Vector2i;
 import maths.Vector3f;
@@ -123,7 +125,12 @@ public class World {
 	}
 
 	public void renderTrees(Vector4f clipPlane) {
-
+		//change water colour
+		//Shader.start(ShaderManager.waterShader);
+		//Shader.setUniform3f("waterColour", new Vector3f(0,0,0)); //makes water black
+		
+		//sunrise change tree colour
+		//trees.colour = new colour;
 	}
 
 	public void addChunk(Chunk c) {

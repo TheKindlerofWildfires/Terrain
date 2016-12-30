@@ -1,11 +1,13 @@
 package particles;
 
 import maths.Vector3f;
+import maths.Vector4f;
 
 public class Geyser extends ParticleEmitter {
 
 	public Geyser(Particle baseParticle, int maxParticles, long creationPeriodMillis) {
 		super(baseParticle, maxParticles, creationPeriodMillis);
+		colour = new Vector4f(.2f,.5f,1,1);
 	}
 
 	private static final Vector3f gravity = new Vector3f(0, 0, -.002f);

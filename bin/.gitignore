@@ -1,10 +1,4 @@
-/entity/
 /graphics/
-/input/
-/maths/
-/object/
 /particles/
-/physics/
-/world/
 /shaders/
-/trees/
+/world/

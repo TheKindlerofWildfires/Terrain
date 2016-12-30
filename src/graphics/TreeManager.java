@@ -1,48 +1,52 @@
 package graphics;
 
-import maths.Vector3f;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+
+import maths.Vector4f;
 import object.GameObject;
+import particles.Geyser;
 import particles.Particle;
+import world.Chunk;
+import world.World;
 
-/**
- * A handy box in which to put trees :)
- * @author Simon
- *
- */
-public class TreeManager extends Instancer {
+public class TreeManager extends Geyser {
 
-	/**
-	 * Makes a new tree manager
-	 * @param baseTree
-	 * @param maxTrees
-	 */
-	public TreeManager(Particle baseTree, int maxTrees) {
-		super(baseTree, maxTrees);
-		this.active = true;
-		baseObject.shader = ShaderManager.particleShader;
+	public Queue<Particle> treesToAdd = new LinkedList<Particle>();
+
+	public TreeManager(Particle baseParticle, int maxParticles, long creationPeriodMillis) {
+		super(baseParticle, maxParticles, creationPeriodMillis);
+		colour = new Vector4f(.2f, 1, .2f, 1);
 	}
 
-	/**
-	 * I dont think trees have to update?
-	 * @param ellapsedTime time since last update tick
-	 */
-	public final void update(long ellapsedTime) {
+	@Override
+	protected void updatePosition(Particle particle, long elapsedTime) {
 		return;
 	}
 
-	/**
-	 * adds a tree
-	 * @param pos position of new tree
-	 * @return true upon success, false if already full on trees
-	 */
-	public final boolean addTree(Vector3f pos) {
-		if (objects.size() > maxObjects) {
-			return false;
-		} else {
-			Particle newTree = new Particle(baseObject);
-			newTree.placeAt(pos.x, pos.y, pos.z);
-			objects.add(newTree);
-			return true;
+	@Override
+	protected void createParticle() {
+		Iterator<? extends GameObject> it = objects.iterator();
+
+		float cameraX = GraphicsManager.camera.pos.x;
+		float cameraY = GraphicsManager.camera.pos.y;
+
+		int chunkX = Math.round(cameraX / 2 / Chunk.SIZE);
+		int chunkY = Math.round(cameraY / 2 / Chunk.SIZE);
+
+		while (it.hasNext()) {
+			Particle particle = (Particle) it.next();
+			int particleChunkX = Math.round(particle.position.x / 2 / Chunk.SIZE);
+			int particleChunkY = Math.round(particle.position.y / 2 / Chunk.SIZE);
+
+			if (Math.abs(particleChunkX - chunkX) > World.LOAD_DIST
+					|| Math.abs(particleChunkY - chunkY) > World.LOAD_DIST) {
+				it.remove();
+			}
+		}
+		if (!treesToAdd.isEmpty()) {
+			objects.add(treesToAdd.poll());
 		}
 	}
 }

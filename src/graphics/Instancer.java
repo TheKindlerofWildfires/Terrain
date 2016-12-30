@@ -36,6 +36,7 @@ public abstract class Instancer {
 	protected boolean active;
 	protected final Particle baseObject;
 	protected final int maxObjects;
+	protected Vector4f colour;
 
 	protected List<GameObject> objects;
 
@@ -91,6 +92,9 @@ public abstract class Instancer {
 			Vector3f pos = objects.get(i).position;
 			modelBuffer.put(new Vector4f(pos, objects.get(i).scale.x).getBuffer());
 		}
+		if (objects.isEmpty()) {
+			modelBuffer.put(new Vector4f().getBuffer());
+		}
 		modelBuffer.flip();
 	}
 
@@ -105,6 +109,7 @@ public abstract class Instancer {
 		Shader.start(ShaderManager.particleShader);
 		Shader.setUniformMatrix4f("view", GraphicsManager.camera.view);
 		Shader.setUniform4f("clipPlane", clipPlane);
+		Shader.setUniform4f("color", colour);
 		glEnable(GL_CLIP_DISTANCE0);
 		glBindVertexArray(vao.getVaoID());
 		glDrawArraysInstanced(GL_TRIANGLES, 0, vao.getSize(), objects.size());
@@ -125,4 +130,5 @@ public abstract class Instancer {
 	public final void deactivate() {
 		this.active = false;
 	}
+	
 }

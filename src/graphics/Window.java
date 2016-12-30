@@ -39,6 +39,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 
@@ -51,7 +52,6 @@ import entity.EntityManager;
 import input.MouseInput;
 import maths.Vector3f;
 import maths.Vector4f;
-import object.GameObject;
 import object.ObjectManager;
 import particles.Geyser;
 import particles.Particle;
@@ -205,16 +205,28 @@ public class Window implements Runnable {
 		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
 
-		baseParticle = new Particle("resources/models/box.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		baseParticle = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		baseParticle.scale(.01f, .01f, .01f);
 		particles = new Geyser(baseParticle, 1000, 10);
 		particles.activate();
 
-		baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1), 100);
-		trees = new TreeManager(baseTree, 100);
-		trees.addTree(new Vector3f(0, 0, 0));
-		trees.addTree(new Vector3f(10, 0, 0));
-		trees.addTree(new Vector3f(0, 10, 0));
+		baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		baseTree.rotate(90, 1, 0, 0);
+		trees = new TreeManager(baseTree, 1000, 10);
+		trees.activate();
+
+		ArrayList<Particle> treeees = new ArrayList<Particle>();
+
+		for (int i = 0; i < 1000; i++) {
+			Particle newTree = new Particle(baseTree);
+			newTree.rotate(90, 1, 0, 0);
+			Vector3f displacement = new Vector3f((float) Math.random() * 1000, (float) Math.random() * 1000, 4);
+			newTree.translate(displacement);
+			treeees.add(newTree);
+		}
+
+		trees.treesToAdd.addAll(treeees);
+		//particles = new Geyser(baseTree, 1000, 10);
 
 		GraphicsManager.toggleFog();
 	}
@@ -315,7 +327,7 @@ public class Window implements Runnable {
 		objectManager.render(renderClipPlane);
 		water.render(renderClipPlane); //do NOT attempt to render water anywhere other than to screen
 		entityManager.render(renderClipPlane);
-		particles.render(reflectionClipPlane);
+		//particles.render(renderClipPlane);
 		trees.render(renderClipPlane);
 	}
 

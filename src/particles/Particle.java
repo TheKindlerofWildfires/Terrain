@@ -15,8 +15,8 @@ import object.GameObject;
 public class Particle extends GameObject {
 
 	private long ttl; //time remaining to live (milliseconds)
-	float angleX;
-	float angleY;
+	public float angleX;
+	public float angleY;
 
 	/**
 	 * Makes a new base particle
@@ -57,7 +57,7 @@ public class Particle extends GameObject {
 		this.shader = ShaderManager.particleShader;
 		this.placeAt(0, 0, 0);
 	}
-	
+
 	/**
 	 * particles dont get physic'd
 	 */
