@@ -18,3 +18,8 @@ Water:
 LAVA -
 OCEAN - 
 ICE - 
+
+rotate all trees 90 1 0 0 
+make new instances of manager for each new type of tree / lava
+comments in render trees /world 
+extend particle emiter - use geyser
