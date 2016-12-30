@@ -59,19 +59,19 @@ public abstract class Detail {
 		tallBush = new Particle("resources/models/detail/tallBush.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		thornBush = new Particle("resources/models/detail/thornBush.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 
-		bigTrees = new DetailManager(bigTree, 1000, 10, new Vector4f(1, 0, 0, 1));
-		forestTrees = new DetailManager(forestTree, 1000, 10, new Vector4f(0, 0, 1, 1));
-		jungleTrees = new DetailManager(jungleTree, 1000, 10, new Vector4f(0, 1, 0, 1));
-		lillyPads = new DetailManager(lillyPad, 1000, 10, new Vector4f(0, 1, 1, 1));
+		bigTrees = new DetailManager(bigTree, 1000, 10, new Vector4f(.561f, .737f, .561f, 1));
+		forestTrees = new DetailManager(forestTree, 1000, 10, new Vector4f(.133f, .545f, .133f, 1));
+		jungleTrees = new DetailManager(jungleTree, 1000, 10, new Vector4f(.261f, .671f, .629f, 0.5f));
+		lillyPads = new DetailManager(lillyPad, 1000, 10, new Vector4f(.086f, .725f, .117f, 1));
 		pineTrees = new DetailManager(pineTree, 1000, 10, new Vector4f(1, 0, 1, 1));
 		rocks = new DetailManager(rock, 1000, 10, new Vector4f(1, 1, 0, 1));
 		savannaTrees = new DetailManager(savannaTree, 1000, 10, new Vector4f(1, 1, 1, 1));
 		seasonalTrees = new DetailManager(seasonalTree, 1000, 10, new Vector4f(0, 0, 0, 1));
 
 		yellowBushs = new DetailManager(yellowBush, 1000, 10, new Vector4f(0, 1, 1, 1));
-		reeds = new DetailManager(reed, 1000, 10, new Vector4f(1, 0, 1, 1));
+		reeds = new DetailManager(reed, 1000, 10, new Vector4f(.49f, .46f, .352f, 1));
 		deadTrees = new DetailManager(deadTree, 1000, 10, new Vector4f(1, 1, 0, 1));
-		tallBushs = new DetailManager(tallBush, 1000, 10, new Vector4f(1, 1, 1, 1));
+		tallBushs = new DetailManager(tallBush, 1000, 10, new Vector4f(.181f, .672f, .539f, 1));
 		thornBushs = new DetailManager(thornBush, 1000, 10, new Vector4f(0, 0, 0, 1));
 
 		man.add(bigTrees);
@@ -206,10 +206,10 @@ public abstract class Detail {
 	}
 
 	private static void swamp(Vector3f position) {
-		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
-				Math.pow(position.y / DETAILSCALER, 2), position.z));
+		double detail = Math.abs(det.getValue(position.x / DETAILSCALER/2,
+				position.y / DETAILSCALER/2, position.z));
 		if (detail > 0.4 && position.x < Chunk.WATERLEVEL) {
-			if (check(position.z, 1)) {
+			if (check(position.z, 0.1f)) {
 			Particle newDetail = new Particle(lillyPad);
 			newDetail.translate(position);
 			newDetail.placeAt(position.x, position.y, Chunk.WATERLEVEL);
@@ -222,7 +222,7 @@ public abstract class Detail {
 		}
 		detail = Math.abs(World.noise.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1) {
-			if (check(position.z, 5)) {
+			if (check(position.z, 1)) {
 			Particle newDetail = new Particle(reed);
 			newDetail.translate(position);
 			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
@@ -233,10 +233,10 @@ public abstract class Detail {
 	}
 
 	private static void forest(Vector3f position) {
-		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
-				Math.pow(position.y / DETAILSCALER, 2), position.z));
+		double detail = Math.abs(det.getValue(position.x / DETAILSCALER,
+				position.y / DETAILSCALER, position.z));
 		if (detail > 1 && position.z > Chunk.WATERLEVEL) {
-			if (check(position.z, 10)) {
+			if (check(position.z, 20)) {
 			Particle newDetail = new Particle(forestTree);
 			newDetail.translate(position);
 			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
@@ -244,7 +244,7 @@ public abstract class Detail {
 			}
 		}
 		detail = Math.abs(World.noise.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
-		if (detail > 1.2) {
+		if (detail > 1.4) {
 			if (check(position.z, 1)) {
 			Particle newDetail = new Particle(bigTree);
 			newDetail.translate(position);
@@ -256,8 +256,8 @@ public abstract class Detail {
 	}
 
 	private static void seasonalForest(Vector3f position) {
-		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
-				Math.pow(position.y / DETAILSCALER, 2), position.z));
+		double detail = Math.abs(det.getValue(position.x / DETAILSCALER,
+				position.y / DETAILSCALER, position.z));
 		if (detail > 1 && position.z > Chunk.WATERLEVEL) {
 			if (check(position.z, 70)) {
 			Particle newDetail = new Particle(seasonalTree);
@@ -278,8 +278,8 @@ public abstract class Detail {
 	}
 
 	private static void rainForest(Vector3f position) {
-		double detail = Math.abs(det.getValue(Math.pow(position.x / DETAILSCALER, 2),
-				Math.pow(position.y / DETAILSCALER, 2), position.z));
+		double detail = Math.abs(det.getValue(position.x / DETAILSCALER/2,
+				position.y / DETAILSCALER/2, position.z));
 		if (detail > 1 && position.z > Chunk.WATERLEVEL) {
 			if (check(position.z, 90)) {
 			Particle newDetail = new Particle(jungleTree);
