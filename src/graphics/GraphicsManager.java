@@ -148,7 +148,7 @@ public class GraphicsManager {
 		double[] mousePos = MouseInput.pos();
 		camera.rotateCamera(mousePos);
 		ShaderManager.setCamera(camera, dirLight);
-		dayNightCycle();
+		//dayNightCycle();
 	}
 
 	private static void dayNightCycle() {

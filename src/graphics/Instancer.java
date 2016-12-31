@@ -36,7 +36,7 @@ public abstract class Instancer {
 	protected boolean active;
 	protected final Particle baseObject;
 	protected final int maxObjects;
-	protected Vector4f colour;
+	public Vector4f colour;
 
 	protected List<GameObject> objects;
 

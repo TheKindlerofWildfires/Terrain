@@ -2,6 +2,7 @@ package world;
 
 import java.util.ArrayList;
 
+import entity.Time;
 import graphics.DetailManager;
 import maths.Vector3f;
 import maths.Vector4f;
@@ -45,11 +46,11 @@ public abstract class Detail {
 	public static DetailManager tallBushs;
 	public static DetailManager thornBushs;
 	
-	private static ParticleEmitter lavaSpout;
-	private static ParticleEmitter waterSpout;
 	public static ArrayList<DetailManager> man = new ArrayList<DetailManager>();
 	public static ArrayList<ParticleEmitter> part = new ArrayList<ParticleEmitter>();
-
+	public static ArrayList<Vector4f> waterSpouts = new ArrayList<Vector4f>();
+	//spring/summer/fall/winters
+	public static Vector4f[] season = {new Vector4f(.561f, .737f, .561f, 1),new Vector4f(.133f, .545f, .133f, 1),new Vector4f(.33f, .20f, .03f, 1),new Vector4f(.70f, .80f, .70f, 1)};
 	public static void init() {
 		bigTree = new Particle("resources/models/detail/bigTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		forestTree = new Particle("resources/models/detail/forestTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
@@ -71,21 +72,19 @@ public abstract class Detail {
 		forestTrees = new DetailManager(forestTree, 1000, 10, new Vector4f(.133f, .545f, .133f, 1));
 		jungleTrees = new DetailManager(jungleTree, 1000, 10, new Vector4f(.261f, .671f, .629f, 0.5f));
 		lillyPads = new DetailManager(lillyPad, 1000, 10, new Vector4f(.086f, .725f, .117f, 1));
-		pineTrees = new DetailManager(pineTree, 1000, 10, new Vector4f(1, 0, 1, 1));
-		rocks = new DetailManager(rock, 1000, 10, new Vector4f(1, 1, 0, 1));
-		savannaTrees = new DetailManager(savannaTree, 1000, 10, new Vector4f(1, 1, 1, 1));
-		seasonalTrees = new DetailManager(seasonalTree, 1000, 10, new Vector4f(0, 0, 0, 1));
+		pineTrees = new DetailManager(pineTree, 1000, 10, new Vector4f(.078f, 0.2f, .023f, 1));
+		rocks = new DetailManager(rock, 1000, 10, new Vector4f(.9f, .77f, .1f, 1));
+		savannaTrees = new DetailManager(savannaTree, 1000, 10, new Vector4f(.33f, .20f, .03f, 1));
+		seasonalTrees = new DetailManager(seasonalTree, 1000, 10, season[0]);
 
 		yellowBushs = new DetailManager(yellowBush, 1000, 10, new Vector4f(0, 1, 1, 1));
 		reeds = new DetailManager(reed, 1000, 10, new Vector4f(.49f, .46f, .352f, 1));
-		deadTrees = new DetailManager(deadTree, 1000, 10, new Vector4f(1, 1, 0, 1));
+		deadTrees = new DetailManager(deadTree, 1000, 10, new Vector4f(.33f, .20f, .03f, 1));
 		tallBushs = new DetailManager(tallBush, 1000, 10, new Vector4f(.181f, .672f, .539f, 1));
-		thornBushs = new DetailManager(thornBush, 1000, 10, new Vector4f(0, 0, 0, 1));
+		thornBushs = new DetailManager(thornBush, 1000, 10, new Vector4f(.4f, .6f, .2f, 1));
 		
-		spout = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
-		spout.scale(.01f, .01f, .01f);
-		lavaSpout = new Geyser(spout, 1000, 10, new Vector4f(1,0,0,1));
-		waterSpout = new Geyser(spout, 1000, 10, new Vector4f(0,0,1,1));
+		//spout = new Particle("resources/models/box.obj", "none", new Vector3f(0.1f, 0.2f, 0.5f), 1000l);
+		//spout.scale(.01f, .01f, .01f);
 		
 		man.add(bigTrees);
 		man.add(forestTrees);
@@ -101,10 +100,6 @@ public abstract class Detail {
 		man.add(tallBushs);
 		man.add(thornBushs);
 		man.stream().forEach(m -> m.activate());
-		
-		part.add(lavaSpout);
-		part.add(waterSpout);
-		part.stream().forEach(p -> p.activate());
 	}
 
 	/**
@@ -238,7 +233,10 @@ public abstract class Detail {
 		}
 		detail = Math.abs(det.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1 && position.z < Chunk.WATERLEVEL) {
-			//// placeAnimation(spout,waterSpout, position);
+			waterSpouts.add(new Vector4f(position.x, position.y, position.z, 0));
+			/*
+			
+			*/
 		}
 		detail = Math.abs(World.noise.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1) {
@@ -321,11 +319,21 @@ public abstract class Detail {
 
 	public static void update(long l) {
 		man.stream().forEach(m -> m.update(l));
+		part.stream().forEach(m -> m.update(l));
+		int m = Time.getDay();
+		seasonalTrees.colour = season[m%4];
+		for(int i = 0; i<waterSpouts.size();i++){
+			if(waterSpouts.get(i).w==0){//not GL. 
+				//water(new Vector3f(waterSpouts.get(i).x,waterSpouts.get(i).y,waterSpouts.get(i).z));
+				waterSpouts.get(i).w = 1;
+			}
+		}
 
 	}
 
 	public static void render(Vector4f renderClipPlane) {
 		man.stream().forEach(m -> m.render(renderClipPlane));
+		part.stream().forEach(p -> p.render(renderClipPlane));
 	}
 
 	/**
@@ -336,12 +344,19 @@ public abstract class Detail {
 	 * @return
 	 */
 	public static boolean check(float height, float chance) {
-		float h = Math.abs(Math.round(height) - height) * 100;
+		float h = Math.abs(Math.round(height) - height) * 200;
 		if (h > chance) {
 			return false;
 		} else {
 			return true;
 		}
 
+	}
+	public static void water(Vector3f position){
+		Particle s = spout;
+		s.translate(position);
+		Geyser temp = new Geyser(s, 1000, 10,new Vector4f(0.1f, 0.2f, 0.5f,1));
+		temp.activate();
+		part.add(temp);
 	}
 }

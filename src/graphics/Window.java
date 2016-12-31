@@ -108,8 +108,8 @@ public class Window implements Runnable {
 	public static FrameBufferObject refraction;
 	public static FrameBufferObject reflection;
 
-	//private static ParticleEmitter particles;
-	//private static Particle baseParticle;
+	private static ParticleEmitter particles;
+	private static Particle baseParticle;
 
 	//private static DetailManager trees;
 	//private static Particle baseTree;
@@ -205,12 +205,13 @@ public class Window implements Runnable {
 
 		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
-		/*
-		baseParticle = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		
+		baseParticle = new Particle("resources/models/box.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		baseParticle.scale(.01f, .01f, .01f);
-		particles = new Geyser(baseParticle, 1000, 10);
+		baseParticle.translate(0, 0, 1);
+		particles = new Geyser(baseParticle, 1000, 10, new Vector4f(0,1,0,1));
 		particles.activate();
-		*/
+		
 		//baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		Detail.init();
 		//trees = new DetailManager(baseTree, 1000, 10, new Vector4f(1,1,1,1));
@@ -227,7 +228,7 @@ public class Window implements Runnable {
 		}*/
 
 		//trees.detailsToAdd.addAll(treeees);
-		//particles = new Geyser(baseTree, 1000, 10);
+
 
 		GraphicsManager.toggleFog();
 	}
@@ -256,7 +257,7 @@ public class Window implements Runnable {
 		entityManager.update();
 		now = System.currentTimeMillis();
 		Detail.update(now - then);
-		//particles.update(now - then);
+		particles.update(now - then);
 		then = now;
 	}
 
@@ -301,7 +302,7 @@ public class Window implements Runnable {
 		world.renderLand(reflectionClipPlane);
 		objectManager.render(reflectionClipPlane);
 		entityManager.render(reflectionClipPlane);
-		//particles.render(reflectionClipPlane);
+		particles.render(reflectionClipPlane);
 
 		//	move camera back and render refraction texture
 		//GraphicsManager.camera.flipCamera();
@@ -317,7 +318,7 @@ public class Window implements Runnable {
 		world.renderLand(refractionClipPlane);
 		objectManager.render(refractionClipPlane);
 		entityManager.render(refractionClipPlane);
-		//particles.render(refractionClipPlane);
+		particles.render(refractionClipPlane);
 
 		// render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
@@ -329,7 +330,7 @@ public class Window implements Runnable {
 		water.render(renderClipPlane); // do NOT attempt to render water
 										// anywhere other than to screen
 		entityManager.render(renderClipPlane);
-		//particles.render(renderClipPlane);
+		particles.render(renderClipPlane);
 		//trees.render(renderClipPlane);
 		Detail.render(renderClipPlane);
 	}

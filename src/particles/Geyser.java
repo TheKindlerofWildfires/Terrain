@@ -1,8 +1,5 @@
 package particles;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 import maths.Vector3f;
 import maths.Vector4f;
 
