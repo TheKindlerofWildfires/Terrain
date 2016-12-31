@@ -52,7 +52,7 @@ public class Player extends GameObject {
 			Shader.setUniform1f("waveStrength", 0.0002f);
 			Shader.setUniform1f("waterClarity", 2);
 			Shader.setUniform4f("waterColour", new Vector4f(0.2f, 0.3f, 0.4f,1));
-			Shader.setUniform1f("waveSpeed", 0.00001f);
+			//Shader.setUniform1f("waveSpeed", 0.00001f);
 			Shader.setUniform1f("maxDistortion",0.1f);
 			break;
 		case Biome.SEASONALFOREST:
@@ -61,7 +61,7 @@ public class Player extends GameObject {
 			Shader.setUniform1f("waveStrength", 0.002f);
 			Shader.setUniform1f("waterClarity", 20);
 			Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
-			Shader.setUniform1f("waveSpeed", 0.0001f);
+			//Shader.setUniform1f("waveSpeed", 0.0001f);
 			Shader.setUniform1f("maxDistortion",0.001f);
 			break;
 		case Biome.FOREST:
@@ -70,7 +70,7 @@ public class Player extends GameObject {
 			Shader.setUniform1f("waveStrength", 0.002f);
 			Shader.setUniform1f("waterClarity", 10);
 			Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
-			Shader.setUniform1f("waveSpeed", 0.0001f);
+			//Shader.setUniform1f("waveSpeed", 0.0001f);
 			Shader.setUniform1f("maxDistortion",0.01f);
 			break;
 		case Biome.SWAMP:
@@ -79,7 +79,7 @@ public class Player extends GameObject {
 			Shader.setUniform1f("waveStrength", 0.0002f);
 			Shader.setUniform1f("waterClarity", 3);
 			Shader.setUniform4f("waterColour", new Vector4f(0.1f, 0.2f, 0.5f,1));
-			Shader.setUniform1f("waveSpeed", 0.00001f);
+			//Shader.setUniform1f("waveSpeed", 0.00001f);
 			Shader.setUniform1f("maxDistortion",0.001f);
 			break;
 		case Biome.OCEAN:
@@ -89,7 +89,7 @@ public class Player extends GameObject {
 			Shader.setUniform1f("waveStrength", 0.02f);
 			Shader.setUniform1f("waterClarity", 10);
 			Shader.setUniform4f("waterColour", new Vector4f(0, 0.1f, 0.25f,1));
-			Shader.setUniform1f("waveSpeed", 0.00001f);
+			//Shader.setUniform1f("waveSpeed", 0.00001f);
 			Shader.setUniform1f("maxDistortion",1f);
 			break;
 		case Biome.DESERT:
@@ -98,7 +98,7 @@ public class Player extends GameObject {
 			Shader.setUniform1f("waveStrength", 0.002f);
 			Shader.setUniform1f("waterClarity", 10);
 			Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
-			Shader.setUniform1f("waveSpeed", 0.0001f);
+			//Shader.setUniform1f("waveSpeed", 0.0001f);
 			Shader.setUniform1f("maxDistortion",0.01f);
 			break;
 		case Biome.MOUNTAIN:
@@ -107,7 +107,7 @@ public class Player extends GameObject {
 			Shader.setUniform1f("waveStrength", 0.002f);
 			Shader.setUniform1f("waterClarity", 1);
 			Shader.setUniform4f("waterColour", new Vector4f(1, .1f, .1f,1));
-			Shader.setUniform1f("waveSpeed", 0.0001f);
+			//Shader.setUniform1f("waveSpeed", 0.0001f);
 			Shader.setUniform1f("maxDistortion",0.01f);
 			break;
 		case Biome.SAVANNA:
@@ -116,7 +116,7 @@ public class Player extends GameObject {
 			Shader.setUniform1f("waveStrength", 0.02f);
 			Shader.setUniform1f("waterClarity", 10);
 			Shader.setUniform4f("waterColour", new Vector4f(0.1f, 0.1f, 0.5f,1));
-			Shader.setUniform1f("waveSpeed", 0.0001f);
+		//	Shader.setUniform1f("waveSpeed", 0.0001f);
 			Shader.setUniform1f("maxDistortion",0.1f);
 			break;
 		case Biome.TAIGA:
@@ -125,7 +125,7 @@ public class Player extends GameObject {
 			Shader.setUniform1f("waveStrength", 0.002f);
 			Shader.setUniform1f("waterClarity", 3);
 			Shader.setUniform4f("waterColour", new Vector4f(.9f, 0.9f, 0.9f,1));
-			Shader.setUniform1f("waveSpeed", 0.0001f);
+		//	Shader.setUniform1f("waveSpeed", 0.0001f);
 			Shader.setUniform1f("maxDistortion",0f);
 			break;
 		}

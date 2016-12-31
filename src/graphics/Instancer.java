@@ -38,7 +38,7 @@ public abstract class Instancer {
 	protected final int maxObjects;
 	public Vector4f colour;
 
-	protected List<GameObject> objects;
+	public List<GameObject> objects;
 
 	public Instancer(Particle object, int numInstances) {
 		objects = new ArrayList<GameObject>();

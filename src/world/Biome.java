@@ -61,15 +61,15 @@ public abstract class Biome {
 			type = SAVANNA;
 		}
 		if (temp < med && rain < high && rain > med) {
-			type = MOUNTAIN;
+			type = OCEAN;
 		}
 		if (rain < med && temp < med) {
-			type = OCEAN;
+			type = MOUNTAIN;
 		}
 		if (type == -1) {
 			System.out.println("not a biome");
 		}
-		type = RAINFOREST;
+		//type = RAINFOREST;
 		if (type == RAINFOREST) {
 			h = WATERLEVEL * 7 / 8;
 			maxSize = h + SIZE / 2;
