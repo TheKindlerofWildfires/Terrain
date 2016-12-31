@@ -132,6 +132,9 @@ public abstract class Biome {
 			r = (float) (0.11 * (color + .1));
 			g = (float) (0.12 * (color + .1));
 			b = (float) (0.10 * (color + .1));
+			if (h > maxSize-4){
+				System.out.println(point.x + " " + point.y);
+			}
 		}
 		if (type == SAVANNA) {
 			h = WATERLEVEL*3/4;
