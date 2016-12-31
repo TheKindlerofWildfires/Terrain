@@ -32,7 +32,7 @@ public class Player extends GameObject {
 
 	public void update() {
 		camera.pos = position;
-		
+		System.out.println(position.x + " " + position.y+ " " + position.z);
 	}
 
 	private void effect() {

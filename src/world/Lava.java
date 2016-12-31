@@ -14,13 +14,13 @@ public class Lava {
 	public Lava(){
 		baseParticle = new Particle("resources/models/box.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		baseParticle.scale(.01f, .01f, .01f);
-		baseParticle.translate(10, 0, 1);
+		baseParticle.translate(35.3f, -43.1f, 17);
 		
 		particles = new Geyser(baseParticle, 1000, 10, new Vector4f(1, .1f, .1f,1));
 		particles.activate();
 		baseParticle2 = new Particle("resources/models/box2.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		baseParticle2.scale(.1f, .1f, .1f);
-		baseParticle2.translate(0, 0, 10);
+		baseParticle2.translate(-17, -4.2f, 14); 
 		part2 = new Geyser(baseParticle2, 1000, 10, new Vector4f(1, .1f, .1f,1));
 		part2.activate();
 	}
