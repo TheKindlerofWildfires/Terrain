@@ -109,6 +109,7 @@ public class Window implements Runnable {
 	public static FrameBufferObject reflection;
 
 	private static ParticleEmitter particles;
+	private static ParticleEmitter part2;
 	private static Particle baseParticle;
 
 	//private static DetailManager trees;
@@ -211,7 +212,9 @@ public class Window implements Runnable {
 		baseParticle.translate(0, 0, 1);
 		particles = new Geyser(baseParticle, 1000, 10, new Vector4f(0,1,0,1));
 		particles.activate();
-		
+		baseParticle.translate(1, 1, 1);
+		part2 = new Geyser(baseParticle, 1000, 10, new Vector4f(1,1,0,1));
+		part2.activate();
 		//baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		Detail.init();
 		//trees = new DetailManager(baseTree, 1000, 10, new Vector4f(1,1,1,1));
@@ -258,6 +261,7 @@ public class Window implements Runnable {
 		now = System.currentTimeMillis();
 		Detail.update(now - then);
 		particles.update(now - then);
+		part2.update(now - then);
 		then = now;
 	}
 
@@ -303,6 +307,7 @@ public class Window implements Runnable {
 		objectManager.render(reflectionClipPlane);
 		entityManager.render(reflectionClipPlane);
 		particles.render(reflectionClipPlane);
+		part2.render(refractionClipPlane);
 
 		//	move camera back and render refraction texture
 		//GraphicsManager.camera.flipCamera();
@@ -319,6 +324,7 @@ public class Window implements Runnable {
 		objectManager.render(refractionClipPlane);
 		entityManager.render(refractionClipPlane);
 		particles.render(refractionClipPlane);
+		part2.render(refractionClipPlane);
 
 		// render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
@@ -331,6 +337,7 @@ public class Window implements Runnable {
 										// anywhere other than to screen
 		entityManager.render(renderClipPlane);
 		particles.render(renderClipPlane);
+		part2.render(renderClipPlane);
 		//trees.render(renderClipPlane);
 		Detail.render(renderClipPlane);
 	}

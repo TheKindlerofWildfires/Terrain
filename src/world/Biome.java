@@ -69,7 +69,7 @@ public abstract class Biome {
 		if (type == -1) {
 			System.out.println("not a biome");
 		}
-		type = SWAMP;
+		type = RAINFOREST;
 		if (type == RAINFOREST) {
 			h = WATERLEVEL * 7 / 8;
 			maxSize = h + SIZE / 2;
