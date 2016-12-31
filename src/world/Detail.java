@@ -6,7 +6,9 @@ import graphics.DetailManager;
 import maths.Vector3f;
 import maths.Vector4f;
 import noiseLibrary.module.source.Perlin;
+import particles.Geyser;
 import particles.Particle;
+import particles.ParticleEmitter;
 
 public abstract class Detail {
 	static float DETAILSCALER = 1;
@@ -25,6 +27,7 @@ public abstract class Detail {
 	private static Particle deadTree;
 	private static Particle tallBush;
 	private static Particle thornBush;
+	public static Particle spout;
 
 	public static DetailManager bigTrees;
 	public static DetailManager forestTrees;
@@ -34,13 +37,18 @@ public abstract class Detail {
 	public static DetailManager rocks;
 	public static DetailManager savannaTrees;
 	public static DetailManager seasonalTrees;
+	
 
 	public static DetailManager yellowBushs;
 	public static DetailManager reeds;
 	public static DetailManager deadTrees;
 	public static DetailManager tallBushs;
 	public static DetailManager thornBushs;
+	
+	private static ParticleEmitter lavaSpout;
+	private static ParticleEmitter waterSpout;
 	public static ArrayList<DetailManager> man = new ArrayList<DetailManager>();
+	public static ArrayList<ParticleEmitter> part = new ArrayList<ParticleEmitter>();
 
 	public static void init() {
 		bigTree = new Particle("resources/models/detail/bigTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
@@ -73,7 +81,12 @@ public abstract class Detail {
 		deadTrees = new DetailManager(deadTree, 1000, 10, new Vector4f(1, 1, 0, 1));
 		tallBushs = new DetailManager(tallBush, 1000, 10, new Vector4f(.181f, .672f, .539f, 1));
 		thornBushs = new DetailManager(thornBush, 1000, 10, new Vector4f(0, 0, 0, 1));
-
+		
+		spout = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		spout.scale(.01f, .01f, .01f);
+		lavaSpout = new Geyser(spout, 1000, 10, new Vector4f(1,0,0,1));
+		waterSpout = new Geyser(spout, 1000, 10, new Vector4f(0,0,1,1));
+		
 		man.add(bigTrees);
 		man.add(forestTrees);
 		man.add(jungleTrees);
@@ -88,6 +101,10 @@ public abstract class Detail {
 		man.add(tallBushs);
 		man.add(thornBushs);
 		man.stream().forEach(m -> m.activate());
+		
+		part.add(lavaSpout);
+		part.add(waterSpout);
+		part.stream().forEach(p -> p.activate());
 	}
 
 	/**
@@ -175,11 +192,15 @@ public abstract class Detail {
 	}
 
 	private static void mountain(Vector3f position) {
-		// lavaWater
 		double detail = Math
 				.abs(World.noise.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1) {
-			// placeAnimation(spout,lavaSpout, position);
+			if (check(position.z, 10)) {
+				Particle newDetail = new Particle(spout);
+				newDetail.translate(position);
+				newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
+				//lavaSpout.detailsToAdd.add(newDetail);
+				}
 		}
 	}
 
@@ -202,7 +223,6 @@ public abstract class Detail {
 	}
 
 	private static void ocean(Vector3f position) {
-		// strongWater
 	}
 
 	private static void swamp(Vector3f position) {

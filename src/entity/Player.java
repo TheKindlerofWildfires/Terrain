@@ -1,7 +1,10 @@
 package entity;
 
 import graphics.Camera;
+import graphics.Shader;
+import graphics.ShaderManager;
 import maths.Vector3f;
+import maths.Vector4f;
 import object.GameObject;
 import world.Biome;
 
@@ -29,6 +32,105 @@ public class Player extends GameObject {
 
 	public void update() {
 		camera.pos = position;
+		
+	}
+
+	private void effect() {
+		/*
+		 	Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.5f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 10);
+			Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
+			Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.01f);*/
+		int biome = (int)Biome.getValue(position, position, false)[4];
+		switch (biome) {
+		case Biome.RAINFOREST:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.1f);
+			Shader.setUniform1f("waveStrength", 0.0002f);
+			Shader.setUniform1f("waterClarity", 2);
+			Shader.setUniform4f("waterColour", new Vector4f(0.2f, 0.3f, 0.4f,1));
+			Shader.setUniform1f("waveSpeed", 0.00001f);
+			Shader.setUniform1f("maxDistortion",0.1f);
+			break;
+		case Biome.SEASONALFOREST:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.5f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 20);
+			Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
+			Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.001f);
+			break;
+		case Biome.FOREST:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.5f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 10);
+			Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
+			Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.01f);
+			break;
+		case Biome.SWAMP:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0f);
+			Shader.setUniform1f("waveStrength", 0.0002f);
+			Shader.setUniform1f("waterClarity", 3);
+			Shader.setUniform4f("waterColour", new Vector4f(0.1f, 0.2f, 0.5f,1));
+			Shader.setUniform1f("waveSpeed", 0.00001f);
+			Shader.setUniform1f("maxDistortion",0.001f);
+			break;
+		case Biome.OCEAN:
+			Shader.start(ShaderManager.waterShader);
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.1f);
+			Shader.setUniform1f("waveStrength", 0.02f);
+			Shader.setUniform1f("waterClarity", 10);
+			Shader.setUniform4f("waterColour", new Vector4f(0, 0.1f, 0.25f,1));
+			Shader.setUniform1f("waveSpeed", 0.00001f);
+			Shader.setUniform1f("maxDistortion",1f);
+			break;
+		case Biome.DESERT:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.5f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 10);
+			Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
+			Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.01f);
+			break;
+		case Biome.MOUNTAIN:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 1f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 1);
+			Shader.setUniform4f("waterColour", new Vector4f(1, .1f, .1f,1));
+			Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.01f);
+			break;
+		case Biome.SAVANNA:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.1f);
+			Shader.setUniform1f("waveStrength", 0.02f);
+			Shader.setUniform1f("waterClarity", 10);
+			Shader.setUniform4f("waterColour", new Vector4f(0.1f, 0.1f, 0.5f,1));
+			Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.1f);
+			break;
+		case Biome.TAIGA:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 3);
+			Shader.setUniform4f("waterColour", new Vector4f(.9f, 0.9f, 0.9f,1));
+			Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0f);
+			break;
+		}
+
+		
 	}
 
 	public void movePlayer(String dir) {
@@ -97,6 +199,7 @@ public class Player extends GameObject {
 			this.translate(displacement);
 			camera.move(displacement);
 		}
+		effect();
 	}
 
 }

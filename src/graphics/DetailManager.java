@@ -16,7 +16,7 @@ public class DetailManager extends Geyser {
 	public Queue<Particle> detailsToAdd = new LinkedList<Particle>();
 
 	public DetailManager(Particle baseParticle, int maxParticles, long creationPeriodMillis, Vector4f colour) {
-		super(baseParticle, maxParticles, creationPeriodMillis);
+		super(baseParticle, maxParticles, creationPeriodMillis, colour);
 		this.colour = colour;//new Vector4f(.2f, 1, .2f, 1);
 	}
 

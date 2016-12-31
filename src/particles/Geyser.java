@@ -1,13 +1,15 @@
 package particles;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import maths.Vector3f;
 import maths.Vector4f;
 
 public class Geyser extends ParticleEmitter {
-
-	public Geyser(Particle baseParticle, int maxParticles, long creationPeriodMillis) {
+	public Geyser(Particle baseParticle, int maxParticles, long creationPeriodMillis, Vector4f color) {
 		super(baseParticle, maxParticles, creationPeriodMillis);
-		colour = new Vector4f(.2f,.5f,1,1);
+		colour = color;
 	}
 
 	private static final Vector3f gravity = new Vector3f(0, 0, -.002f);
@@ -60,4 +62,6 @@ public class Geyser extends ParticleEmitter {
 		particle.velocity = particle.velocity.add(gravity);
 		particle.translate(dx, dy, dz);
 	}
+	
 }
+

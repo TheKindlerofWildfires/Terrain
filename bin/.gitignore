@@ -1,10 +1,9 @@
-<<<<<<< HEAD
+/maths/
+/models/
+/noiseLibrary/
+/object/
+/particles/
+/physics/
 /world/
 /entity/
-=======
 /graphics/
-/particles/
-/shaders/
-/world/
->>>>>>> refs/remotes/origin/particle-wrap-up
-/object/

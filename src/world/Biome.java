@@ -69,9 +69,8 @@ public abstract class Biome {
 		if (type == -1) {
 			System.out.println("not a biome");
 		}
-		type = SWAMP;
+		type = OCEAN;
 		if (type == RAINFOREST) {
-
 			h = WATERLEVEL * 7 / 8;
 			maxSize = h + SIZE / 2;
 			h += (float) elev;
@@ -80,7 +79,7 @@ public abstract class Biome {
 			b = (float) (0.05 * (color + 0.2));
 		}
 		if (type == SEASONALFOREST) {
-			h = WATERLEVEL * 2 / 3;
+			h = WATERLEVEL * 1 / 2;
 			maxSize = h + SIZE / 2;
 			h += (float) elev;
 			r = (float) (0.20 * (color + .1));
@@ -112,9 +111,9 @@ public abstract class Biome {
 			b = (float) (0.60 * (color + .2));
 		}
 		if (type == TAIGA) {
-			h = WATERLEVEL * 7 / 8;
+			h = WATERLEVEL * 6 / 8;
 			maxSize = h + SIZE / 2 * 1.5f;
-			h += (float) elev * 1.5;
+			h += (float) elev/2;
 			r = (float) (0.90 * (color + .1));
 			g = (float) (0.88 * (color + .1));
 			b = (float) (0.83 * (color + .1));
@@ -127,7 +126,7 @@ public abstract class Biome {
 			b = (float) (0.40 * (color + .1));
 		}
 		if (type == MOUNTAIN) {
-			h = WATERLEVEL;
+			h = WATERLEVEL/32*31;
 			maxSize = h + SIZE * SIZE / 4;
 			h += (float) elev * elev / 2;
 			r = (float) (0.11 * (color + .1));
@@ -135,7 +134,7 @@ public abstract class Biome {
 			b = (float) (0.10 * (color + .1));
 		}
 		if (type == SAVANNA) {
-			h = WATERLEVEL;
+			h = WATERLEVEL*3/4;
 			maxSize = h + SIZE / 2;
 			h += (float) elev / 2;
 			r = (float) (0.90 * (color + .1));
