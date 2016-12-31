@@ -35,6 +35,76 @@ public class Player extends GameObject {
 		System.out.println(position.x + " " + position.y+ " " + position.z);
 	}
 
+
+
+	public void movePlayer(String dir) {
+		this.target = camera.target;
+
+		float vx = position.x - target.x;
+		float vy = position.y - target.y;
+		vx *= speed;
+		vy *= speed;
+		switch (dir) {
+		case "UP":
+			displacement = upward;
+			break;
+		case "DOWN":
+			displacement = upward.negate();
+			break;
+		case "FORWARD":
+			displacement = new Vector3f(-vx, -vy, 0);// backward.negate();
+			break;
+		case "BACK":
+			displacement = new Vector3f(vx, vy, 0);// backward;
+			break;
+		case "LEFT":
+			displacement = new Vector3f(vy, -vx, 0);// left;
+			break;
+		case "RIGHT":
+			displacement = new Vector3f(-vy, vx, 0);// left.negate();
+			break;
+		default:
+			System.err.println("wtf");
+		}
+		displacement = displacement.normalize().scale(speed);
+		move();
+
+	}
+
+	private void move() {
+		boolean canMove = true;
+		boolean noClip = false;
+		if (!noClip) {
+
+			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));
+			this.destination[1] = position.add(displacement.scale(5 / SPEEDSCALER).negate());
+			this.destination[2] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.normalize()));
+			this.destination[3] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.negate().normalize()));
+
+			destination[0].z = Biome.getValue(destination[0], destination[0], false)[3] + 1.5f;
+			destination[1].z = Biome.getValue(destination[1], destination[1], false)[3] + 1.5f;
+			destination[2].z = Biome.getValue(destination[2], destination[2], false)[3] + 1.5f;
+			destination[3].z = Biome.getValue(destination[3], destination[3], false)[3] + 1.5f;
+			float rise = Math.max(Math.max(destination[0].z, destination[1].z),
+					Math.max(destination[2].z, destination[3].z));
+			rise = rise - position.z;
+
+			if (rise > CLIMABLE) {
+				canMove = false;// this part works on at least one side
+			} else if (rise < -CLIMABLE) {
+				displacement = displacement.add(upward.negate());
+			} else {
+				float[] diff = { position.z - destination[0].z, position.z - destination[1].z };
+				float difference = Math.min(diff[0], diff[1]) * 0.1f;
+				displacement = displacement.add(new Vector3f(0, 0, -difference));
+			}
+		}
+		if (canMove) {
+			this.translate(displacement);
+			camera.move(displacement);
+		}
+		effect();
+	}
 	private void effect() {
 		/*
 		 	Shader.start(ShaderManager.waterShader);
@@ -131,75 +201,6 @@ public class Player extends GameObject {
 		}
 
 		
-	}
-
-	public void movePlayer(String dir) {
-		this.target = camera.target;
-
-		float vx = position.x - target.x;
-		float vy = position.y - target.y;
-		vx *= speed;
-		vy *= speed;
-		switch (dir) {
-		case "UP":
-			displacement = upward;
-			break;
-		case "DOWN":
-			displacement = upward.negate();
-			break;
-		case "FORWARD":
-			displacement = new Vector3f(-vx, -vy, 0);// backward.negate();
-			break;
-		case "BACK":
-			displacement = new Vector3f(vx, vy, 0);// backward;
-			break;
-		case "LEFT":
-			displacement = new Vector3f(vy, -vx, 0);// left;
-			break;
-		case "RIGHT":
-			displacement = new Vector3f(-vy, vx, 0);// left.negate();
-			break;
-		default:
-			System.err.println("wtf");
-		}
-		displacement = displacement.normalize().scale(speed);
-		move();
-
-	}
-
-	private void move() {
-		boolean canMove = true;
-		boolean noClip = true;
-		if (!noClip) {
-
-			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));
-			this.destination[1] = position.add(displacement.scale(5 / SPEEDSCALER).negate());
-			this.destination[2] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.normalize()));
-			this.destination[3] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.negate().normalize()));
-
-			destination[0].z = Biome.getValue(destination[0], destination[0], false)[3] + 1.5f;
-			destination[1].z = Biome.getValue(destination[1], destination[1], false)[3] + 1.5f;
-			destination[2].z = Biome.getValue(destination[2], destination[2], false)[3] + 1.5f;
-			destination[3].z = Biome.getValue(destination[3], destination[3], false)[3] + 1.5f;
-			float rise = Math.max(Math.max(destination[0].z, destination[1].z),
-					Math.max(destination[2].z, destination[3].z));
-			rise = rise - position.z;
-
-			if (rise > CLIMABLE) {
-				canMove = false;// this part works on at least one side
-			} else if (rise < -CLIMABLE) {
-				displacement = displacement.add(upward.negate());
-			} else {
-				float[] diff = { position.z - destination[0].z, position.z - destination[1].z };
-				float difference = Math.min(diff[0], diff[1]) * 0.1f;
-				displacement = displacement.add(new Vector3f(0, 0, -difference));
-			}
-		}
-		if (canMove) {
-			this.translate(displacement);
-			camera.move(displacement);
-		}
-		effect();
 	}
 
 }
