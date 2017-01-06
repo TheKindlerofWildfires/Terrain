@@ -24,10 +24,12 @@ public class Lava {
 		part2 = new Geyser(baseParticle2, 1000, 10, new Vector4f(1, .1f, .1f,1));
 		part2.activate();
 	}
+	
 	public void update(long l) {
 		particles.update(l);
 		part2.update(l);		
 	}
+	
 	public void render(Vector4f renderClipPlane) {
 		particles.render(renderClipPlane);
 		part2.render(renderClipPlane);

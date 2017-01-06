@@ -200,14 +200,10 @@ public class GameObject {
 	 * Renders the specified object
 	 */
 	public void render(Vector4f clipPlane) {
-		start(shader);
-		renderPrep(clipPlane);
-		glBindVertexArray(vao.getVaoID());
-		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
-		stop();
+		vao.render(this, clipPlane);
 	}
 
-	protected void renderPrep(Vector4f clipPlane) {
+	public void renderPrep(Vector4f clipPlane) {
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
 		if (hasMaterial) {
 			setMaterial("material", material);

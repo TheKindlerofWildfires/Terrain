@@ -23,7 +23,7 @@ public class Skybox extends GameObject {
 		this.scale(18, 18, 18);
 	}
 
-	protected void renderPrep(Vector4f clipPlane) {
+	public void renderPrep(Vector4f clipPlane) {
 		Matrix4f view = graphics.GraphicsManager.camera.view.multiply(model.getMatrix());
 		view.m03 = 0;
 		view.m13 = 0;

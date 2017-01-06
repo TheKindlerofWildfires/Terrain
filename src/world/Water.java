@@ -50,7 +50,7 @@ public class Water extends GameObject {
 	}
 
 	@Override
-	protected void renderPrep(Vector4f clipPlane) {
+	public void renderPrep(Vector4f clipPlane) {
 		moveFactor += WAVE_SPEED;
 		setUniform1f("moveFactor", moveFactor);
 		glActiveTexture(GL_TEXTURE0);

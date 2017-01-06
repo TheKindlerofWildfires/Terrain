@@ -90,10 +90,7 @@ public class InstancedVAO extends VertexArrayObject {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	@Override
-	protected void initRender(Vector4f clipPlane) {
-		super.initRender(clipPlane);
-	}
+	
 
 	public void renderListInstanced(List<? extends GameObject> gameObjects, Matrix4f viewMatrix, Vector4f clipPlane) {
 
@@ -101,7 +98,7 @@ public class InstancedVAO extends VertexArrayObject {
 
 			Shader.start(ShaderManager.objectShader);
 
-			initRender(clipPlane);
+			//initRender(clipPlane);
 
 			int chunkSize = numInstances;
 			int length = gameObjects.size();

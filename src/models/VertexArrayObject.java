@@ -1,7 +1,8 @@
 package models;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
@@ -10,20 +11,46 @@ import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.GL_CLIP_DISTANCE0;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
 
 import graphics.Shader;
 import maths.Utilities;
 import maths.Vector4f;
+import object.GameObject;
 
 public class VertexArrayObject {
 
+	public static final int INSTANCE_INDEX = 3;
+
 	public static int numberOfVAOS = 0;
+
+	private boolean hasInstanceArray = false;
 
 	protected int vaoID;
 	protected int size;
+	protected int instanceVboID;
+
+	/**
+	 *  makes the instance vbo 
+	 *  it's set up to take one vec4
+	 */
+	private final void createInstanceDataVBO() {
+		if (hasInstanceArray) {
+			return;
+		}
+		glBindVertexArray(vaoID);
+		instanceVboID = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER, instanceVboID);
+		//glBufferData(GL_ARRAY_BUFFER, modelBuffer, GL_STREAM_DRAW);
+		glEnableVertexAttribArray(INSTANCE_INDEX);
+		glVertexAttribPointer(INSTANCE_INDEX, 4, GL_FLOAT, false, 4 * 4, 0);
+		glVertexAttribDivisor(INSTANCE_INDEX, 1);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+		hasInstanceArray = true;
+	}
 
 	/**
 	 * Create VAO with vertices and indices
@@ -149,9 +176,11 @@ public class VertexArrayObject {
 		return this.size;
 	}
 
-	protected void initRender(Vector4f clipPlane) {
-		glBindVertexArray(vaoID);
-		glEnable(GL_CLIP_DISTANCE0);
-		Shader.setUniform4f("clipPlane", clipPlane);
+	public void render(GameObject object, Vector4f clipPlane) {
+		Shader.start(object.shader);
+		object.renderPrep(clipPlane);
+		glBindVertexArray(getVaoID());
+		glDrawArrays(GL_TRIANGLES, 0, getSize());
+		Shader.stop();
 	}
 }
