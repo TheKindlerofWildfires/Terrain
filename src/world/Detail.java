@@ -191,9 +191,6 @@ public abstract class Detail {
 				.abs(World.noise.getValue(position.x / DETAILSCALER, position.y / DETAILSCALER, position.z));
 		if (detail > 1) {
 			if (check(position.z, 10)) {
-				Particle newDetail = new Particle(spout);
-				newDetail.translate(position);
-				newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 				//lavaSpout.detailsToAdd.add(newDetail);
 				}
 		}

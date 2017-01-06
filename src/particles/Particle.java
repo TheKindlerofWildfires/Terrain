@@ -49,7 +49,7 @@ public class Particle extends GameObject {
 		this.angleX = baseParticle.angleX;
 		this.angleY = baseParticle.angleY;
 		this.shader = ShaderManager.particleShader;
-		this.placeAt(0, 0, 0);
+		//this.placeAt(0, 0, 0);
 	}
 
 	/**

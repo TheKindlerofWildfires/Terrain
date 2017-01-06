@@ -1,11 +1,14 @@
 package entity;
 
+import graphics.GraphicsManager;
+
 public abstract class Time {
 	static int tickUpdate;
 	static int tickSec;
 	static int tickMin;
 	static String timeState;
 	static int days;
+	static int s = 16;
 
 	public Time() {
 		tickUpdate = 0;
@@ -17,7 +20,7 @@ public abstract class Time {
 
 	public static void updateTick() {
 		convertGameTime();
-		days = (int)(getSecTick()+4)/16;
+		days = (int)(getSecTick()+(s/4*GraphicsManager.e))/(s*GraphicsManager.e);
 		tickUpdate++;
 		if (tickUpdate % 60 == 0) {
 			tickSec++; // 1 second
@@ -51,7 +54,7 @@ public abstract class Time {
 		// this means that each sec is a minute, each min is an hour,
 		// 24 minute days, 12 minute day night cycles
 		// 20 sec days, 10 sec day night cycles
-		if (getSecTick() % 17 == 9) {
+		if (getSecTick() % s == s/2) {
 			if (timeState == "day") {
 				timeState = "night";
 				

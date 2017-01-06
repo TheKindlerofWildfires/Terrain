@@ -3,6 +3,7 @@ package particles;
 import java.util.Iterator;
 
 import graphics.Instancer;
+import maths.Vector4f;
 import object.GameObject;
 
 public abstract class ParticleEmitter extends Instancer {
@@ -52,6 +53,11 @@ public abstract class ParticleEmitter extends Instancer {
 			this.lastCreationTime = now;
 		}
 		fillModelBuffer();
+		//passModelBuffer();
+			
+	}
+	public final void render(Vector4f renderClipPlane){
+		super.render(renderClipPlane);
 		passModelBuffer();
 	}
 

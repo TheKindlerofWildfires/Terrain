@@ -38,7 +38,7 @@ public abstract class Instancer {
 	protected final int maxObjects;
 	public Vector4f colour;
 
-	protected List<GameObject> objects;
+	public List<GameObject> objects;
 
 	public Instancer(Particle object, int numInstances) {
 		objects = new ArrayList<GameObject>();
@@ -102,7 +102,7 @@ public abstract class Instancer {
 	 * renders all the particles
 	 * @param clipPlane the clipping plane to be used
 	 */
-	public final void render(Vector4f clipPlane) {
+	public void render(Vector4f clipPlane) {
 		if (!active) {
 			return;
 		}
