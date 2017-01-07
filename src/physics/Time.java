@@ -1,4 +1,4 @@
-package entity;
+package physics;
 
 import graphics.GraphicsManager;
 

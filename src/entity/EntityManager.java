@@ -11,12 +11,14 @@ import graphics.Camera;
 import graphics.GraphicsManager;
 import input.KeyboardInput;
 import maths.Vector4f;
+import player.Player;
 
 /**
  * @author TheKingInYellow
  */
 public class EntityManager {
 	public Player player;
+
 	//public Wanderer m;
 	Camera camera = GraphicsManager.camera;
 

@@ -2,7 +2,6 @@ package world;
 
 import java.util.ArrayList;
 
-import entity.Time;
 import graphics.DetailManager;
 import maths.Vector3f;
 import maths.Vector4f;
@@ -10,6 +9,7 @@ import noiseLibrary.module.source.Perlin;
 import particles.Geyser;
 import particles.Particle;
 import particles.ParticleEmitter;
+import physics.Time;
 
 public abstract class Detail {
 	static float DETAILSCALER = 1;

@@ -48,11 +48,11 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
 import entity.EntityManager;
-import entity.Time;
 import input.MouseInput;
 import maths.Vector3f;
 import maths.Vector4f;
 import object.ObjectManager;
+import physics.Time;
 import world.Chunk;
 import world.ChunkLoader;
 import world.Detail;

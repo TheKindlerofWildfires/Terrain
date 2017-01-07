@@ -1,5 +1,6 @@
-package entity;
+package player;
 
+import entity.Life;
 import graphics.Camera;
 import graphics.Shader;
 import graphics.ShaderManager;
@@ -20,6 +21,10 @@ public class Player extends GameObject {
 	Camera camera;
 	Vector3f displacement = new Vector3f(0, 0, 0);
 	Vector3f[] destination = new Vector3f[4];
+	public Inventory inventory;
+	public Life self;
+	public float suitEnergy;
+	public float energyLoss = 0.1f;
 
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
@@ -28,16 +33,22 @@ public class Player extends GameObject {
 		this.camera = camera;
 		this.target = camera.getTarget();
 		this.position = new Vector3f(1, 1, 10);
+		inventory = new Inventory(10);
+		self = new Life(1000);
+		suitEnergy = 100;
+		
 	}
 
 	public void update() {
 		camera.pos = position;
-		System.out.println(position.x + " " + position.y+ " " + position.z);
+		suitEnergy-=energyLoss ;
+		if(suitEnergy<0){
+			self.kill(false);
+		}
 	}
 
-
-
 	public void movePlayer(String dir) {
+		if(self.isLiving){
 		this.target = camera.target;
 
 		float vx = position.x - target.x;
@@ -68,7 +79,7 @@ public class Player extends GameObject {
 		}
 		displacement = displacement.normalize().scale(speed);
 		move();
-
+		}
 	}
 
 	private void move() {
@@ -105,6 +116,10 @@ public class Player extends GameObject {
 		}
 		effect();
 	}
+	/**
+	 * All of this code is "Bad" and needs to be "Stopped" 
+	 * To fix this the water must be fixed, which is a simon thing. 
+	 */
 	private void effect() {
 		/*
 		 	Shader.start(ShaderManager.waterShader);
