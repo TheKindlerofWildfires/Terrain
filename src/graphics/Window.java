@@ -18,6 +18,8 @@ import static org.lwjgl.glfw.GLFW.glfwSetCursorPos;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
@@ -45,6 +47,8 @@ import java.util.Random;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.opengl.GL;
 
 import entity.EntityManager;
@@ -84,6 +88,8 @@ public class Window implements Runnable {
 	@SuppressWarnings("unused")
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
+	public static GLFWMouseButtonCallback mouseButtonCallback;
+	public static GLFWScrollCallback scrollCallback;
 
 	public static GraphicsManager graphicsManager;
 	public static ObjectManager objectManager;
@@ -165,6 +171,10 @@ public class Window implements Runnable {
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
 		glfwSetCursorPosCallback(window, cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
+		glfwSetScrollCallback(window, scrollCallback = (GLFWScrollCallback) new input.ScrollCallback());
+		glfwSetMouseButtonCallback(window, mouseButtonCallback = (GLFWMouseButtonCallback)new input.MouseButtonCallback());
+
+	
 		// set window pos
 		glfwSetWindowPos(window, 0, 20);
 		// display window
@@ -244,11 +254,10 @@ public class Window implements Runnable {
 		world.update();
 		Time.updateTick();
 		objectManager.update();
-		entityManager.update();
+		entityManager.update(window);
 		now = System.currentTimeMillis();
 		Detail.update(now - then);
 		lava.update(now - then);
-		
 		then = now;
 	}
 

@@ -34,6 +34,7 @@ public class Player extends GameObject {
 		this.target = camera.getTarget();
 		this.position = new Vector3f(1, 1, 10);
 		inventory = new Inventory(10);
+		inventory.add(new Item("item", 100));
 		self = new Life(1000);
 		suitEnergy = 100;
 		
@@ -215,6 +216,23 @@ public class Player extends GameObject {
 			break;
 		}
 
+		
+	}
+
+	public void activeItem() {
+		inventory.activeItem();
+		
+	}
+
+	public void scroll(double s) {
+		if(s==1 || s==-1){
+			inventory.scroll(0);
+		}else if(s>0){
+			inventory.scroll(s-1);
+		}else if(s<0){
+			inventory.scroll(s+1);
+		}
+		//System.out.println(s);
 		
 	}
 

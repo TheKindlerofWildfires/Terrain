@@ -1,12 +1,4 @@
-/noiseLibrary/
-/object/
-/particles/
-/physics/
-/world/
+/input/
 /entity/
 /graphics/
-/maths/
-/models/
-/shaders/
-/input/
 /player/
