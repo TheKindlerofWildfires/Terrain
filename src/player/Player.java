@@ -63,16 +63,16 @@ public class Player extends GameObject {
 			displacement = upward.negate();
 			break;
 		case "FORWARD":
-			displacement = new Vector3f(-vx, -vy, 0);// backward.negate();
+			displacement = new Vector3f(-vx, -vy, 0);
 			break;
 		case "BACK":
-			displacement = new Vector3f(vx, vy, 0);// backward;
+			displacement = new Vector3f(vx, vy, 0);
 			break;
 		case "LEFT":
-			displacement = new Vector3f(vy, -vx, 0);// left;
+			displacement = new Vector3f(vy, -vx, 0);
 			break;
 		case "RIGHT":
-			displacement = new Vector3f(-vy, vx, 0);// left.negate();
+			displacement = new Vector3f(-vy, vx, 0);
 			break;
 		default:
 			System.err.println("wtf");
