@@ -21,14 +21,29 @@ public class Inventory {
 		}else{
 			inside.add(i);
 		}
+		if(inside.size()>maxSize){
+			for(int j = maxSize; j<inside.size();j++){
+				inside.remove(j);
+			}
+			
+		}
 	}
 	public void activeItem() {
-		//inside.get(active).use();
-		System.out.println(active);
+		try{
+		inside.get(active).use();
+		}
+		catch( IndexOutOfBoundsException e){
+			System.err.println("Your inventory is not filled here");
+		}
+				
 		
 	}
 	public void scroll(double s) {
 		active = (int) Math.abs(((active +s)%maxSize));
+		
+	}
+	public void setActive(int i) {
+		active = i;
 		
 	}
 }

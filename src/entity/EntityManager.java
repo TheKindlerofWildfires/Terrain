@@ -1,6 +1,6 @@
 package entity;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
@@ -66,6 +66,36 @@ public class EntityManager {
 		}
 		double s = ScrollCallback.getyoffset();
 		player.scroll(s);
+		if(KeyboardInput.isKeyDown(GLFW_KEY_1)){
+			player.inventory.setActive(1);
+		}
+		if(KeyboardInput.isKeyDown(GLFW_KEY_2)){
+			player.inventory.setActive(2);
+		}
+		if(KeyboardInput.isKeyDown(GLFW_KEY_3)){
+			player.inventory.setActive(3);
+		}
+		if(KeyboardInput.isKeyDown(GLFW_KEY_4)){
+			player.inventory.setActive(4);
+		}
+		if(KeyboardInput.isKeyDown(GLFW_KEY_5)){
+			player.inventory.setActive(5);
+		}
+		if(KeyboardInput.isKeyDown(GLFW_KEY_6)){
+			player.inventory.setActive(6);
+		}
+		if(KeyboardInput.isKeyDown(GLFW_KEY_7)){
+			player.inventory.setActive(7);
+		}
+		if(KeyboardInput.isKeyDown(GLFW_KEY_8)){
+			player.inventory.setActive(8);
+		}
+		if(KeyboardInput.isKeyDown(GLFW_KEY_9)){
+			player.inventory.setActive(9);
+		}
+		if(KeyboardInput.isKeyDown(GLFW_KEY_0)){
+			player.inventory.setActive(0);
+		}
 		/*
 		int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
 		if (state == GLFW_PRESS){
