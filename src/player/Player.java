@@ -31,7 +31,7 @@ public class Player extends GameObject {
 		this.target = camera.getTarget();
 		this.position = new Vector3f(1, 1, 10);
 		inventory = new Inventory(10);
-		inventory.add(new Item("item", 100));
+		//inventory.add(new Item("item", 100, "I1"));
 		self = new Life(1000);
 		suitEnergy = 100;
 		

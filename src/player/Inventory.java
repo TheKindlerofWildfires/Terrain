@@ -20,6 +20,7 @@ public class Inventory {
 			System.err.println("Your inventory is full!");
 		}else{
 			inside.add(i);
+			i.setLocation("I" + inside.size());
 		}
 		if(inside.size()>maxSize){
 			for(int j = maxSize; j<inside.size();j++){
