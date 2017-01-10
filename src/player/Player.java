@@ -21,7 +21,7 @@ public class Player extends GameObject {
 	public Inventory inventory;
 	public Life self;
 	public float suitEnergy;
-	public float energyLoss = 0.1f;
+	public float energyLoss = 0.0f;//0.1
 
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
