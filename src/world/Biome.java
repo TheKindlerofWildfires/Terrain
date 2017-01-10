@@ -1,6 +1,9 @@
 package world;
 
+import graphics.Shader;
+import graphics.ShaderManager;
 import maths.Vector3f;
+import maths.Vector4f;
 import noiseLibrary.module.source.Perlin;
 
 /**
@@ -29,6 +32,7 @@ public abstract class Biome {
 	public static final int OCEAN = 6;
 	public static final int MOUNTAIN = 7;
 	public static final int SAVANNA = 8;
+	static int type = -1;
 
 	public static float[] getValue(Vector3f centre, Vector3f point, boolean print) {
 		float r, b, g, h;
@@ -162,5 +166,133 @@ public abstract class Biome {
 		}
 		float[] returns = { r, b, g, h, type };
 		return returns;
+	}
+	public static float[] getPlanet(Vector3f centre, Vector3f point){
+		float r, b, g, h;
+		r = b = g = h = 0;
+
+		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE / 2;
+		double color = elev / SIZE * 2;
+		//double rain = Math.abs(noise.getValue(point.x / RAINSCALER, point.y / RAINSCALER, color)) * 100;
+		//double temp = Math.abs(noisy.getValue(point.x / TEMPSCALER, point.y / TEMPSCALER, color)) * 100;
+		type = FOREST;
+		if (type == FOREST) {
+			h = WATERLEVEL * 1 / 2;
+			maxSize = h + SIZE / 2;
+			h += (float) elev;
+			r = (float) (0.20 * (color + .1));
+			g = (float) (0.50 * (color + .1));
+			b = (float) (0.04 * (color + .1));
+		}
+		if (h > maxSize / 3) {
+			r *= 0.65;
+			g *= 0.65;
+			b *= 0.65;
+		}
+		if (h > maxSize / 1.5) {
+			r *= 0.65;
+			g *= 0.65;
+			b *= 0.65;
+		}
+		if (h > maxSize) {
+			h = maxSize;
+		}
+		float[] returns = { r, b, g, h, type };
+		return returns;
+		
+	}
+	public static void effect() {
+		/*
+		 	Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.5f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 10);
+			Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
+			Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.01f);*/
+		switch (type) {
+		case Biome.RAINFOREST:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.1f);
+			Shader.setUniform1f("waveStrength", 0.0002f);
+			Shader.setUniform1f("waterClarity", 2);
+			Shader.setUniform4f("waterColour", new Vector4f(0.2f, 0.3f, 0.4f,1));
+			//Shader.setUniform1f("waveSpeed", 0.00001f);
+			Shader.setUniform1f("maxDistortion",0.1f);
+			break;
+		case Biome.SEASONALFOREST:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.5f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 20);
+			Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
+			//Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.001f);
+			break;
+		case Biome.FOREST:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.5f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 10);
+			Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
+			//Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.01f);
+			break;
+		case Biome.SWAMP:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0f);
+			Shader.setUniform1f("waveStrength", 0.0002f);
+			Shader.setUniform1f("waterClarity", 3);
+			Shader.setUniform4f("waterColour", new Vector4f(0.1f, 0.2f, 0.5f,1));
+			//Shader.setUniform1f("waveSpeed", 0.00001f);
+			Shader.setUniform1f("maxDistortion",0.001f);
+			break;
+		case Biome.OCEAN:
+			Shader.start(ShaderManager.waterShader);
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.1f);
+			Shader.setUniform1f("waveStrength", 0.02f);
+			Shader.setUniform1f("waterClarity", 10);
+			Shader.setUniform4f("waterColour", new Vector4f(0, 0.1f, 0.25f,1));
+			//Shader.setUniform1f("waveSpeed", 0.00001f);
+			Shader.setUniform1f("maxDistortion",1f);
+			break;
+		case Biome.DESERT:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.5f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 10);
+			Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
+			//Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.01f);
+			break;
+		case Biome.MOUNTAIN:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 1f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 1);
+			Shader.setUniform4f("waterColour", new Vector4f(1, .1f, .1f,1));
+			//Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.01f);
+			break;
+		case Biome.SAVANNA:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0.1f);
+			Shader.setUniform1f("waveStrength", 0.02f);
+			Shader.setUniform1f("waterClarity", 10);
+			Shader.setUniform4f("waterColour", new Vector4f(0.1f, 0.1f, 0.5f,1));
+		//	Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0.1f);
+			break;
+		case Biome.TAIGA:
+			Shader.start(ShaderManager.waterShader);
+			Shader.setUniform1f("fresnelPower", 0f);
+			Shader.setUniform1f("waveStrength", 0.002f);
+			Shader.setUniform1f("waterClarity", 3);
+			Shader.setUniform4f("waterColour", new Vector4f(.9f, 0.9f, 0.9f,1));
+		//	Shader.setUniform1f("waveSpeed", 0.0001f);
+			Shader.setUniform1f("maxDistortion",0f);
+			break;
+		}
 	}
 }
