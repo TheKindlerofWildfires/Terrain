@@ -49,7 +49,8 @@ public class Crafting {
 			if(A[0].tag == "crystal"&& B[0].tag == B[1].tag && B[1].tag== B[2].tag && B[2].tag=="scrap"){
 				return new Item("Power Unit", 0, 100,"F");//think of a clever way to detect if this is in an outside ring
 			}
-
+			boolean b = nextTo(new Item("crystal", 0, 1, "A"), new Item("crysta",0,1,"B1"));
+			System.out.println(b);
 			return null;
 		}
 
