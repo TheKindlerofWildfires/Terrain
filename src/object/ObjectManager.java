@@ -7,11 +7,15 @@ import world.Skybox;
 
 public class ObjectManager {
 	private Skybox box;
+	private GameObject playing;
 	float c;
 	public ArrayList<GameObject> objectList = new ArrayList<GameObject>();
 
 	public ObjectManager() {
 		box = new Skybox("resources/models/skybox.obj", "resources/textures/skybox.png");
+		playing = new GameObject("resources/models/playing.obj", "none", true); 
+		playing.translate(0, 0, 10);
+		objectList.add(playing);
 		right();
 		box.rotate(90, 1, 0, 0);
 
@@ -44,8 +48,8 @@ public class ObjectManager {
 
 	public void render(Vector4f clipPlane) {
 		for (int i = 0; i < objectList.size(); i++) {
-			// GameObject object = objectList.get(i);
-			// object.render(clipPlane);
+			GameObject object = objectList.get(i);
+			object.render(clipPlane);
 		}
 		// target.render(clipPlane);
 		// ball.render(clipPlane);
