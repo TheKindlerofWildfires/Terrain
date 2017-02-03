@@ -59,12 +59,11 @@ public class Chunk extends GameObject {
 		Mirror mirror = new Mirror(points);
 		mirror.acc();
 		points = mirror.points();
-
 		Delaunay delaunay = new Delaunay(points);
 		terrain = delaunay.getTriangles();
 		vertices = new float[terrain.size() * 3 * 3 * 3];
 		int c = 0;
-
+		
 		for (int i = 0; i < terrain.size(); i++) {
 			Vector3f centre = terrain.get(i).getCircumcenter().add(new Vector3f(2f * chunkX, 2f * chunkY, 0))
 					.scale(SIZE);
@@ -97,7 +96,7 @@ public class Chunk extends GameObject {
 				vertices[c++] = terrain.get(i).getNormal().z;
 			}
 		}
-	}
+		}
 
 	public void makeGL() {
 		this.vao = new VertexArrayObject(vertices, 3);

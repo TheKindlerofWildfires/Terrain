@@ -319,10 +319,10 @@ public class Window implements Runnable {
 		glClear(GL_COLOR_BUFFER_BIT);
 		world.renderLand(renderClipPlane);
 		objectManager.render(renderClipPlane);
-		water.render(renderClipPlane); // do NOT attempt to render water
+		//water.render(renderClipPlane); // do NOT attempt to render water
 										// anywhere other than to screen
-		entityManager.render(renderClipPlane);
-		lava.render(renderClipPlane);
+		//entityManager.render(renderClipPlane);
+		//lava.render(renderClipPlane);
 		//trees.render(renderClipPlane);
 		Detail.render(renderClipPlane);
 	}
