@@ -22,6 +22,7 @@ public class Player extends GameObject {
 	public Life self;
 	public float suitEnergy;
 	public float energyLoss = 0.0f;//0.1
+	boolean noClip = true;
 
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
@@ -77,13 +78,13 @@ public class Player extends GameObject {
 		}
 		displacement = displacement.normalize().scale(speed);
 		move();
-		Biome.effect();
+		//Biome.effect();
 		}
 	}
 
 	private void move() {
 		boolean canMove = true;
-		boolean noClip = false;
+		
 		if (!noClip) {
 
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));

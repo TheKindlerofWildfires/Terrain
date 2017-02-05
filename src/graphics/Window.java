@@ -194,7 +194,7 @@ public class Window implements Runnable {
 		windowWidth = width.get(0);
 		windowHeight = height.get(0);
 		// Create GraphicsManager and World
-		world = new World();
+		world = new World(0);
 		graphicsManager = new GraphicsManager();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
@@ -343,7 +343,17 @@ public class Window implements Runnable {
 		objectManager.render(renderClipPlane);
 
 	}
-
+	public static void reload(int type){
+		world = new World(type);
+		entityManager.player.placeAt(0, 0, 2);
+		water.placeAt(0, 0, 1);
+		World.chunks.clear();
+		World.loadedChunks.clear();
+		chunkLoader.chunksToLoad.clear();
+		chunkLoader.loadedChunks.clear();
+		
+		//should also clear objects/ trees/ entities
+	}
 	/**
 	 * The game loop
 	 */

@@ -109,6 +109,7 @@ public abstract class Detail {
 	 */
 	public static void detail(Vector3f position, float biome) {
 		int tech = (int) biome;
+		/*
 		switch (tech) {
 		case Biome.RAINFOREST:
 			rainForest(position);
@@ -137,7 +138,7 @@ public abstract class Detail {
 		case Biome.TAIGA:
 			taiga(position);
 			break;
-		}
+		}*/
 	}
 
 	private static void taiga(Vector3f position) {

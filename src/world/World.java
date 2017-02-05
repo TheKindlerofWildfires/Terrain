@@ -23,17 +23,21 @@ public class World {
 	public static ArrayList<Chunk> chunks = new ArrayList<Chunk>();
 
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
-	public static double tracker;
+	public static int planetType;
+	public static int[] dimensionID = new int[2];
 
 	/**
 	 * Building better worlds tl;Dr: Uses poisson disk, delauny and perlin noise
 	 * to great a cool map
 	 */
-	public World() {
+	public World(int type) {
+		planetType = type;
 		loadProperties();
 		noise.setSeed(perlinSeed);
 		noisy.setSeed(perlinSeed * perlinSeed);
 		detail.setSeed(perlinSeed / 2);
+		dimensionID[0] = perlinSeed;
+		dimensionID[1] = planetType;
 	}
 
 	private void loadProperties() {
