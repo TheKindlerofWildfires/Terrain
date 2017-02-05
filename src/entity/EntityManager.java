@@ -28,6 +28,7 @@ import input.MouseButtonCallback;
 import input.ScrollCallback;
 import maths.Vector4f;
 import player.Player;
+import world.World;
 /**
  * @author TheKingInYellow
  */
@@ -36,7 +37,7 @@ public class EntityManager {
 
 	//public Wanderer m;
 	Camera camera = GraphicsManager.camera;
-
+	int c = 0;
 	public EntityManager() {
 
 		player = new Player(camera);
@@ -51,6 +52,7 @@ public class EntityManager {
 
 	public void update(Long window) {
 		//	m.update();
+		
 		if (KeyboardInput.isKeyDown(GLFW_KEY_A)) {
 			player.movePlayer("LEFT");
 		}
@@ -109,7 +111,7 @@ public class EntityManager {
 			player.inventory.setActive(0);
 		}
 		if(KeyboardInput.isKeyDown(GLFW_KEY_P)){
-			Window.reload(1);
+			Window.reload(c++%3);
 		}
 		/*
 		int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);

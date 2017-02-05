@@ -25,6 +25,7 @@ public class World {
 	public static Set<Vector2i> loadedChunks = new HashSet<Vector2i>();
 	public static int planetType;
 	public static int[] dimensionID = new int[2];
+	public static int difficulty;
 
 	/**
 	 * Building better worlds tl;Dr: Uses poisson disk, delauny and perlin noise
@@ -39,6 +40,34 @@ public class World {
 		detail.setSeed(perlinSeed / 2);
 		dimensionID[0] = perlinSeed;
 		dimensionID[1] = planetType;
+		difficulty = checkDif(type);
+	}
+
+	private int checkDif(int type) {
+		int r = 1;
+		switch(type){
+		case Biome.JUNGLEWORLD:
+			r = 1;
+			break;
+		case Biome.DESERTWORLD:
+			r = 1;
+			break;
+		case Biome.SWAMPWORLD:
+			r = 1;
+			break;
+		case Biome.TAIGAWORLD:
+			r = 2;
+			break;
+			/*
+		public static final int OCEANWORLD = 4; //diff 2
+		public static final int MOUNTAINWORLD = 5;//diff 2
+		public static final int HIGHLANDSWORLD = 6;//diff 2.5
+		public static final int ICEWORLD = 7; //diff 3
+		public static final int VULCANICWORLD = 8; //diff 3
+		public static final int RADIOACTIVEWORLD = 9; //diff 3
+		*/
+		}
+		return r;
 	}
 
 	private void loadProperties() {

@@ -5,6 +5,7 @@ import graphics.Camera;
 import maths.Vector3f;
 import object.GameObject;
 import world.Biome;
+import world.World;
 
 /**
  * @author TheKingInYellow
@@ -40,7 +41,7 @@ public class Player extends GameObject {
 
 	public void update() {
 		camera.pos = position;
-		suitEnergy-=energyLoss ;
+		suitEnergy-=energyLoss*(.8+World.difficulty) ;
 		if(suitEnergy<0){
 			self.kill(false);
 		}
@@ -78,7 +79,6 @@ public class Player extends GameObject {
 		}
 		displacement = displacement.normalize().scale(speed);
 		move();
-		//Biome.effect();
 		}
 	}
 

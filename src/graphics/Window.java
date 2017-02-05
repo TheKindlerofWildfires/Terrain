@@ -57,6 +57,7 @@ import maths.Vector3f;
 import maths.Vector4f;
 import object.ObjectManager;
 import physics.Time;
+import world.Biome;
 import world.Chunk;
 import world.ChunkLoader;
 import world.Detail;
@@ -345,12 +346,13 @@ public class Window implements Runnable {
 	}
 	public static void reload(int type){
 		world = new World(type, worldRandom.nextInt(10));
-		entityManager.player.placeAt(0, 0, 2);
-		water.placeAt(0, 0, 1);
+		entityManager.player.placeAt(0, 0, entityManager.player.position.z);
+		water.placeAt(0, 0, Chunk.WATERLEVEL);
 		World.chunks.clear();
 		World.loadedChunks.clear();
 		chunkLoader.chunksToLoad.clear();
 		chunkLoader.loadedChunks.clear();
+		Biome.updateWater(type);
 		
 		//should also clear objects/ trees/ entities
 	}
