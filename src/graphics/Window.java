@@ -194,7 +194,7 @@ public class Window implements Runnable {
 		windowWidth = width.get(0);
 		windowHeight = height.get(0);
 		// Create GraphicsManager and World
-		world = new World(0);
+		world = new World(0,mathRandom.nextInt());
 		graphicsManager = new GraphicsManager();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
@@ -242,7 +242,7 @@ public class Window implements Runnable {
 		worldRandom.setSeed(119);//119 : 5
 		mathRandom.setSeed(worldRandom.nextLong());
 		entityRandom.setSeed(0);
-		World.perlinSeed = mathRandom.nextInt();
+		//World.perlinSeed = mathRandom.nextInt();
 	}
 
 	/**
@@ -344,7 +344,7 @@ public class Window implements Runnable {
 
 	}
 	public static void reload(int type){
-		world = new World(type);
+		world = new World(type, worldRandom.nextInt(10));
 		entityManager.player.placeAt(0, 0, 2);
 		water.placeAt(0, 0, 1);
 		World.chunks.clear();

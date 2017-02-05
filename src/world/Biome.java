@@ -1,9 +1,6 @@
 package world;
 
-import graphics.Shader;
-import graphics.ShaderManager;
 import maths.Vector3f;
-import maths.Vector4f;
 import noiseLibrary.module.source.Perlin;
 
 /**
@@ -34,26 +31,60 @@ public abstract class Biome {
 	public static final int ICEWORLD = 9;
 	public static final int VULCANICWORLD = 10;
 	public static final int RADIOACTIVEWORLD = 11;
-	static int type = -1;
+	static String biome;
+	static int type;
 
 	
 	public static float[] getPlanet(Vector3f centre, Vector3f point){
 		float r, b, g, h;
 		r = b = g = h = 0;
-		double elev = Math.abs(noise.getValue(point.x, point.y, 0.1)) * SIZE / 2;
+		double elev = Math.abs(noise.getValue(point.x/2, point.y/2, 0.1)) * SIZE / 2;
+		double color = Math.abs(noise.getValue(centre.x, centre.y, 0.1)) * SIZE / 2;
+		double des = Math.abs(noisy.getValue(point.x/6, point.y/6, 0.1)) * SIZE / 2;
 		type = World.planetType;
 		switch(type){
 			case JUNGLEWORLD:
-				r = 0;
-				b = 0;
-				g = (float) (1/(elev+1));
-				h = (float) elev;
+				r = .2f;
+				b = (float) (1/(elev+7)+.1);
+				g = (float) (color/25+.3);
+				h = (float) elev+1;
+				if(h>SIZE/4+1){
+					r*=1.1;
+					b*=1.1;
+					g*=1.1;
+				}
+				if(h>SIZE/3+1){
+					r*=1.1;
+					b*=1.1;
+					g*=1.1;
+				}
+				switch(((int)des)%3){
+					case 0:
+						biome = "denseJungle";
+						h*=1.1;
+						h+=0.5;	
+						b*=.8;
+						r*=.8;
+						g*=.8;
+						break;
+					case 1:
+						biome = "pondJungle";
+						h*=0.5;
+						r*=1.1;
+						break;
+					case 2:
+						biome = "hillJungle";
+						h*=1.3;
+						h+=.5;
+						g*=1.1;
+				}
 				break;
 			case REDWOODWORLD:
 				r = 1;
 				b = 0;
 				g = (float) (1/(elev+1));
 				h = (float) elev;
+				break;
 		}
 		float[] returns = { r, b, g, h, type };
 		return returns;
@@ -154,4 +185,7 @@ public abstract class Biome {
 			break;
 		}
 		*/
+
+
+	
 	}

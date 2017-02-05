@@ -30,7 +30,8 @@ public class World {
 	 * Building better worlds tl;Dr: Uses poisson disk, delauny and perlin noise
 	 * to great a cool map
 	 */
-	public World(int type) {
+	public World(int type, int seed) {
+		perlinSeed = seed;
 		planetType = type;
 		loadProperties();
 		noise.setSeed(perlinSeed);
