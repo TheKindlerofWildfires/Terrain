@@ -73,7 +73,6 @@ public abstract class Biome {
 				h += .3;
 				break;
 			}
-
 			break;
 		case SWAMPWORLD:
 			r = (float) (color / 30 + .2);
@@ -147,7 +146,6 @@ public abstract class Biome {
 		 * Shader.setUniform1f("waveStrength", 0.002f);
 		 * Shader.setUniform1f("waterClarity", 10);
 		 * Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
-		 * Shader.setUniform1f("waveSpeed", 0.0001f);
 		 * Shader.setUniform1f("maxDistortion",0.01f);
 		 */
 		switch (type) {
@@ -167,6 +165,14 @@ public abstract class Biome {
 			Shader.setUniform4f("waterColour", new Vector4f(0.24f, 0.28f, 0.26f, 1));
 			Shader.setUniform1f("maxDistortion", 0.001f);
 			break;
+		case DESERTWORLD:
+			Shader.start(ShaderManager.waterShader);
+			 Shader.setUniform1f("fresnelPower", 0.5f);
+			 Shader.setUniform1f("waveStrength", 0.002f);
+			 Shader.setUniform1f("waterClarity", 10);
+			 Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
+			 Shader.setUniform1f("maxDistortion",0.01f); 
+			 break;
 		/*
 		 * case Biome.SEASONALFOREST: Shader.start(ShaderManager.waterShader);
 		 * Shader.setUniform1f("fresnelPower", 0.5f);
@@ -190,13 +196,7 @@ public abstract class Biome {
 		 * Shader.setUniform4f("waterColour", new Vector4f(0, 0.1f, 0.25f,1));
 		 * //Shader.setUniform1f("waveSpeed", 0.00001f);
 		 * Shader.setUniform1f("maxDistortion",1f); break; case Biome.DESERT:
-		 * Shader.start(ShaderManager.waterShader);
-		 * Shader.setUniform1f("fresnelPower", 0.5f);
-		 * Shader.setUniform1f("waveStrength", 0.002f);
-		 * Shader.setUniform1f("waterClarity", 10);
-		 * Shader.setUniform4f("waterColour", new Vector4f(0, 0.2f, 0.5f,1));
-		 * //Shader.setUniform1f("waveSpeed", 0.0001f);
-		 * Shader.setUniform1f("maxDistortion",0.01f); break; case
+		 * 
 		 * Biome.MOUNTAIN: Shader.start(ShaderManager.waterShader);
 		 * Shader.setUniform1f("fresnelPower", 1f);
 		 * Shader.setUniform1f("waveStrength", 0.002f);
