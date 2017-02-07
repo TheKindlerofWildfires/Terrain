@@ -1,98 +1,71 @@
 package tunnel;
 
-	import java.util.ArrayList;
-	import java.util.Random;
+import java.util.ArrayList;
+import java.util.Random;
 
 import maths.Vector3f;
 import maths.Vector4f;
-	import object.GameObject;
+import object.GameObject;
 
-	public class Walk {
-		public ArrayList<GameObject> solids = new ArrayList<GameObject>();
+public class Walk {
+	public ArrayList<GameObject> solids = new ArrayList<GameObject>();
 
-		// The order is left, right, forward, backs,up, down, exists
-		//1 is open
-		int xSize = 30;
-		int ySize = 30;
-		int zSize = 30;
+	// The order is left, right, forward, backs,up, down, exists
+	// 1 is open
+	int xSize = 30;
+	int ySize = 30;
+	int zSize = 30;
 
-		Random rng = new Random();
-		public ArrayList<Vector3f> blocks = new ArrayList<Vector3f>();
-		Vector3f head = new Vector3f(0,0,0);
-		//public byte[][][] tunnelArray = new byte[xSize][ySize][zSize];
+	Random rng = new Random();
+	public ArrayList<Vector3f> blocks = new ArrayList<Vector3f>();
+	Vector3f head = new Vector3f(0, 0, 0);
+	Vector3f vel = new Vector3f(0, 0, 0);
+	// public byte[][][] tunnelArray = new byte[xSize][ySize][zSize];
 
-		public static byte EXISTS = 0b00000001;
+	public static byte EXISTS = 0b00000001;
 
-		public static byte DOWN = 0b00000010;
-		public static byte UP = 0b00000100;
-		public static byte BACK = 0b00001000;
-		public static byte FRONT = 0b00010000;
-		public static byte RIGHT = 0b00100000;
-		public static byte LEFT = 0b01000000;
-		static Vector3f down = new Vector3f(0,0,-1);
-		static Vector3f up = new Vector3f(0,0,1);
-		static Vector3f back = new Vector3f(0,-1,0);
-		static Vector3f front = new Vector3f(0,1,0);
-		static Vector3f right = new Vector3f(1,0,0);
-		static Vector3f left = new Vector3f(-1,0,0);
-		int stepCount = 1000;
-		public Walk() {
-			blocks.add(head);
-			// this fills out the array
-			/*
-			for (int x = 0; x < xSize; x++) {
-				for (int y = 0; y < ySize; y++) {
-					for (int z = 0; z < zSize; z++) {
-						tunnelArray[x][y][z] = 0;
-					}
-				}
-			}
-			tunnelArray[5][5][5] = 0b01111111;
-			genTunnel();
-			for (int x = 0; x < xSize; x++) {
-				for (int y = 0; y < ySize; y++) {
-					for (int z = 0; z < zSize; z++) {
-						System.out.print(tunnelArray[x][y][z] & EXISTS);
-						if ((tunnelArray[x][y][z] & EXISTS) == EXISTS) {
-							GameObject object = new GameObject("resources/models/box.obj", "none", true);
-							object.placeAt(x*2, y*2, z*2);
-							solids.add(object);
-						}
-					}
-					System.out.println();
-				}
-				System.out.println();
-			}
-			 */
-			genWalk();
-			for(int i = 0; i<blocks.size();i++){
-				
-				Vector3f e = blocks.get(i);
-				System.out.println(e);
-				GameObject object = new GameObject("resources/models/box.obj", "none", true);
-				object.placeAt(e.x*2, e.y*2, e.z*2); //too ez for rtz
-				solids.add(object);
-			}
+	public static byte DOWN = 0b00000010;
+	public static byte UP = 0b00000100;
+	public static byte BACK = 0b00001000;
+	public static byte FRONT = 0b00010000;
+	public static byte RIGHT = 0b00100000;
+	public static byte LEFT = 0b01000000;
+	static Vector3f down = new Vector3f(0, 0, -1);
+	static Vector3f up = new Vector3f(0, 0, 1);
+	static Vector3f back = new Vector3f(0, -1, 0);
+	static Vector3f front = new Vector3f(0, 1, 0);
+	static Vector3f right = new Vector3f(1, 0, 0);
+	static Vector3f left = new Vector3f(-1, 0, 0);
+	int stepCount = 2500;
+	int maxDist = 250;
+
+	public Walk() {
+		blocks.add(head);
+		simple();
+		for (int i = 0; i < blocks.size(); i++) {
+			Vector3f e = blocks.get(i);
+			System.out.println(e);
+			GameObject object = new GameObject("resources/models/box.obj", "none", true);
+			object.placeAt(e.x * 2, e.y * 2, e.z * 2); // too ez for rtz
+			solids.add(object);
 		}
+	}
 
-		public void update() {
+	public void update() {
 
-		}
+	}
 
-		public void render(Vector4f clipPlane) {
-			solids.stream().forEach(c -> c.render(clipPlane));
-		}
-		
-		/**
-		 * takes a starting cube
-		 * moves till step count
-		 * records position
-		 */
-		public void genWalk(){
-			//this is angering me because it is going in one direction 
-			for(int i = 0; i<stepCount; i++){
+	public void render(Vector4f clipPlane) {
+		solids.stream().forEach(c -> c.render(clipPlane));
+	}
+
+	/**
+	 * roughly a cube, perfect boxing
+	 */
+	public void step() {
+		for (int i = 0; i < stepCount; i++) {
 			int dir = rng.nextInt(6);
-			switch(dir){
+			switch (dir) {
 			case 0:
 				head = head.add(down);
 				break;
@@ -112,108 +85,198 @@ import maths.Vector4f;
 				head = head.add(back);
 				break;
 			}
-			if(!blocks.contains(head)){
+			if (!blocks.contains(head)) {
 				blocks.add(head);
-			}else{
+			} else {
 				i--;
 			}
-			}
 		}
-	/*
-		public void genTunnel() {
-			boolean breaker = true;
-			int iterations = 0;
-			while (breaker) {
-				iterations++;
-				for (int x = 1; x < xSize - 1; x++) {
-					for (int y = 1; y < ySize - 1; y++) {
-						for (int z = 1; z < zSize - 1; z++) {
-							byte block = tunnelArray[x][y][z];
-							if ((block & EXISTS) == EXISTS) {
-								if ((block & DOWN) == DOWN) {
-									byte newBlock = tunnelArray[x][y][z - 1];
-									newBlock |= UP;
-									newBlock = newBlock(newBlock);
-									tunnelArray[x][y][z - 1] = newBlock;
-								}
-								if ((block & UP) == UP) {
-									byte newBlock = tunnelArray[x][y][z + 1];
-									newBlock |= DOWN;
-									newBlock = newBlock(newBlock);
-									tunnelArray[x][y][z + 1] = newBlock;
-								}
-								if ((block & RIGHT) == RIGHT) {
-									byte newBlock = tunnelArray[x + 1][y][z];
-									newBlock |= LEFT;
-									newBlock = newBlock(newBlock);
-									tunnelArray[x + 1][y][z] = newBlock;
-								}
-								if ((block & LEFT) == LEFT) {
-									byte newBlock = tunnelArray[x - 1][y][z];
-									newBlock |= RIGHT;
-									newBlock = newBlock(newBlock);
-									tunnelArray[x - 1][y][z] = newBlock;
-								}
-								if ((block & FRONT) == FRONT) {
-									byte newBlock = tunnelArray[x][y + 1][z];
-									newBlock |= BACK;
-									newBlock = newBlock(newBlock);
-									tunnelArray[x][y + 1][z] = newBlock;
-								}
-								if ((block & BACK) == BACK) {
-									byte newBlock = tunnelArray[x][y - 1][z];
-									newBlock |= FRONT;
-									newBlock = newBlock(newBlock);
-									tunnelArray[x][y - 1][z] = newBlock;
-								}
-							}
-						}
-					}
-				}
-				if (iterations > 10) {
-					breaker = true;
-					break;
-				}
-			}*/
-
-		public byte getBit(int position, byte ID) {
-			return (byte) ((ID >> position) & 1);
-		}
-
-		public byte setBit(int position, byte ID, boolean clear) {
-			if (clear) {
-				return (ID &= ~(1 << position)); //set 0
-			} else {
-				return (ID |= (1 << position)); //set 1
-			}
-		}
-
-		public byte newBlock(byte block) {
-			byte newBlock = block;
-			if ((newBlock & EXISTS) == EXISTS) {
-				return newBlock;
-			}
-			newBlock |= EXISTS;
-			if (rng.nextFloat() < .25) {
-				newBlock |= UP;
-			}
-			if (rng.nextFloat() < .25) {
-				newBlock |= DOWN;
-			}
-			if (rng.nextFloat() < .25) {
-				newBlock |= RIGHT;
-			}
-			if (rng.nextFloat() < .25) {
-				newBlock |= LEFT;
-			}
-			if (rng.nextFloat() < .25) {
-				newBlock |= FRONT;
-			}
-			if (rng.nextFloat() < .25) {
-				newBlock |= BACK;
-			}
-			return newBlock;
-		}
-
 	}
 
+	/**
+	 * roughly a dense network, not boxing
+	 */
+	public void lattice() {
+		for (int i = 0; i < stepCount; i++) {
+			int dir = rng.nextInt(7);
+			switch (dir) {
+			case 0:
+				vel = vel.add(down);
+				break;
+			case 1:
+				vel = vel.add(up);
+				break;
+			case 2:
+				vel = vel.add(left);
+				break;
+			case 3:
+				vel = vel.add(right);
+				break;
+			case 4:
+				vel = vel.add(front);
+				break;
+			case 5:
+				vel = vel.add(back);
+				break;
+			case 6:
+				vel = vel.normalize();
+				break;
+			}
+			if (head.lengthSquared() > maxDist) {
+				vel = vel.negate();
+			}
+			head = head.add(vel.normalize());
+			blocks.add(head);
+
+		}
+	}
+
+	/**
+	 * Fucks off, but in a good way! non boxing
+	 */
+	public void snake() {
+		for (int i = 0; i < stepCount; i++) {
+			int dir = rng.nextInt(7);
+			switch (dir) {
+			case 0:
+				vel = vel.add(down);
+				break;
+			case 1:
+				vel = vel.add(up);
+				break;
+			case 2:
+				vel = vel.add(left);
+				break;
+			case 3:
+				vel = vel.add(right);
+				break;
+			case 4:
+				vel = vel.add(front);
+				break;
+			case 5:
+				vel = vel.add(back);
+				break;
+			case 6:
+				vel = vel.normalize();
+				break;
+			}
+			head = head.add(vel.normalize());
+			blocks.add(head);
+		}
+	}
+
+	/**
+	 * Death star meets octopus, non boxing
+	 */
+	public void octopus() {
+		for (int i = 0; i < stepCount; i++) {
+			int dir = rng.nextInt(7);
+			switch (dir) {
+			case 0:
+				vel = vel.add(down);
+				break;
+			case 1:
+				vel = vel.add(up);
+				break;
+			case 2:
+				vel = vel.add(left);
+				break;
+			case 3:
+				vel = vel.add(right);
+				break;
+			case 4:
+				vel = vel.add(front);
+				break;
+			case 5:
+				vel = vel.add(back);
+				break;
+			case 6:
+				vel = vel.normalize();
+				break;
+			}
+			if (head.lengthSquared() > maxDist) {
+				head = head.normalize();
+			}
+			head = head.add(vel.normalize());
+			blocks.add(head);
+
+		}
+	}
+
+	/**
+	 * A shaped charge, boxing
+	 */
+	public void antHill() {
+		for (int i = 0; i < stepCount; i++) {
+			float dir = rng.nextFloat();
+			if (dir < 0.19) {
+				head = head.add(down);
+			} else if (dir < 0.36) {
+				head = head.add(up);
+			} else if (dir < 0.52) {
+				head = head.add(back);
+			} else if (dir < 0.68) {
+				head = head.add(front);
+			} else if (dir < 0.84) {
+				head = head.add(right);
+			} else {
+				head = head.add(left);
+			}
+			if (!blocks.contains(head)) {
+				blocks.add(head);
+			} else {
+				i--;
+			}
+		}
+	}
+
+	/**
+	 * A cave system designed to be easy to travel, boxing
+	 */
+	public void simple() {
+		for (int i = 0; i < stepCount; i++) {
+			boolean shift = false;
+			float dir = rng.nextFloat();
+			if (dir < 0.1) {
+				head = head.add(down);
+				shift = true;
+			} else if (dir < 0.2) {
+				head = head.add(up);
+				shift = true;
+			} else if (dir < 0.4) {
+				head = head.add(back);
+			} else if (dir < 0.6) {
+				head = head.add(front);
+			} else if (dir < 0.8) {
+				head = head.add(right);
+			} else {
+				head = head.add(left);
+			}
+			if (!blocks.contains(head)) {
+				blocks.add(head);
+			} else {
+				i--;
+			}
+			if (shift) {
+				i++;
+				dir = rng.nextFloat();
+				if (dir < 0.25) {
+					head = head.add(back);
+
+				} else if (dir < 0.5) {
+					head = head.add(front);
+
+				} else if (dir < 0.75) {
+					head = head.add(right);
+
+				} else {
+					head = head.add(left);
+
+				}
+				if (!blocks.contains(head)) {
+					blocks.add(head);
+				}
+			}
+		}
+	}
+}

@@ -74,11 +74,14 @@ public class Vector3f {
 
 	/**
 	 * Normalizes the vector.
-	 *
+	 * if the vector is zero it returns zero
 	 * @return Normalized vector
 	 */
 	public Vector3f normalize() {
 		float length = length();
+		if(length == 0){
+			return new Vector3f(0,0,0);
+		}
 		return divide(length);
 	}
 
