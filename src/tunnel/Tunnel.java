@@ -1,6 +1,7 @@
 package tunnel;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import graphics.Window;
 import maths.Vector4f;
@@ -8,32 +9,53 @@ import object.GameObject;
 
 public class Tunnel {
 	public ArrayList<GameObject> solids = new ArrayList<GameObject>();
-	// Each byte represents a piece of space. A one represents a closed side and
-	// a zero represents an open side
-	// The order is left, right, forward, backs,up, down, exists
-	public ArrayList<ArrayList<ArrayList<Byte>>> tunnelArray = new ArrayList<ArrayList<ArrayList<Byte>>>();
 
-	int x = 10;
-	int y = 10;
-	int z = 10;
+	// The order is left, right, forward, backs,up, down, exists
+	//1 is open
+	int xSize = 10;
+	int ySize = 10;
+	int zSize = 10;
+
+	Random rng = new Random();
+
+	public byte[][][] tunnelArray = new byte[xSize][ySize][zSize];
+
+	public byte[][][] thisisforarthur;
+
+	public static byte EXISTS = 0b00000001;
+
+	public static byte DOWN = 0b00000010;
+	public static byte UP = 0b00000100;
+	public static byte BACK = 0b00001000;
+	public static byte FRONT = 0b00010000;
+	public static byte RIGHT = 0b00100000;
+	public static byte LEFT = 0b01000000;
 
 	public Tunnel() {
 		// this fills out the array
-		for (int i = 0; i < x; i++) { //right left
-			ArrayList<ArrayList<Byte>> outer = new ArrayList<ArrayList<Byte>>();
-			for (int j = 0; j < y; j++) {//forward back
-				ArrayList<Byte> inner = new ArrayList<Byte>();
-				for (int k = 0; k < z; k++) { //up down
-					inner.add((byte) 0);
+		for (int x = 0; x < xSize; x++) {
+			for (int y = 0; y < ySize; y++) {
+				for (int z = 0; z < zSize; z++) {
+					tunnelArray[x][y][z] = 0;
 				}
-				outer.add(inner);
 			}
-			tunnelArray.add(outer);
 		}
-
-		tunnelArray.get(5).get(5).set(5, (byte) 1);
+		tunnelArray[5][5][5] = 0b01111111;
 		genTunnel();
-		System.out.println(tunnelArray.toString());
+		for (int x = 0; x < xSize; x++) {
+			for (int y = 0; y < ySize; y++) {
+				for (int z = 0; z < zSize; z++) {
+					System.out.print(tunnelArray[x][y][z] & EXISTS);
+					if ((tunnelArray[x][y][z] & EXISTS) == EXISTS) {
+						GameObject object = new GameObject("resources/models/box.obj", "none", true);
+						object.placeAt(x*2, y*2, z*2);
+						solids.add(object);
+					}
+				}
+				System.out.println();
+			}
+			System.out.println();
+		}
 
 	}
 
@@ -42,76 +64,63 @@ public class Tunnel {
 	}
 
 	public void render(Vector4f clipPlane) {
-
+		solids.stream().forEach(c -> c.render(clipPlane));
 	}
 
-	public void genTunnel() { //well this currently simply makes every single block into a node
-		// this needs to take the actives and deal with them.
+	public void genTunnel() {
 		boolean breaker = true;
-		while(breaker){
-			breaker = false;
-		for (int i = 0; i < x; i++) {
-			for (int j = 0; j < y; j++) {
-				for (int k = 0; k < z; k++) {
-					if (getBit(0, tunnelArray.get(i).get(j).get(k)) == 1) {
-						for (int l = 0; l < 6; l++) {
-							/* 0: right
-							 * 1: left
-							 * 2: forward
-							 * 3: back
-							 * 4: up
-							 * 5: down
-							 */
-							if (Window.worldRandom.nextInt(8) == 0) {
-								tunnelArray.get(i).get(j).set(k,setBit(l, tunnelArray.get(i).get(j).get(k), false)); //says "I have an opening here"
-								System.out.println(tunnelArray.get(i).get(j).get(k));
-								switch(l){
-								case 0:
-									if(i!=x-1){
-										tunnelArray.get(i+1).get(j).set(k,setBit(0, tunnelArray.get(i+1).get(j).get(k), false));
-										breaker = true;
-									}
-									break;
-								case 1:
-									if(i!=0){
-										tunnelArray.get(i-1).get(j).set(k, setBit(0, tunnelArray.get(i-1).get(j).get(k), false));
-										breaker = true;
-									}
-									break;
-								case 2:
-									if(j!=y-1){
-										tunnelArray.get(i).get(j+1).set(k, setBit(0, tunnelArray.get(i).get(j+1).get(k), false));
-										breaker = true;
-									}
-									break;
-								case 3:
-									if(j!=0){
-										tunnelArray.get(i).get(j-1).set(k,setBit(0, tunnelArray.get(i).get(j-1).get(k), false));
-										breaker = true;
-									}
-									break;
-								case 4:
-									if(k!=z-1){
-										tunnelArray.get(i).get(j).set(k,setBit(0, tunnelArray.get(i).get(j).get(k+1), false));
-										breaker = true;
-									}
-									break;
-								case 5:
-									if(k!=0){
-										tunnelArray.get(i).get(j).set(k,setBit(0, tunnelArray.get(i).get(j).get(k-1), false));
-										breaker = true;
-									}
-									break;
-								}
-								
+		int iterations = 0;
+		while (breaker) {
+			iterations++;
+			for (int x = 1; x < xSize - 1; x++) {
+				for (int y = 1; y < ySize - 1; y++) {
+					for (int z = 1; z < zSize - 1; z++) {
+						byte block = tunnelArray[x][y][z];
+						if ((block & EXISTS) == EXISTS) {
+							if ((block & DOWN) == DOWN) {
+								byte newBlock = tunnelArray[x][y][z - 1];
+								newBlock |= UP;
+								newBlock = newBlock(newBlock);
+								tunnelArray[x][y][z - 1] = newBlock;
 							}
-							
+							if ((block & UP) == UP) {
+								byte newBlock = tunnelArray[x][y][z + 1];
+								newBlock |= DOWN;
+								newBlock = newBlock(newBlock);
+								tunnelArray[x][y][z + 1] = newBlock;
+							}
+							if ((block & RIGHT) == RIGHT) {
+								byte newBlock = tunnelArray[x + 1][y][z];
+								newBlock |= LEFT;
+								newBlock = newBlock(newBlock);
+								tunnelArray[x + 1][y][z] = newBlock;
+							}
+							if ((block & LEFT) == LEFT) {
+								byte newBlock = tunnelArray[x - 1][y][z];
+								newBlock |= RIGHT;
+								newBlock = newBlock(newBlock);
+								tunnelArray[x - 1][y][z] = newBlock;
+							}
+							if ((block & FRONT) == FRONT) {
+								byte newBlock = tunnelArray[x][y + 1][z];
+								newBlock |= BACK;
+								newBlock = newBlock(newBlock);
+								tunnelArray[x][y + 1][z] = newBlock;
+							}
+							if ((block & BACK) == BACK) {
+								byte newBlock = tunnelArray[x][y - 1][z];
+								newBlock |= FRONT;
+								newBlock = newBlock(newBlock);
+								tunnelArray[x][y - 1][z] = newBlock;
+							}
 						}
-						setBit(0, tunnelArray.get(i).get(j).get(k), true); //Says I am no longer active
 					}
 				}
 			}
-		}
+			if (iterations > 10) {
+				breaker = true;
+				break;
+			}
 		}
 	}
 
@@ -122,9 +131,36 @@ public class Tunnel {
 	public byte setBit(int position, byte ID, boolean clear) {
 		if (clear) {
 			return (ID &= ~(1 << position)); //set 0
-		} else { 
+		} else {
 			return (ID |= (1 << position)); //set 1
 		}
+	}
+
+	public byte newBlock(byte block) {
+		byte newBlock = block;
+		if ((newBlock & EXISTS) == EXISTS) {
+			return newBlock;
+		}
+		newBlock |= EXISTS;
+		if (rng.nextFloat() < .5) {
+			newBlock |= UP;
+		}
+		if (rng.nextFloat() < .5) {
+			newBlock |= DOWN;
+		}
+		if (rng.nextFloat() < .5) {
+			newBlock |= RIGHT;
+		}
+		if (rng.nextFloat() < .5) {
+			newBlock |= LEFT;
+		}
+		if (rng.nextFloat() < .5) {
+			newBlock |= FRONT;
+		}
+		if (rng.nextFloat() < .5) {
+			newBlock |= BACK;
+		}
+		return newBlock;
 	}
 
 }
