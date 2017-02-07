@@ -3,7 +3,6 @@ package tunnel;
 import java.util.ArrayList;
 import java.util.Random;
 
-import graphics.Window;
 import maths.Vector4f;
 import object.GameObject;
 
@@ -12,15 +11,13 @@ public class Tunnel {
 
 	// The order is left, right, forward, backs,up, down, exists
 	//1 is open
-	int xSize = 20;
-	int ySize = 20;
-	int zSize = 20;
+	int xSize = 30;
+	int ySize = 30;
+	int zSize = 30;
 
 	Random rng = new Random();
 
 	public byte[][][] tunnelArray = new byte[xSize][ySize][zSize];
-
-	public byte[][][] thisisforarthur;
 
 	public static byte EXISTS = 0b00000001;
 
@@ -45,16 +42,16 @@ public class Tunnel {
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
 				for (int z = 0; z < zSize; z++) {
-					System.out.print(tunnelArray[x][y][z] & EXISTS);
+					//System.out.print(tunnelArray[x][y][z] & EXISTS);
 					if ((tunnelArray[x][y][z] & EXISTS) == EXISTS) {
 						GameObject object = new GameObject("resources/models/box.obj", "none", true);
 						object.placeAt(x*2, y*2, z*2);
 						solids.add(object);
 					}
 				}
-				System.out.println();
+				//System.out.println();
 			}
-			System.out.println();
+		//	System.out.println();
 		}
 
 	}

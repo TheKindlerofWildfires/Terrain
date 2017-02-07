@@ -58,6 +58,7 @@ import maths.Vector4f;
 import object.ObjectManager;
 import physics.Time;
 import tunnel.Tunnel;
+import tunnel.Walk;
 import world.Biome;
 import world.Chunk;
 import world.ChunkLoader;
@@ -116,6 +117,7 @@ public class Window implements Runnable {
 
 	public static Lava lava;
 	public static Tunnel tunnel;
+	public static Walk walk;
 	//private static DetailManager trees;
 	//private static Particle baseTree;
 
@@ -208,6 +210,7 @@ public class Window implements Runnable {
 		chunkLoader.start();
 		lava = new Lava();
 		tunnel = new Tunnel();
+		walk = new Walk();
 		reflectionClipPlane = new Vector4f(0, 0, 1, -Chunk.WATERLEVEL + 0.01f);
 		refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL + 0.01f);
 		renderClipPlane = new Vector4f(0, 0, -1, 10000);
@@ -338,7 +341,8 @@ public class Window implements Runnable {
 		//lava.render(renderClipPlane);
 		//trees.render(renderClipPlane);
 		//Detail.render(renderClipPlane);
-		tunnel.render(renderClipPlane);
+		//tunnel.render(renderClipPlane);
+		walk.render(renderClipPlane);
 	}
 
 	public void testRender() {
