@@ -57,6 +57,7 @@ import maths.Vector3f;
 import maths.Vector4f;
 import object.ObjectManager;
 import physics.Time;
+import tunnel.Tunnel;
 import world.Biome;
 import world.Chunk;
 import world.ChunkLoader;
@@ -114,6 +115,7 @@ public class Window implements Runnable {
 	public static FrameBufferObject reflection;
 
 	public static Lava lava;
+	public static Tunnel tunnel;
 	//private static DetailManager trees;
 	//private static Particle baseTree;
 
@@ -205,6 +207,7 @@ public class Window implements Runnable {
 		chunkLoader.setPriority(Thread.MIN_PRIORITY);
 		chunkLoader.start();
 		lava = new Lava();
+		tunnel = new Tunnel();
 		reflectionClipPlane = new Vector4f(0, 0, 1, -Chunk.WATERLEVEL + 0.01f);
 		refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL + 0.01f);
 		renderClipPlane = new Vector4f(0, 0, -1, 10000);
@@ -327,14 +330,14 @@ public class Window implements Runnable {
 		glViewport(0, 0, windowWidth, windowHeight);
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		world.renderLand(renderClipPlane);
-		objectManager.render(renderClipPlane);
-		water.render(renderClipPlane); // do NOT attempt to render water
+		//world.renderLand(renderClipPlane);
+		//objectManager.render(renderClipPlane);
+		//water.render(renderClipPlane); // do NOT attempt to render water
 										// anywhere other than to screen
-		entityManager.render(renderClipPlane);
-		lava.render(renderClipPlane);
+		//entityManager.render(renderClipPlane);
+		//lava.render(renderClipPlane);
 		//trees.render(renderClipPlane);
-		Detail.render(renderClipPlane);
+		//Detail.render(renderClipPlane);
 	}
 
 	public void testRender() {
