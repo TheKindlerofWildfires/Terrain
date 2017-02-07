@@ -12,9 +12,9 @@ public class Tunnel {
 
 	// The order is left, right, forward, backs,up, down, exists
 	//1 is open
-	int xSize = 10;
-	int ySize = 10;
-	int zSize = 10;
+	int xSize = 20;
+	int ySize = 20;
+	int zSize = 20;
 
 	Random rng = new Random();
 
@@ -142,22 +142,22 @@ public class Tunnel {
 			return newBlock;
 		}
 		newBlock |= EXISTS;
-		if (rng.nextFloat() < .5) {
+		if (rng.nextFloat() < .25) {
 			newBlock |= UP;
 		}
-		if (rng.nextFloat() < .5) {
+		if (rng.nextFloat() < .25) {
 			newBlock |= DOWN;
 		}
-		if (rng.nextFloat() < .5) {
+		if (rng.nextFloat() < .25) {
 			newBlock |= RIGHT;
 		}
-		if (rng.nextFloat() < .5) {
+		if (rng.nextFloat() < .25) {
 			newBlock |= LEFT;
 		}
-		if (rng.nextFloat() < .5) {
+		if (rng.nextFloat() < .25) {
 			newBlock |= FRONT;
 		}
-		if (rng.nextFloat() < .5) {
+		if (rng.nextFloat() < .25) {
 			newBlock |= BACK;
 		}
 		return newBlock;

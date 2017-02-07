@@ -29,6 +29,6 @@ void main(){
 		fragColor = calcFog(mvVertexPos, fragColor, fog, ambientLight, directionalLight);
 	//}
 	
-	fragColor = vec4(0,1,0,1);
+	//fragColor = vec4(0,1,0,1);
 } 
 
