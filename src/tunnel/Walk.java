@@ -41,10 +41,10 @@ public class Walk {
 
 	public Walk() {
 		blocks.add(head);
-		octopus();
+		simple();
 		for (int i = 0; i < blocks.size(); i++) {
 			Vector3f e = blocks.get(i);
-			System.out.println(e);
+			//System.out.println(e);
 			GameObject object = new GameObject("resources/models/box.obj", "none", true);
 			object.placeAt(e.x * 2, e.y * 2, e.z * 2); // too ez for rtz
 			solids.add(object);

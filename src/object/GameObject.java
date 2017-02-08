@@ -41,7 +41,8 @@ public class GameObject {
 	public Transformation model;
 	public boolean isGL;
 	public Vector3f scale = new Vector3f(1, 1, 1);
-
+	private boolean hasModel = false;
+	
 	protected boolean textured;
 	protected boolean hasMaterial = true;
 
@@ -66,8 +67,9 @@ public class GameObject {
 	 */
 	public GameObject(String modelPath, String texturePath, boolean isGL) {
 		this.isGL = isGL;
+		boundingBox = new BoundingBox(new Vector3f(0, 0, 0), 1, 1, 1);
 		if (modelPath != "none") {
-			boundingBox = new BoundingBox(new Vector3f(0, 0, 0), 1, 1, 1);
+			hasModel = true;
 			if (isGL) {
 				try {
 					vao = ModelManager.loadGlModel(modelPath).vao;
@@ -123,12 +125,14 @@ public class GameObject {
 		this.boundingBox = baseObject.boundingBox;
 		this.enabled = baseObject.enabled;
 	}
+
 	/**
 	 * A totally empty constructor
 	 */
 	public GameObject() {
 
 	}
+
 	/**
 	 * Sets the object scale
 	 * @param x
@@ -141,6 +145,7 @@ public class GameObject {
 		scale.y = y;
 		scale.z = z;
 	}
+
 	/**
 	 * Scales the object
 	 * @param x
@@ -157,6 +162,7 @@ public class GameObject {
 		scale.z *= z;
 
 	}
+
 	/**
 	 * Translates the object
 	 * @param x
@@ -170,6 +176,7 @@ public class GameObject {
 		boundingBox.centre.z += z;
 		position = position.add(new Vector3f(x, y, z));
 	}
+
 	/**
 	 * Rotates the object, but only by 90degrees
 	 * @param angle
@@ -193,6 +200,7 @@ public class GameObject {
 		boundingBox.rotate(a * x, a * y, a * z);
 		// at some point the bounding box should rotate too
 	}
+
 	/**
 	 * Translates the object
 	 * @param displacement
@@ -200,6 +208,7 @@ public class GameObject {
 	public void translate(Vector3f displacement) {
 		translate(displacement.x, displacement.y, displacement.z);
 	}
+
 	/**
 	 * Places the object at location
 	 * @param x
@@ -215,6 +224,7 @@ public class GameObject {
 		position.y = y;
 		position.z = z;
 	}
+
 	/**
 	 * Bad, old, physics code
 	 */
@@ -226,6 +236,7 @@ public class GameObject {
 			position = boundingBox.centre;
 		}
 	}
+
 	/**
 	 * Sets the force on the object
 	 * @param force
@@ -238,12 +249,15 @@ public class GameObject {
 	 * Renders the specified object
 	 */
 	public void render(Vector4f clipPlane) {
-		start(shader);
-		renderPrep(clipPlane);
-		glBindVertexArray(vao.getVaoID());
-		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
-		stop();
+		if (hasModel) {
+			start(shader);
+			renderPrep(clipPlane);
+			glBindVertexArray(vao.getVaoID());
+			glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
+			stop();
+		}
 	}
+
 	/**
 	 * Readies the object to be rendered
 	 * @param clipPlane
@@ -263,6 +277,7 @@ public class GameObject {
 		}
 		setUniform4f("clipPlane", clipPlane);
 	}
+
 	/**
 	 * Ensures that the object is GL
 	 */
@@ -271,6 +286,7 @@ public class GameObject {
 		vao = new VertexArrayObject(vaoData, 3);
 		this.isGL = true;
 	}
+
 	/**
 	 * Gets the shader
 	 * @return
@@ -278,6 +294,7 @@ public class GameObject {
 	public int getShader() {
 		return shader;
 	}
+
 	/**
 	 * Gets the vertex array object
 	 * @return

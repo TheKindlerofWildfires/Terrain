@@ -17,16 +17,17 @@ public class Tunnel {
 
 	Random rng = new Random();
 
-	public byte[][][] tunnelArray = new byte[xSize][ySize][zSize];
+	public short[][][] tunnelArray = new short[xSize][ySize][zSize];
 
-	public static byte EXISTS = 0b00000001;
+	public static short EXISTS = 0b00000001;
 
-	public static byte DOWN = 0b00000010;
-	public static byte UP = 0b00000100;
-	public static byte BACK = 0b00001000;
-	public static byte FRONT = 0b00010000;
-	public static byte RIGHT = 0b00100000;
-	public static byte LEFT = 0b01000000;
+	public static short DOWN = 0b00000010;
+	public static short UP = 0b00000100;
+	public static short BACK = 0b00001000;
+	public static short FRONT = 0b00010000;
+	public static short RIGHT = 0b00100000;
+	public static short LEFT = 0b01000000;
+	public static short SPREAD = 0b10000000;
 
 	public Tunnel() {
 		// this fills out the array
@@ -44,7 +45,7 @@ public class Tunnel {
 				for (int z = 0; z < zSize; z++) {
 					// System.out.print(tunnelArray[x][y][z] & EXISTS);
 					if ((tunnelArray[x][y][z] & EXISTS) == EXISTS) {
-						GameObject object = new GameObject("resources/models/box.obj", "none", true);
+						GameObject object = getModel(tunnelArray[x][y][z]);
 						object.placeAt(x * 2, y * 2, z * 2);
 						solids.add(object);
 					}
@@ -68,64 +69,69 @@ public class Tunnel {
 		boolean breaker = true;
 		int iterations = 0;
 		while (breaker) {
+			short[][][] newTunnelArray = tunnelArray;
 			iterations++;
 			for (int x = 1; x < xSize - 1; x++) {
 				for (int y = 1; y < ySize - 1; y++) {
 					for (int z = 1; z < zSize - 1; z++) {
-						byte block = tunnelArray[x][y][z];
+						short block = tunnelArray[x][y][z];
+						if ((block & SPREAD) == SPREAD) {
+							continue;
+						}
 						if ((block & EXISTS) == EXISTS) {
 							if ((block & DOWN) == DOWN) {
-								byte newBlock = tunnelArray[x][y][z - 1];
+								short newBlock = tunnelArray[x][y][z - 1];
 								newBlock |= UP;
 								newBlock = newBlock(newBlock);
-								tunnelArray[x][y][z - 1] = newBlock;
+								newTunnelArray[x][y][z - 1] = newBlock;
 							}
 							if ((block & UP) == UP) {
-								byte newBlock = tunnelArray[x][y][z + 1];
+								short newBlock = tunnelArray[x][y][z + 1];
 								newBlock |= DOWN;
 								newBlock = newBlock(newBlock);
-								tunnelArray[x][y][z + 1] = newBlock;
+								newTunnelArray[x][y][z + 1] = newBlock;
 							}
 							if ((block & RIGHT) == RIGHT) {
-								byte newBlock = tunnelArray[x + 1][y][z];
+								short newBlock = tunnelArray[x + 1][y][z];
 								newBlock |= LEFT;
 								newBlock = newBlock(newBlock);
-								tunnelArray[x + 1][y][z] = newBlock;
+								newTunnelArray[x + 1][y][z] = newBlock;
 							}
 							if ((block & LEFT) == LEFT) {
-								byte newBlock = tunnelArray[x - 1][y][z];
+								short newBlock = tunnelArray[x - 1][y][z];
 								newBlock |= RIGHT;
 								newBlock = newBlock(newBlock);
-								tunnelArray[x - 1][y][z] = newBlock;
+								newTunnelArray[x - 1][y][z] = newBlock;
 							}
 							if ((block & FRONT) == FRONT) {
-								byte newBlock = tunnelArray[x][y + 1][z];
+								short newBlock = tunnelArray[x][y + 1][z];
 								newBlock |= BACK;
 								newBlock = newBlock(newBlock);
-								tunnelArray[x][y + 1][z] = newBlock;
+								newTunnelArray[x][y + 1][z] = newBlock;
 							}
 							if ((block & BACK) == BACK) {
-								byte newBlock = tunnelArray[x][y - 1][z];
+								short newBlock = tunnelArray[x][y - 1][z];
 								newBlock |= FRONT;
 								newBlock = newBlock(newBlock);
-								tunnelArray[x][y - 1][z] = newBlock;
+								newTunnelArray[x][y - 1][z] = newBlock;
 							}
 						}
 					}
 				}
 			}
-			if (iterations > 10) {
+			tunnelArray = newTunnelArray;
+			if (iterations > 400) {
 				breaker = true;
 				break;
 			}
 		}
 	}
 
-	public byte getBit(int position, byte ID) {
-		return (byte) ((ID >> position) & 1);
+	public short getBit(int position, short ID) {
+		return (short) ((ID >> position) & 1);
 	}
 
-	public byte setBit(int position, byte ID, boolean clear) {
+	public short setBit(int position, short ID, boolean clear) {
 		if (clear) {
 			return (ID &= ~(1 << position)); // set 0
 		} else {
@@ -133,8 +139,8 @@ public class Tunnel {
 		}
 	}
 
-	public byte newBlock(byte block) {
-		byte newBlock = block;
+	public short newBlock(short block) {
+		short newBlock = block;
 		if ((newBlock & EXISTS) == EXISTS) {
 			return newBlock;
 		}
@@ -158,6 +164,54 @@ public class Tunnel {
 			newBlock |= BACK;
 		}
 		return newBlock;
+	}
+
+	private GameObject getModel(short block) {
+		int numberOfSides = 0;
+		if ((block & 0b00000001) != 0b00000001) {
+			System.err.println("this box is fake");
+			return null;
+		}
+		if ((block & 0b00000010) == 0b00000010) {
+			numberOfSides++;
+		}
+		if ((block & 0b00000100) == 0b00000100) {
+			numberOfSides++;
+		}
+		if ((block & 0b00001000) == 0b00001000) {
+			numberOfSides++;
+		}
+		if ((block & 0b00010000) == 0b00010000) {
+			numberOfSides++;
+		}
+		if ((block & 0b00100000) == 0b00100000) {
+			numberOfSides++;
+		}
+		if ((block & 0b01000000) == 0b01000000) {
+			numberOfSides++;
+		}
+		GameObject result = new GameObject("none", "none", true);
+		switch (numberOfSides) {
+		case 0:
+			return result;
+		case 1:
+			result = new GameObject("resources/models/boxOpenFace1.obj", "none", true);
+			//DO ROTATION
+			return result;
+		case 2:
+			return result;
+		case 3:
+			return result;
+		case 4:
+			return result;
+		case 5:
+			result = new GameObject("resources/models/boxOpenFace5.obj", "none", true);
+			return result;
+		case 6:
+			return result;
+		default:
+			return result;
+		}
 	}
 
 }

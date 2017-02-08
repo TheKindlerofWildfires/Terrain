@@ -285,38 +285,38 @@ public class Window implements Runnable {
 		// objectManager.render();
 
 		// move camera to appropriate location and render reflection texture
-		float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
-		float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
+	//	float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
+	//	float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
 
 		// GraphicsManager.camera.flipCamera();
-		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, -camDist * 2));
-		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, -targetDist * 2));
-		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
+	//	GraphicsManager.camera.moveCamera(new Vector3f(0, 0, -camDist * 2));
+	//	GraphicsManager.camera.moveTarget(new Vector3f(0, 0, -targetDist * 2));
+	//	ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
 		// bind reflection buffer and render to it
-		reflection.activate();
-		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
-		world.renderLand(reflectionClipPlane);
-		objectManager.render(reflectionClipPlane);
-		entityManager.render(reflectionClipPlane);
-		lava.render(reflectionClipPlane);
+	//	reflection.activate();
+	//	glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
+	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//	glEnable(GL_DEPTH_TEST);
+	//	world.renderLand(reflectionClipPlane);
+	//	objectManager.render(reflectionClipPlane);
+		//entityManager.render(reflectionClipPlane);
+		//lava.render(reflectionClipPlane);
 
 		// move camera back and render refraction texture
 		// GraphicsManager.camera.flipCamera();
 
-		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
-		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
-		ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
+		//GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
+		//GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
+		//ShaderManager.setCamera(GraphicsManager.camera, GraphicsManager.dirLight);
 		// bind refraction buffer and render to it
-		refraction.activate();
-		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glEnable(GL_DEPTH_TEST);
-		world.renderLand(refractionClipPlane);
-		objectManager.render(refractionClipPlane);
-		entityManager.render(refractionClipPlane);
-		lava.render(refractionClipPlane);
+		//refraction.activate();
+		//glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glEnable(GL_DEPTH_TEST);
+		//world.renderLand(refractionClipPlane);
+		//objectManager.render(refractionClipPlane);
+		//entityManager.render(refractionClipPlane);
+		//lava.render(refractionClipPlane);
 
 		// render to screen
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
@@ -331,8 +331,11 @@ public class Window implements Runnable {
 		// lava.render(renderClipPlane);
 		// trees.render(renderClipPlane);
 		// Detail.render(renderClipPlane);
-		// tunnel.render(renderClipPlane);
-		walk.render(renderClipPlane);
+		
+		tunnel.render(renderClipPlane);
+	
+		
+		//walk.render(renderClipPlane);
 	}
 
 	/**
