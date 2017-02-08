@@ -41,7 +41,7 @@ public class Walk {
 
 	public Walk() {
 		blocks.add(head);
-		simple();
+		octopus();
 		for (int i = 0; i < blocks.size(); i++) {
 			Vector3f e = blocks.get(i);
 			System.out.println(e);
@@ -136,7 +136,7 @@ public class Walk {
 	 */
 	public void snake() {
 		for (int i = 0; i < stepCount; i++) {
-			int dir = rng.nextInt(7);
+			int dir = rng.nextInt(8);
 			switch (dir) {
 			case 0:
 				vel = vel.add(down);
@@ -159,6 +159,10 @@ public class Walk {
 			case 6:
 				vel = vel.normalize();
 				break;
+			case 7:
+				//vel = new Vector3f(0,0,0); --> This is fairly cool
+				//vel  = vel.cross(back); --> This is less so
+				//vel = vel.scale(vel.length());--> this straintens
 			}
 			head = head.add(vel.normalize());
 			blocks.add(head);
@@ -279,4 +283,5 @@ public class Walk {
 			}
 		}
 	}
+
 }
