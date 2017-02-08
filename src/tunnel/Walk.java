@@ -36,12 +36,12 @@ public class Walk {
 	static Vector3f front = new Vector3f(0, 1, 0);
 	static Vector3f right = new Vector3f(1, 0, 0);
 	static Vector3f left = new Vector3f(-1, 0, 0);
-	int stepCount = 2500;
-	int maxDist = 250;
+	int stepCount = 12500;
+	int maxDist = 1250;
 
 	public Walk() {
 		blocks.add(head);
-		simple();
+		lattice();
 		for (int i = 0; i < blocks.size(); i++) {
 			Vector3f e = blocks.get(i);
 			//System.out.println(e);
@@ -98,35 +98,35 @@ public class Walk {
 	 */
 	public void lattice() {
 		for (int i = 0; i < stepCount; i++) {
-			int dir = rng.nextInt(7);
+			int dir = rng.nextInt(6);
 			switch (dir) {
 			case 0:
-				vel = vel.add(down);
+				head = head.add(down);
 				break;
 			case 1:
-				vel = vel.add(up);
+				head = head.add(up);
 				break;
 			case 2:
-				vel = vel.add(left);
+				head = head.add(left);
 				break;
 			case 3:
-				vel = vel.add(right);
+				head = head.add(right);
 				break;
 			case 4:
-				vel = vel.add(front);
+				head = head.add(front);
 				break;
 			case 5:
-				vel = vel.add(back);
-				break;
-			case 6:
-				vel = vel.normalize();
+				head = head.add(back);
 				break;
 			}
 			if (head.lengthSquared() > maxDist) {
-				vel = vel.negate();
+				head = new Vector3f(0,0,0);
 			}
-			head = head.add(vel.normalize());
-			blocks.add(head);
+			if (!blocks.contains(head)) {
+				blocks.add(head);
+			} else {
+				i--;
+			}
 
 		}
 	}

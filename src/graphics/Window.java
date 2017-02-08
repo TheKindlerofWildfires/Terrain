@@ -332,10 +332,10 @@ public class Window implements Runnable {
 		// trees.render(renderClipPlane);
 		// Detail.render(renderClipPlane);
 		
-		tunnel.render(renderClipPlane);
+		//tunnel.render(renderClipPlane);
 	
 		
-		//walk.render(renderClipPlane);
+		walk.render(renderClipPlane);
 	}
 
 	/**
