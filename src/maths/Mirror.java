@@ -19,6 +19,11 @@ public class Mirror {
 	static int iterator = 1250;
 	Random rng = Window.mathRandom;
 
+	/**
+	 * Initialises mirror
+	 * 
+	 * @param points
+	 */
 	public Mirror(ArrayList<Vector3f> points) {
 		this.points = points;
 		standard();
@@ -59,6 +64,9 @@ public class Mirror {
 
 	}
 
+	/**
+	 * Used by chunk, makes things easier
+	 */
 	public void acc() {
 		points.addAll(mxp);
 		points.addAll(myp);
@@ -67,10 +75,21 @@ public class Mirror {
 
 	}
 
+	/**
+	 * Returns the points it has found
+	 * 
+	 * @return
+	 */
 	public ArrayList<Vector3f> points() {
 		return points;
 	}
 
+	/**
+	 * Fixes the side in question
+	 * 
+	 * @param side
+	 * @return
+	 */
 	public ArrayList<Vector3f> getSide(String side) {
 		switch (side) {
 		case "yn":

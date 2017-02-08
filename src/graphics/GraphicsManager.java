@@ -134,7 +134,8 @@ public class GraphicsManager {
 	private static Fog fog;
 
 	public static Properties props;
-	public static int e = 1; //50
+	public static int e = 1; // 50
+
 	public GraphicsManager() {
 		loadProperties();
 		ShaderManager.init(camera, dirLight, fog, ambientLight);
@@ -152,8 +153,8 @@ public class GraphicsManager {
 	}
 
 	private static void dayNightCycle() {
-		
-		lightAngle += sunSpeed*e;
+
+		lightAngle += sunSpeed * e;
 		if (lightAngle > 90) {
 			dirLight.intensity = 0;
 			if (lightAngle >= 360) {

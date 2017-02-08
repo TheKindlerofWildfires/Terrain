@@ -10,6 +10,8 @@ import world.Biome;
 
 /**
  * @author TheKingInYellow
+ * 
+ *         This a very simple creature that wanders in random directions
  */
 public class Wanderer extends GameObject {
 	private static final float CLIMABLE = 10f;
@@ -25,12 +27,20 @@ public class Wanderer extends GameObject {
 	int dy, dx = 0;
 	String direction = "FORWARD";
 
+	/**
+	 * Initialises the wanderer
+	 * 
+	 * @param model
+	 */
 	public Wanderer(String model) {
 		super(model, "none", true);
 		lastMove = Time.getSecTick();
 		target = this.position.add(new Vector3f(1, 0, 0));
 	}
 
+	/**
+	 * Updates the wanderer
+	 */
 	public void update() {
 		if (lastChoice - Time.getUpdateTick() < -random.nextInt(120)) {
 			direct(-1);
@@ -50,6 +60,12 @@ public class Wanderer extends GameObject {
 		 */
 	}
 
+	/**
+	 * Chooses which way to go
+	 * 
+	 * @param dir
+	 *            -1 if random, otherwise goes whichever way it tells
+	 */
 	public void direct(int dir) {
 		direction = "FORWARD";
 		int r;
@@ -78,6 +94,9 @@ public class Wanderer extends GameObject {
 
 	}
 
+	/**
+	 * basically a clone of the player move code
+	 */
 	private void move() {
 		boolean canMove = true;
 		boolean noClip = false;

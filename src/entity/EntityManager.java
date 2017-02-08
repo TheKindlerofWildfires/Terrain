@@ -28,31 +28,44 @@ import input.MouseButtonCallback;
 import input.ScrollCallback;
 import maths.Vector4f;
 import player.Player;
-import world.World;
+
 /**
  * @author TheKingInYellow
+ * 
+ *         This class contains all entities and entity collectors
  */
 public class EntityManager {
 	public Player player;
 
-	//public Wanderer m;
+	// public Wanderer m;
 	Camera camera = GraphicsManager.camera;
 	int c = 0;
+
 	public EntityManager() {
 
 		player = new Player(camera);
-		//	m = new Wanderer("resources/models/box.obj");
+		// m = new Wanderer("resources/models/box.obj");
 	}
 
+	/**
+	 * Renders entities
+	 * 
+	 * @param clipPlane
+	 */
 	public void render(Vector4f clipPlane) {
-		//m.render(clipPlane);
+		// m.render(clipPlane);
 		// player.render(clipPlane);
 
 	}
 
+	/**
+	 * Updates entities
+	 * 
+	 * @param window
+	 */
 	public void update(Long window) {
-		//	m.update();
-		
+		// m.update();
+
 		if (KeyboardInput.isKeyDown(GLFW_KEY_A)) {
 			player.movePlayer("LEFT");
 		}
@@ -73,50 +86,50 @@ public class EntityManager {
 		}
 		player.update();
 		int[] m = MouseButtonCallback.getMouseButton();
-		if(m[1] ==  GLFW_PRESS){
-			if(m[0] == GLFW_MOUSE_BUTTON_LEFT){
+		if (m[1] == GLFW_PRESS) {
+			if (m[0] == GLFW_MOUSE_BUTTON_LEFT) {
 				player.activeItem();
 			}
 		}
 		double s = ScrollCallback.getyoffset();
 		player.scroll(s);
-		if(KeyboardInput.isKeyDown(GLFW_KEY_1)){
+		if (KeyboardInput.isKeyDown(GLFW_KEY_1)) {
 			player.inventory.setActive(1);
 		}
-		if(KeyboardInput.isKeyDown(GLFW_KEY_2)){
+		if (KeyboardInput.isKeyDown(GLFW_KEY_2)) {
 			player.inventory.setActive(2);
 		}
-		if(KeyboardInput.isKeyDown(GLFW_KEY_3)){
+		if (KeyboardInput.isKeyDown(GLFW_KEY_3)) {
 			player.inventory.setActive(3);
 		}
-		if(KeyboardInput.isKeyDown(GLFW_KEY_4)){
+		if (KeyboardInput.isKeyDown(GLFW_KEY_4)) {
 			player.inventory.setActive(4);
 		}
-		if(KeyboardInput.isKeyDown(GLFW_KEY_5)){
+		if (KeyboardInput.isKeyDown(GLFW_KEY_5)) {
 			player.inventory.setActive(5);
 		}
-		if(KeyboardInput.isKeyDown(GLFW_KEY_6)){
+		if (KeyboardInput.isKeyDown(GLFW_KEY_6)) {
 			player.inventory.setActive(6);
 		}
-		if(KeyboardInput.isKeyDown(GLFW_KEY_7)){
+		if (KeyboardInput.isKeyDown(GLFW_KEY_7)) {
 			player.inventory.setActive(7);
 		}
-		if(KeyboardInput.isKeyDown(GLFW_KEY_8)){
+		if (KeyboardInput.isKeyDown(GLFW_KEY_8)) {
 			player.inventory.setActive(8);
 		}
-		if(KeyboardInput.isKeyDown(GLFW_KEY_9)){
+		if (KeyboardInput.isKeyDown(GLFW_KEY_9)) {
 			player.inventory.setActive(9);
 		}
-		if(KeyboardInput.isKeyDown(GLFW_KEY_0)){
+		if (KeyboardInput.isKeyDown(GLFW_KEY_0)) {
 			player.inventory.setActive(0);
 		}
-		if(KeyboardInput.isKeyDown(GLFW_KEY_P)){
-			Window.reload(c++%3);
+		if (KeyboardInput.isKeyDown(GLFW_KEY_P)) {
+			Window.reload(c++ % 3);
 		}
+		// DO NOT DELETE THIS CODE
 		/*
-		int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
-		if (state == GLFW_PRESS){
-			player.activeItem();
-		}*/
+		 * int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT); if
+		 * (state == GLFW_PRESS){ player.activeItem(); }
+		 */
 	}
 }

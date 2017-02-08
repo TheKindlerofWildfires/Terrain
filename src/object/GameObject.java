@@ -28,6 +28,7 @@ import models.ModelManager;
 import models.VertexArrayObject;
 
 /**
+ * Game object, basic building of game
  * @author TheKingInYellow & HMSRothman
  */
 public class GameObject {
@@ -122,18 +123,30 @@ public class GameObject {
 		this.boundingBox = baseObject.boundingBox;
 		this.enabled = baseObject.enabled;
 	}
-
+	/**
+	 * A totally empty constructor
+	 */
 	public GameObject() {
 
 	}
-
+	/**
+	 * Sets the object scale
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	public void setScale(float x, float y, float z) {
 		model.setScale(x, y, z);
 		scale.x = x;
 		scale.y = y;
 		scale.z = z;
 	}
-
+	/**
+	 * Scales the object
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	public void scale(float x, float y, float z) {
 		model.scale(x, y, z);
 		boundingBox.x *= x;
@@ -144,7 +157,12 @@ public class GameObject {
 		scale.z *= z;
 
 	}
-
+	/**
+	 * Translates the object
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	public void translate(float x, float y, float z) {
 		model.translate(x, y, z);
 		boundingBox.centre.x += x;
@@ -152,7 +170,14 @@ public class GameObject {
 		boundingBox.centre.z += z;
 		position = position.add(new Vector3f(x, y, z));
 	}
-
+	/**
+	 * Rotates the object, but only by 90degrees
+	 * @param angle
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @throws IllegalArgumentException
+	 */
 	public void rotate(int angle, int x, int y, int z) throws IllegalArgumentException {
 		if (angle % 90 != 0) {
 			throw new IllegalArgumentException("you can only rotate bounding boxes by right angles");
@@ -168,11 +193,19 @@ public class GameObject {
 		boundingBox.rotate(a * x, a * y, a * z);
 		// at some point the bounding box should rotate too
 	}
-
+	/**
+	 * Translates the object
+	 * @param displacement
+	 */
 	public void translate(Vector3f displacement) {
 		translate(displacement.x, displacement.y, displacement.z);
 	}
-
+	/**
+	 * Places the object at location
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	public void placeAt(float x, float y, float z) {
 		model.placeAt(x, y, z);
 		boundingBox.centre.x = x;
@@ -182,7 +215,9 @@ public class GameObject {
 		position.y = y;
 		position.z = z;
 	}
-
+	/**
+	 * Bad, old, physics code
+	 */
 	public void physic() {
 		if (enabled) {
 			fakeFriction = velocity.negate().scale(0.01f);
@@ -191,7 +226,10 @@ public class GameObject {
 			position = boundingBox.centre;
 		}
 	}
-
+	/**
+	 * Sets the force on the object
+	 * @param force
+	 */
 	public void setForce(Vector3f force) {
 		this.force = force;
 	}
@@ -206,7 +244,10 @@ public class GameObject {
 		glDrawArrays(GL_TRIANGLES, 0, vao.getSize());
 		stop();
 	}
-
+	/**
+	 * Readies the object to be rendered
+	 * @param clipPlane
+	 */
 	protected void renderPrep(Vector4f clipPlane) {
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
 		if (hasMaterial) {
@@ -222,17 +263,25 @@ public class GameObject {
 		}
 		setUniform4f("clipPlane", clipPlane);
 	}
-
+	/**
+	 * Ensures that the object is GL
+	 */
 	public void makeGL() {
 		assert !isGL : "its already gl you dumb fuck";
 		vao = new VertexArrayObject(vaoData, 3);
 		this.isGL = true;
 	}
-
+	/**
+	 * Gets the shader
+	 * @return
+	 */
 	public int getShader() {
 		return shader;
 	}
-
+	/**
+	 * Gets the vertex array object
+	 * @return
+	 */
 	public VertexArrayObject getVAO() {
 		return vao;
 	}

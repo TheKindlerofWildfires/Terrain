@@ -100,7 +100,9 @@ public abstract class Instancer {
 
 	/**
 	 * renders all the particles
-	 * @param clipPlane the clipping plane to be used
+	 * 
+	 * @param clipPlane
+	 *            the clipping plane to be used
 	 */
 	public void render(Vector4f clipPlane) {
 		if (!active) {
@@ -130,5 +132,5 @@ public abstract class Instancer {
 	public final void deactivate() {
 		this.active = false;
 	}
-	
+
 }

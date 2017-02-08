@@ -5,7 +5,7 @@ import java.util.Collections;
 
 public class Delaunay {
 	/**
-	 * Performs Delanay Triangulation via Boyer-Watson Algorithm
+	 * Performs Delanay Triangulation via Boyer-Watson Algorithm, does not work well in 3D
 	 */
 	static float xOf = 3;
 	static float yOf = 3;
@@ -84,7 +84,10 @@ public class Delaunay {
 		triangles.removeAll(Collections.singleton(startingTri));
 		calculated = true;
 	}
-
+	/**
+	 * Returns the triangles it found
+	 * @return
+	 */
 	public ArrayList<Triangle> getTriangles() {
 		assert calculated : "you need to math it before you can have any triangles!";
 		return triangles;

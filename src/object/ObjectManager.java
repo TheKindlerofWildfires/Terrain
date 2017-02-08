@@ -4,19 +4,27 @@ import java.util.ArrayList;
 
 import maths.Vector4f;
 import world.Skybox;
-
+/**
+ * The manager which deals with objects and object collections
+ * @author TheKingInYellow
+ *
+ */
 public class ObjectManager {
 	private Skybox box;
 	float c;
 	public ArrayList<GameObject> objectList = new ArrayList<GameObject>();
-
+	/**
+	 * Initialises the manager
+	 */
 	public ObjectManager() {
 		box = new Skybox("resources/models/skybox.obj", "resources/textures/skybox.png");
 		right();
 		box.rotate(90, 1, 0, 0);
 
 	}
-
+	/**
+	 * Makes sure that the objs are rendered in the way they are seen in blender
+	 */
 	private void right() {
 		for (int i = 0; i < objectList.size(); i++) {
 			GameObject object = objectList.get(i);
@@ -24,24 +32,16 @@ public class ObjectManager {
 		}
 
 	}
-
+	/**
+	 * Updates the object, should be used to call the update method on the game objects
+	 */
 	public void update() {
-		/*
-		 * //target.force = new Vector3f((float)(-0.1*Math.sin(c)),0,0);
-		 * //target.force = target.position.subtract(new Vector3f(0, 5,
-		 * 10)).scale(-0.1f); for (int i = 0; i < objectList.size(); i++) {
-		 * GameObject object = objectList.get(i);
-		 * object.translate(object.velocity);
-		 * //object.placeAt(object.position.x, object.position.y,
-		 * object.position.z); object.physic(); }
-		 * maths.BoundingBox.collide(ball, target, ball.velocity,
-		 * target.velocity); float cZ = (float)
-		 * Math.abs(World.noise.getValue(ball.position.x, ball.position.y, 0.1))
-		 * * Chunk.SIZE / 2 + .5f; float diff = ball.position.z - cZ;
-		 * //System.out.println(diff); ball.velocity.z = -diff * .7f;
-		 */
+		
 	}
-
+	/**
+	 * Renders the objects
+	 * @param clipPlane
+	 */
 	public void render(Vector4f clipPlane) {
 		for (int i = 0; i < objectList.size(); i++) {
 			// GameObject object = objectList.get(i);

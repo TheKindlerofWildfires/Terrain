@@ -12,12 +12,11 @@ public class ScrollCallback extends GLFWScrollCallback {
 	@Override
 	public void invoke(long window, double xoffset, double yoffset) {
 		ScrollCallback.yoffset = yoffset;
-		
+
 	}
-	public static double getyoffset(){
+
+	public static double getyoffset() {
 		return yoffset;
 	}
-
-
 
 }

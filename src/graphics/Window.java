@@ -118,14 +118,21 @@ public class Window implements Runnable {
 	public static Lava lava;
 	public static Tunnel tunnel;
 	public static Walk walk;
-	//private static DetailManager trees;
-	//private static Particle baseTree;
+	// private static DetailManager trees;
 
+	/**
+	 * Main class for entire game
+	 * 
+	 * @param args
+	 */
 	public static void main(String args[]) {
 		Window game = new Window();
 		game.run();
 	}
 
+	/**
+	 * Loads the properties we need from files
+	 */
 	private void loadProperties() {
 		System.out.println("Loading properties from resources/properties/window.properties");
 
@@ -153,7 +160,6 @@ public class Window implements Runnable {
 	 * Code called at the start of the gameloop
 	 */
 	public void init() {
-		
 		loadProperties();
 		randomize();
 		// Initialize glfw
@@ -177,9 +183,9 @@ public class Window implements Runnable {
 		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
 		glfwSetCursorPosCallback(window, cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
 		glfwSetScrollCallback(window, scrollCallback = (GLFWScrollCallback) new input.ScrollCallback());
-		glfwSetMouseButtonCallback(window, mouseButtonCallback = (GLFWMouseButtonCallback)new input.MouseButtonCallback());
+		glfwSetMouseButtonCallback(window,
+				mouseButtonCallback = (GLFWMouseButtonCallback) new input.MouseButtonCallback());
 
-	
 		// set window pos
 		glfwSetWindowPos(window, 0, 20);
 		// display window
@@ -199,7 +205,7 @@ public class Window implements Runnable {
 		windowWidth = width.get(0);
 		windowHeight = height.get(0);
 		// Create GraphicsManager and World
-		world = new World(0,mathRandom.nextInt());
+		world = new World(0, mathRandom.nextInt());
 		graphicsManager = new GraphicsManager();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
@@ -217,26 +223,8 @@ public class Window implements Runnable {
 
 		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
-		
-		
-		//baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+
 		Detail.init();
-		//trees = new DetailManager(baseTree, 1000, 10, new Vector4f(1,1,1,1));
-		//trees.activate();
-		
-		//ArrayList<Particle> treeees = new ArrayList<Particle>();
-
-		/*for (int i = 0; i < 1000; i++) {
-			Particle newTree = new Particle(baseTree);
-			newTree.rotate(90, 1, 0, 0);
-			Vector3f displacement = new Vector3f((float) Math.random() * 1000, (float) Math.random() * 1000, 4);
-			newTree.translate(displacement);
-			treeees.add(newTree);
-		}*/
-
-		//trees.detailsToAdd.addAll(treeees);
-
-
 		GraphicsManager.toggleFog();
 	}
 
@@ -246,10 +234,10 @@ public class Window implements Runnable {
 	private void randomize() {
 		// setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
-		worldRandom.setSeed(119);//119 : 5
+		worldRandom.setSeed(119);// 119 : 5
 		mathRandom.setSeed(worldRandom.nextLong());
 		entityRandom.setSeed(0);
-		//World.perlinSeed = mathRandom.nextInt();
+		// World.perlinSeed = mathRandom.nextInt();
 	}
 
 	/**
@@ -273,6 +261,9 @@ public class Window implements Runnable {
 
 	float x = 0;
 
+	/**
+	 * Simon wanted a testUpdate?
+	 */
 	public void testUpdate() {
 		glfwPollEvents();
 		graphicsManager.update();
@@ -310,10 +301,9 @@ public class Window implements Runnable {
 		objectManager.render(reflectionClipPlane);
 		entityManager.render(reflectionClipPlane);
 		lava.render(reflectionClipPlane);
-		
 
-		//	move camera back and render refraction texture
-		//GraphicsManager.camera.flipCamera();
+		// move camera back and render refraction texture
+		// GraphicsManager.camera.flipCamera();
 
 		GraphicsManager.camera.moveCamera(new Vector3f(0, 0, camDist * 2));
 		GraphicsManager.camera.moveTarget(new Vector3f(0, 0, targetDist * 2));
@@ -333,18 +323,21 @@ public class Window implements Runnable {
 		glViewport(0, 0, windowWidth, windowHeight);
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		//world.renderLand(renderClipPlane);
-		//objectManager.render(renderClipPlane);
-		//water.render(renderClipPlane); // do NOT attempt to render water
-										// anywhere other than to screen
-		//entityManager.render(renderClipPlane);
-		//lava.render(renderClipPlane);
-		//trees.render(renderClipPlane);
-		//Detail.render(renderClipPlane);
-		//tunnel.render(renderClipPlane);
+		// world.renderLand(renderClipPlane);
+		// objectManager.render(renderClipPlane);
+		// water.render(renderClipPlane); // do NOT attempt to render water
+		// anywhere other than to screen
+		// entityManager.render(renderClipPlane);
+		// lava.render(renderClipPlane);
+		// trees.render(renderClipPlane);
+		// Detail.render(renderClipPlane);
+		// tunnel.render(renderClipPlane);
 		walk.render(renderClipPlane);
 	}
 
+	/**
+	 * Simon wanted a test render?
+	 */
 	public void testRender() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -352,7 +345,13 @@ public class Window implements Runnable {
 		objectManager.render(renderClipPlane);
 
 	}
-	public static void reload(int type){
+
+	/**
+	 * This reloads the world, based on what type it was given
+	 * 
+	 * @param type
+	 */
+	public static void reload(int type) {
 		world = new World(type, worldRandom.nextInt(10));
 		entityManager.player.placeAt(0, 0, entityManager.player.position.z);
 		water.placeAt(0, 0, Chunk.WATERLEVEL);
@@ -361,9 +360,10 @@ public class Window implements Runnable {
 		chunkLoader.chunksToLoad.clear();
 		chunkLoader.loadedChunks.clear();
 		Biome.updateWater(type);
-		
-		//should also clear objects/ trees/ entities
+
+		// should also clear objects/ trees/ entities
 	}
+
 	/**
 	 * The game loop
 	 */

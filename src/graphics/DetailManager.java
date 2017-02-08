@@ -11,20 +11,40 @@ import particles.Particle;
 import world.Chunk;
 import world.World;
 
+/**
+ * Manages details, needs a rework
+ * 
+ * @author TheKingInYellow
+ *
+ */
 public class DetailManager extends Geyser {
 
 	public Queue<Particle> detailsToAdd = new LinkedList<Particle>();
 
+	/**
+	 * Initialises the detail manager
+	 * 
+	 * @param baseParticle
+	 * @param maxParticles
+	 * @param creationPeriodMillis
+	 * @param colour
+	 */
 	public DetailManager(Particle baseParticle, int maxParticles, long creationPeriodMillis, Vector4f colour) {
 		super(baseParticle, maxParticles, creationPeriodMillis, colour);
-		this.colour = colour;//new Vector4f(.2f, 1, .2f, 1);
+		this.colour = colour;// new Vector4f(.2f, 1, .2f, 1);
 	}
 
+	/**
+	 * This class bothers me--> I don't know what it does
+	 */
 	@Override
 	protected void updatePosition(Particle particle, long elapsedTime) {
 		return;
 	}
 
+	/**
+	 * Creates a 'particle' at the position, but it needs reworking
+	 */
 	@Override
 	protected void createParticle() {
 		Iterator<? extends GameObject> it = objects.iterator();

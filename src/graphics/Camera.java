@@ -3,6 +3,12 @@ package graphics;
 import maths.Matrix4f;
 import maths.Vector3f;
 
+/**
+ * The Camera class, be very safe with it
+ * 
+ * @author TheKingInYellow & HMSRothman
+ *
+ */
 public class Camera {
 
 	public Vector3f pos;
@@ -30,7 +36,7 @@ public class Camera {
 	public float far;
 
 	/**
-	 * Initializes camera
+	 * Initialises camera
 	 * 
 	 * @param cameraPos
 	 *            position of camera
@@ -53,9 +59,8 @@ public class Camera {
 		this.near = near;
 		this.far = far;
 	}
-
 	/**
-	 * Moves the camera and target Deprecated
+	 * Moves the camera and target
 	 * 
 	 * @param displacement
 	 *            displacement vector
@@ -65,7 +70,6 @@ public class Camera {
 		view = Matrix4f.gluLookAt(pos, target, up, flipped);
 		pv = projection.multiply(view);
 	}
-
 	public void move(Vector3f displacement) {
 		pos = pos.add(displacement);
 		target = target.add(displacement);
@@ -114,7 +118,8 @@ public class Camera {
 	}
 
 	/**
-	 * Rotates field of view, only works on xy plane
+	 * Rotates field of view, only works on xy plane, and there is no reason to
+	 * change that
 	 * 
 	 * @param mousePos
 	 *            location of mouse on screen, given by mouseInput

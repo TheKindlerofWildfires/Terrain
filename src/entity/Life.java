@@ -1,31 +1,42 @@
 package entity;
 
+/**
+ * 
+ * @author TheKingInYellow
+ *
+ */
 public class Life {
 	public boolean isLiving = false;
 	public float hp;
-	/** 
+
+	/**
 	 * @param hp
 	 */
-	public Life(float hp){
+	public Life(float hp) {
 		this.hp = hp;
 		isLiving = true;
 	}
+
 	/**
-	 * @param add, the amount of health to add, negative for damage.
+	 * @param add,
+	 *            the amount of health to add, negative for damage.
 	 */
-	public void add(float add){
+	public void add(float add) {
 		this.hp += add;
-		if(hp<= 0){
+		if (hp <= 0) {
 			isLiving = false;
 		}
 	}
+
 	/**
-	* And then there was death
-	* @param cleanHp decides if the hp should be wiped or not
-	*/
-	public void kill(boolean cleanHp){
+	 * Kills the entity which calls it
+	 * 
+	 * @param cleanHp
+	 *            decides if the hp should be wiped or not
+	 */
+	public void kill(boolean cleanHp) {
 		isLiving = false;
-		if(cleanHp){
+		if (cleanHp) {
 			hp = 0;
 		}
 	}
