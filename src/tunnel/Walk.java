@@ -20,7 +20,6 @@ public class Walk {
 	public ArrayList<Vector3f> blocks = new ArrayList<Vector3f>();
 	Vector3f head = new Vector3f(0, 0, 0);
 	Vector3f vel = new Vector3f(0, 0, 0);
-	// public byte[][][] tunnelArray = new byte[xSize][ySize][zSize];
 
 	public static byte EXISTS = 0b00000001;
 
@@ -94,7 +93,7 @@ public class Walk {
 	}
 
 	/**
-	 * roughly a dense network, not boxing
+	 * roughly a dense network, boxing
 	 */
 	public void lattice() {
 		for (int i = 0; i < stepCount; i++) {
@@ -132,7 +131,7 @@ public class Walk {
 	}
 
 	/**
-	 * Fucks off, but in a good way! non boxing
+	 * Fucks off, but in a good way! non boxing 
 	 */
 	public void snake() {
 		for (int i = 0; i < stepCount; i++) {
@@ -168,9 +167,67 @@ public class Walk {
 			blocks.add(head);
 		}
 	}
+	/**
+	 * snake but boxing
+	 */
+	public void snakeBox() {
+		for (int i = 0; i < stepCount; i++) {
+			int dir = rng.nextInt(8);
+			switch (dir) {
+			case 0:
+				vel = vel.add(down);
+				break;
+			case 1:
+				vel = vel.add(up);
+				break;
+			case 2:
+				vel = vel.add(left);
+				break;
+			case 3:
+				vel = vel.add(right);
+				break;
+			case 4:
+				vel = vel.add(front);
+				break;
+			case 5:
+				vel = vel.add(back);
+				break;
+			case 6:
+				vel = vel.normalize();
+				break;
+			}
+			//Need to make vel into up/down/left/right/front/back
+			Vector3f math = vel.normalize();
+			float x = Math.abs(vel.x);
+			float y = Math.abs(vel.y);
+			float z = Math.abs(vel.z);
+			float q = Math.max(Math.max(x, y), z);
+			if(q == x){
+				if(vel.x >1){
+					math = right;
+				}else{
+					math = left;
+				}
+			}else if(q == y){
+				if(vel.y >1){
+					math = front;
+				}else{
+					math = back;
+				}
+			}else if(q == z){
+				if(vel.z >1){
+					math = up;
+				}else{
+					math = down;
+				}
+			}
+			head = head.add(math);
+			blocks.add(head);
+		}
+	}
 
 	/**
-	 * Death star meets octopus, non boxing
+	 * Death star meets octopus, non boxing --> want to make boxing
 	 */
 	public void octopus() {
 		for (int i = 0; i < stepCount; i++) {
@@ -202,6 +259,67 @@ public class Walk {
 				head = head.normalize();
 			}
 			head = head.add(vel.normalize());
+			blocks.add(head);
+
+		}
+	}
+	/**
+	 * octo but boxes
+	 */
+	public void octoBox() {
+		for (int i = 0; i < stepCount; i++) {
+			int dir = rng.nextInt(7);
+			switch (dir) {
+			case 0:
+				vel = vel.add(down);
+				break;
+			case 1:
+				vel = vel.add(up);
+				break;
+			case 2:
+				vel = vel.add(left);
+				break;
+			case 3:
+				vel = vel.add(right);
+				break;
+			case 4:
+				vel = vel.add(front);
+				break;
+			case 5:
+				vel = vel.add(back);
+				break;
+			case 6:
+				vel = vel.normalize();
+				break;
+			}
+			Vector3f math = vel.normalize();
+			float x = Math.abs(vel.x);
+			float y = Math.abs(vel.y);
+			float z = Math.abs(vel.z);
+			float q = Math.max(Math.max(x, y), z);
+			if(q == x){
+				if(vel.x >1){
+					math = right;
+				}else{
+					math = left;
+				}
+			}else if(q == y){
+				if(vel.y >1){
+					math = front;
+				}else{
+					math = back;
+				}
+			}else if(q == z){
+				if(vel.z >1){
+					math = up;
+				}else{
+					math = down;
+				}
+			}
+			if (head.lengthSquared() > maxDist) {
+				head = head.normalize();
+			}
+			head = head.add(math);
 			blocks.add(head);
 
 		}
