@@ -35,8 +35,8 @@ public class Walk {
 	static Vector3f front = new Vector3f(0, 1, 0);
 	static Vector3f right = new Vector3f(1, 0, 0);
 	static Vector3f left = new Vector3f(-1, 0, 0);
-	int stepCount = 12500;
-	int maxDist = 1250;
+	int stepCount = 2500;
+	int maxDist = 250;
 
 	public Walk() {
 		blocks.add(head);
@@ -44,10 +44,34 @@ public class Walk {
 		for (int i = 0; i < blocks.size(); i++) {
 			Vector3f e = blocks.get(i);
 			//System.out.println(e);
-			GameObject object = new GameObject("resources/models/box.obj", "none", true);
+			byte b = contains(e);
+			GameObject object = new Block("resources/models/box.obj", "none", true, b);
 			object.placeAt(e.x * 2, e.y * 2, e.z * 2); // too ez for rtz
 			solids.add(object);
 		}
+	}
+
+	private byte contains(Vector3f e) {
+		byte b =EXISTS;
+		if(blocks.contains(e.add(up))){
+			b|=UP;
+		}
+		if(blocks.contains(e.add(down))){
+			b|=DOWN;
+		}
+		if(blocks.contains(e.add(right))){
+			b|=RIGHT;
+		}
+		if(blocks.contains(e.add(left))){
+			b|=LEFT;
+		}
+		if(blocks.contains(e.add(front))){
+			b|=FRONT;
+		}
+		if(blocks.contains(e.add(back))){
+			b|=BACK;
+		}
+		return b;
 	}
 
 	public void update() {
