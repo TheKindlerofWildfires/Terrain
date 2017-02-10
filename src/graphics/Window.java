@@ -57,8 +57,6 @@ import maths.Vector3f;
 import maths.Vector4f;
 import object.ObjectManager;
 import physics.Time;
-import tunnel.Tunnel;
-import tunnel.Walk;
 import world.Biome;
 import world.Chunk;
 import world.ChunkLoader;
@@ -116,23 +114,14 @@ public class Window implements Runnable {
 	public static FrameBufferObject reflection;
 
 	public static Lava lava;
-	public static Tunnel tunnel;
-	public static Walk walk;
-	// private static DetailManager trees;
+	//private static DetailManager trees;
+	//private static Particle baseTree;
 
-	/**
-	 * Main class for entire game
-	 * 
-	 * @param args
-	 */
 	public static void main(String args[]) {
 		Window game = new Window();
 		game.run();
 	}
 
-	/**
-	 * Loads the properties we need from files
-	 */
 	private void loadProperties() {
 		System.out.println("Loading properties from resources/properties/window.properties");
 
@@ -159,75 +148,91 @@ public class Window implements Runnable {
 	/**
 	 * Code called at the start of the gameloop
 	 */
-	private void init(){
-	loadProperties();
-	randomize();
-	// Initialize glfw
-	if (!glfwInit()) {
-		System.err.println("GLFW init fail");
-	}
-	// make window resizable
-	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-	// set opengl to version 3.2, core profile, forward compatable
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	// create window
-	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "WaterGame", NULL, NULL);
-	if (window == NULL) {
-		System.err.println("Could not create window");
-	}
-	// enable keyboard and mouse
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
-	glfwSetCursorPosCallback(window, cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
-	glfwSetScrollCallback(window, scrollCallback = (GLFWScrollCallback) new input.ScrollCallback());
-	glfwSetMouseButtonCallback(window, mouseButtonCallback = (GLFWMouseButtonCallback)new input.MouseButtonCallback());
+	public void init() {
+		
+		loadProperties();
+		randomize();
+		// Initialize glfw
+		if (!glfwInit()) {
+			System.err.println("GLFW init fail");
+		}
+		// make window resizable
+		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+		// set opengl to version 3.2, core profile, forward compatable
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		// create window
+		window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "WaterGame", NULL, NULL);
+		if (window == NULL) {
+			System.err.println("Could not create window");
+		}
+		// enable keyboard and mouse
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
+		glfwSetCursorPosCallback(window, cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
+		glfwSetScrollCallback(window, scrollCallback = (GLFWScrollCallback) new input.ScrollCallback());
+		glfwSetMouseButtonCallback(window, mouseButtonCallback = (GLFWMouseButtonCallback)new input.MouseButtonCallback());
 
-
-	// set window pos
-	glfwSetWindowPos(window, 0, 20);
-	// display window
-	glfwMakeContextCurrent(window);
-	glfwShowWindow(window);
-	// init gl
-	GL.createCapabilities();
-	// background colour
-	glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
-	// enable depth testing and face culling
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CLIP_DISTANCE0);
-
-	IntBuffer width = BufferUtils.createIntBuffer(1);
-	IntBuffer height = BufferUtils.createIntBuffer(1);
-	glfwGetFramebufferSize(Window.window, width, height);
-	windowWidth = width.get(0);
-	windowHeight = height.get(0);
-	// Create GraphicsManager and World
-	world = new World(0,mathRandom.nextInt());
-	graphicsManager = new GraphicsManager();
-	objectManager = new ObjectManager();
-	entityManager = new EntityManager();
-
-	water = new Water();
-	chunkLoader = new ChunkLoader();
-	chunkLoader.setPriority(Thread.MIN_PRIORITY);
-	chunkLoader.start();
-	lava = new Lava();
-	reflectionClipPlane = new Vector4f(0, 0, 1, -Chunk.WATERLEVEL + 0.01f);
-	refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL + 0.01f);
-	renderClipPlane = new Vector4f(0, 0, -1, 10000);
-
-	reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
-	refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
 	
+		// set window pos
+		glfwSetWindowPos(window, 0, 20);
+		// display window
+		glfwMakeContextCurrent(window);
+		glfwShowWindow(window);
+		// init gl
+		GL.createCapabilities();
+		// background colour
+		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
+		// enable depth testing and face culling
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CLIP_DISTANCE0);
 
-	Detail.init();
+		IntBuffer width = BufferUtils.createIntBuffer(1);
+		IntBuffer height = BufferUtils.createIntBuffer(1);
+		glfwGetFramebufferSize(Window.window, width, height);
+		windowWidth = width.get(0);
+		windowHeight = height.get(0);
+		// Create GraphicsManager and World
+		world = new World(0,mathRandom.nextInt());
+		graphicsManager = new GraphicsManager();
+		objectManager = new ObjectManager();
+		entityManager = new EntityManager();
 
-	walk = new Walk();
-	GraphicsManager.toggleFog();
-}
+		water = new Water();
+		chunkLoader = new ChunkLoader();
+		chunkLoader.setPriority(Thread.MIN_PRIORITY);
+		chunkLoader.start();
+		lava = new Lava();
+		reflectionClipPlane = new Vector4f(0, 0, 1, -Chunk.WATERLEVEL + 0.01f);
+		refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL + 0.01f);
+		renderClipPlane = new Vector4f(0, 0, -1, 10000);
+
+		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
+		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
+		
+		
+		//baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		Detail.init();
+		//trees = new DetailManager(baseTree, 1000, 10, new Vector4f(1,1,1,1));
+		//trees.activate();
+		
+		//ArrayList<Particle> treeees = new ArrayList<Particle>();
+
+		/*for (int i = 0; i < 1000; i++) {
+			Particle newTree = new Particle(baseTree);
+			newTree.rotate(90, 1, 0, 0);
+			Vector3f displacement = new Vector3f((float) Math.random() * 1000, (float) Math.random() * 1000, 4);
+			newTree.translate(displacement);
+			treeees.add(newTree);
+		}*/
+
+		//trees.detailsToAdd.addAll(treeees);
+
+
+		GraphicsManager.toggleFog();
+	}
 
 	/**
 	 * Sets the seeds for everything
@@ -235,7 +240,7 @@ public class Window implements Runnable {
 	private void randomize() {
 		// setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
-		worldRandom.setSeed(119);// 119 : 5
+		worldRandom.setSeed(119);//119 : 5
 		mathRandom.setSeed(worldRandom.nextLong());
 		entityRandom.setSeed(0);
 		//World.perlinSeed = mathRandom.nextInt();
@@ -262,9 +267,6 @@ public class Window implements Runnable {
 
 	float x = 0;
 
-	/**
-	 * Simon wanted a testUpdate?
-	 */
 	public void testUpdate() {
 		glfwPollEvents();
 		graphicsManager.update();
@@ -333,12 +335,8 @@ public class Window implements Runnable {
 		lava.render(renderClipPlane);
 		//trees.render(renderClipPlane);
 		Detail.render(renderClipPlane);
-		walk.render(renderClipPlane);
 	}
 
-	/**
-	 * Simon wanted a test render?
-	 */
 	public void testRender() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -346,13 +344,7 @@ public class Window implements Runnable {
 		objectManager.render(renderClipPlane);
 
 	}
-
-	/**
-	 * This reloads the world, based on what type it was given
-	 * 
-	 * @param type
-	 */
-	public static void reload(int type) {
+	public static void reload(int type){
 		world = new World(type, worldRandom.nextInt(10));
 		entityManager.player.placeAt(0, 0, entityManager.player.position.z);
 		water.placeAt(0, 0, Chunk.WATERLEVEL);
@@ -361,10 +353,9 @@ public class Window implements Runnable {
 		chunkLoader.chunksToLoad.clear();
 		chunkLoader.loadedChunks.clear();
 		Biome.updateWater(type);
-
-		// should also clear objects/ trees/ entities
+		
+		//should also clear objects/ trees/ entities
 	}
-
 	/**
 	 * The game loop
 	 */
