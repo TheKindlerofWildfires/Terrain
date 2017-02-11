@@ -1,9 +1,9 @@
-/entity/
-/graphics/
-/input/
+/models/
+/noiseLibrary/
+/object/
+/particles/
 /physics/
 /player/
 /tunnel/
 /world/
-/shaders/
-/maths/
+/graphics/

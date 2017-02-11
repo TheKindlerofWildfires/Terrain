@@ -152,7 +152,6 @@ public class Window implements Runnable {
 	/**
 	 * Code called at the start of the gameloop
 	 */
-<<<<<<< HEAD
 	private void init(){
 	loadProperties();
 	randomize();
@@ -171,96 +170,8 @@ public class Window implements Runnable {
 	window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "WaterGame", NULL, NULL);
 	if (window == NULL) {
 		System.err.println("Could not create window");
-=======
-	public void init() {
-		
-		loadProperties();
-		randomize();
-		// Initialize glfw
-		if (!glfwInit()) {
-			System.err.println("GLFW init fail");
-		}
-		// make window resizable
-		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-		// set opengl to version 3.2, core profile, forward compatable
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-		// create window
-		window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "WaterGame", NULL, NULL);
-		if (window == NULL) {
-			System.err.println("Could not create window");
-		}
-		// enable keyboard and mouse
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
-		glfwSetCursorPosCallback(window, cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
-		glfwSetScrollCallback(window, scrollCallback = (GLFWScrollCallback) new input.ScrollCallback());
-		glfwSetMouseButtonCallback(window, mouseButtonCallback = (GLFWMouseButtonCallback)new input.MouseButtonCallback());
-
-	
-		// set window pos
-		glfwSetWindowPos(window, 0, 20);
-		// display window
-		glfwMakeContextCurrent(window);
-		glfwShowWindow(window);
-		// init gl
-		GL.createCapabilities();
-		// background colour
-		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
-		// enable depth testing and face culling
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CLIP_DISTANCE0);
-
-		IntBuffer width = BufferUtils.createIntBuffer(1);
-		IntBuffer height = BufferUtils.createIntBuffer(1);
-		glfwGetFramebufferSize(Window.window, width, height);
-		windowWidth = width.get(0);
-		windowHeight = height.get(0);
-		// Create GraphicsManager and World
-		world = new World(0,mathRandom.nextInt());
-		graphicsManager = new GraphicsManager();
-		objectManager = new ObjectManager();
-		entityManager = new EntityManager();
-
-		water = new Water();
-		chunkLoader = new ChunkLoader();
-		chunkLoader.setPriority(Thread.MIN_PRIORITY);
-		chunkLoader.start();
-		lava = new Lava();
-		tunnel = new Tunnel();
-		walk = new Walk();
-		reflectionClipPlane = new Vector4f(0, 0, 1, -Chunk.WATERLEVEL + 0.01f);
-		refractionClipPlane = new Vector4f(0, 0, -1, Chunk.WATERLEVEL + 0.01f);
-		renderClipPlane = new Vector4f(0, 0, -1, 10000);
-
-		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
-		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
-		
-		
-		//baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
-		Detail.init();
-		//trees = new DetailManager(baseTree, 1000, 10, new Vector4f(1,1,1,1));
-		//trees.activate();
-		
-		//ArrayList<Particle> treeees = new ArrayList<Particle>();
-
-		/*for (int i = 0; i < 1000; i++) {
-			Particle newTree = new Particle(baseTree);
-			newTree.rotate(90, 1, 0, 0);
-			Vector3f displacement = new Vector3f((float) Math.random() * 1000, (float) Math.random() * 1000, 4);
-			newTree.translate(displacement);
-			treeees.add(newTree);
-		}*/
-
-		//trees.detailsToAdd.addAll(treeees);
-
-
-		GraphicsManager.toggleFog();
->>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
-	}
 	// enable keyboard and mouse
+	}
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
 	glfwSetCursorPosCallback(window, cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
@@ -309,7 +220,7 @@ public class Window implements Runnable {
 
 	walk = new Walk();
 	GraphicsManager.toggleFog();
-}
+	}
 
 	/**
 	 * Sets the seeds for everything
@@ -404,7 +315,6 @@ public class Window implements Runnable {
 		glViewport(0, 0, windowWidth, windowHeight);
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-<<<<<<< HEAD
 		world.renderLand(renderClipPlane);
 		objectManager.render(renderClipPlane);
 		water.render(renderClipPlane); // do NOT attempt to render water
@@ -413,17 +323,6 @@ public class Window implements Runnable {
 		lava.render(renderClipPlane);
 		//trees.render(renderClipPlane);
 		Detail.render(renderClipPlane);
-=======
-		//world.renderLand(renderClipPlane);
-		//objectManager.render(renderClipPlane);
-		//water.render(renderClipPlane); // do NOT attempt to render water
-										// anywhere other than to screen
-		//entityManager.render(renderClipPlane);
-		//lava.render(renderClipPlane);
-		//trees.render(renderClipPlane);
-		//Detail.render(renderClipPlane);
-		//tunnel.render(renderClipPlane);
->>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 		walk.render(renderClipPlane);
 	}
 

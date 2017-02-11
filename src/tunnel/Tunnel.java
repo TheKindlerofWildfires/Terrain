@@ -45,13 +45,8 @@ public class Tunnel {
 				for (int z = 0; z < zSize; z++) {
 					//System.out.print(tunnelArray[x][y][z] & EXISTS);
 					if ((tunnelArray[x][y][z] & EXISTS) == EXISTS) {
-<<<<<<< HEAD
 						GameObject object = getModel(tunnelArray[x][y][z]);
 						object.placeAt(x * 2, y * 2, z * 2);
-=======
-						GameObject object = new GameObject("resources/models/box.obj", "none", true);
-						object.placeAt(x*2, y*2, z*2);
->>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 						solids.add(object);
 					}
 				}
