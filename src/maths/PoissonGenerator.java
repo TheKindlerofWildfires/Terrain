@@ -13,14 +13,11 @@ public class PoissonGenerator {
 	public static int width = 10000;
 	public int remainingPoints = 200;
 	int freq = 0;
-
 	// public ArrayList<Vector3f> xp = new ArrayList<Vector3f>();
 	// public ArrayList<Vector3f> xn = new ArrayList<Vector3f>();
 	// public ArrayList<Vector3f> yp = new ArrayList<Vector3f>();
 	// public ArrayList<Vector3f> yn = new ArrayList<Vector3f>();
-	/**
-	 * An empty constructor
-	 */
+
 	public PoissonGenerator() {
 	}
 
@@ -96,13 +93,6 @@ public class PoissonGenerator {
 
 	}
 
-	/**
-	 * I feel like this is a method found elsewhere and therefore duplicate
-	 * 
-	 * @param p1
-	 * @param p2
-	 * @return
-	 */
 	public double distance(int[] p1, int[] p2) {
 		int dx = p2[0] - p1[0];
 		int dy = p2[1] - p1[1];

@@ -1,11 +1,7 @@
 package maths;
 
 import object.GameObject;
-/**
- * I strongly believe that this class is deprecated
- * @author TheKingInYellow & HMSRothman
- *
- */
+
 public class BoundingBox {
 
 	public Vector3f centre;
@@ -132,6 +128,11 @@ public class BoundingBox {
 				b1 = ob1.boundingBox;
 				colliding = aabbCollides(b0, b1);
 			}
+
+			// Vector3f momentum =
+			// ob0.velocity.scale(ob0.mass).add(ob1.velocity.scale(ob1.mass));
+			// Float kin = (float)
+			// (0.5*(ob0.velocity.length2()*ob0.mass+ob1.velocity.length2()*ob1.mass));
 			ob0.velocity = ob0.velocity.negate();
 			ob1.velocity = ob1.velocity.negate();
 		}

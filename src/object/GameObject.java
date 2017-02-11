@@ -28,7 +28,6 @@ import models.ModelManager;
 import models.VertexArrayObject;
 
 /**
- * Game object, basic building of game
  * @author TheKingInYellow & HMSRothman
  */
 public class GameObject {
@@ -126,19 +125,25 @@ public class GameObject {
 		this.enabled = baseObject.enabled;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * A totally empty constructor
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public GameObject() {
 
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Sets the object scale
 	 * @param x
 	 * @param y
 	 * @param z
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public void setScale(float x, float y, float z) {
 		model.setScale(x, y, z);
 		scale.x = x;
@@ -146,12 +151,15 @@ public class GameObject {
 		scale.z = z;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Scales the object
 	 * @param x
 	 * @param y
 	 * @param z
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public void scale(float x, float y, float z) {
 		model.scale(x, y, z);
 		boundingBox.x *= x;
@@ -163,12 +171,15 @@ public class GameObject {
 
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Translates the object
 	 * @param x
 	 * @param y
 	 * @param z
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public void translate(float x, float y, float z) {
 		model.translate(x, y, z);
 		boundingBox.centre.x += x;
@@ -177,6 +188,7 @@ public class GameObject {
 		position = position.add(new Vector3f(x, y, z));
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Rotates the object, but only by 90degrees
 	 * @param angle
@@ -185,6 +197,8 @@ public class GameObject {
 	 * @param z
 	 * @throws IllegalArgumentException
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public void rotate(int angle, int x, int y, int z) throws IllegalArgumentException {
 		if (angle % 90 != 0) {
 			throw new IllegalArgumentException("you can only rotate bounding boxes by right angles");
@@ -201,20 +215,26 @@ public class GameObject {
 		// at some point the bounding box should rotate too
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Translates the object
 	 * @param displacement
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public void translate(Vector3f displacement) {
 		translate(displacement.x, displacement.y, displacement.z);
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Places the object at location
 	 * @param x
 	 * @param y
 	 * @param z
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public void placeAt(float x, float y, float z) {
 		model.placeAt(x, y, z);
 		boundingBox.centre.x = x;
@@ -225,9 +245,12 @@ public class GameObject {
 		position.z = z;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Bad, old, physics code
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public void physic() {
 		if (enabled) {
 			fakeFriction = velocity.negate().scale(0.01f);
@@ -237,10 +260,13 @@ public class GameObject {
 		}
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Sets the force on the object
 	 * @param force
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public void setForce(Vector3f force) {
 		this.force = force;
 	}
@@ -258,10 +284,13 @@ public class GameObject {
 		}
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Readies the object to be rendered
 	 * @param clipPlane
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	protected void renderPrep(Vector4f clipPlane) {
 		setUniformMatrix4f("modelView", graphics.GraphicsManager.camera.view.multiply(model.getMatrix()));
 		if (hasMaterial) {
@@ -278,27 +307,36 @@ public class GameObject {
 		setUniform4f("clipPlane", clipPlane);
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Ensures that the object is GL
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public void makeGL() {
 		assert !isGL : "its already gl you dumb fuck";
 		vao = new VertexArrayObject(vaoData, 3);
 		this.isGL = true;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Gets the shader
 	 * @return
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public int getShader() {
 		return shader;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Gets the vertex array object
 	 * @return
 	 */
+=======
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 	public VertexArrayObject getVAO() {
 		return vao;
 	}

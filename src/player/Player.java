@@ -22,7 +22,7 @@ public class Player extends GameObject {
 	public Inventory inventory;
 	public Life self;
 	public float suitEnergy;
-	public float energyLoss = 0.0f;// 0.1
+	public float energyLoss = 0.0f;//0.1
 	boolean noClip = true;
 
 	public Player(Camera camera) {
@@ -33,58 +33,58 @@ public class Player extends GameObject {
 		this.target = camera.getTarget();
 		this.position = new Vector3f(1, 1, 10);
 		inventory = new Inventory(10);
-		// inventory.add(new Item("item", 100, "I1"));
+		//inventory.add(new Item("item", 100, "I1"));
 		self = new Life(1000);
 		suitEnergy = 100;
-
+		
 	}
 
 	public void update() {
 		camera.pos = position;
-		suitEnergy -= energyLoss * (.8 + World.difficulty);
-		if (suitEnergy < 0) {
+		suitEnergy-=energyLoss*(.8+World.difficulty) ;
+		if(suitEnergy<0){
 			self.kill(false);
 		}
 	}
 
 	public void movePlayer(String dir) {
-		if (self.isLiving) {
-			this.target = camera.target;
+		if(self.isLiving){
+		this.target = camera.target;
 
-			float vx = position.x - target.x;
-			float vy = position.y - target.y;
-			vx *= speed;
-			vy *= speed;
-			switch (dir) {
-			case "UP":
-				displacement = upward;
-				break;
-			case "DOWN":
-				displacement = upward.negate();
-				break;
-			case "FORWARD":
-				displacement = new Vector3f(-vx, -vy, 0);
-				break;
-			case "BACK":
-				displacement = new Vector3f(vx, vy, 0);
-				break;
-			case "LEFT":
-				displacement = new Vector3f(vy, -vx, 0);
-				break;
-			case "RIGHT":
-				displacement = new Vector3f(-vy, vx, 0);
-				break;
-			default:
-				System.err.println("wtf");
-			}
-			displacement = displacement.normalize().scale(speed);
-			move();
+		float vx = position.x - target.x;
+		float vy = position.y - target.y;
+		vx *= speed;
+		vy *= speed;
+		switch (dir) {
+		case "UP":
+			displacement = upward;
+			break;
+		case "DOWN":
+			displacement = upward.negate();
+			break;
+		case "FORWARD":
+			displacement = new Vector3f(-vx, -vy, 0);
+			break;
+		case "BACK":
+			displacement = new Vector3f(vx, vy, 0);
+			break;
+		case "LEFT":
+			displacement = new Vector3f(vy, -vx, 0);
+			break;
+		case "RIGHT":
+			displacement = new Vector3f(-vy, vx, 0);
+			break;
+		default:
+			System.err.println("wtf");
+		}
+		displacement = displacement.normalize().scale(speed);
+		move();
 		}
 	}
 
 	private void move() {
 		boolean canMove = true;
-
+		
 		if (!noClip) {
 
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));
@@ -118,19 +118,19 @@ public class Player extends GameObject {
 
 	public void activeItem() {
 		inventory.activeItem();
-
+		
 	}
 
 	public void scroll(double s) {
-		if (s == 1 || s == -1) {
+		if(s==1 || s==-1){
 			inventory.scroll(0);
-		} else if (s > 0) {
-			inventory.scroll(s - 1);
-		} else if (s < 0) {
-			inventory.scroll(s + 1);
+		}else if(s>0){
+			inventory.scroll(s-1);
+		}else if(s<0){
+			inventory.scroll(s+1);
 		}
-		// System.out.println(s);
-
+		//System.out.println(s);
+		
 	}
 
 }

@@ -10,7 +10,7 @@ public class Tunnel {
 	public ArrayList<GameObject> solids = new ArrayList<GameObject>();
 
 	// The order is left, right, forward, backs,up, down, exists
-	// 1 is open
+	//1 is open
 	int xSize = 30;
 	int ySize = 30;
 	int zSize = 30;
@@ -43,16 +43,21 @@ public class Tunnel {
 		for (int x = 0; x < xSize; x++) {
 			for (int y = 0; y < ySize; y++) {
 				for (int z = 0; z < zSize; z++) {
-					// System.out.print(tunnelArray[x][y][z] & EXISTS);
+					//System.out.print(tunnelArray[x][y][z] & EXISTS);
 					if ((tunnelArray[x][y][z] & EXISTS) == EXISTS) {
+<<<<<<< HEAD
 						GameObject object = getModel(tunnelArray[x][y][z]);
 						object.placeAt(x * 2, y * 2, z * 2);
+=======
+						GameObject object = new GameObject("resources/models/box.obj", "none", true);
+						object.placeAt(x*2, y*2, z*2);
+>>>>>>> parent of d32cc92... Fixing the formating and adding some documentation
 						solids.add(object);
 					}
 				}
-				// System.out.println();
+				//System.out.println();
 			}
-			// System.out.println();
+		//	System.out.println();
 		}
 
 	}
@@ -133,9 +138,9 @@ public class Tunnel {
 
 	public short setBit(int position, short ID, boolean clear) {
 		if (clear) {
-			return (ID &= ~(1 << position)); // set 0
+			return (ID &= ~(1 << position)); //set 0
 		} else {
-			return (ID |= (1 << position)); // set 1
+			return (ID |= (1 << position)); //set 1
 		}
 	}
 

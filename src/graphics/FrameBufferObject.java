@@ -30,11 +30,6 @@ import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
 import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-/**
- * 
- * @author HMSRothman This is a graphical thing that the only person writes
- *         comments doesn't understand
- */
 public class FrameBufferObject {
 
 	private int FboID;
@@ -44,13 +39,6 @@ public class FrameBufferObject {
 	private int width;
 	private int height;
 
-	/**
-	 * Initialises the FBO
-	 * 
-	 * @param width
-	 * @param height
-	 * @param depthTexture
-	 */
 	public FrameBufferObject(int width, int height, boolean depthTexture) {
 		this.width = width;
 		this.height = height;
@@ -71,18 +59,12 @@ public class FrameBufferObject {
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	/**
-	 * Makes the FBO
-	 */
 	private void makeFBO() {
 		FboID = glGenFramebuffers();
 		glBindFramebuffer(GL_FRAMEBUFFER, FboID);
 		glDrawBuffer(GL_COLOR_ATTACHMENT0);
 	}
 
-	/**
-	 * Creates a texture?
-	 */
 	private void makeTextureAttachment() {
 		textureID = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, textureID);
@@ -94,9 +76,6 @@ public class FrameBufferObject {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	/**
-	 * Creates depth texture?
-	 */
 	private void makeDepthTextureAttachment() {
 		depthTextureID = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, depthTextureID);
@@ -106,9 +85,6 @@ public class FrameBufferObject {
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTextureID, 0);
 	}
 
-	/**
-	 * Makes depth buffer d?
-	 */
 	private void makeDepthBufferAttachment() {
 		depthBufferID = glGenRenderbuffers();
 		glBindRenderbuffer(GL_RENDERBUFFER, depthBufferID);
@@ -116,34 +92,19 @@ public class FrameBufferObject {
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferID);
 	}
 
-	/**
-	 * Activates the FBO
-	 */
 	public void activate() {
 		glBindFramebuffer(GL_FRAMEBUFFER, FboID);
 		glViewport(0, 0, width, height);
 	}
 
-	/**
-	 * 
-	 * @return FboID
-	 */
 	public int getID() {
 		return FboID;
 	}
 
-	/**
-	 * 
-	 * @return TextureID
-	 */
 	public int getTexture() {
 		return textureID;
 	}
 
-	/**
-	 * 
-	 * @return DepthTexture
-	 */
 	public int getDepthTexture() {
 		return depthTextureID;
 	}
