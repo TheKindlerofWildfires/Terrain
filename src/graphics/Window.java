@@ -57,8 +57,6 @@ import maths.Vector3f;
 import maths.Vector4f;
 import object.ObjectManager;
 import physics.Time;
-import tunnel.Tunnel;
-import tunnel.Walk;
 import world.Biome;
 import world.Chunk;
 import world.ChunkLoader;
@@ -116,8 +114,13 @@ public class Window implements Runnable {
 	public static FrameBufferObject reflection;
 
 	public static Lava lava;
+<<<<<<< HEAD
 	public static Tunnel tunnel;
 	public static Walk walk;
+=======
+	//private static DetailManager trees;
+	//private static Particle baseTree;
+>>>>>>> origin/genTunnel
 
 	public static void main(String args[]) {
 		Window game = new Window();
@@ -150,7 +153,12 @@ public class Window implements Runnable {
 	/**
 	 * Code called at the start of the gameloop
 	 */
+<<<<<<< HEAD
 	private void init() {
+=======
+	public void init() {
+		
+>>>>>>> origin/genTunnel
 		loadProperties();
 		randomize();
 		// Initialize glfw
@@ -168,14 +176,25 @@ public class Window implements Runnable {
 		window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "WaterGame", NULL, NULL);
 		if (window == NULL) {
 			System.err.println("Could not create window");
+<<<<<<< HEAD
 			// enable keyboard and mouse
 		}
+=======
+		}
+		// enable keyboard and mouse
+>>>>>>> origin/genTunnel
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
 		glfwSetCursorPosCallback(window, cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
 		glfwSetScrollCallback(window, scrollCallback = (GLFWScrollCallback) new input.ScrollCallback());
+<<<<<<< HEAD
 		glfwSetMouseButtonCallback(window,
 				mouseButtonCallback = (GLFWMouseButtonCallback) new input.MouseButtonCallback());
+=======
+		glfwSetMouseButtonCallback(window, mouseButtonCallback = (GLFWMouseButtonCallback)new input.MouseButtonCallback());
+
+	
+>>>>>>> origin/genTunnel
 		// set window pos
 		glfwSetWindowPos(window, 0, 20);
 		// display window
@@ -195,7 +214,11 @@ public class Window implements Runnable {
 		windowWidth = width.get(0);
 		windowHeight = height.get(0);
 		// Create GraphicsManager and World
+<<<<<<< HEAD
 		world = new World(0, mathRandom.nextInt());
+=======
+		world = new World(0,mathRandom.nextInt());
+>>>>>>> origin/genTunnel
 		graphicsManager = new GraphicsManager();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
@@ -211,9 +234,32 @@ public class Window implements Runnable {
 
 		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
+<<<<<<< HEAD
 		Detail.init();
 
 		walk = new Walk();
+=======
+		
+		
+		//baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		Detail.init();
+		//trees = new DetailManager(baseTree, 1000, 10, new Vector4f(1,1,1,1));
+		//trees.activate();
+		
+		//ArrayList<Particle> treeees = new ArrayList<Particle>();
+
+		/*for (int i = 0; i < 1000; i++) {
+			Particle newTree = new Particle(baseTree);
+			newTree.rotate(90, 1, 0, 0);
+			Vector3f displacement = new Vector3f((float) Math.random() * 1000, (float) Math.random() * 1000, 4);
+			newTree.translate(displacement);
+			treeees.add(newTree);
+		}*/
+
+		//trees.detailsToAdd.addAll(treeees);
+
+
+>>>>>>> origin/genTunnel
 		GraphicsManager.toggleFog();
 	}
 
@@ -223,7 +269,7 @@ public class Window implements Runnable {
 	private void randomize() {
 		// setting seeds
 		worldRandom.setSeed(mathRandom.nextLong());
-		worldRandom.setSeed(119);// 119 : 5
+		worldRandom.setSeed(119);//119 : 5
 		mathRandom.setSeed(worldRandom.nextLong());
 		entityRandom.setSeed(0);
 		// World.perlinSeed = mathRandom.nextInt();
@@ -310,7 +356,6 @@ public class Window implements Runnable {
 		lava.render(renderClipPlane);
 		//trees.render(renderClipPlane);
 		Detail.render(renderClipPlane);
-		walk.render(renderClipPlane);
 	}
 
 	public void testRender() {
@@ -320,8 +365,12 @@ public class Window implements Runnable {
 		objectManager.render(renderClipPlane);
 
 	}
+<<<<<<< HEAD
 
 	public static void reload(int type) {
+=======
+	public static void reload(int type){
+>>>>>>> origin/genTunnel
 		world = new World(type, worldRandom.nextInt(10));
 		entityManager.player.placeAt(0, 0, entityManager.player.position.z);
 		water.placeAt(0, 0, Chunk.WATERLEVEL);
@@ -330,10 +379,9 @@ public class Window implements Runnable {
 		chunkLoader.chunksToLoad.clear();
 		chunkLoader.loadedChunks.clear();
 		Biome.updateWater(type);
-
-		// should also clear objects/ trees/ entities
+		
+		//should also clear objects/ trees/ entities
 	}
-
 	/**
 	 * The game loop
 	 */
