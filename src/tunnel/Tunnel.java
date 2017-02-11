@@ -57,9 +57,7 @@ public class Tunnel {
 
 	}
 
-	public void update() {
 
-	}
 
 	public void render(Vector4f clipPlane) {
 		solids.stream().forEach(c -> c.render(clipPlane));
@@ -124,18 +122,6 @@ public class Tunnel {
 				breaker = true;
 				break;
 			}
-		}
-	}
-
-	public short getBit(int position, short ID) {
-		return (short) ((ID >> position) & 1);
-	}
-
-	public short setBit(int position, short ID, boolean clear) {
-		if (clear) {
-			return (ID &= ~(1 << position)); //set 0
-		} else {
-			return (ID |= (1 << position)); //set 1
 		}
 	}
 
