@@ -118,8 +118,6 @@ public class Window implements Runnable {
 	public static Lava lava;
 	public static Tunnel tunnel;
 	public static Walk walk;
-	// private static DetailManager trees;
-	// private static Particle baseTree;
 
 	public static void main(String args[]) {
 		Window game = new Window();
@@ -213,23 +211,6 @@ public class Window implements Runnable {
 
 		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
-
-		// baseTree = new Particle("resources/models/tree.obj", "none", new
-		// Vector3f(0, 0, 1f), 100000l);
-		Detail.init();
-		// trees = new DetailManager(baseTree, 1000, 10, new Vector4f(1,1,1,1));
-		// trees.activate();
-
-		// ArrayList<Particle> treeees = new ArrayList<Particle>();
-
-		/*
-		 * for (int i = 0; i < 1000; i++) { Particle newTree = new
-		 * Particle(baseTree); newTree.rotate(90, 1, 0, 0); Vector3f
-		 * displacement = new Vector3f((float) Math.random() * 1000, (float)
-		 * Math.random() * 1000, 4); newTree.translate(displacement);
-		 * treeees.add(newTree); }
-		 */
-
 		Detail.init();
 
 		walk = new Walk();
@@ -280,14 +261,6 @@ public class Window implements Runnable {
 	public void render() {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// waterFBO.bindReflectionFrameBuffer();
-		// world.render(reflectionClipPlane);
-		// objectManager.render();
-
-		// waterFBO.bindRefractionFrameBuffer();
-		// world.render(refractionClipPlane);
-		// objectManager.render();
 
 		// move camera to appropriate location and render reflection texture
 		float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
