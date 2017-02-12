@@ -54,22 +54,22 @@ public class EntityManager {
 	public void update(Long window) {
 		// m.update();
 
-		if (KeyboardInput.isKeyDown(GLFW_KEY_A)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_A)||KeyboardInput.isKeyDown(GLFW_KEY_A)) {
 			player.movePlayer("LEFT");
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_D)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_D)||KeyboardInput.isKeyDown(GLFW_KEY_D)) {
 			player.movePlayer("RIGHT");
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_W)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_W)||KeyboardInput.isKeyDown(GLFW_KEY_W)) {
 			player.movePlayer("FORWARD");
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_S)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_S)||KeyboardInput.isKeyDown(GLFW_KEY_S)) {
 			player.movePlayer("BACK");
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_SPACE)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_SPACE))	 {
 			player.movePlayer("UP");
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
 			player.movePlayer("DOWN");
 		}
 		player.update();
@@ -81,37 +81,37 @@ public class EntityManager {
 		}
 		double s = ScrollCallback.getyoffset();
 		player.scroll(s);
-		if (KeyboardInput.isKeyDown(GLFW_KEY_1)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_1)) {
 			player.inventory.setActive(1);
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_2)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_2)) {
 			player.inventory.setActive(2);
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_3)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_3)) {
 			player.inventory.setActive(3);
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_4)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_4)) {
 			player.inventory.setActive(4);
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_5)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_5)) {
 			player.inventory.setActive(5);
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_6)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_6)) {
 			player.inventory.setActive(6);
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_7)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_7)) {
 			player.inventory.setActive(7);
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_8)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_8)) {
 			player.inventory.setActive(8);
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_9)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_9)) {
 			player.inventory.setActive(9);
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_0)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_0)) {
 			player.inventory.setActive(0);
 		}
-		if (KeyboardInput.isKeyDown(GLFW_KEY_P)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_P)) {
 			Window.reload(c++ % 3);
 		}
 		/*

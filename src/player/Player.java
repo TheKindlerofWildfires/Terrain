@@ -1,7 +1,5 @@
 package player;
 
-import java.util.ArrayList;
-
 import entity.Life;
 import graphics.Camera;
 import maths.Vector3f;
@@ -16,6 +14,7 @@ import world.World;
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.7f;
 	private static final float SPEEDSCALER = 20;
+	private static final int ALLOWEDJUMPS = 2;
 	private Vector3f target;
 	private float speed;
 	private Vector3f upward;
@@ -25,11 +24,14 @@ public class Player extends GameObject {
 	public Inventory inventory;
 	public Life self;
 	public float suitEnergy;
-	public float energyLoss = 0.0f;//0.1
+	public float energyLoss = 0.0f;// 0.1
 	boolean noClip = false;
-	ArrayList<String> lastKey = new ArrayList<String>();
-	int keyTime;
 	boolean onGround;
+	int jumpCount = 0;
+	int[] last = new int[6];
+	int jumping;
+	int[] sprintDuration = new int[3]; 
+	int lastClear;
 
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
@@ -39,93 +41,122 @@ public class Player extends GameObject {
 		this.target = camera.getTarget();
 		this.position = new Vector3f(1, 1, 30);
 		inventory = new Inventory(10);
-		//inventory.add(new Item("item", 100, "I1"));
+		// inventory.add(new Item("item", 100, "I1"));
 		self = new Life(1000);
 		suitEnergy = 100;
-		keyTime = Time.getSecTick();
-		
+		last[3] = last[0] = Time.getUpdateTick();
+		jumping = 0;
+		sprintDuration[0] =600;
+		sprintDuration[1] = sprintDuration[0];
+		sprintDuration[2] = 0;
+		lastClear = Time.getSecTick();
+
 	}
 
 	public void update() {
 		camera.pos = position;
-		suitEnergy-=energyLoss*(.8+World.difficulty);
-		if(Time.getSecTick() -keyTime>= 1){
-			lastKey.clear();
-		}
-		if(suitEnergy<0){
+		suitEnergy -= energyLoss * (.8 + World.difficulty);
+		if (suitEnergy < 0) {
 			self.kill(false);
 		}
+		if (onGround) {
+			jumpCount = ALLOWEDJUMPS;
+			if(Time.getSecTick()-lastClear>1){
+				sprintDuration[2]  = 0;
+			}
+		}
+		if(jumping>0){
+			displacement = displacement.add(upward.scale(jumping));
+			jumping--;
+			}
 		move();
+		
 	}
 
 	public void movePlayer(String dir) {
-		if(self.isLiving){
-		this.target = camera.target;
+		if (self.isLiving) {
+			this.target = camera.target;
 
-		float vx = position.x - target.x;
-		float vy = position.y - target.y;
-		vx *= speed;
-		vy *= speed;
-		lastKey.add(dir);
-		//For the love of god don't try and fix the normalizing here, i made it like this very intentionally 
-		switch (dir) {
-		case "UP":
-			if(noClip){
-				displacement = upward;
-			}else{
-				jump();
+			float vx = position.x - target.x;
+			float vy = position.y - target.y;
+			vx *= speed;
+			vy *= speed;
+			// For the love of god don't try and fix the normalizing here
+			switch (dir) {
+			case "UP":
+				
+				if (noClip) {
+					displacement = upward;
+				} else if(Time.getUpdateTick()- last[0] >20){
+
+					last[0] = Time.getUpdateTick();
+					jump();
+					
+				}
+				break;
+			case "DOWN":
+				if (noClip) {
+					displacement = upward.negate();
+				} else {
+					shift();
+				}
+				break;
+			case "FORWARD":
+				sprintDuration[2]++;
+				displacement = new Vector3f(-vx, -vy, 0);
+				displacement = displacement.normalize().scale(speed);
+				if(Time.getUpdateTick()- last[3] >10&&sprintDuration[2]>1){
+					last[3] = Time.getUpdateTick();
+					System.out.println(0);
+					sprint();
+				}
+				break;
+			case "BACK":
+				displacement = new Vector3f(vx, vy, 0);
+				displacement = displacement.normalize().scale(speed);
+				break;
+			case "LEFT":
+				displacement = new Vector3f(vy, -vx, 0);
+				displacement = displacement.normalize().scale(speed);
+				break;
+			case "RIGHT":
+				displacement = new Vector3f(-vy, vx, 0);
+				displacement = displacement.normalize().scale(speed);
+				break;
+			default:
+				System.err.println("wtf");
 			}
-			break;
-		case "DOWN":
-			if(noClip){
-				displacement = upward.negate();
-			}else{
-				shift();
-			}
-			break;
-		case "FORWARD":
-			displacement = new Vector3f(-vx, -vy, 0);
-			displacement = displacement.normalize().scale(speed);
-			break;
-		case "BACK":
-			displacement = new Vector3f(vx, vy, 0);
-			displacement = displacement.normalize().scale(speed);
-			break;
-		case "LEFT":
-			displacement = new Vector3f(vy, -vx, 0);
-			displacement = displacement.normalize().scale(speed);
-			break;
-		case "RIGHT":
-			displacement = new Vector3f(-vy, vx, 0);
-			displacement = displacement.normalize().scale(speed);
-			break;
-		default:
-			System.err.println("wtf");
+
 		}
-		
+	}
+
+	private void sprint() {
+		if (true/*critera*/) {
+			displacement.x = displacement.x*2;
+			displacement.y = displacement.y*2;
+			//Make sure that this carries over
 		}
 	}
 
 	private void shift() {
-		//Doesn't do anything yet, but should make player prone basically but that requires both hit boxes and and an understanding of cameras 
-		
+		// Doesn't do anything yet, but should make player prone basically but
+		// that requires both hit boxes and and an understanding of cameras
+
 	}
 
 	private void jump() {
-	//This code is being bad!
-		if(!lastKey.contains("UP")){
-			System.out.println("h");
-			displacement = displacement.add(upward.scale(9));
+		if (jumpCount > 0) {
+			jumping = 5;
+			jumpCount--;
 		}
-		displacement = displacement.add(upward.scale(9));
-		
+
 	}
 
 	private void move() {
 		boolean canMove = true;
 		onGround = true;
 		if (!noClip) {
-			//All this code should be redone with hitboxes prolly
+			// All this code should be redone with hitboxes prolly
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));
 			this.destination[1] = position.add(displacement.scale(5 / SPEEDSCALER).negate());
 			this.destination[2] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.normalize()));
@@ -142,7 +173,7 @@ public class Player extends GameObject {
 			if (rise > CLIMABLE) {
 				canMove = false;// this part works on at least one side
 			} else if (rise < -CLIMABLE) {
-				displacement = displacement.add(upward.negate());
+				displacement = displacement.add(upward.negate().scale(.5f));
 				onGround = false;
 			} else {
 				float[] diff = { position.z - destination[0].z, position.z - destination[1].z };
@@ -159,19 +190,19 @@ public class Player extends GameObject {
 
 	public void activeItem() {
 		inventory.activeItem();
-		
+
 	}
 
 	public void scroll(double s) {
-		if(s==1 || s==-1){
+		if (s == 1 || s == -1) {
 			inventory.scroll(0);
-		}else if(s>0){
-			inventory.scroll(s-1);
-		}else if(s<0){
-			inventory.scroll(s+1);
+		} else if (s > 0) {
+			inventory.scroll(s - 1);
+		} else if (s < 0) {
+			inventory.scroll(s + 1);
 		}
-		//System.out.println(s);
-		
+		// System.out.println(s);
+
 	}
 
 }
