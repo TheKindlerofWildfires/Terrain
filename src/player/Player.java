@@ -27,7 +27,7 @@ public class Player extends GameObject {
 	public float suitEnergy;
 	public float energyLoss = 0.0f;//0.1
 	boolean noClip = false;
-	//ArrayList<String> lastKey = new ArrayList<String>();
+	ArrayList<String> lastKey = new ArrayList<String>();
 	int keyTime;
 	boolean onGround;
 
@@ -37,7 +37,7 @@ public class Player extends GameObject {
 		upward = new Vector3f(0, 0, speed);
 		this.camera = camera;
 		this.target = camera.getTarget();
-		this.position = new Vector3f(1, 1, 20);
+		this.position = new Vector3f(1, 1, 30);
 		inventory = new Inventory(10);
 		//inventory.add(new Item("item", 100, "I1"));
 		self = new Life(1000);
@@ -49,14 +49,11 @@ public class Player extends GameObject {
 	public void update() {
 		camera.pos = position;
 		suitEnergy-=energyLoss*(.8+World.difficulty);
-		if(Time.getSecTick() -keyTime>= 2){
-			//lastKey.clear();
+		if(Time.getSecTick() -keyTime>= 1){
+			lastKey.clear();
 		}
 		if(suitEnergy<0){
 			self.kill(false);
-		}
-		if(!onGround){
-			translate(upward.negate().scale(.3f));
 		}
 		move();
 	}
@@ -69,40 +66,43 @@ public class Player extends GameObject {
 		float vy = position.y - target.y;
 		vx *= speed;
 		vy *= speed;
-		//lastKey.add(dir);
+		lastKey.add(dir);
+		//For the love of god don't try and fix the normalizing here, i made it like this very intentionally 
 		switch (dir) {
 		case "UP":
 			if(noClip){
 				displacement = upward;
 			}else{
-				//jump();
+				jump();
 			}
 			break;
 		case "DOWN":
 			if(noClip){
-				
 				displacement = upward.negate();
 			}else{
 				shift();
-				System.out.println("what");
 			}
 			break;
 		case "FORWARD":
 			displacement = new Vector3f(-vx, -vy, 0);
+			displacement = displacement.normalize().scale(speed);
 			break;
 		case "BACK":
 			displacement = new Vector3f(vx, vy, 0);
+			displacement = displacement.normalize().scale(speed);
 			break;
 		case "LEFT":
 			displacement = new Vector3f(vy, -vx, 0);
+			displacement = displacement.normalize().scale(speed);
 			break;
 		case "RIGHT":
 			displacement = new Vector3f(-vy, vx, 0);
+			displacement = displacement.normalize().scale(speed);
 			break;
 		default:
 			System.err.println("wtf");
 		}
-		displacement = displacement.normalize().scale(speed);
+		
 		}
 	}
 
@@ -112,10 +112,12 @@ public class Player extends GameObject {
 	}
 
 	private void jump() {
-		//System.out.println(lastKey.toString());
-		//if(!lastKey.contains("UP")){
-			//displacement = displacement.add(upward);
-		//}
+	//This code is being bad!
+		if(!lastKey.contains("UP")){
+			System.out.println("h");
+			displacement = displacement.add(upward.scale(9));
+		}
+		displacement = displacement.add(upward.scale(9));
 		
 	}
 
@@ -140,7 +142,7 @@ public class Player extends GameObject {
 			if (rise > CLIMABLE) {
 				canMove = false;// this part works on at least one side
 			} else if (rise < -CLIMABLE) {
-				//displacement = displacement.add(upward.negate());
+				displacement = displacement.add(upward.negate());
 				onGround = false;
 			} else {
 				float[] diff = { position.z - destination[0].z, position.z - destination[1].z };
