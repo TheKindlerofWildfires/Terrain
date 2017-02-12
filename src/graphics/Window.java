@@ -336,7 +336,7 @@ public class Window implements Runnable {
 		lava.render(renderClipPlane);
 		//trees.render(renderClipPlane);
 		Detail.render(renderClipPlane);
-		cave.render(renderClipPlane);
+		//cave.render(renderClipPlane);
 	}
 
 	public void testRender() {

@@ -31,7 +31,7 @@ import models.VertexArrayObject;
  * @author TheKingInYellow & HMSRothman
  */
 public class GameObject {
-	private static final Vector3f GRAVITY = new Vector3f(0, 0, 0);
+	private static final Vector3f GRAVITY = new Vector3f(0, 0, -1);
 	private Vector3f fakeFriction = new Vector3f();
 	protected Texture texture;
 	protected VertexArrayObject vao;
@@ -185,9 +185,9 @@ public class GameObject {
 
 	public void physic() {
 		if (enabled) {
-			fakeFriction = velocity.negate().scale(0.01f);
+			//fakeFriction = velocity.negate().scale(0.01f);
 			acceleration = force.scale(1 / mass).add(GRAVITY);
-			velocity = velocity.add(acceleration).add(fakeFriction);
+			velocity = velocity.add(acceleration);//.add(fakeFriction);
 			position = boundingBox.centre;
 		}
 	}

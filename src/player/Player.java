@@ -1,9 +1,12 @@
 package player;
 
+import java.util.ArrayList;
+
 import entity.Life;
 import graphics.Camera;
 import maths.Vector3f;
 import object.GameObject;
+import physics.Time;
 import world.Biome;
 import world.World;
 
@@ -11,7 +14,7 @@ import world.World;
  * @author TheKingInYellow
  */
 public class Player extends GameObject {
-	private static final float CLIMABLE = 1.5f;
+	private static final float CLIMABLE = 1.7f;
 	private static final float SPEEDSCALER = 20;
 	private Vector3f target;
 	private float speed;
@@ -23,7 +26,10 @@ public class Player extends GameObject {
 	public Life self;
 	public float suitEnergy;
 	public float energyLoss = 0.0f;//0.1
-	boolean noClip = true;
+	boolean noClip = false;
+	//ArrayList<String> lastKey = new ArrayList<String>();
+	int keyTime;
+	boolean onGround;
 
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
@@ -31,20 +37,28 @@ public class Player extends GameObject {
 		upward = new Vector3f(0, 0, speed);
 		this.camera = camera;
 		this.target = camera.getTarget();
-		this.position = new Vector3f(1, 1, 10);
+		this.position = new Vector3f(1, 1, 20);
 		inventory = new Inventory(10);
 		//inventory.add(new Item("item", 100, "I1"));
 		self = new Life(1000);
 		suitEnergy = 100;
+		keyTime = Time.getSecTick();
 		
 	}
 
 	public void update() {
 		camera.pos = position;
-		suitEnergy-=energyLoss*(.8+World.difficulty) ;
+		suitEnergy-=energyLoss*(.8+World.difficulty);
+		if(Time.getSecTick() -keyTime>= 2){
+			//lastKey.clear();
+		}
 		if(suitEnergy<0){
 			self.kill(false);
 		}
+		if(!onGround){
+			translate(upward.negate().scale(.3f));
+		}
+		move();
 	}
 
 	public void movePlayer(String dir) {
@@ -55,12 +69,23 @@ public class Player extends GameObject {
 		float vy = position.y - target.y;
 		vx *= speed;
 		vy *= speed;
+		//lastKey.add(dir);
 		switch (dir) {
 		case "UP":
-			displacement = upward;
+			if(noClip){
+				displacement = upward;
+			}else{
+				//jump();
+			}
 			break;
 		case "DOWN":
-			displacement = upward.negate();
+			if(noClip){
+				
+				displacement = upward.negate();
+			}else{
+				shift();
+				System.out.println("what");
+			}
 			break;
 		case "FORWARD":
 			displacement = new Vector3f(-vx, -vy, 0);
@@ -78,15 +103,27 @@ public class Player extends GameObject {
 			System.err.println("wtf");
 		}
 		displacement = displacement.normalize().scale(speed);
-		move();
 		}
+	}
+
+	private void shift() {
+		//Doesn't do anything yet, but should make player prone basically but that requires both hit boxes and and an understanding of cameras 
+		
+	}
+
+	private void jump() {
+		//System.out.println(lastKey.toString());
+		//if(!lastKey.contains("UP")){
+			//displacement = displacement.add(upward);
+		//}
+		
 	}
 
 	private void move() {
 		boolean canMove = true;
-		
+		onGround = true;
 		if (!noClip) {
-
+			//All this code should be redone with hitboxes prolly
 			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));
 			this.destination[1] = position.add(displacement.scale(5 / SPEEDSCALER).negate());
 			this.destination[2] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.normalize()));
@@ -103,7 +140,8 @@ public class Player extends GameObject {
 			if (rise > CLIMABLE) {
 				canMove = false;// this part works on at least one side
 			} else if (rise < -CLIMABLE) {
-				displacement = displacement.add(upward.negate());
+				//displacement = displacement.add(upward.negate());
+				onGround = false;
 			} else {
 				float[] diff = { position.z - destination[0].z, position.z - destination[1].z };
 				float difference = Math.min(diff[0], diff[1]) * 0.1f;
@@ -114,6 +152,7 @@ public class Player extends GameObject {
 			this.translate(displacement);
 			camera.move(displacement);
 		}
+		displacement = displacement.scale(.1f);
 	}
 
 	public void activeItem() {
