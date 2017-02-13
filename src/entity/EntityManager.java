@@ -11,8 +11,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_7;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_8;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_9;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
@@ -69,7 +69,7 @@ public class EntityManager {
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_SPACE))	 {
 			player.movePlayer("UP");
 		}
-		if (KeyboardInput.isKeyPressed(GLFW_KEY_LEFT_SHIFT)) {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_C))	 {
 			player.movePlayer("DOWN");
 		}
 		player.update();

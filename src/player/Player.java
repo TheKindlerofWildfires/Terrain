@@ -1,7 +1,10 @@
 package player;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
+
 import entity.Life;
 import graphics.Camera;
+import input.KeyboardInput;
 import maths.Vector3f;
 import object.GameObject;
 import physics.Time;
@@ -13,7 +16,7 @@ import world.World;
  */
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.7f;
-	private static final float SPEEDSCALER = 20;
+	private static final float SPEEDSCALER = 10;
 	private static final int ALLOWEDJUMPS = 2;
 	private Vector3f target;
 	private float speed;
@@ -30,8 +33,7 @@ public class Player extends GameObject {
 	int jumpCount = 0;
 	int[] last = new int[6];
 	int jumping;
-	int[] sprintDuration = new int[3]; 
-	int lastClear;
+	int[] sprintDuration = new int[2]; 
 
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
@@ -48,8 +50,6 @@ public class Player extends GameObject {
 		jumping = 0;
 		sprintDuration[0] =600;
 		sprintDuration[1] = sprintDuration[0];
-		sprintDuration[2] = 0;
-		lastClear = Time.getSecTick();
 
 	}
 
@@ -61,9 +61,6 @@ public class Player extends GameObject {
 		}
 		if (onGround) {
 			jumpCount = ALLOWEDJUMPS;
-			if(Time.getSecTick()-lastClear>1){
-				sprintDuration[2]  = 0;
-			}
 		}
 		if(jumping>0){
 			displacement = displacement.add(upward.scale(jumping));
@@ -94,7 +91,7 @@ public class Player extends GameObject {
 					
 				}
 				break;
-			case "DOWN":
+			case "DOWN"://this is never called
 				if (noClip) {
 					displacement = upward.negate();
 				} else {
@@ -102,13 +99,11 @@ public class Player extends GameObject {
 				}
 				break;
 			case "FORWARD":
-				sprintDuration[2]++;
 				displacement = new Vector3f(-vx, -vy, 0);
 				displacement = displacement.normalize().scale(speed);
-				if(Time.getUpdateTick()- last[3] >10&&sprintDuration[2]>1){
-					last[3] = Time.getUpdateTick();
-					System.out.println(0);
-					sprint();
+				if(KeyboardInput.isKeyPressed(GLFW_KEY_LEFT_SHIFT)||KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)){
+					displacement.x = displacement.x*2;
+					displacement.y = displacement.y*2;
 				}
 				break;
 			case "BACK":
@@ -127,14 +122,6 @@ public class Player extends GameObject {
 				System.err.println("wtf");
 			}
 
-		}
-	}
-
-	private void sprint() {
-		if (true/*critera*/) {
-			displacement.x = displacement.x*2;
-			displacement.y = displacement.y*2;
-			//Make sure that this carries over
 		}
 	}
 
