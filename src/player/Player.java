@@ -17,7 +17,7 @@ import world.World;
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.7f;
 	private static final float SPEEDSCALER = 10;
-	private static final int ALLOWEDJUMPS = 2;
+	private static final int ALLOWEDJUMPS = 1;
 	private Vector3f target;
 	private float speed;
 	private Vector3f upward;
