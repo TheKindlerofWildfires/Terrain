@@ -11,7 +11,7 @@ public class ObjectManager {
 	public ArrayList<GameObject> objectList = new ArrayList<GameObject>();
 
 	public ObjectManager() {
-		box = new Skybox("resources/models/skybox.obj", "resources/textures/skybox.png");
+		box = new Skybox("resources/models/sphere.obj", "resources/models/uvlayout2.png");
 		right();
 		box.rotate(90, 1, 0, 0);
 

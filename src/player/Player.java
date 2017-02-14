@@ -1,6 +1,6 @@
 package player;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
+import static org.lwjgl.glfw.GLFW.*;
 
 import entity.Life;
 import graphics.Camera;
@@ -33,6 +33,7 @@ public class Player extends GameObject {
 	int jumpCount = 0;
 	int[] last = new int[6];
 	int jumping;
+	boolean canJump;
 	int[] sprintDuration = new int[2]; 
 
 	public Player(Camera camera) {
@@ -50,6 +51,7 @@ public class Player extends GameObject {
 		jumping = 0;
 		sprintDuration[0] =600;
 		sprintDuration[1] = sprintDuration[0];
+		canJump = true;
 
 	}
 
@@ -66,7 +68,13 @@ public class Player extends GameObject {
 			displacement = displacement.add(upward.scale(jumping));
 			jumping--;
 			}
+		if(KeyboardInput.isKeyPressed(GLFW_KEY_SPACE)){
+			canJump = false;
+		}else{
+			canJump = true;
+		}
 		move();
+		
 		
 	}
 
@@ -84,9 +92,9 @@ public class Player extends GameObject {
 				
 				if (noClip) {
 					displacement = upward;
-				} else if(Time.getUpdateTick()- last[0] >20){
-
-					last[0] = Time.getUpdateTick();
+				} else if(canJump){//Time.getUpdateTick()- last[0] >20){
+					//last[0] = Time.getUpdateTick();
+					
 					jump();
 					
 				}
