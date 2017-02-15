@@ -1,6 +1,7 @@
 package player;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 
 import entity.Life;
 import graphics.Camera;
@@ -28,13 +29,12 @@ public class Player extends GameObject {
 	public Life self;
 	public float suitEnergy;
 	public float energyLoss = 0.0f;// 0.1
-	boolean noClip = false;
+	boolean noClip = true;
 	boolean onGround;
 	int jumpCount = 0;
 	int[] last = new int[6];
 	int jumping;
 	boolean canJump;
-	int[] sprintDuration = new int[2]; 
 
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
@@ -49,8 +49,6 @@ public class Player extends GameObject {
 		suitEnergy = 100;
 		last[3] = last[0] = Time.getUpdateTick();
 		jumping = 0;
-		sprintDuration[0] =600;
-		sprintDuration[1] = sprintDuration[0];
 		canJump = true;
 
 	}
@@ -141,10 +139,10 @@ public class Player extends GameObject {
 
 	private void jump() {
 		if (jumpCount > 0) {
-			jumping = 5;
+			jumping = 7;
 			jumpCount--;
 		}
-
+		
 	}
 
 	private void move() {

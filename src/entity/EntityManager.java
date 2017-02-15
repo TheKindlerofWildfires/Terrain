@@ -69,7 +69,7 @@ public class EntityManager {
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_SPACE)&& !KeyboardInput.isKeyDown(GLFW_KEY_SPACE))	 {
 			player.movePlayer("UP");
 		}
-		if (KeyboardInput.isKeyPressed(GLFW_KEY_C))	 {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_C)||KeyboardInput.isKeyDown(GLFW_KEY_C))	 {
 			player.movePlayer("DOWN");
 		}
 		player.update();

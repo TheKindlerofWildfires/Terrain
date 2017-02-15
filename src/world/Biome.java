@@ -162,7 +162,7 @@ public abstract class Biome {
 			Shader.setUniform1f("fresnelPower", 0f);
 			Shader.setUniform1f("waveStrength", 0.0002f);
 			Shader.setUniform1f("waterClarity", 3);
-			Shader.setUniform4f("waterColour", new Vector4f(0.24f, 0.28f, 0.26f, 1));
+			Shader.setUniform4f("waterColour", new Vector4f(0.32f, 0.40f, 0.34f, 1));
 			Shader.setUniform1f("maxDistortion", 0.001f);
 			break;
 		case DESERTWORLD:

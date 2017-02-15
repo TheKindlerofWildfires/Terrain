@@ -1,13 +1,6 @@
-/world/
-/shaders/
-/entity/
-/graphics/
-/input/
-/maths/
 /object/
 /player/
+/world/
+/graphics/
 /cave/
-/models/
-/noiseLibrary/
-/particles/
-/physics/
+/entity/

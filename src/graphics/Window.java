@@ -51,6 +51,7 @@ import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.opengl.GL;
 
+import cave.Tree;
 import cave.Walk;
 import entity.EntityManager;
 import input.MouseInput;
@@ -117,7 +118,7 @@ public class Window implements Runnable {
 	public static Lava lava;
 	//private static DetailManager trees;
 	//private static Particle baseTree;
-	public static Walk cave;
+	public static Tree cave;
 	public static void main(String args[]) {
 		Window game = new Window();
 		game.run();
@@ -212,7 +213,7 @@ public class Window implements Runnable {
 
 		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
-		cave = new Walk();
+		cave = new Tree(new Vector3f(0,0,0));
 		
 		//baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		Detail.init();
@@ -328,7 +329,7 @@ public class Window implements Runnable {
 		glViewport(0, 0, windowWidth, windowHeight);
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		world.renderLand(renderClipPlane);
+		world.renderLand(renderClipPlane);//should be uncommented
 		objectManager.render(renderClipPlane);
 		water.render(renderClipPlane); // do NOT attempt to render water
 										// anywhere other than to screen
@@ -336,7 +337,7 @@ public class Window implements Runnable {
 		lava.render(renderClipPlane);
 		//trees.render(renderClipPlane);
 		Detail.render(renderClipPlane);
-		//cave.render(renderClipPlane);
+		cave.render(renderClipPlane);
 	}
 
 	public void testRender() {

@@ -185,4 +185,7 @@ public class Camera {
 	public float getSpeed() {
 		return speed;
 	}
+	public void setTarget(Vector3f target){
+		this.target = target;
+	}
 }
