@@ -12,7 +12,7 @@ public class ObjectManager {
 
 	public ObjectManager() {
 		box = new Skybox("resources/models/uvsphere2.obj", "resources/textures/uvlayout.png");
-		box.scale(5,5,5);
+		box.scale(7,7,7);
 		right();
 		box.rotate(-90, 1, 0, 0);
 

@@ -32,7 +32,6 @@ import models.VertexArrayObject;
  */
 public class GameObject {
 	private static final Vector3f GRAVITY = new Vector3f(0, 0, -1);
-	private Vector3f fakeFriction = new Vector3f();
 	protected Texture texture;
 	protected VertexArrayObject vao;
 	protected float[] vaoData;

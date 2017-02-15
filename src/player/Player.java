@@ -29,7 +29,7 @@ public class Player extends GameObject {
 	public Life self;
 	public float suitEnergy;
 	public float energyLoss = 0.0f;// 0.1
-	boolean noClip = true;
+	boolean noClip = false;
 	boolean onGround;
 	int jumpCount = 0;
 	int[] last = new int[6];

@@ -18,6 +18,7 @@ public class Tree {
 
 	Random rng = new Random();
 	public ArrayList<Vector3f> blocks = new ArrayList<Vector3f>();
+	public ArrayList<Vector3f> leaves = new ArrayList<Vector3f>();
 	Vector3f head = new Vector3f(0, 0, 0);
 	Vector3f seed = new Vector3f(0, 0, 0);
 	Vector3f vel = new Vector3f(0, 0, 0);
@@ -47,13 +48,27 @@ public class Tree {
 		this.seed = seed;
 		blocks.add(head);
 		tree();
+		leave();
 		for (int i = 0; i < blocks.size(); i++) {
 			Vector3f e = blocks.get(i);
 			byte b = contains(e);
 			GameObject object = new Block("resources/models/box.obj", "none", true, b);
+			object.scale(.5f,.5f,.5f);
 			object.placeAt(e.x * 2, e.y * 2, e.z * 2); // too ez for rtz
 			solids.add(object);
 		}
+	}
+
+	private void leave() {
+		for(int i =0; i<leaves.size();i++){
+			blocks.add(leaves.get(i).add(up));
+			blocks.add(leaves.get(i).add(down));
+			blocks.add(leaves.get(i).add(right));
+			blocks.add(leaves.get(i).add(left));
+			blocks.add(leaves.get(i).add(front));
+			blocks.add(leaves.get(i).add(back));
+		}
+		
 	}
 
 	private byte contains(Vector3f e) {
@@ -98,7 +113,7 @@ public class Tree {
 		}
 		for(int j = 1; j<10; j++){
 		for(int i = 0; i<stepCount; i++){
-				int dir = rng.nextInt(8);
+				int dir = rng.nextInt(5);
 				switch (dir) {
 				case 0: 
 					head = head.add(up);
@@ -107,29 +122,20 @@ public class Tree {
 					head = head.add(left);
 					break;
 				case 2:
-					head = head.add(left);
+					head = head.add(right);
 					break;
 				case 3:
-					head = head.add(right);
+					head = head.add(back);
 					break;
 				case 4:
-					head = head.add(right);
-					break;
-				case 5:
-					head = head.add(back);
-					break;
-				case 6:
-					head = head.add(back);
-					break;
-				case 7:
-					head = head.add(front);
-					break;
-				case 8:
 					head = head.add(front);
 					break;
 				}
 				if (!blocks.contains(head)) {
 					blocks.add(head);
+				}
+				if(i==stepCount-1){
+					leaves.add(head.add(new Vector3f(0,0,height)));
 				}
 				
 			

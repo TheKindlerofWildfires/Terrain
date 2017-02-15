@@ -40,7 +40,7 @@ public class Walk {
 
 	public Walk() {
 		blocks.add(head);
-		lattice();
+		octopus();
 		for (int i = 0; i < blocks.size(); i++) {
 			Vector3f e = blocks.get(i);
 			//System.out.println(e);
