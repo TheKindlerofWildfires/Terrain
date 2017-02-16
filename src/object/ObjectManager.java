@@ -2,6 +2,7 @@ package object;
 
 import java.util.ArrayList;
 
+import maths.Vector3f;
 import maths.Vector4f;
 import world.Skybox;
 
@@ -30,12 +31,20 @@ public class ObjectManager {
 	}
 
 	public void render(Vector4f clipPlane) {
+		if(objectList.size()!=0){
 		for (int i = 0; i < objectList.size(); i++) {
-			// GameObject object = objectList.get(i);
-			// object.render(clipPlane);
+			GameObject object = objectList.get(i);
+			object.render(clipPlane);
+		}
 		}
 		// target.render(clipPlane);
 		// ball.render(clipPlane);
 		box.render(clipPlane);
+	}
+	public void add(GameObject object, Vector3f position){
+		GameObject o = object;
+		o.placeAt(position.x,position.y, position.z);
+		objectList.add(o);
+		
 	}
 }

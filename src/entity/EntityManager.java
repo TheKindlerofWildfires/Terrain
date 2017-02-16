@@ -83,6 +83,7 @@ public class EntityManager {
 		player.scroll(s);
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_1)) {
 			player.inventory.setActive(1);
+			player.i.activate();
 		}
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_2)) {
 			player.inventory.setActive(2);

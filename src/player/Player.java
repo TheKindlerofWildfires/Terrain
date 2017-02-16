@@ -35,6 +35,7 @@ public class Player extends GameObject {
 	int[] last = new int[6];
 	int jumping;
 	boolean canJump;
+	public Item i = new Shooter("item", 100, 0, "B1");
 
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
@@ -44,7 +45,7 @@ public class Player extends GameObject {
 		this.target = camera.getTarget();
 		this.position = new Vector3f(1, 1, 30);
 		inventory = new Inventory(10);
-		// inventory.add(new Item("item", 100, "I1"));
+		inventory.add(new Shooter("item", 100, 0, "B1"));
 		self = new Life(1000);
 		suitEnergy = 100;
 		last[3] = last[0] = Time.getUpdateTick();

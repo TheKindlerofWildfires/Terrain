@@ -26,7 +26,7 @@ public class Item {
 		}
 	}
 
-	private void activate() {
+	public void activate() {
 		System.out.println("hi");
 
 	}
