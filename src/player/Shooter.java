@@ -1,6 +1,7 @@
 package player;
 
 import graphics.Window;
+import maths.Vector3f;
 import object.GameObject;
 
 public class Shooter extends Item{
@@ -13,7 +14,7 @@ public class Shooter extends Item{
 	
 	@Override
 	public void activate(){
-		Window.objectManager.add(new GameObject("resources/models/uvsphere2.obj", "resources/textures/uvlayout.png", true),Window.entityManager.player.position);
+		Window.objectManager.add(new GameObject("resources/models/uvsphere2.obj", "resources/textures/uvlayout.png", true),Window.entityManager.player.position, new Vector3f(0,0.01f,0));
 		//raycast
 	}
 

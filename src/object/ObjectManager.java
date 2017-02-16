@@ -28,6 +28,12 @@ public class ObjectManager {
 	}
 
 	public void update() {
+		if(objectList.size()!=0){
+			for (int i = 0; i < objectList.size(); i++) {
+				GameObject object = objectList.get(i);
+				object.translate(object.velocity);
+			}
+			}
 	}
 
 	public void render(Vector4f clipPlane) {
@@ -41,9 +47,10 @@ public class ObjectManager {
 		// ball.render(clipPlane);
 		box.render(clipPlane);
 	}
-	public void add(GameObject object, Vector3f position){
+	public void add(GameObject object, Vector3f position, Vector3f vel){
 		GameObject o = object;
 		o.placeAt(position.x,position.y, position.z);
+		o.velocity = vel;
 		objectList.add(o);
 		
 	}
