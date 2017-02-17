@@ -45,7 +45,7 @@ public class Player extends GameObject {
 		this.target = camera.getTarget();
 		this.position = new Vector3f(1, 1, 30);
 		inventory = new Inventory(10);
-		inventory.add(new Shooter("item", 100, 0, "B1"));
+		inventory.add(new Shooter("item", 40, 0, "B1"));
 		self = new Life(1000);
 		suitEnergy = 100;
 		last[3] = last[0] = Time.getUpdateTick();

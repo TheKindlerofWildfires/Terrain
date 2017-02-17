@@ -52,7 +52,6 @@ import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.opengl.GL;
 
 import cave.Tree;
-import cave.Walk;
 import entity.EntityManager;
 import input.MouseInput;
 import maths.Vector3f;

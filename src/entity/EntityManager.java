@@ -82,32 +82,32 @@ public class EntityManager {
 		double s = ScrollCallback.getyoffset();
 		player.scroll(s);
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_1)) {
-			player.inventory.setActive(1);
-			player.i.activate();
+			player.inventory.setActive(0);
+			//player.i.activate();
 		}
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_2)) {
-			player.inventory.setActive(2);
+			player.inventory.setActive(1);
 		}
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_3)) {
-			player.inventory.setActive(3);
+			player.inventory.setActive(2);
 		}
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_4)) {
-			player.inventory.setActive(4);
+			player.inventory.setActive(3);
 		}
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_5)) {
-			player.inventory.setActive(5);
+			player.inventory.setActive(4);
 		}
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_6)) {
-			player.inventory.setActive(6);
+			player.inventory.setActive(5);
 		}
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_7)) {
-			player.inventory.setActive(7);
+			player.inventory.setActive(6);
 		}
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_8)) {
-			player.inventory.setActive(8);
+			player.inventory.setActive(7);
 		}
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_9)) {
-			player.inventory.setActive(9);
+			player.inventory.setActive(8);
 		}
 		if (KeyboardInput.isKeyPressed(GLFW_KEY_0)) {
 			player.inventory.setActive(0);

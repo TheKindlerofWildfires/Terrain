@@ -8,7 +8,6 @@ public class Shooter extends Item{
 
 	public Shooter(String tag, int cd, int charge, String location) {
 		super(tag, cd, charge, location);
-		// TODO Auto-generated constructor stub
 	}
 	
 	
@@ -19,7 +18,7 @@ public class Shooter extends Item{
 		GameObject shot = new GameObject("resources/models/box.obj", "none", true);
 		shot.placeAt(position.x, position.y, position.z);
 		Vector3f ray = Window.entityManager.player.target.subtract(position);
-		shot.velocity = ray.scale(.2f);
+		shot.velocity = ray.normalize().scale(.8f);
 		Window.objectManager.add(shot);
 	}
 
