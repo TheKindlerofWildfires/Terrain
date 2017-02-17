@@ -56,6 +56,7 @@ public class Player extends GameObject {
 
 	public void update() {
 		camera.pos = position;
+		target = camera.target;
 		suitEnergy -= energyLoss * (.8 + World.difficulty);
 		if (suitEnergy < 0) {
 			self.kill(false);

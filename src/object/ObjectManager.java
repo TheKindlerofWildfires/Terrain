@@ -2,7 +2,6 @@ package object;
 
 import java.util.ArrayList;
 
-import maths.Vector3f;
 import maths.Vector4f;
 import world.Skybox;
 
