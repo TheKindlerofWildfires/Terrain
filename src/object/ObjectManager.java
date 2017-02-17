@@ -47,10 +47,8 @@ public class ObjectManager {
 		// ball.render(clipPlane);
 		box.render(clipPlane);
 	}
-	public void add(GameObject object, Vector3f position, Vector3f vel){
+	public void add(GameObject object){
 		GameObject o = object;
-		o.placeAt(position.x,position.y, position.z);
-		o.velocity = vel;
 		objectList.add(o);
 		
 	}

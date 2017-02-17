@@ -1,5 +1,6 @@
 package player;
 
+import graphics.GraphicsManager;
 import graphics.Window;
 import maths.Vector3f;
 import object.GameObject;
@@ -14,7 +15,12 @@ public class Shooter extends Item{
 	
 	@Override
 	public void activate(){
-		Window.objectManager.add(new GameObject("resources/models/uvsphere2.obj", "resources/textures/uvlayout.png", true),Window.entityManager.player.position, new Vector3f(0,0.01f,0));
+		Vector3f position = GraphicsManager.camera.pos;
+		GameObject shot = new GameObject("resources/models/box.obj", "none", true);
+		shot.placeAt(position.x, position.y, position.z);
+		Vector3f ray = GraphicsManager.camera.target.subtract(position);
+		shot.velocity = ray.scale(.2f);
+		Window.objectManager.add(shot);
 		//raycast
 	}
 
