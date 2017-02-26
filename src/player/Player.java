@@ -138,13 +138,11 @@ public class Player extends GameObject {
 
 		}
 	}
-
 	private void shift() {
 		// Doesn't do anything yet, but should make player prone basically but
 		// that requires both hit boxes and and an understanding of cameras
 
 	}
-
 	private void jump() {
 		if (jumpCount > 0) {
 			jumping = 7;
