@@ -11,14 +11,6 @@ import noiseLibrary.module.source.Perlin;
  */
 public abstract class Biome {
 	public static float SIZE = Chunk.SIZE;
-	public static float WATERLEVEL = Chunk.WATERLEVEL;
-	public static float BEACHSIZE = Chunk.BEACHSIZE;
-	public static float TREELINE = Chunk.TREELINE;
-	static float RAINSCALER = 20;
-	static float TEMPSCALER = 20;
-	public static float high = 40;
-	public static float med = 20;
-	public static float low = 0;
 	static Perlin noise = World.noise;
 	static Perlin noisy = World.noisy;
 	static float maxSize = 0;
@@ -33,7 +25,20 @@ public abstract class Biome {
 	public static final int ICEWORLD = 7; //diff 3
 	public static final int VULCANICWORLD = 8; //diff 3
 	public static final int RADIOACTIVEWORLD = 9; //diff 3
-	static String biome;
+	
+	public static final int denseJungle = 01;
+	public static final int pondJungle = 02;
+	public static final int hillJungle = 03;
+	
+	public static final int lakeSwamp = 11;
+	public static final int denseSwamp = 12;
+	public static final int marshSwamp = 13;
+	
+	public static final int duneDesert = 21;
+	public static final int plainDesert = 22;
+	public static final int oasisDesert = 23;
+	public static final int rockyDesert = 24;
+	static int biome;
 	static int type;
 
 	public static float[] getPlanet(Vector3f centre, Vector3f point) {
@@ -53,21 +58,21 @@ public abstract class Biome {
 			 * if(h>SIZE/4+1){ r*=1.1; b*=1.1; g*=1.1; } if(h>SIZE/3+1){ r*=1.1;
 			 * b*=1.1; g*=1.1; }
 			 */
-			switch (((int) des) % 3) {
+		switch (((int) des) % 3) {
 			case 0:
-				biome = "denseJungle";
+				biome = denseJungle;
 				r*=0.9;
 				g*=0.9;
 				b*=0.9;
 				h += .5;
 				break;
 			case 1:
-				biome = "pondJungle";
+				biome = pondJungle;
 				b*=1.1;
 				h *= 0.7;
 				break;
 			case 2:
-				biome = "hillJungle";
+				biome = hillJungle;
 				g*= 1.1;
 				h *= 1.1;
 				h += .3;
@@ -81,12 +86,12 @@ public abstract class Biome {
 			h = (float) elev + 1;
 			switch (((int) des) % 3) {
 			case 0:
-				biome = "lakeSwamp";
+				biome = lakeSwamp;
 				h *= .4;
 				b*=1.1;
 				break;
 			case 1:
-				biome = "denseSwamp";
+				biome = denseSwamp;
 				h *= 0.4;
 				h += 0.2;
 				r*=0.9;
@@ -94,7 +99,7 @@ public abstract class Biome {
 				b*=0.9;
 				break;
 			case 2:
-				biome = "marshSwamp";
+				biome = marshSwamp;
 				h *= 0.7;
 				h += .3;
 				g*= 1.1;
@@ -102,39 +107,40 @@ public abstract class Biome {
 			}
 			break;
 		case DESERTWORLD:
-		r = (float) (color / 25 + .23);
-		g = (float) (color / 25 + .19);
-		b = (float) (color / 25 + .17);
+		r = (float) (color / 25 + .76);
+		g = (float) (color / 25 + .69);
+		b = (float) (color / 25 + .53);
 		h = (float) elev + 1;
 		switch (((int) des) % 4) {
 		case 0:
-			biome = "duneDesert";
-			h *= 1.5;
-			h+=1;
+			biome = duneDesert;
+			h *= 1;
+			h += 1;
 			break;
 		case 1:
-			biome = "plainDesert";
+			biome = plainDesert;
 			r*=1.1;
 			h *= 0.5;
 			h += 1;
 			break;
 		case 2:
-			biome = "oasisDesert";
+			biome = oasisDesert;
 			b*=1.1;
 			h *= 0.2;
 			h+=.95;
 			break;
-		case 3: biome = "rockyDesert";
+		case 3: 
+			biome = rockyDesert;
 			r*=0.9;
 			g*=0.9;
 			b*=0.9;
-			h *= 2;
+			h *= 1.5;
 			h+=1;
 			break;
 		}
 		break;
 	}
-		float[] returns = { r, b, g, h, type };
+		float[] returns = { r, b, g, h, biome };
 		return returns;
 
 	}
@@ -162,7 +168,7 @@ public abstract class Biome {
 			Shader.setUniform1f("fresnelPower", 0f);
 			Shader.setUniform1f("waveStrength", 0.0002f);
 			Shader.setUniform1f("waterClarity", 3);
-			Shader.setUniform4f("waterColour", new Vector4f(0.32f, 0.40f, 0.34f, 1));
+			Shader.setUniform4f("waterColour", new Vector4f(0.42f, 0.48f, 0.43f, 1));
 			Shader.setUniform1f("maxDistortion", 0.001f);
 			break;
 		case DESERTWORLD:
