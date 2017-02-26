@@ -1,11 +1,32 @@
 package player;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_0;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_1;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_2;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_3;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_4;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_5;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_6;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_7;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_8;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_9;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 
 import entity.Life;
 import graphics.Camera;
+import graphics.Window;
 import input.KeyboardInput;
+import input.MouseButtonCallback;
+import input.ScrollCallback;
 import maths.Vector3f;
 import object.GameObject;
 import physics.Time;
@@ -23,9 +44,9 @@ public class Player extends GameObject {
 	private float speed;
 	private Vector3f upward;
 	Camera camera;
-	Vector3f displacement = new Vector3f(0, 0, 0);
+	//Vector3f velocity = new Vector3f(0, 0, 0);
 	Vector3f[] destination = new Vector3f[4];
-	public Inventory inventory;
+	public Inventory inventory= new Inventory(10);;
 	public Life self;
 	public float suitEnergy;
 	public float energyLoss = 0.0f;// 0.1
@@ -33,9 +54,10 @@ public class Player extends GameObject {
 	boolean onGround;
 	int jumpCount = 0;
 	int[] last = new int[6];
-	int jumping;
-	boolean canJump;
+	int jumping = 0;
+	boolean canJump = true;
 	public Item i = new Shooter("item", 100, 0, "B1");
+	int c = 0;
 
 	public Player(Camera camera) {
 		super("resources/models/box.obj", "none", true);
@@ -44,17 +66,13 @@ public class Player extends GameObject {
 		this.camera = camera;
 		this.target = camera.getTarget();
 		this.position = new Vector3f(1, 1, 30);
-		inventory = new Inventory(10);
 		inventory.add(new Shooter("item", 40, 0, "B1"));
 		self = new Life(1000);
 		suitEnergy = 100;
 		last[3] = last[0] = Time.getUpdateTick();
-		jumping = 0;
-		canJump = true;
-
 	}
-
 	public void update() {
+		keycall();
 		camera.pos = position;
 		target = camera.target;
 		suitEnergy -= energyLoss * (.8 + World.difficulty);
@@ -65,7 +83,7 @@ public class Player extends GameObject {
 			jumpCount = ALLOWEDJUMPS;
 		}
 		if(jumping>0){
-			displacement = displacement.add(upward.scale(jumping));
+			velocity = velocity.add(upward.scale(jumping));
 			jumping--;
 			}
 		if(KeyboardInput.isKeyPressed(GLFW_KEY_SPACE)){
@@ -74,10 +92,7 @@ public class Player extends GameObject {
 			canJump = true;
 		}
 		move();
-		
-		
 	}
-
 	public void movePlayer(String dir) {
 		if (self.isLiving) {
 			this.target = camera.target;
@@ -89,42 +104,38 @@ public class Player extends GameObject {
 			// For the love of god don't try and fix the normalizing here
 			switch (dir) {
 			case "UP":
-				
 				if (noClip) {
-					displacement = upward;
-				} else if(canJump){//Time.getUpdateTick()- last[0] >20){
-					//last[0] = Time.getUpdateTick();
-					
+					velocity = upward;
+				} else if(canJump){
 					jump();
-					
 				}
 				break;
-			case "DOWN"://this is never called
+			case "DOWN":
 				if (noClip) {
-					displacement = upward.negate();
+					velocity = upward.negate();
 				} else {
 					shift();
 				}
 				break;
 			case "FORWARD":
-				displacement = new Vector3f(-vx, -vy, 0);
-				displacement = displacement.normalize().scale(speed);
+				velocity = new Vector3f(-vx, -vy, 0);
+				velocity = velocity.normalize().scale(speed);
 				if(KeyboardInput.isKeyPressed(GLFW_KEY_LEFT_SHIFT)||KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)){
-					displacement.x = displacement.x*2;
-					displacement.y = displacement.y*2;
+					velocity.x = velocity.x*2;
+					velocity.y = velocity.y*2;
 				}
 				break;
 			case "BACK":
-				displacement = new Vector3f(vx, vy, 0);
-				displacement = displacement.normalize().scale(speed);
+				velocity = new Vector3f(vx, vy, 0);
+				velocity = velocity.normalize().scale(speed);
 				break;
 			case "LEFT":
-				displacement = new Vector3f(vy, -vx, 0);
-				displacement = displacement.normalize().scale(speed);
+				velocity = new Vector3f(vy, -vx, 0);
+				velocity = velocity.normalize().scale(speed);
 				break;
 			case "RIGHT":
-				displacement = new Vector3f(-vy, vx, 0);
-				displacement = displacement.normalize().scale(speed);
+				velocity = new Vector3f(-vy, vx, 0);
+				velocity = velocity.normalize().scale(speed);
 				break;
 			default:
 				System.err.println("wtf");
@@ -144,18 +155,16 @@ public class Player extends GameObject {
 			jumping = 7;
 			jumpCount--;
 		}
-		
 	}
-
 	private void move() {
 		boolean canMove = true;
 		onGround = true;
 		if (!noClip) {
 			// All this code should be redone with hitboxes prolly
-			this.destination[0] = position.add(displacement.scale(25 / SPEEDSCALER));
-			this.destination[1] = position.add(displacement.scale(5 / SPEEDSCALER).negate());
-			this.destination[2] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.normalize()));
-			this.destination[3] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.negate().normalize()));
+			this.destination[0] = position.add(velocity.scale(25 / SPEEDSCALER));
+			this.destination[1] = position.add(velocity.scale(5 / SPEEDSCALER).negate());
+			this.destination[2] = position.add(velocity.scale(5 / SPEEDSCALER).cross(upward.normalize()));
+			this.destination[3] = position.add(velocity.scale(5 / SPEEDSCALER).cross(upward.negate().normalize()));
 
 			destination[0].z = Biome.getPlanet(destination[0], destination[0])[3] + 1.5f;
 			destination[1].z = Biome.getPlanet(destination[1], destination[1])[3] + 1.5f;
@@ -166,28 +175,25 @@ public class Player extends GameObject {
 			rise = rise - position.z;
 
 			if (rise > CLIMABLE) {
-				canMove = false;// this part works on at least one side
+				canMove = false;
 			} else if (rise < -CLIMABLE) {
-				displacement = displacement.add(upward.negate().scale(.5f));
+				velocity = velocity.add(upward.negate().scale(.5f));
 				onGround = false;
 			} else {
 				float[] diff = { position.z - destination[0].z, position.z - destination[1].z };
 				float difference = Math.min(diff[0], diff[1]) * 0.1f;
-				displacement = displacement.add(new Vector3f(0, 0, -difference));
+				velocity = velocity.add(new Vector3f(0, 0, -difference));
 			}
 		}
 		if (canMove) {
-			this.translate(displacement);
-			camera.move(displacement);
+			this.translate(velocity);
+			camera.move(velocity);
 		}
-		displacement = displacement.scale(.1f);
+		velocity = velocity.scale(.1f);
 	}
-
 	public void activeItem() {
 		inventory.activeItem();
-
 	}
-
 	public void scroll(double s) {
 		if (s == 1 || s == -1) {
 			inventory.scroll(0);
@@ -196,8 +202,69 @@ public class Player extends GameObject {
 		} else if (s < 0) {
 			inventory.scroll(s + 1);
 		}
-		// System.out.println(s);
-
+	}
+	private void keycall() {
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_A)||KeyboardInput.isKeyDown(GLFW_KEY_A)) {
+			movePlayer("LEFT");
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_D)||KeyboardInput.isKeyDown(GLFW_KEY_D)) {
+			movePlayer("RIGHT");
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_W)||KeyboardInput.isKeyDown(GLFW_KEY_W)) {
+			movePlayer("FORWARD");
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_S)||KeyboardInput.isKeyDown(GLFW_KEY_S)) {
+			movePlayer("BACK");
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_SPACE)&& !KeyboardInput.isKeyDown(GLFW_KEY_SPACE))	 {
+			movePlayer("UP");
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_C)||KeyboardInput.isKeyDown(GLFW_KEY_C))	 {
+			movePlayer("DOWN");
+		}
+		int[] m = MouseButtonCallback.getMouseButton();
+		if (m[1] == GLFW_PRESS) {
+			if (m[0] == GLFW_MOUSE_BUTTON_LEFT) {
+				activeItem();
+			}
+		}
+		double s = ScrollCallback.getyoffset();
+		scroll(s);
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_1)) {
+			inventory.setActive(0);
+			//player.i.activate();
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_2)) {
+			inventory.setActive(1);
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_3)) {
+			inventory.setActive(2);
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_4)) {
+			inventory.setActive(3);
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_5)) {
+			inventory.setActive(4);
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_6)) {
+			inventory.setActive(5);
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_7)) {
+			inventory.setActive(6);
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_8)) {
+			inventory.setActive(7);
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_9)) {
+			inventory.setActive(8);
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_0)) {
+			inventory.setActive(0);
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_P)) {
+			Window.reload(c++ % 3);
+		}
+		
 	}
 
 }
