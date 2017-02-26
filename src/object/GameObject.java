@@ -51,6 +51,7 @@ public class GameObject {
 	public Vector3f force = new Vector3f();
 	public BoundingBox boundingBox;
 	public boolean enabled = true;
+	public boolean resting = false;
 
 	/**
 	 * Creates a new object with the model and texture given
@@ -170,6 +171,7 @@ public class GameObject {
 
 	public void translate(Vector3f displacement) {
 		translate(displacement.x, displacement.y, displacement.z);
+		position.add(displacement);
 	}
 
 	public void placeAt(float x, float y, float z) {
@@ -184,10 +186,18 @@ public class GameObject {
 
 	public void physic() {
 		if (enabled) {
-			//fakeFriction = velocity.negate().scale(0.01f);
-			acceleration = force.scale(1 / mass).add(GRAVITY);
-			velocity = velocity.add(acceleration);//.add(fakeFriction);
-			position = boundingBox.centre;
+			if(!resting){
+				acceleration = GRAVITY.scale(.1f);
+			}else{
+				acceleration = new Vector3f(0,0,0);
+				if(velocity.z <0){
+					velocity.z = 0;
+				}
+			}
+			velocity = velocity.add(acceleration);
+			velocity = velocity.scale(.9f);
+			this.translate(velocity);
+			//position = boundingBox.centre;
 		}
 	}
 
@@ -223,7 +233,7 @@ public class GameObject {
 	}
 
 	public void makeGL() {
-		assert !isGL : "its already gl you dumb fuck";
+		assert !isGL : "Game Object is GL";
 		vao = new VertexArrayObject(vaoData, 3);
 		this.isGL = true;
 	}

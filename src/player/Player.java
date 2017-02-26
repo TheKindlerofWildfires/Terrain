@@ -38,20 +38,18 @@ import world.World;
  */
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.7f;
-	private static final float SPEEDSCALER = 10;
+	private static final float SPEEDSCALER = 2;
 	private static final int ALLOWEDJUMPS = 1;
 	Vector3f target;
 	private float speed;
 	private Vector3f upward;
 	Camera camera;
-	//Vector3f velocity = new Vector3f(0, 0, 0);
 	Vector3f[] destination = new Vector3f[4];
 	public Inventory inventory= new Inventory(10);;
 	public Life self;
 	public float suitEnergy;
 	public float energyLoss = 0.0f;// 0.1
 	boolean noClip = false;
-	boolean onGround;
 	int jumpCount = 0;
 	int[] last = new int[6];
 	int jumping = 0;
@@ -79,7 +77,7 @@ public class Player extends GameObject {
 		if (suitEnergy < 0) {
 			self.kill(false);
 		}
-		if (onGround) {
+		if (resting) {
 			jumpCount = ALLOWEDJUMPS;
 		}
 		if(jumping>0){
@@ -92,6 +90,8 @@ public class Player extends GameObject {
 			canJump = true;
 		}
 		move();
+		physic();
+		camera.move(velocity);
 	}
 	public void movePlayer(String dir) {
 		if (self.isLiving) {
@@ -118,24 +118,19 @@ public class Player extends GameObject {
 				}
 				break;
 			case "FORWARD":
-				velocity = new Vector3f(-vx, -vy, 0);
-				velocity = velocity.normalize().scale(speed);
+				velocity = velocity.add(new Vector3f(-vx, -vy, 0).normalize().scale(speed));
 				if(KeyboardInput.isKeyPressed(GLFW_KEY_LEFT_SHIFT)||KeyboardInput.isKeyDown(GLFW_KEY_LEFT_SHIFT)){
-					velocity.x = velocity.x*2;
-					velocity.y = velocity.y*2;
+					velocity = velocity.add(new Vector3f(-vx, -vy, 0).normalize().scale(speed));
 				}
 				break;
 			case "BACK":
-				velocity = new Vector3f(vx, vy, 0);
-				velocity = velocity.normalize().scale(speed);
+				velocity = velocity.add(new Vector3f(vx, vy, 0).normalize().scale(speed));
 				break;
 			case "LEFT":
-				velocity = new Vector3f(vy, -vx, 0);
-				velocity = velocity.normalize().scale(speed);
+				velocity = velocity.add(new Vector3f(vy, -vx, 0).normalize().scale(speed));
 				break;
 			case "RIGHT":
-				velocity = new Vector3f(-vy, vx, 0);
-				velocity = velocity.normalize().scale(speed);
+				velocity = velocity.add(new Vector3f(-vy, vx, 0).normalize().scale(speed));
 				break;
 			default:
 				System.err.println("wtf");
@@ -158,7 +153,7 @@ public class Player extends GameObject {
 	}
 	private void move() {
 		boolean canMove = true;
-		onGround = true;
+		resting = true;
 		if (!noClip) {
 			// All this code should be redone with hitboxes prolly
 			this.destination[0] = position.add(velocity.scale(25 / SPEEDSCALER));
@@ -177,19 +172,16 @@ public class Player extends GameObject {
 			if (rise > CLIMABLE) {
 				canMove = false;
 			} else if (rise < -CLIMABLE) {
-				velocity = velocity.add(upward.negate().scale(.5f));
-				onGround = false;
-			} else {
+				resting = false;
+			} else if(resting){//this statement needs help ie if !falling
 				float[] diff = { position.z - destination[0].z, position.z - destination[1].z };
 				float difference = Math.min(diff[0], diff[1]) * 0.1f;
-				velocity = velocity.add(new Vector3f(0, 0, -difference));
+				velocity.z = velocity.z -difference;// = velocity.add(new Vector3f(0, 0, -difference));//this is the smooth walk that is messing me up
 			}
 		}
-		if (canMove) {
-			this.translate(velocity);
-			camera.move(velocity);
+		if (!canMove) {
+			velocity = new Vector3f(0,0,0);
 		}
-		velocity = velocity.scale(.1f);
 	}
 	public void activeItem() {
 		inventory.activeItem();
