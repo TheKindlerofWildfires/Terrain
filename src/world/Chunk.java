@@ -70,7 +70,7 @@ public class Chunk extends GameObject {
 					.scale(SIZE);
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
-				float[] values = Biome.getValue(centre, point, false);
+				float[] values = Biome.getPlanet(centre, point);
 				float h = values[3];
 				float r = values[0];
 				float b = values[1];

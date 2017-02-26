@@ -1,7 +1,3 @@
-/noiseLibrary/
-/object/
-/particles/
-/physics/
-/world/
+/player/
 /entity/
-/graphics/
+/object/

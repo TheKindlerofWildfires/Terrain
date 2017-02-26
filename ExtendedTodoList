@@ -2,13 +2,14 @@ https://lwjglgamedev.gitbooks.io/3d-game-development-with-lwjgl/content/
 
 Assigned:
 	Fix lighting
-	sync water/land/skybox
-	(skybox<land = water)
-	place biome items
-Eventual:
-	Thickness
-	Caves
-	Optimization
+	Fix water
+	Add some textures
+	UI
 	Weather
+Eventual:
+	Caves
+	
+	
 	SAT collision 
 	MD5
+	Optimization

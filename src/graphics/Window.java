@@ -18,6 +18,8 @@ import static org.lwjgl.glfw.GLFW.glfwSetCursorPos;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
@@ -45,14 +47,18 @@ import java.util.Random;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import org.lwjgl.glfw.GLFWScrollCallback;
 import org.lwjgl.opengl.GL;
 
+import cave.Tree;
 import entity.EntityManager;
-import entity.Time;
 import input.MouseInput;
 import maths.Vector3f;
 import maths.Vector4f;
 import object.ObjectManager;
+import physics.Time;
+import world.Biome;
 import world.Chunk;
 import world.ChunkLoader;
 import world.Detail;
@@ -84,6 +90,8 @@ public class Window implements Runnable {
 	@SuppressWarnings("unused")
 	private GLFWKeyCallback keyCallback;
 	public static GLFWCursorPosCallback cursorCallback;
+	public static GLFWMouseButtonCallback mouseButtonCallback;
+	public static GLFWScrollCallback scrollCallback;
 
 	public static GraphicsManager graphicsManager;
 	public static ObjectManager objectManager;
@@ -109,7 +117,7 @@ public class Window implements Runnable {
 	public static Lava lava;
 	//private static DetailManager trees;
 	//private static Particle baseTree;
-
+	public static Tree cave;
 	public static void main(String args[]) {
 		Window game = new Window();
 		game.run();
@@ -165,6 +173,10 @@ public class Window implements Runnable {
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		glfwSetKeyCallback(window, keyCallback = new input.KeyboardInput());
 		glfwSetCursorPosCallback(window, cursorCallback = (GLFWCursorPosCallback) new input.MouseInput());
+		glfwSetScrollCallback(window, scrollCallback = (GLFWScrollCallback) new input.ScrollCallback());
+		glfwSetMouseButtonCallback(window, mouseButtonCallback = (GLFWMouseButtonCallback)new input.MouseButtonCallback());
+
+	
 		// set window pos
 		glfwSetWindowPos(window, 0, 20);
 		// display window
@@ -184,7 +196,7 @@ public class Window implements Runnable {
 		windowWidth = width.get(0);
 		windowHeight = height.get(0);
 		// Create GraphicsManager and World
-		world = new World();
+		world = new World(0,mathRandom.nextInt());
 		graphicsManager = new GraphicsManager();
 		objectManager = new ObjectManager();
 		entityManager = new EntityManager();
@@ -200,7 +212,7 @@ public class Window implements Runnable {
 
 		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
-		
+		cave = new Tree(new Vector3f(0,0,0));
 		
 		//baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		Detail.init();
@@ -232,7 +244,7 @@ public class Window implements Runnable {
 		worldRandom.setSeed(119);//119 : 5
 		mathRandom.setSeed(worldRandom.nextLong());
 		entityRandom.setSeed(0);
-		World.perlinSeed = mathRandom.nextInt();
+		//World.perlinSeed = mathRandom.nextInt();
 	}
 
 	/**
@@ -244,11 +256,10 @@ public class Window implements Runnable {
 		world.update();
 		Time.updateTick();
 		objectManager.update();
-		entityManager.update();
+		entityManager.update(window);
 		now = System.currentTimeMillis();
 		Detail.update(now - then);
 		lava.update(now - then);
-		
 		then = now;
 	}
 
@@ -317,7 +328,7 @@ public class Window implements Runnable {
 		glViewport(0, 0, windowWidth, windowHeight);
 		glClearColor(CLEAR_COLOUR.x, CLEAR_COLOUR.y, CLEAR_COLOUR.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		world.renderLand(renderClipPlane);
+		world.renderLand(renderClipPlane);//should be uncommented
 		objectManager.render(renderClipPlane);
 		water.render(renderClipPlane); // do NOT attempt to render water
 										// anywhere other than to screen
@@ -325,6 +336,7 @@ public class Window implements Runnable {
 		lava.render(renderClipPlane);
 		//trees.render(renderClipPlane);
 		Detail.render(renderClipPlane);
+		cave.render(renderClipPlane);
 	}
 
 	public void testRender() {
@@ -334,7 +346,18 @@ public class Window implements Runnable {
 		objectManager.render(renderClipPlane);
 
 	}
-
+	public static void reload(int type){
+		world = new World(type, worldRandom.nextInt(10));
+		entityManager.player.placeAt(0, 0, entityManager.player.position.z);
+		water.placeAt(0, 0, Chunk.WATERLEVEL);
+		World.chunks.clear();
+		World.loadedChunks.clear();
+		chunkLoader.chunksToLoad.clear();
+		chunkLoader.loadedChunks.clear();
+		Biome.updateWater(type);
+		
+		//should also clear objects/ trees/ entities
+	}
 	/**
 	 * The game loop
 	 */

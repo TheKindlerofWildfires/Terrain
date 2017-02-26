@@ -5,6 +5,7 @@ import java.util.Random;
 import graphics.Window;
 import maths.Vector3f;
 import object.GameObject;
+import physics.Time;
 import world.Biome;
 
 /**
@@ -87,10 +88,10 @@ public class Wanderer extends GameObject {
 			this.destination[2] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.normalize()));
 			this.destination[3] = position.add(displacement.scale(5 / SPEEDSCALER).cross(upward.negate().normalize()));
 
-			destination[0].z = Biome.getValue(destination[0], destination[0], false)[3] + 1f;
-			destination[1].z = Biome.getValue(destination[1], destination[1], false)[3] + 1f;
-			destination[2].z = Biome.getValue(destination[2], destination[2], false)[3] + 1f;
-			destination[3].z = Biome.getValue(destination[3], destination[3], false)[3] + 1f;
+			destination[0].z = Biome.getPlanet(destination[0], destination[0])[3] + 1f;
+			destination[1].z = Biome.getPlanet(destination[1], destination[1])[3] + 1f;
+			destination[2].z = Biome.getPlanet(destination[2], destination[2])[3] + 1f;
+			destination[3].z = Biome.getPlanet(destination[3], destination[3])[3] + 1f;
 			float rise = Math.max(Math.max(destination[0].z, destination[1].z),
 					Math.max(destination[2].z, destination[3].z));
 			rise = rise - position.z;

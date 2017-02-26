@@ -79,6 +79,9 @@ public class Vector3f {
 	 */
 	public Vector3f normalize() {
 		float length = length();
+		if(length == 0){
+			return new Vector3f(this.x,this.y,this.z);
+		}
 		return divide(length);
 	}
 

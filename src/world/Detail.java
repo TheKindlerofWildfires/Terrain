@@ -2,7 +2,6 @@ package world;
 
 import java.util.ArrayList;
 
-import entity.Time;
 import graphics.DetailManager;
 import maths.Vector3f;
 import maths.Vector4f;
@@ -10,6 +9,7 @@ import noiseLibrary.module.source.Perlin;
 import particles.Geyser;
 import particles.Particle;
 import particles.ParticleEmitter;
+import physics.Time;
 
 public abstract class Detail {
 	static float DETAILSCALER = 1;
@@ -109,6 +109,7 @@ public abstract class Detail {
 	 */
 	public static void detail(Vector3f position, float biome) {
 		int tech = (int) biome;
+		/*
 		switch (tech) {
 		case Biome.RAINFOREST:
 			rainForest(position);
@@ -137,7 +138,7 @@ public abstract class Detail {
 		case Biome.TAIGA:
 			taiga(position);
 			break;
-		}
+		}*/
 	}
 
 	private static void taiga(Vector3f position) {
