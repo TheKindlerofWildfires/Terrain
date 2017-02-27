@@ -74,7 +74,7 @@ public abstract class Biome {
 			case 2:
 				biome = hillJungle;
 				g*= 1.1;
-				h *= 1.1;
+				h *= 1.2;
 				h += .3;
 				break;
 			}

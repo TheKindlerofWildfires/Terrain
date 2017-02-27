@@ -355,6 +355,7 @@ public class Window implements Runnable {
 		chunkLoader.chunksToLoad.clear();
 		chunkLoader.loadedChunks.clear();
 		Biome.updateWater(type);
+		Detail.clear();
 		
 		//should also clear objects/ trees/ entities
 	}

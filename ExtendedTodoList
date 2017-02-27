@@ -5,7 +5,8 @@ Assigned:
 	Fix water
 	Add some textures
 	UI
-	Weather
+	Make it load for a bit on transition to not show the bugyness
+	Make trees deload on transit
 Eventual:
 	Caves- rounding && colliders
 	SAT collision 

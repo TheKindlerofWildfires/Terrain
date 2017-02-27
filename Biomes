@@ -4,12 +4,12 @@ denseJungle: Tree heavy (short and tall) , with lots of ground cover
 pondJungle: Tree light, mostly short
 hillJungle: Tree light, mostly tall, no shrubs
 
-Swamp: Needs water colour fixed
+Swamp: 
 lakeSwamp: lillypads
 denseSwamp: some shrubs and trees 
 marshSwamp: lots of shrubs (two types)
 
-Desert: Needs to have colour scheme fixed a little
+Desert: 
 duneDesert: Little to nothing (smooth colour slightly)
 plainDesert: A few rocks (smooth colour slightly)
 oasisDesert: A tree or two, maybe reeds
