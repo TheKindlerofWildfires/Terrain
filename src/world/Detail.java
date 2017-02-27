@@ -57,7 +57,7 @@ public abstract class Detail {
 		lillyPads = new DetailManager(lillyPad, 1000, 10, new Vector4f(.3f, .537f, .3f, 1));
 		savannaTrees = new DetailManager(savannaTree, 1000, 10, new Vector4f(.6f, .637f, .5f, 1));
 		rocks = new DetailManager(rock, 1000, 10, new Vector4f(.8f, .7f, .5f, 1));
-		spires = new DetailManager(spire, 1000, 10, new Vector4f(.65f, .6f, .43f, 1));
+		spires = new DetailManager(spire, 1000, 10, new Vector4f(.7f, .65f, .48f, 1));
 		gates = new DetailManager(gate, 1000, 10, new Vector4f(.75f, .7f, .53f, 1));
 		
 		man.add(bigTrees);

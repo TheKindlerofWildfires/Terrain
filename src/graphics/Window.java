@@ -118,6 +118,7 @@ public class Window implements Runnable {
 	//private static DetailManager trees;
 	//private static Particle baseTree;
 	public static Tree cave;
+	final boolean test = false;
 	public static void main(String args[]) {
 		Window game = new Window();
 		game.run();
@@ -150,7 +151,6 @@ public class Window implements Runnable {
 	 * Code called at the start of the gameloop
 	 */
 	public void init() {
-		
 		loadProperties();
 		randomize();
 		// Initialize glfw
@@ -213,26 +213,14 @@ public class Window implements Runnable {
 		reflection = new FrameBufferObject(REFLECTION_WIDTH, REFLECTION_HEIGHT, false);
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
 		cave = new Tree(new Vector3f(0,0,0));
-		
-		//baseTree = new Particle("resources/models/tree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		Detail.init();
-		//trees = new DetailManager(baseTree, 1000, 10, new Vector4f(1,1,1,1));
-		//trees.activate();
-		
-		//ArrayList<Particle> treeees = new ArrayList<Particle>();
 
-		/*for (int i = 0; i < 1000; i++) {
-			Particle newTree = new Particle(baseTree);
-			newTree.rotate(90, 1, 0, 0);
-			Vector3f displacement = new Vector3f((float) Math.random() * 1000, (float) Math.random() * 1000, 4);
-			newTree.translate(displacement);
-			treeees.add(newTree);
-		}*/
-
-		//trees.detailsToAdd.addAll(treeees);
 
 
 		GraphicsManager.toggleFog();
+		if(test){
+			//test
+		}
 	}
 
 	/**
@@ -251,6 +239,7 @@ public class Window implements Runnable {
 	 * The start of the update call
 	 */
 	public void update() {
+		if(!test){
 		glfwPollEvents();
 		graphicsManager.update();
 		world.update();
@@ -261,22 +250,23 @@ public class Window implements Runnable {
 		Detail.update(now - then);
 		lava.update(now - then);
 		then = now;
+		}else{
+			Time.updateTick();
+			entityManager.update(window);
+			glfwPollEvents();
+			graphicsManager.update();
+		}
 	}
 
 	private long then = System.currentTimeMillis();
 	private long now = System.currentTimeMillis();
 
-	float x = 0;
-
-	public void testUpdate() {
-		glfwPollEvents();
-		graphicsManager.update();
-	}
 
 	/**
 	 * The start of the render call
 	 */
 	public void render() {
+		if(!test){
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -336,15 +326,12 @@ public class Window implements Runnable {
 		lava.render(renderClipPlane);
 		//trees.render(renderClipPlane);
 		Detail.render(renderClipPlane);
-		cave.render(renderClipPlane);
-	}
-
-	public void testRender() {
-		glfwSwapBuffers(window);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		objectManager.render(renderClipPlane);
-
+		//cave.render(renderClipPlane);
+		}else{
+			glfwSwapBuffers(window);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			cave.render(renderClipPlane);
+		}
 	}
 	public static void reload(int type){
 		world = new World(type, worldRandom.nextInt(10));
