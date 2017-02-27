@@ -115,8 +115,6 @@ public class Window implements Runnable {
 	public static FrameBufferObject reflection;
 
 	public static Lava lava;
-	//private static DetailManager trees;
-	//private static Particle baseTree;
 	public static Tree cave;
 	final boolean test = false;
 	public static void main(String args[]) {
