@@ -20,6 +20,7 @@ public class Shooter extends Item{
 		Vector3f ray = Window.entityManager.player.target.subtract(position);
 		shot.velocity = ray.normalize().scale(.8f);
 		Window.objectManager.add(shot);
+		Window.reload(2);
 	}
 
 }

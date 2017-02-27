@@ -17,6 +17,10 @@ public abstract class Detail {
 	private static Particle thornBush;
 	private static Particle yellowBush;
 	private static Particle lillyPad;
+	private static Particle savannaTree;
+	private static Particle rock;
+	private static Particle spire;
+	private static Particle gate;
 
 	public static DetailManager bigTrees;
 	public static DetailManager forestTrees;
@@ -24,6 +28,10 @@ public abstract class Detail {
 	public static DetailManager thornBushs;
 	public static DetailManager yellowBushs;
 	public static DetailManager lillyPads;
+	public static DetailManager savannaTrees;
+	public static DetailManager rocks;
+	public static DetailManager spires;
+	public static DetailManager gates;
 	
 	public static ArrayList<DetailManager> man = new ArrayList<DetailManager>();
 
@@ -35,20 +43,33 @@ public abstract class Detail {
 		tallBush = new Particle("resources/models/detail/tallBush.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		thornBush = new Particle("resources/models/detail/thornBush.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		yellowBush = new Particle("resources/models/detail/yellowBush.obj", "none", new Vector3f(0, 0, 1f), 100000l);
-		lillyPad = new Particle("resources/models/detail/lillypad.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		lillyPad = new Particle("resources/models/detail/lillyPad.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		savannaTree = new Particle("resources/models/detail/savannaTree.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		rock = new Particle("resources/models/detail/rock.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		spire = new Particle("resources/models/detail/spire.obj", "none", new Vector3f(0, 0, 1f), 100000l);
+		gate = new Particle("resources/models/detail/gate.obj", "none", new Vector3f(0, 0, 1f), 100000l);
 		
 		bigTrees = new DetailManager(bigTree, 1000, 10, new Vector4f(.561f, .700f, .561f, 1));
 		forestTrees = new DetailManager(forestTree, 1000, 10, new Vector4f(.5f, .637f, .5f, 1));
 		tallBushs = new DetailManager(tallBush, 1000, 10, new Vector4f(.4f, .537f, .4f, 1));
-		thornBushs = new DetailManager(bigTree, 1000, 10, new Vector4f(.661f, .700f, .561f, 1));
-		yellowBushs = new DetailManager(forestTree, 1000, 10, new Vector4f(.6f, .637f, .5f, 1));
-		lillyPads = new DetailManager(tallBush, 1000, 10, new Vector4f(.3f, .537f, .3f, 1));
+		thornBushs = new DetailManager(thornBush, 1000, 10, new Vector4f(.661f, .700f, .561f, 1));
+		yellowBushs = new DetailManager(yellowBush, 1000, 10, new Vector4f(.6f, .637f, .5f, 1));
+		lillyPads = new DetailManager(lillyPad, 1000, 10, new Vector4f(.3f, .537f, .3f, 1));
+		savannaTrees = new DetailManager(savannaTree, 1000, 10, new Vector4f(.6f, .637f, .5f, 1));
+		rocks = new DetailManager(rock, 1000, 10, new Vector4f(.8f, .7f, .5f, 1));
+		spires = new DetailManager(spire, 1000, 10, new Vector4f(.65f, .6f, .43f, 1));
+		gates = new DetailManager(gate, 1000, 10, new Vector4f(.75f, .7f, .53f, 1));
+		
 		man.add(bigTrees);
 		man.add(forestTrees);
 		man.add(tallBushs);
 		man.add(thornBushs);
 		man.add(yellowBushs);
 		man.add(lillyPads);
+		man.add(savannaTrees);
+		man.add(rocks);
+		man.add(spires);
+		man.add(gates);
 		man.stream().forEach(m -> m.activate());
 	}
 
@@ -89,22 +110,65 @@ public abstract class Detail {
 		case Biome.DESERTWORLD:
 			switch(b){
 			case Biome.duneDesert:
-				//duneDesert(position);
+				duneDesert(position);
 				break;
 			case Biome.plainDesert:
-				//plainDesert(position);
+				plainDesert(position);
 				break;
 			case Biome.oasisDesert:
-				//oasisDesert(position);
+				oasisDesert(position);
 				break;
 			case Biome.rockyDesert:
-				//rockyDesert(position);
+				rockyDesert(position);
 				break;
 			}
 			break;
 		}
 			
 	}
+	private static void duneDesert(Vector3f position) {
+		if (position.z > Chunk.WATERLEVEL&& check(position.z, 0.001f)){
+			Particle newDetail = new Particle(gate);
+			newDetail.translate(position);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
+			gates.detailsToAdd.add(newDetail);
+		}
+	}
+
+	private static void rockyDesert(Vector3f position) {
+		if (position.z > Chunk.WATERLEVEL&& check(position.z, 0.02f)){
+			Particle newDetail = new Particle(spire);
+			newDetail.translate(position);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
+			spires.detailsToAdd.add(newDetail);
+		}
+		
+	}
+
+	private static void oasisDesert(Vector3f position) {
+		if (position.z > Chunk.WATERLEVEL&& check(position.z, 0.1f)){
+			Particle newDetail = new Particle(thornBush);
+			newDetail.translate(position);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
+			thornBushs.detailsToAdd.add(newDetail);
+		}
+		if (position.z > Chunk.WATERLEVEL&& check(position.z+.1f, 0.05f)){
+			Particle newDetail = new Particle(savannaTree);
+			newDetail.translate(position);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
+			savannaTrees.detailsToAdd.add(newDetail);
+		}
+	}
+
+	private static void plainDesert(Vector3f position) {
+		if (position.z > Chunk.WATERLEVEL&& check(position.z, 0.01f)){
+			Particle newDetail = new Particle(rock);
+			newDetail.translate(position);
+			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
+			rocks.detailsToAdd.add(newDetail);
+		}
+	}
+
 	private static void denseSwamp(Vector3f position) {
 		if (position.z > Chunk.WATERLEVEL&& check(position.z, 0.1f)){
 			Particle newDetail = new Particle(forestTree);
@@ -138,10 +202,10 @@ public abstract class Detail {
 	}
 
 	private static void lakeSwamp(Vector3f position) {
-		if (position.z < Chunk.WATERLEVEL&& check(position.z, 0.1f)){
+		if (position.z > Chunk.WATERLEVEL&& check(position.z, 0.1f)){
 			Particle newDetail = new Particle(lillyPad);
 			newDetail.translate(position);
-			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
+			newDetail.placeAt(position.x, position.y, Chunk.WATERLEVEL);
 			lillyPads.detailsToAdd.add(newDetail);
 		}
 		
@@ -170,6 +234,7 @@ public abstract class Detail {
 			newDetail.placeAt(position.x, position.y, position.z / Chunk.SIZE);
 			tallBushs.detailsToAdd.add(newDetail);
 		}
+		
 	}
 
 	private static void denseJungle(Vector3f position){
