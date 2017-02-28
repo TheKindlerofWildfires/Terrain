@@ -211,6 +211,9 @@ public class GameObject {
 	public void setForce(Vector3f force) {
 		this.force = force;
 	}
+	public void addForce(Vector3f force) {
+		this.force = this.force.add(force);
+	}
 
 	/**
 	 * Renders the specified object

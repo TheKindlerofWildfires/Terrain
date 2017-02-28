@@ -37,17 +37,11 @@ public class Wanderer extends GameObject {
 			lastChoice = Time.getUpdateTick();
 		}
 		if (lastMove - Time.getUpdateTick() < -0) {
-			// moveObject(direction);
+
 			displacement = new Vector3f(dx, dy, 0).normalize().scale(speed);
 			move();
 			lastMove = Time.getUpdateTick();
 		}
-		// System.out.println(dx + " " + dy);
-		/*
-		 * System.out.println(dx + " " + dy);
-		 * if(Float.isNaN(position.x)||Float.isNaN(position.y)){
-		 * System.exit(-1); }
-		 */
 	}
 
 	public void direct(int dir) {

@@ -11,19 +11,18 @@ import java.util.ArrayList;
 import maths.Vector3f;
 import maths.Vector4f;
 import object.GameObject;
-import physics.Time;
 //Kindler your lighting is so terrible
 public class Monster extends GameObject{
+	
 	//This is pretty stellar :P
 	public ArrayList<GameObject> satellites = new ArrayList<GameObject>();
-	public GameObject orbit = new GameObject("resources/models/sphere.obj", "none", true);
-	public Monster(String type){
-		super("resources/models/sphere.obj", "none", true);
+	
+	public Monster(String body, Vector3f position){
+		super(body, "none", true);
+		this.material.colour = new Vector3f(1,1,0);
 		rotate(90,1,0,0);
 		construct();
-		setPosition(new Vector3f(0,0,6)); //2, 1
-		
-		//orbit.resting = true;
+		setPosition(position);
 		resting = true;
 		
 		
@@ -32,20 +31,11 @@ public class Monster extends GameObject{
 	/**
 	 * This builds the thing
 	 */
-	private void construct() {
-		orbit.placeAt(-1.3f, -1.3f, 0);
-		orbit.scale(0.4f, 0.4f, 0.4f);
-		orbit.rotate(90,1,0,0);
-		orbit.resting = true;
-		satellites.add(orbit);
+	public void construct() {
 		
 	}
 	public void update() {
 		satellites.stream().forEach(o -> o.physic());
-		//Look Kindler: Its one of your precious circles
-		//It starts in on its curve, not in the center
-		orbit.velocity = new Vector3f((float)Math.sin(Time.getSecTick()/(.2*Math.PI))*.05f, (float)Math.cos(Time.getSecTick()/(.2*Math.PI))*.05f, 0);
-		System.out.println(orbit.position);
 		physic(); 
 		
 	}
