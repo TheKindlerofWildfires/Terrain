@@ -198,7 +198,7 @@ public class GameObject {
 			}else{
 				acceleration.z = 0;
 				if(velocity.z <0){
-					velocity.z = 0;
+					velocity.z *= .4f;
 				}
 			}
 			velocity = velocity.add(acceleration);

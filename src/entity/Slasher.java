@@ -3,10 +3,14 @@ package entity;
 import graphics.Window;
 import maths.Vector3f;
 import object.GameObject;
+import world.Biome;
 
 public class Slasher extends Monster{
 	Vector3f direction = new Vector3f(0,0,0);
 	int slashing;
+	private Vector3f upward = new Vector3f(0,0,1);
+	private static final float CLIMABLE = 10f;
+	Vector3f[] destination = new Vector3f[4];
 	public Slasher(String body, Vector3f position) {
 		super(body, position);
 		
@@ -41,19 +45,51 @@ public class Slasher extends Monster{
 		}
 	}
 	private void move() { 
-		int dir = Window.entityRandom.nextInt(10);
+		int dir = Window.entityRandom.nextInt(20);
 		if( dir == 1){
-			direction = new Vector3f(0,.001f,0);
+			direction = new Vector3f(0,.002f,0);
 		}else if(dir == 2){
-			direction = new Vector3f(0,-.001f,0);
+			direction = new Vector3f(0,-.002f,0);
 		}else if (dir ==3){
+			direction = new Vector3f(.002f,0,0);
+		}else if(dir == 4){
+			direction = new Vector3f(-.002f,0,0);
+		}else if(dir == 5){
 			if(slashing<0){
-			slashing = 60;}
+				slashing = 60;}
+		}else if (dir == 6){
+			setAcceleration(acceleration.normalize().scale(0.002f));
 		}else{
 			direction = new Vector3f(0,0,0);
 		}
-		//addAcceleration(direction);
-		
+		addAcceleration(direction);
+		boolean canMove = true;
+		resting = true;
+			// All this code should be redone with hitboxes prolly
+			this.destination[0] = position.add(velocity.scale(25));
+			this.destination[1] = position.add(velocity.scale(5).negate());
+			this.destination[2] = position.add(velocity.scale(5).cross(upward.normalize()));
+			this.destination[3] = position.add(velocity.scale(5).cross(upward.negate().normalize()));
+			destination[0].z = Biome.getPlanet(destination[0], destination[0])[3] + 1f;
+			destination[1].z = Biome.getPlanet(destination[1], destination[1])[3] + 1f;
+			destination[2].z = Biome.getPlanet(destination[2], destination[2])[3] + 1f;
+			destination[3].z = Biome.getPlanet(destination[3], destination[3])[3] + 1f;
+			float rise = Math.max(Math.max(destination[0].z, destination[1].z),
+					Math.max(destination[2].z, destination[3].z));
+			rise = rise - position.z;
+			if (rise > CLIMABLE) {
+				canMove = false;
+			} else if (rise < -CLIMABLE) {
+				resting = false;
+			} else if(resting){
+				float[] diff = { position.z - destination[0].z, position.z - destination[1].z };
+				float difference = Math.min(diff[0], diff[1]) * 0.1f;
+				setVelocity(new Vector3f(velocity.x,velocity.y,velocity.z-difference));//velocity.z = velocity.z -difference;
+			}
+		if (!canMove) {
+			setVelocity(new Vector3f(0,0,0));
+		}
 	}
+	
 
 }

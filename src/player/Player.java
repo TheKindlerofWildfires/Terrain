@@ -49,7 +49,7 @@ public class Player extends GameObject {
 	public Life self;
 	public float suitEnergy;
 	public float energyLoss = 0.0f;// 0.1
-	boolean noClip = true;
+	boolean noClip = false;
 	int jumpCount = 0;
 	int[] last = new int[6];
 	int jumping = 0;
@@ -63,7 +63,7 @@ public class Player extends GameObject {
 		upward = new Vector3f(0, 0, speed);
 		this.camera = camera;
 		this.target = camera.getTarget();
-		this.position = new Vector3f(1, 1, 10);
+		this.position = new Vector3f(1, 1, 100);
 		inventory.add(new Shooter("item", 40, 0, "B1"));
 		self = new Life(1000);
 		suitEnergy = 100;
@@ -91,7 +91,7 @@ public class Player extends GameObject {
 		}
 		move();
 		physic();
-		camera.move(velocity);
+		camera.move(velocity);//I think that the player doesn't ever move down but the camera does
 	}
 	public void movePlayer(String dir) {
 		if (self.isLiving) {
@@ -171,7 +171,7 @@ public class Player extends GameObject {
 				canMove = false;
 			} else if (rise < -CLIMABLE) {
 				resting = false;
-			} else if(resting){//this statement needs help ie if !falling
+			} else if(resting){
 				float[] diff = { position.z - destination[0].z, position.z - destination[1].z };
 				float difference = Math.min(diff[0], diff[1]) * 0.1f;
 				velocity.z = velocity.z -difference;// = velocity.add(new Vector3f(0, 0, -difference));//this is the smooth walk that is messing me up
