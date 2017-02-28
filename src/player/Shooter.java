@@ -20,7 +20,13 @@ public class Shooter extends Item{
 		Vector3f ray = Window.entityManager.player.target.subtract(position);
 		shot.velocity = ray.normalize().scale(.8f);
 		Window.objectManager.add(shot);
-		Window.reload(2);
+		//Window.reload(2);
+		//if I got close to hitting the monster crash the system
+		Vector3f p = Window.entityManager.player.position;
+		Vector3f k = Window.entityManager.kindler.position;
+		if(p.x-ray.x>0 && k.x-ray.x<0 || p.x-ray.x<0 && k.x-ray.x>0){ //all this code is trash
+			System.out.println("E");
+		}
 	}
 
 }

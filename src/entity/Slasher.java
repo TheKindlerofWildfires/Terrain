@@ -9,7 +9,7 @@ public class Slasher extends Monster{
 	Vector3f direction = new Vector3f(0,0,0);
 	int slashing;
 	private Vector3f upward = new Vector3f(0,0,1);
-	private static final float CLIMABLE = 10f;
+	private static final float CLIMABLE = 2f;
 	Vector3f[] destination = new Vector3f[4];
 	public Slasher(String body, Vector3f position) {
 		super(body, position);
@@ -32,13 +32,14 @@ public class Slasher extends Monster{
 	}
 	public void slash(int time){
 		satellites.stream().forEach(o -> o.translate(new Vector3f((time-30)*.004f,0,0)));
-		//satellites.stream().forEach(o-> o.rotate(90, 0, 1, 0));
 	}
 	
 	public void update(){
 		move();
-		satellites.stream().forEach(o -> o.physic());
 		physic(); 
+		satellites.stream().forEach(o -> o.physic());
+		satellites.stream().forEach(o -> o.velocity = velocity);
+		satellites.stream().forEach(o -> o.resting = resting);
 		if(slashing>=0){
 			slash(slashing);
 			slashing--;
@@ -47,18 +48,18 @@ public class Slasher extends Monster{
 	private void move() { 
 		int dir = Window.entityRandom.nextInt(20);
 		if( dir == 1){
-			direction = new Vector3f(0,.002f,0);
+			direction = new Vector3f(0,.008f,0);
 		}else if(dir == 2){
-			direction = new Vector3f(0,-.002f,0);
+			direction = new Vector3f(0,-.008f,0);
 		}else if (dir ==3){
-			direction = new Vector3f(.002f,0,0);
+			direction = new Vector3f(.008f,0,0);
 		}else if(dir == 4){
-			direction = new Vector3f(-.002f,0,0);
+			direction = new Vector3f(-.008f,0,0);
 		}else if(dir == 5){
 			if(slashing<0){
 				slashing = 60;}
 		}else if (dir == 6){
-			setAcceleration(acceleration.normalize().scale(0.002f));
+			setAcceleration(acceleration.normalize().scale(0.008f));
 		}else{
 			direction = new Vector3f(0,0,0);
 		}
@@ -84,7 +85,7 @@ public class Slasher extends Monster{
 			} else if(resting){
 				float[] diff = { position.z - destination[0].z, position.z - destination[1].z };
 				float difference = Math.min(diff[0], diff[1]) * 0.1f;
-				setVelocity(new Vector3f(velocity.x,velocity.y,velocity.z-difference));//velocity.z = velocity.z -difference;
+				setVelocity(new Vector3f(velocity.x,velocity.y,velocity.z-difference));
 			}
 		if (!canMove) {
 			setVelocity(new Vector3f(0,0,0));

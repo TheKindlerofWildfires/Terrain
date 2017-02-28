@@ -37,7 +37,7 @@ import world.World;
  * @author TheKingInYellow
  */
 public class Player extends GameObject {
-	private static final float CLIMABLE = 1.7f;
+	private static final float CLIMABLE = 2f;
 	private static final float SPEEDSCALER = 1;
 	private static final int ALLOWEDJUMPS = 1;
 	Vector3f target;
@@ -63,7 +63,7 @@ public class Player extends GameObject {
 		upward = new Vector3f(0, 0, speed);
 		this.camera = camera;
 		this.target = camera.getTarget();
-		this.position = new Vector3f(1, 1, 100);
+		this.position = new Vector3f(1, 1, 10);
 		inventory.add(new Shooter("item", 40, 0, "B1"));
 		self = new Life(1000);
 		suitEnergy = 100;
@@ -166,7 +166,6 @@ public class Player extends GameObject {
 			float rise = Math.max(Math.max(destination[0].z, destination[1].z),
 					Math.max(destination[2].z, destination[3].z));
 			rise = rise - position.z;
-
 			if (rise > CLIMABLE) {
 				canMove = false;
 			} else if (rise < -CLIMABLE) {

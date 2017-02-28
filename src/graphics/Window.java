@@ -116,7 +116,7 @@ public class Window implements Runnable {
 
 	public static Lava lava;
 	public static Tree cave;
-	final boolean test = true;
+	final boolean test = false;
 	public static void main(String args[]) {
 		Window game = new Window();
 		game.run();

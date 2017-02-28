@@ -23,10 +23,7 @@ public class Monster extends GameObject{
 		rotate(90,1,0,0);
 		construct();
 		setPosition(position);
-		resting = true;
-		
-		
-		
+		resting = true;	
 	}
 	/**
 	 * This builds the thing
