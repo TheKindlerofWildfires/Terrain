@@ -116,7 +116,7 @@ public class Window implements Runnable {
 
 	public static Lava lava;
 	public static Tree cave;
-	final boolean test = false;
+	final boolean test = true;
 	public static void main(String args[]) {
 		Window game = new Window();
 		game.run();
@@ -268,14 +268,6 @@ public class Window implements Runnable {
 		glfwSwapBuffers(window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// waterFBO.bindReflectionFrameBuffer();
-		// world.render(reflectionClipPlane);
-		// objectManager.render();
-
-		// waterFBO.bindRefractionFrameBuffer();
-		// world.render(refractionClipPlane);
-		// objectManager.render();
-
 		// move camera to appropriate location and render reflection texture
 		float camDist = GraphicsManager.camera.pos.z - Chunk.WATERLEVEL;
 		float targetDist = GraphicsManager.camera.getTarget().z - Chunk.WATERLEVEL;
@@ -328,7 +320,8 @@ public class Window implements Runnable {
 		}else{
 			glfwSwapBuffers(window);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			cave.render(renderClipPlane);
+			//cave.render(renderClipPlane);
+			entityManager.render(renderClipPlane);
 		}
 	}
 	public static void reload(int type){
@@ -342,7 +335,7 @@ public class Window implements Runnable {
 		Biome.updateWater(type);
 		Detail.clear();
 		
-		//should also clear objects/ trees/ entities
+		//should also clear trees/ entities
 	}
 	/**
 	 * The game loop

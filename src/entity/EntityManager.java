@@ -6,26 +6,26 @@ import maths.Vector4f;
 import player.Player;
 
 /**
- * @author TheKingInYellow
+ * @author TheKingInYellow && RadientRoss
  */
 public class EntityManager {
 	public Player player;
 
-	// public Wanderer m;
+	public Monster kindler; //Funny!
 	Camera camera = GraphicsManager.camera;
 	
 
 	public EntityManager() {
 		player = new Player(camera);
-		// m = new Wanderer("resources/models/box.obj");
+		kindler = new Monster("basic"); //Amazing!
 	}
 
 	public void render(Vector4f clipPlane) {
-		// m.render(clipPlane);
+		kindler.render(clipPlane);
 	}
 
 	public void update(Long window) {
-		// m.update();
+		kindler.update();
 		player.update();
 	}
 }

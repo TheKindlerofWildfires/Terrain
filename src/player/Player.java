@@ -38,7 +38,7 @@ import world.World;
  */
 public class Player extends GameObject {
 	private static final float CLIMABLE = 1.7f;
-	private static final float SPEEDSCALER = 2;
+	private static final float SPEEDSCALER = 1;
 	private static final int ALLOWEDJUMPS = 1;
 	Vector3f target;
 	private float speed;
@@ -49,7 +49,7 @@ public class Player extends GameObject {
 	public Life self;
 	public float suitEnergy;
 	public float energyLoss = 0.0f;// 0.1
-	boolean noClip = false;
+	boolean noClip = true;
 	int jumpCount = 0;
 	int[] last = new int[6];
 	int jumping = 0;
@@ -63,7 +63,7 @@ public class Player extends GameObject {
 		upward = new Vector3f(0, 0, speed);
 		this.camera = camera;
 		this.target = camera.getTarget();
-		this.position = new Vector3f(1, 1, 30);
+		this.position = new Vector3f(1, 1, 10);
 		inventory.add(new Shooter("item", 40, 0, "B1"));
 		self = new Life(1000);
 		suitEnergy = 100;
@@ -112,7 +112,7 @@ public class Player extends GameObject {
 				break;
 			case "DOWN":
 				if (noClip) {
-					velocity = upward.negate();
+					position = position.add(upward.negate().scale(2));
 				} else {
 					shift();
 				}

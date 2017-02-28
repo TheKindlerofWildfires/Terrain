@@ -144,6 +144,9 @@ public class GameObject {
 		scale.z *= z;
 
 	}
+	public void scale(Vector3f scale){
+		scale(scale.x, scale.y, scale.z);
+	}
 
 	public void translate(float x, float y, float z) {
 		model.translate(x, y, z);
@@ -183,13 +186,17 @@ public class GameObject {
 		position.y = y;
 		position.z = z;
 	}
+	public void placeAt(Vector3f position) {
+		placeAt(position.x, position.y, position.z);
+		
+	}
 
 	public void physic() {
 		if (enabled) {
 			if(!resting){
 				acceleration = GRAVITY.scale(.1f);
 			}else{
-				acceleration = new Vector3f(0,0,0);
+				acceleration.z = 0;
 				if(velocity.z <0){
 					velocity.z = 0;
 				}
@@ -245,4 +252,5 @@ public class GameObject {
 	public VertexArrayObject getVAO() {
 		return vao;
 	}
+
 }
