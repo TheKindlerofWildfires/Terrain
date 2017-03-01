@@ -262,8 +262,8 @@ public class GameObject {
 	 * @param axis
 	 * @return
 	 */
-	public float[] project(Vector3f axis){
-		float min = axis.dot(vao.getVert(0));
+	public float[] project(Vector3f axis){ 
+		float min = axis.dot(vao.getVert(0));//It would be my impression that getVert and perp are bad methods
 		float max = min;
 		for (int i = 1; i < vao.getSize(); i++) {
 			// NOTE: the axis must be normalized to get accurate projections

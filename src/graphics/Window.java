@@ -120,7 +120,7 @@ public class Window implements Runnable {
 	//private static Particle baseTree;
 	public static Tree cave;
 	public static Collision col; 
-	final boolean test = true;
+	final boolean test = false;
 	public static void main(String args[]) {
 		Window game = new Window();
 		game.run();

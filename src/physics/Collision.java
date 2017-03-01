@@ -19,7 +19,7 @@ public class Collision {
 	protected boolean collide(){
 		for (int i = 0; i < axis1.length; i++) {
 			  Vector3f axis = axis1[i].normalize();
-			  System.out.println(axis);
+			  //System.out.println(axis);
 			  float[] p1 = box1.project(axis);
 			  float[] p2 = box2.project(axis);
 			  // do the projections overlap?
@@ -56,7 +56,9 @@ public class Collision {
 		
 	}
 	public boolean overlap(float[] one, float[] two){
-		if(one[0]<two[1] || two[0]<one[1]){ //deals with like 99% of cases
+		if(one[0]<two[1] || two[0]<one[1]){ // why is one = two
+			System.out.println(one[0] + " " + one[1]);
+			System.out.println(two[0] + " " + two[1]);
 			return true;
 		}
 		return false;

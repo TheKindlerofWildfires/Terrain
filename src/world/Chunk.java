@@ -68,6 +68,7 @@ public class Chunk extends GameObject {
 		for (int i = 0; i < terrain.size(); i++) {
 			Vector3f centre = terrain.get(i).getCircumcenter().add(new Vector3f(2f * chunkX, 2f * chunkY, 0))
 					.scale(SIZE);
+			int p1 = 0;
 			for (int j = 0; j < 3; j++) {
 				Vector3f point = terrain.get(i).getPoint(j).add(new Vector3f(2f * chunkX, 2f * chunkY, 0)).scale(SIZE);
 				float[] values = Biome.getPlanet(centre, point);
@@ -80,21 +81,24 @@ public class Chunk extends GameObject {
 				Detail.detail(point, values[4]);
 				terrain.get(i).getPoint(j).z = h;
 
-				float pseudo = Math.abs(h - (int) h);// remainder
-				pseudo = (int) (pseudo * 100);
-				pseudo = pseudo % 100;
-
+				float p = Math.abs(h - (int) h);// remainder
+				p = (int) (p * 100);
+				p1 = (int) p % 100;
 				vertices[c++] = point.x;
 				vertices[c++] = point.y;
-				vertices[c++] = h; // the z cordinate
-
+				vertices[c++] = h;
 				vertices[c++] = r;
 				vertices[c++] = g;
 				vertices[c++] = b;
-
 				vertices[c++] = terrain.get(i).getNormal().x;
 				vertices[c++] = terrain.get(i).getNormal().y;
 				vertices[c++] = terrain.get(i).getNormal().z;
+
+			}
+			if(p1 == 0){
+				for(int q = 1; q<27;q++){
+					vertices[c-q] = 0;
+				}
 			}
 		}
 	}
