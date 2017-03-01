@@ -12,3 +12,8 @@ Eventual:
 	SAT collision 
 	MD5
 	Optimization
+	
+	
+	Functions to check: getNormals, project in GameObject
+	getVert in VertexArrayObject
+	perp in Vector3f
