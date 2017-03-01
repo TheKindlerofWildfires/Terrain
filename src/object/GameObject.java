@@ -49,7 +49,7 @@ public class GameObject {
 	public float mass = 10;
 	public Vector3f acceleration = new Vector3f();
 	public Vector3f force = new Vector3f();
-	public BoundingBox boundingBox;
+	public BoundingBox boundingBox; //This should actually be a box with dim of the size of the longest part of the object
 	public boolean enabled = true;
 	public boolean resting = false;
 
@@ -156,19 +156,19 @@ public class GameObject {
 		position = position.add(new Vector3f(x, y, z));
 	}
 
-	public void rotate(int angle, int x, int y, int z) throws IllegalArgumentException {
+	public void rotate(float angle, int x, int y, int z) throws IllegalArgumentException {
 		if (angle % 90 != 0) {
-			throw new IllegalArgumentException("you can only rotate bounding boxes by right angles");
+			//throw new IllegalArgumentException("you can only rotate bounding boxes by right angles");
 		}
 		if (angle < 0) {
 			angle = 360 + angle;
 		}
 		if (!(x >= 1 ^ y >= 1 ^ z >= 1)) {
-			throw new IllegalArgumentException("pls don't rotate in multiple axes at once");
+			//throw new IllegalArgumentException("pls don't rotate in multiple axes at once");
 		}
 		model.rotate(angle, x, y, z);
-		int a = angle / 90;
-		boundingBox.rotate(a * x, a * y, a * z);
+		//int a = angle / 90;
+		//boundingBox.rotate(a * x, a * y, a * z);
 		// at some point the bounding box should rotate too
 	}
 

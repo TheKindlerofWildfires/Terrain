@@ -28,10 +28,17 @@ public class Slasher extends Monster{
 		blade2.resting = true;
 		satellites.add(blade1);
 		satellites.add(blade2);
+		satellites.get(0).rotate((float)((-30)*Math.PI/10), 1, 0, 0);
+		satellites.get(1).rotate((float)((30)*Math.PI/10), 1, 0, 0);
 		satellites.stream().forEach(o -> o.material.colour = new Vector3f(0,1,1));
 	}
 	public void slash(int time){
 		satellites.stream().forEach(o -> o.translate(new Vector3f((time-30)*.004f,0,0)));
+		
+	}
+	public void flap(int time){
+		satellites.get(0).rotate((float)((time-20)*Math.PI/25), 1, 0, 0);
+		satellites.get(1).rotate((float)((time-20)*Math.PI/-25), 1, 0, 0);
 	}
 	
 	public void update(){
@@ -41,11 +48,14 @@ public class Slasher extends Monster{
 		satellites.stream().forEach(o -> o.velocity = velocity);
 		satellites.stream().forEach(o -> o.resting = resting);
 		if(slashing>=0){
-			slash(slashing);
+			flap(slashing);
 			slashing--;
 		}
 	}
 	private void move() { 
+		if(slashing<0){
+			slashing = 40;
+		}
 		int dir = Window.entityRandom.nextInt(20);
 		if( dir == 1){
 			direction = new Vector3f(0,.008f,0);
@@ -56,8 +66,6 @@ public class Slasher extends Monster{
 		}else if(dir == 4){
 			direction = new Vector3f(-.008f,0,0);
 		}else if(dir == 5){
-			if(slashing<0){
-				slashing = 60;}
 		}else if (dir == 6){
 			setAcceleration(acceleration.normalize().scale(0.008f));
 		}else{

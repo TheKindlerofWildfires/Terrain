@@ -1,4 +1,3 @@
-/entity/
 /object/
-/graphics/
-/player/
+/entity/
+/world/
