@@ -193,6 +193,12 @@ public class Vector3f {
 	public float length2() {
 		return (float) Math.pow(this.length(), 2);
 	}
+	public Vector3f perp(){
+		float x2 = x/2;
+		float y2 = y/2;
+		float z2 = (-x * x2 - y * y2) / z;
+		return new Vector3f(x2, y2, z2);
+	}
 
 	public static Vector3f parseVector(String input) {
 		String[] data = input.split(",");

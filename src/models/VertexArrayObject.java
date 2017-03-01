@@ -16,6 +16,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 import graphics.Shader;
 import maths.Utilities;
+import maths.Vector3f;
 import maths.Vector4f;
 
 public class VertexArrayObject {
@@ -24,6 +25,7 @@ public class VertexArrayObject {
 
 	protected int vaoID;
 	protected int size;
+	protected float[] vertices;
 
 	/**
 	 * Create VAO with vertices and indices
@@ -38,6 +40,7 @@ public class VertexArrayObject {
 	public VertexArrayObject(float[] vertices, byte[] indices, int numberOfVec3s) {
 		numberOfVAOS++;
 		size = indices.length;
+		this.vertices = vertices;
 		createArrayObject(vertices, indices, numberOfVec3s);
 	}
 
@@ -51,6 +54,7 @@ public class VertexArrayObject {
 	 */
 	public VertexArrayObject(float[] vertices, int numberOfVec3s) {
 		numberOfVAOS++;
+		this.vertices = vertices;
 		size = vertices.length / 3 / numberOfVec3s;
 		createArrayObject(vertices, numberOfVec3s);
 	}
@@ -153,5 +157,9 @@ public class VertexArrayObject {
 		glBindVertexArray(vaoID);
 		glEnable(GL_CLIP_DISTANCE0);
 		Shader.setUniform4f("clipPlane", clipPlane);
+	}
+	public Vector3f getVert(int i){
+		
+		return new Vector3f(vertices[i],vertices[i+1],vertices[i+2]);
 	}
 }

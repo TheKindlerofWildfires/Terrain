@@ -245,4 +245,38 @@ public class GameObject {
 	public VertexArrayObject getVAO() {
 		return vao;
 	}
+	public Vector3f[] getNormals(){
+	Vector3f[] axes = new Vector3f[vao.getSize()]; //correct number of vertices
+
+	for (int i = 0; i < vao.getSize(); i++) {
+	  Vector3f p1 = vao.getVert(i);
+	  Vector3f p2 = vao.getVert(i + 1 == vao.getSize() ? 0 : i + 1);
+	  Vector3f edge = p1.subtract(p2);
+	  Vector3f normal = edge.perp();
+	  axes[i] = normal;
+	}
+	return axes;
+	}
+	/**
+	 * Mix max
+	 * @param axis
+	 * @return
+	 */
+	public float[] project(Vector3f axis){
+		float min = axis.dot(vao.getVert(0));
+		float max = min;
+		for (int i = 1; i < vao.getSize(); i++) {
+			// NOTE: the axis must be normalized to get accurate projections
+			float p = axis.dot(vao.getVert(i));
+			if (p < min) {
+				min = p;
+			} else if (p > max) {
+				max = p;
+			}
+		}
+		float [] b = new float[2];
+		b[0] = min;
+		b[1] = max;
+		return b;
+	}
 }

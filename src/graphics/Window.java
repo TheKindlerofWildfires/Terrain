@@ -57,6 +57,7 @@ import input.MouseInput;
 import maths.Vector3f;
 import maths.Vector4f;
 import object.ObjectManager;
+import physics.Collision;
 import physics.Time;
 import world.Biome;
 import world.Chunk;
@@ -118,7 +119,8 @@ public class Window implements Runnable {
 	//private static DetailManager trees;
 	//private static Particle baseTree;
 	public static Tree cave;
-	final boolean test = false;
+	public static Collision col; 
+	final boolean test = true;
 	public static void main(String args[]) {
 		Window game = new Window();
 		game.run();
@@ -214,8 +216,7 @@ public class Window implements Runnable {
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
 		cave = new Tree(new Vector3f(0,0,0));
 		Detail.init();
-
-
+		col = new Collision();
 
 		GraphicsManager.toggleFog();
 		if(test){
@@ -255,6 +256,7 @@ public class Window implements Runnable {
 			entityManager.update(window);
 			glfwPollEvents();
 			graphicsManager.update();
+			col.update();
 		}
 	}
 
@@ -330,7 +332,8 @@ public class Window implements Runnable {
 		}else{
 			glfwSwapBuffers(window);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			cave.render(renderClipPlane);
+			//cave.render(renderClipPlane);
+			col.render(renderClipPlane);
 		}
 	}
 	public static void reload(int type){
