@@ -7,11 +7,11 @@ import object.GameObject;
 public class Collision {
 	GameObject box1 = new GameObject("resources/models/box.obj", "resources/textures/uvlayout.png", true);
 	GameObject box2 = new GameObject("resources/models/box.obj", "resources/textures/uvlayout.png", true);
-	Vector3f[] axis1 = box1.getNormals();
-	Vector3f[] axis2 = box2.getNormals();
+	Vector3f[] axis1 = box1.getNorm();
+	Vector3f[] axis2 = box2.getNorm();
 	public Collision(){
-		box1.placeAt(2,2, 2);
-		box2.placeAt(1, 1, 1);
+		box1.placeAt(3,4,3);
+		box2.placeAt(1,1,1);
 		box1.resting = true;
 		box2.resting = false;
 		System.out.println(collide());
@@ -56,9 +56,9 @@ public class Collision {
 		
 	}
 	public boolean overlap(float[] one, float[] two){
-		if(one[0]<two[1] || two[0]<one[1]){ // why is one = two
-			System.out.println(one[0] + " " + one[1]);
-			System.out.println(two[0] + " " + two[1]);
+		if(one[0]<=two[1] || two[0]<=one[1]){ // why is one = two
+			//System.out.println(one[0] + " " + one[1]);
+			//System.out.println(two[0] + " " + two[1]);
 			return true;
 		}
 		return false;

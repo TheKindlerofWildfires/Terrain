@@ -160,6 +160,11 @@ public class VertexArrayObject {
 	}
 	public Vector3f getVert(int i){
 		
-		return new Vector3f(vertices[i],vertices[i+1],vertices[i+2]);
+		return new Vector3f(vertices[i*9],vertices[i*9+1],vertices[i*9+2]);
 	}
+public Vector3f getNorm(int i){
+		
+		return new Vector3f(vertices[i*9+6],vertices[i*9+7],vertices[i+8]);
+	}
+// x y z r g b n1 n2 n3
 }

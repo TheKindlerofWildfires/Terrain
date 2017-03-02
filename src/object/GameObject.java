@@ -246,7 +246,7 @@ public class GameObject {
 		return vao;
 	}
 	public Vector3f[] getNormals(){
-	Vector3f[] axes = new Vector3f[vao.getSize()]; //correct number of vertices
+	Vector3f[] axes = new Vector3f[vao.getSize()/3]; //correct number of vertices
 
 	for (int i = 0; i < vao.getSize(); i++) {
 	  Vector3f p1 = vao.getVert(i);
@@ -257,6 +257,13 @@ public class GameObject {
 	}
 	return axes;
 	}
+	public Vector3f[] getNorm(){
+		Vector3f[] axes = new Vector3f[vao.getSize()/3]; //correct number of vertices
+		for (int i = 0; i < vao.getSize()/3; i++) {
+		  axes[i] = vao.getNorm(i);;
+		}
+		return axes;
+		}
 	/**
 	 * Mix max
 	 * @param axis
