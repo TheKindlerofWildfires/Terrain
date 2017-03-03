@@ -245,22 +245,13 @@ public class GameObject {
 	public VertexArrayObject getVAO() {
 		return vao;
 	}
-	public Vector3f[] getNormals(){
-	Vector3f[] axes = new Vector3f[vao.getSize()/3]; //correct number of vertices
-
-	for (int i = 0; i < vao.getSize(); i++) {
-	  Vector3f p1 = vao.getVert(i);
-	  Vector3f p2 = vao.getVert(i + 1 == vao.getSize() ? 0 : i + 1);
-	  Vector3f edge = p1.subtract(p2);
-	  Vector3f normal = edge.perp();
-	  axes[i] = normal;
-	}
-	return axes;
-	}
-	public Vector3f[] getNorm(){
-		Vector3f[] axes = new Vector3f[vao.getSize()/3]; //correct number of vertices
+	//Unclear if i use vec3 or 4
+	public Vector4f[] getNorm(){
+		Vector4f[] axes = new Vector4f[vao.getSize()/3]; //correct number of vertices
 		for (int i = 0; i < vao.getSize()/3; i++) {
-		  axes[i] = vao.getNorm(i);;
+			Vector4f transit = new Vector4f(vao.getNorm(i), 1);
+			transit = model.getMatrix().multiply(transit);
+		  axes[i] = transit;
 		}
 		return axes;
 		}
@@ -269,12 +260,15 @@ public class GameObject {
 	 * @param axis
 	 * @return
 	 */
-	public float[] project(Vector3f axis){ 
-		float min = axis.dot(vao.getVert(0));//It would be my impression that getVert and perp are bad methods
+	public float[] project(Vector4f axis){ 
+		Vector4f transit = new Vector4f(vao.getVert(0), 1);
+		transit = model.getMatrix().multiply(transit);
+		float min = axis.dot(transit);
 		float max = min;
 		for (int i = 1; i < vao.getSize(); i++) {
-			// NOTE: the axis must be normalized to get accurate projections
-			float p = axis.dot(vao.getVert(i));
+			transit = new Vector4f(vao.getVert(i), 1);
+			transit = model.getMatrix().multiply(transit);
+			float p = axis.dot(transit);
 			if (p < min) {
 				min = p;
 			} else if (p > max) {

@@ -7,10 +7,10 @@ import object.GameObject;
 public class Collision {
 	GameObject box1 = new GameObject("resources/models/box.obj", "resources/textures/uvlayout.png", true);
 	GameObject box2 = new GameObject("resources/models/box.obj", "resources/textures/uvlayout.png", true);
-	Vector3f[] axis1 = box1.getNorm();
-	Vector3f[] axis2 = box2.getNorm();
+	Vector4f[] axis1 = box1.getNorm();
+	Vector4f[] axis2 = box2.getNorm();
 	public Collision(){
-		box1.placeAt(3,4,3);
+		box1.placeAt(2,2,2);
 		box2.placeAt(1,1,1);
 		box1.resting = true;
 		box2.resting = false;
@@ -18,7 +18,7 @@ public class Collision {
 	}
 	protected boolean collide(){
 		for (int i = 0; i < axis1.length; i++) {
-			  Vector3f axis = axis1[i].normalize();
+			  Vector4f axis = axis1[i].normalize();
 			  //System.out.println(axis);
 			  float[] p1 = box1.project(axis);
 			  float[] p2 = box2.project(axis);
@@ -30,7 +30,7 @@ public class Collision {
 			}
 			// loop over the axes2
 			for (int i = 0; i < axis2.length; i++) {
-				Vector3f axis = axis2[i].normalize();
+				Vector4f axis = axis2[i].normalize();
 			  // project both shapes onto the axis
 			  float[] p1 = box1.project(axis);
 			  float[] p2 = box2.project(axis);
@@ -56,9 +56,7 @@ public class Collision {
 		
 	}
 	public boolean overlap(float[] one, float[] two){
-		if(one[0]<=two[1] || two[0]<=one[1]){ // why is one = two
-			//System.out.println(one[0] + " " + one[1]);
-			//System.out.println(two[0] + " " + two[1]);
+		if(one[0]<two[1] || two[0]>one[1]){ //this bit of code is bad
 			return true;
 		}
 		return false;
