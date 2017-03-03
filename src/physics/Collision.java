@@ -1,20 +1,26 @@
 package physics;
 
-import maths.Vector3f;
 import maths.Vector4f;
 import object.GameObject;
 
 public class Collision {
-	GameObject box1 = new GameObject("resources/models/box.obj", "resources/textures/uvlayout.png", true);
-	GameObject box2 = new GameObject("resources/models/box.obj", "resources/textures/uvlayout.png", true);
-	Vector4f[] axis1 = box1.getNorm();
-	Vector4f[] axis2 = box2.getNorm();
-	public Collision(){
-		box1.placeAt(2,2,2);
-		box2.placeAt(1,1,1);
-		box1.resting = true;
-		box2.resting = false;
-		System.out.println(collide());
+	GameObject box1;
+	GameObject box2; 
+	Vector4f[] axis1;
+	Vector4f[] axis2;
+	/**
+	 * Literally all this does is the math so I don't know what you want
+	 * @param box1
+	 * @param box2
+	 */
+	public Collision(GameObject box1, GameObject box2){
+		axis1 = box1.getNorm();
+		axis2 = box2.getNorm();
+		this.box1 = box1;
+		this.box2 = box2;
+		box1.placeAt(-2,-2,-2);
+		box2.placeAt(-1,-1,-1);
+
 	}
 	protected boolean collide(){
 		for (int i = 0; i < axis1.length; i++) {
@@ -45,7 +51,8 @@ public class Collision {
 			return true;
 	}
 	public void update() {
-		//box1.physic();
+		box1.translate(0.005f, 0, 0);
+		if(Time.getUpdateTick()%60==0){System.out.println(collide());}
 		//box2.physic();
 		
 	}
@@ -56,7 +63,7 @@ public class Collision {
 		
 	}
 	public boolean overlap(float[] one, float[] two){
-		if(one[0]<two[1] || two[0]>one[1]){ //this bit of code is bad
+		if(one[0]<two[1] || two[0]>one[1]){ 
 			return true;
 		}
 		return false;

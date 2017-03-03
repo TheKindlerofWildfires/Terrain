@@ -56,6 +56,7 @@ import entity.EntityManager;
 import input.MouseInput;
 import maths.Vector3f;
 import maths.Vector4f;
+import object.GameObject;
 import object.ObjectManager;
 import physics.Collision;
 import physics.Time;
@@ -216,7 +217,7 @@ public class Window implements Runnable {
 		refraction = new FrameBufferObject(REFRACTION_WIDTH, REFRACTION_HEIGHT, true);
 		cave = new Tree(new Vector3f(0,0,0));
 		Detail.init();
-		col = new Collision();
+		col = new Collision(new GameObject("resources/models/box.obj", "resources/textures/uvlayout.png", true), new GameObject("resources/models/box.obj", "resources/textures/uvlayout.png", true));
 
 		GraphicsManager.toggleFog();
 		if(test){
