@@ -250,7 +250,7 @@ public class GameObject {
 		Vector4f[] axes = new Vector4f[vao.getSize()/3]; //correct number of vertices
 		for (int i = 0; i < vao.getSize()/3; i++) {
 			Vector4f transit = new Vector4f(vao.getNorm(i), 1);
-			transit = model.getMatrix().multiply(transit);
+			//transit = model.getMatrix().multiply(transit);
 		  axes[i] = transit;
 		}
 		return axes;

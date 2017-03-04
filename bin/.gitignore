@@ -1,5 +1,14 @@
-/models/
+/LICENSE
+/build.txt
+/cave/
+/entity/
 /graphics/
-/physics/
+/input/
+/maths/
+/models/
+/noiseLibrary/
 /object/
+/particles/
+/physics/
+/player/
 /world/

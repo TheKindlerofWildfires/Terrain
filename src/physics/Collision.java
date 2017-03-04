@@ -1,5 +1,11 @@
 package physics;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
+import static org.lwjgl.glfw.GLFW.*;
+
+import input.KeyboardInput;
 import maths.Vector4f;
 import object.GameObject;
 
@@ -19,7 +25,7 @@ public class Collision {
 		this.box1 = box1;
 		this.box2 = box2;
 		box1.placeAt(-2,-2,-2);
-		box2.placeAt(-1,-1,-1);
+		box2.placeAt(-1	,-1,-1);
 
 	}
 	protected boolean collide(){
@@ -29,7 +35,7 @@ public class Collision {
 			  float[] p1 = box1.project(axis);
 			  float[] p2 = box2.project(axis);
 			  // do the projections overlap?
-			  if (!overlap(p1, p2)) {
+			  if (!overlap2(p1, p2)) {
 			    // then we can guarantee that the shapes do not overlap
 			    return false;
 			  }
@@ -41,7 +47,7 @@ public class Collision {
 			  float[] p1 = box1.project(axis);
 			  float[] p2 = box2.project(axis);
 			  // do the projections overlap?
-			  if (!overlap(p1, p2)) {
+			  if (!overlap2(p1, p2)) {
 			    // then we can guarantee that the shapes do not overlap
 			    return false;
 			  }
@@ -51,9 +57,43 @@ public class Collision {
 			return true;
 	}
 	public void update() {
-		box1.translate(0.005f, 0, 0);
-		if(Time.getUpdateTick()%60==0){System.out.println(collide());}
-		//box2.physic();
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_UP)||KeyboardInput.isKeyDown(GLFW_KEY_UP)) {
+			box1.translate(0.05f, 0, 0);
+			if(collide()){
+				box1.translate(-0.05f, 0, 0);
+			}
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_DOWN)||KeyboardInput.isKeyDown(GLFW_KEY_DOWN)) {
+			box1.translate(-0.05f, 0, 0);
+			if(collide()){
+				box1.translate(0.05f, 0, 0);
+			}
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_LEFT)||KeyboardInput.isKeyDown(GLFW_KEY_LEFT)) {
+			box1.translate(0, 0.05f, 0);
+			if(collide()){
+				box1.translate(0, -0.05f, 0);
+			}
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_RIGHT)||KeyboardInput.isKeyDown(GLFW_KEY_RIGHT)) {
+			if(collide()){
+				box1.translate(0, 0.05f, 0);
+			}
+			
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_Q)||KeyboardInput.isKeyDown(GLFW_KEY_Q)) {
+			box1.translate(0, 0, 0.05f);
+			if(collide()){
+				box1.translate(0, 0, -0.05f);
+			}
+		}
+		if (KeyboardInput.isKeyPressed(GLFW_KEY_E)||KeyboardInput.isKeyDown(GLFW_KEY_E)) {
+			box1.translate(0, 0, -0.05f);
+			if(collide()){
+				box1.translate(0, 0, 0.05f);
+			}
+		}
+		//if(Time.getUpdateTick()%60==0){System.out.println(collide());}
 		
 	}
 
@@ -63,7 +103,22 @@ public class Collision {
 		
 	}
 	public boolean overlap(float[] one, float[] two){
-		if(one[0]<two[1] || two[0]>one[1]){ 
+		if(one[0]<two[1] || two[0]<one[1]){ //I believe that this doesn't do so hot at all
+			System.out.println(one[0] + " " +  one[1]);
+			System.out.println(two[0] + " " +  two[1]);
+			return true;
+		}
+		return false;
+	}
+	public boolean overlap2(float[] one, float[] two){
+		if(KeyboardInput.isKeyDown(GLFW_KEY_R)){
+			System.out.println(one[0] + " " +  one[1]);
+			System.out.println(two[0] + " " +  two[1]);		
+		}
+		if(one[0]<two[1]&&one[0]>two[0]){
+			return true;
+		}
+		if(one[1]>two[0]&&one[1]<two[1]){
 			return true;
 		}
 		return false;
