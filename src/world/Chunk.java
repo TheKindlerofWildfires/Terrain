@@ -1,15 +1,11 @@
 package world;
 
-import java.util.ArrayList;
-
-import maths.Delaunay;
-import maths.Mirror;
-import maths.PoissonGenerator;
-import maths.Triangle;
-import maths.Vector3f;
+import maths.*;
 import models.VertexArrayObject;
 import noiseLibrary.module.source.Perlin;
 import object.GameObject;
+
+import java.util.ArrayList;
 
 /**
  * @author TheKingInYellow & HMSRothman

@@ -1,10 +1,10 @@
 package particles;
 
-import java.util.Iterator;
-
 import graphics.Instancer;
 import maths.Vector4f;
 import object.GameObject;
+
+import java.util.Iterator;
 
 public abstract class ParticleEmitter extends Instancer {
 

@@ -1,9 +1,9 @@
 package cave;
 
-import java.io.IOException;
-
 import models.ModelManager;
 import object.GameObject;
+
+import java.io.IOException;
 
 public class Block extends GameObject{
 	byte sides;

@@ -1,11 +1,11 @@
 package cave;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import maths.Vector3f;
 import maths.Vector4f;
 import object.GameObject;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Walk {
 	public ArrayList<GameObject> solids = new ArrayList<GameObject>();

@@ -1,10 +1,10 @@
 package world;
 
-import java.util.Random;
-
 import graphics.Window;
 import maths.Vector3f;
 import object.GameObject;
+
+import java.util.Random;
 
 public class Foliage {
 	private static Random rng = Window.worldRandom;

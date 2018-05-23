@@ -1,14 +1,14 @@
 package models.md5;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import maths.Matrix4f;
 import maths.Vector2f;
 import maths.Vector3f;
 import maths.Vector4f;
 import models.VertexArrayObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MD5Loader {
 

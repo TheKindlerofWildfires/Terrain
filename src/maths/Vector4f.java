@@ -24,9 +24,9 @@ package maths;
  * SOFTWARE.
  */
 
-import java.nio.FloatBuffer;
-
 import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
 
 /**
  * This class represents a (x,y,z,w)-Vector. GLSL equivalent to vec4.

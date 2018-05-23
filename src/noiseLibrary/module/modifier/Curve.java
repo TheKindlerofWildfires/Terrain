@@ -25,12 +25,12 @@
  */
 package noiseLibrary.module.modifier;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import noiseLibrary.Utils;
 import noiseLibrary.exception.NoModuleException;
 import noiseLibrary.module.Module;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Curve extends Module {
 	private final List<ControlPoint> controlPoints = new ArrayList<>();

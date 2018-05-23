@@ -1,9 +1,8 @@
 package input;
 
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-import static org.lwjgl.glfw.GLFW.GLFW_REPEAT;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import org.lwjgl.glfw.GLFWKeyCallback;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * @author TheKingInYellow

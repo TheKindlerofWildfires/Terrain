@@ -1,9 +1,9 @@
 package object;
 
-import java.util.ArrayList;
-
 import maths.Vector4f;
 import world.Skybox;
+
+import java.util.ArrayList;
 
 public class ObjectManager {
 	private Skybox box;

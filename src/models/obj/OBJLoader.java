@@ -1,5 +1,10 @@
 package models.obj;
 
+import maths.BoundingBox;
+import maths.Vector2f;
+import maths.Vector3f;
+import models.VertexArrayObject;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -7,11 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
-import maths.BoundingBox;
-import maths.Vector2f;
-import maths.Vector3f;
-import models.VertexArrayObject;
 
 /**
  * TO DO BEFORE UPLOADING MODEL

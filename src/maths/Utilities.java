@@ -1,17 +1,6 @@
 package maths;
 
-import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
-import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
-import static org.lwjgl.opengl.GL20.glCompileShader;
-import static org.lwjgl.opengl.GL20.glCreateShader;
-import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
-import static org.lwjgl.opengl.GL20.glGetShaderi;
-import static org.lwjgl.opengl.GL20.glShaderSource;
-import static org.lwjgl.opengl.GL31.GL_UNIFORM_BUFFER;
+import org.lwjgl.BufferUtils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -22,7 +11,10 @@ import java.nio.IntBuffer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.lwjgl.BufferUtils;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL31.GL_UNIFORM_BUFFER;
 
 public class Utilities {
 

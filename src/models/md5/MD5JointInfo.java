@@ -1,12 +1,12 @@
 package models.md5;
 
+import maths.Vector3f;
+import maths.Vector4f;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import maths.Vector3f;
-import maths.Vector4f;
 
 public class MD5JointInfo {
 

@@ -1,10 +1,10 @@
 package models;
 
+import models.obj.OBJLoader;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import models.obj.OBJLoader;
 
 public final class ModelManager {
 

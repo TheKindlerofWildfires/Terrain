@@ -1,18 +1,14 @@
 package world;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.Set;
-
 import graphics.GraphicsManager;
 import graphics.Window;
 import maths.Vector2i;
 import maths.Vector4f;
 import noiseLibrary.module.source.Perlin;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
 public class World {
 	public static Perlin noise;

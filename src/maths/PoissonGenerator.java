@@ -1,8 +1,8 @@
 package maths;
 
-import java.util.ArrayList;
-
 import graphics.Window;
+
+import java.util.ArrayList;
 
 /**
  * @author xWiffirat

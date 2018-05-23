@@ -1,9 +1,9 @@
 package maths;
 
+import graphics.Window;
+
 import java.util.ArrayList;
 import java.util.Random;
-
-import graphics.Window;
 
 /**
  * @author TheKingInYellow

@@ -1,13 +1,18 @@
 package graphics;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STREAM_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
+import maths.Vector3f;
+import maths.Vector4f;
+import models.VertexArrayObject;
+import object.GameObject;
+import org.lwjgl.BufferUtils;
+import particles.Particle;
+
+import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.GL_CLIP_DISTANCE0;
@@ -15,18 +20,6 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL31.glDrawArraysInstanced;
 import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
 import static org.lwjgl.system.MemoryUtil.NULL;
-
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.lwjgl.BufferUtils;
-
-import maths.Vector3f;
-import maths.Vector4f;
-import models.VertexArrayObject;
-import object.GameObject;
-import particles.Particle;
 
 public abstract class Instancer {
 	private Vector4f[] models;

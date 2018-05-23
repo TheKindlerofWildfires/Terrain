@@ -1,22 +1,5 @@
 package object;
 
-import static graphics.Shader.setMaterial;
-import static graphics.Shader.setUniform4f;
-import static graphics.Shader.setUniformMatrix4f;
-import static graphics.Shader.start;
-import static graphics.Shader.stop;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL30.GL_CLIP_DISTANCE0;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-
-import java.io.IOException;
-
 import graphics.Material;
 import graphics.ShaderManager;
 import graphics.Texture;
@@ -26,6 +9,15 @@ import maths.Vector3f;
 import maths.Vector4f;
 import models.ModelManager;
 import models.VertexArrayObject;
+
+import java.io.IOException;
+
+import static graphics.Shader.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL30.GL_CLIP_DISTANCE0;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 /**
  * @author TheKingInYellow & HMSRothman

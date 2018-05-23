@@ -1,12 +1,12 @@
 package world;
 
-import java.util.ArrayList;
-
 import graphics.DetailManager;
 import maths.Vector3f;
 import maths.Vector4f;
 import noiseLibrary.module.source.Perlin;
 import particles.Particle;
+
+import java.util.ArrayList;
 
 public abstract class Detail {
 	static float DETAILSCALER = 1;

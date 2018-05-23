@@ -1,12 +1,12 @@
 package graphics;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Properties;
-
 import input.MouseInput;
 import maths.Vector3f;
 import world.Water;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
 
 class Attenuation {
 	float constant;

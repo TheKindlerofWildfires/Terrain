@@ -1,15 +1,15 @@
 package graphics;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import maths.Vector4f;
 import object.GameObject;
 import particles.Geyser;
 import particles.Particle;
 import world.Chunk;
 import world.World;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class DetailManager extends Geyser {
 

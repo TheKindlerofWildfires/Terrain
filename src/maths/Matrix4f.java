@@ -24,9 +24,9 @@ package maths;
  * SOFTWARE.
  */
 
-import java.nio.FloatBuffer;
-
 import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
 
 /**
  * Used for 4x4 Matrix

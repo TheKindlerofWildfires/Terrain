@@ -1,10 +1,10 @@
 package cave;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import maths.Vector4f;
 import object.GameObject;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Tunnel {
 	public ArrayList<GameObject> solids = new ArrayList<GameObject>();

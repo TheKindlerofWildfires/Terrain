@@ -1,16 +1,5 @@
 package world;
 
-import static graphics.Shader.setUniform1f;
-import static graphics.Shader.setUniformMatrix4f;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE2;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE3;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE4;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
-
 import graphics.ShaderManager;
 import graphics.Texture;
 import graphics.Window;
@@ -18,6 +7,12 @@ import maths.Matrix4f;
 import maths.Vector3f;
 import maths.Vector4f;
 import object.GameObject;
+
+import static graphics.Shader.setUniform1f;
+import static graphics.Shader.setUniformMatrix4f;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL13.*;
 
 public class Water extends GameObject {
 

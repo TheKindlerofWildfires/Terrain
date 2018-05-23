@@ -1,9 +1,9 @@
 package world;
 
+import maths.Vector2i;
+
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import maths.Vector2i;
 
 public class ChunkLoader extends Thread {
 	public Object lock = new Object();

@@ -1,26 +1,5 @@
 package player;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_0;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_1;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_2;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_3;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_4;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_5;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_6;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_7;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_8;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_9;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_C;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
-
 import entity.Life;
 import graphics.Camera;
 import graphics.Window;
@@ -32,6 +11,8 @@ import object.GameObject;
 import physics.Time;
 import world.Biome;
 import world.World;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * @author TheKingInYellow

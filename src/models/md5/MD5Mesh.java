@@ -1,12 +1,12 @@
 package models.md5;
 
+import maths.Vector2f;
+import maths.Vector3f;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import maths.Vector2f;
-import maths.Vector3f;
 
 public class MD5Mesh {
 	private static final Pattern PATTERN_SHADER = Pattern.compile("\\s*shader\\s*\\\"([^\\\"]+)\\\"");

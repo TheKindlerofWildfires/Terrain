@@ -1,29 +1,24 @@
 package models;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL31.glDrawArraysInstanced;
-import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
-
-import java.nio.FloatBuffer;
-import java.util.List;
-
-import org.lwjgl.BufferUtils;
-
 import graphics.Shader;
 import graphics.ShaderManager;
 import graphics.Window;
 import maths.Matrix4f;
 import maths.Vector4f;
 import object.GameObject;
+import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
+import java.util.List;
+
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL31.glDrawArraysInstanced;
+import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
 
 public class InstancedVAO extends VertexArrayObject {
 
